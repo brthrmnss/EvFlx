@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark"    
+					   creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+ 
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var options : Array = ['Trunk', 	'Settings', 	'Sign out (brthrmnss)',
+					'Invite a friend',	'Upgrade / Gift', 	'Help'] 
+				this.list.dataProvider = new ArrayList(options)
+			}
+
+		]]>
+	</fx:Script>
+ 
+		<s:List  id="list"  borderVisible="false" 
+				  width="365" height="30" 
+				 itemRenderer="org.syncon.evernote.view.basic.top_links_itemrenderers" >
+		
+			<s:layout>
+				<s:TileLayout requestedColumnCount="3"
+							  requestedRowCount="2"
+							  horizontalGap="0"
+							  verticalGap="0" />				
+			</s:layout>
+
+
+		</s:List>
+</s:SkinnableContainer>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  creationComplete="skinnablecontainer1_creationCompleteHandler(event)" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="100%" 
+					  height="100%" xmlns:basic="org.syncon.evernote.view.basic.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort'] )
+				this.menuOrderOrder.createOptions(  ['Pic', 'List'] )					
+			}
+
+		]]>
+	</fx:Script>
+	
+	<!--
+	<s:Rect id="bgStart"  
+			left="0" right="0" top="0" bottom="0" 
+			>
+		<s:fill>
+			<s:SolidColor color="#E8E8E8"  />
+		</s:fill>
+	</s:Rect>		
+	-->
+	<basic:control_menu x="10" y="10" id="menuButtons" />
+	
+	<s:HGroup right="10" y="10"  >
+		
+		<basic:bandwidth_usage right="150" />
+		<basic:control_menu right="0" id="menuOrderOrder" />		
+	</s:HGroup>
+
+	<basic:list_notes y="50" width="100%" />
+</s:SkinnableContainer>

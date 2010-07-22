@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				width="1000" height="600" paddingTop="0"
+				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
+				creationComplete="onCreationComplete()"
+				 resize="application1_resizeHandler(event)"
+				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*"
+				>
+	<mx:Style source="assets/styles.css" />
+
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ResizeEvent;
+			public function onCreationComplete() : void
+			{
+				
+			}
+
+			protected function application1_resizeHandler(event:ResizeEvent):void
+			{
+				this.workspace.height = this.height - (
+					(this.header.height+this.searchbar.height+this.footer.height)
+					+4*4)
+					
+				this.container.getStyle('gap')
+			}
+
+		]]>
+	</mx:Script>
+	
+	<s:VGroup id="container" horizontalCenter="0" width="90%" y="0" gap="4">
+		<basic:header  id="header"/>
+		<basic:search_bar id="searchbar" />
+		<mx:HDividedBox  id="workspace" cornerRadius="8" 
+						 backgroundColor="0xFFFFFF" width="100%" >
+			<basic:left_side  minWidth="225"/>
+			<basic:right_side />
+		</mx:HDividedBox>
+		<basic:footer_bar  id="footer"/>
+	</s:VGroup>
+</mx:Application>

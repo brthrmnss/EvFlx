@@ -1,0 +1,17 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+mx|Application
+{
+	backgroundColor: #E6E6E6; 
+}
+
+.logo
+{
+	upSkin: Embed(source="logo.gif");
+	downSkin: Embed(source="logo.gif");
+	overSkin: Embed(source="logo.gif");
+	disabledSkin: Embed(source="logo.gif");	
+}

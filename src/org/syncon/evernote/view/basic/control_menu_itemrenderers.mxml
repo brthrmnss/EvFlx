@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				autoDrawBackground="false">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			[Bindable] private var first : Boolean = false;
+			[Bindable] private var middle : Boolean = false;
+			[Bindable] private var last : Boolean = false		;		
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null, 
+				// set the Label controls appropriately. 
+				txtLbl.text = value.toString(); 
+				//.firstName + ', ' + value.lastName;
+				//compLabel.text = value.companyID;
+			} 
+			
+			// Override the itemIndex set function to draw a 
+			// white background behind even number items, 
+			// and a green background behind odd numbered items.
+			override public function set itemIndex(value:int):void { 
+				super.itemIndex = value
+					var parent_ : Object = (this.parent as Object)
+					var l : int = parent_.dataProvider.length
+					this.last = false
+					this.first = false; 
+					this.middle = false; 						
+					if ( value == l-1 ) 
+					{
+						this.last = true
+					}
+					else if ( value == 0 ) this.first = true
+					else
+						this.middle = true
+					return;
+	/* 			if ((value%2) == 0) {
+					myBGColor= 0xFFFFFF;
+				}
+				if ((value%2) == 1) {
+					myBGColor= 0xCCFF66;
+				} */
+			}
+			
+		]]> 
+	</fx:Script> 
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 
+
+	<s:Rect id="bgStart"  visible="{this.first}"  
+			topRightRadiusX="0"  topRightRadiusY="0" bottomRightRadiusX="0" bottomRightRadiusY="0" 
+			left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
+				 >
+			<s:fill>
+				<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+			</s:fill>
+		</s:Rect>	
+	<s:Rect id="bgMiddle"  visible="{this.middle}" 
+			left="0" right="0" top="0" bottom="0" 
+			>
+		
+		<s:fill>
+			<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+		</s:fill>
+	</s:Rect>	
+	<s:Rect id="bgEnd"  visible="{this.last}" 	
+			topLeftRadiusX="0"  topLeftRadiusY="0" bottomLeftRadiusX="0" bottomLeftRadiusY="0" 
+			left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
+			>
+		<s:fill>
+			<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+		</s:fill>
+	</s:Rect>	
+	
+	
+	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="10" paddingTop="7"
+			   verticalAlign="middle" verticalCenter="0"
+			  >
+		<s:Label id="txtLbl" text="Text" color="0x121212" 
+				 color.disabled="#86898A" fontSize="10"  textDecoration="underline"/>
+	</s:HGroup>
+	
+	
+</s:ItemRenderer>
