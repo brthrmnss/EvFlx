@@ -8,10 +8,39 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
-			public function createOptions(options : Array)  : void{
-				this.list.dataProvider = new ArrayList(options)
-				//	list.width = 
+			
+			import org.syncon.evernote.basic.vo.MenuVO;
+			
+			import spark.events.IndexChangeEvent;
+			/**
+			 * Function to call when clicked
+			 * */
+			public var fxClick : Function;
+			public function createOptions(labelOptions : Array, fxs : Array=null,
+										  fx : Function=null, sendData : Array=null, toolTips : Array=null )  : void{
+				
+				var alOptions :  ArrayList = new ArrayList();
+				for ( var i : int = 0; i < labelOptions.length ; i++ )
+				{
+					var menu : MenuVO = new MenuVO(labelOptions[i]); 
+					if ( toolTips != null ) 
+						menu.toolTip =  toolTips[i]
+					if ( sendData != null ) 							
+						menu.data =  sendData[i]
+					if ( fxs != null ) 						
+						menu.fx =  fxs[i]
+					alOptions.addItem( menu )	
+				}
+				
+				this.list.dataProvider = alOptions
 			}
+
+			protected function list_changeHandler(event:IndexChangeEvent):void
+			{
+				//event.
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -19,7 +48,7 @@
 	
 	
 	<s:List  id="list"  borderVisible="false"   contentBackgroundAlpha="0.0"
-			  minWidth="0"
+			  minWidth="0"   change="list_changeHandler(event)"
 			 itemRenderer="org.syncon.evernote.basic.view.control_menu_itemrenderers" >
 		<s:layout>
 			<s:HorizontalLayout gap="1"   />			

@@ -6,17 +6,21 @@
 	
 	<fx:Script> 
 		<![CDATA[ 
+			import org.syncon.evernote.basic.vo.MenuVO;
 			[Bindable] private var first : Boolean = false;
 			[Bindable] private var middle : Boolean = false;
-			[Bindable] private var last : Boolean = false		;		
+			[Bindable] private var last : Boolean = false		;
+			[Bindable] public var menu : MenuVO = new MenuVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				// Check to see if the data property is null. 
 				if (value== null) 
 					return; 
-				// If the data property is not null, 
+				// If the data property is not null,
+				menu = value as MenuVO
 				// set the Label controls appropriately. 
-				txtLbl.text = value.toString(); 
+				txtLbl.text = menu.name.toString(); 
+				txtLbl.toolTip = menu.toolTip.toString(); 				
 				//.firstName + ', ' + value.lastName;
 				//compLabel.text = value.companyID;
 			} 
@@ -61,7 +65,7 @@
 			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
 				 >
 			<s:fill>
-				<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+				<s:SolidColor color="#E8E8E8" />
 			</s:fill>
 		</s:Rect>	
 	<s:Rect id="bgMiddle"  visible="{this.middle}" 
@@ -69,7 +73,7 @@
 			>
 		
 		<s:fill>
-			<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+			<s:SolidColor color="#E8E8E8" />
 		</s:fill>
 	</s:Rect>	
 	<s:Rect id="bgEnd"  visible="{this.last}" 	
@@ -77,7 +81,8 @@
 			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
 			>
 		<s:fill>
-			<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
+			<s:SolidColor color="#E8E8E8" />
+			<!--  <s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" /> -->
 		</s:fill>
 	</s:Rect>	
 	
@@ -85,7 +90,8 @@
 	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="10" paddingTop="7"
 			   verticalAlign="middle" verticalCenter="0"
 			  >
-		<s:Label id="txtLbl" text="Text" color="0x121212" 
+		<s:Label id="txtLbl" text="Text" color="0x121212"  color.hovered="#4C9EA8"
+				 useHandCursor.hovered="true"  buttonMode.hovered="true"
 				 color.disabled="#86898A" fontSize="10"  textDecoration="underline"/>
 	</s:HGroup>
 	

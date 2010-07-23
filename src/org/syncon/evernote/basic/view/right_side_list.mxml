@@ -10,21 +10,17 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.evernote.edam.type.Note;
-			
 			import mx.events.FlexEvent;
-			private var _note : Note = new Note()
-			public function set note ( n : Note) : void
-			{
-				this._note = n; 
-			}
+
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
-				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email'] )
+				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort'] , 
+					null, 
+					null, null, ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort']  )
 				this.menuOrderOrder.createOptions(  ['Pic', 'List'] )					
 			}
 
-		]]>
+		]]> 
 	</fx:Script>
 	
  <!--
@@ -44,6 +40,6 @@
 		<view:control_menu right="0" id="menuOrderOrder" />		
 	</s:HGroup>
 
-	<view:list_viewer y="50" width="{this.width-20}"
+	<view:list_note_list y="50" width="{this.width-20}"
 					  height="{this.height-50-10}"  x="10" />
 </s:SkinnableContainer>

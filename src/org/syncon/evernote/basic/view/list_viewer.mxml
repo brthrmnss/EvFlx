@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="100%" height="100%" 
+					  xmlns:view="org.syncon.evernote.basic.view.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -28,54 +30,43 @@
 		</s:fill>
 	</s:Rect>
 	-->
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		
-		.centered {
-		fontWeight: bold;
-		}
-		
-		.dataGrid {
-			alternatingItemColors: #ffffff, #fefefe;
-			headerColors: #e6e6e6, #e6e6e6;
-			horizontalGridLines: true;
-			horizontalGridLineColor: #cccccc;
-			verticalGridLines: true;
-			verticalGridLineColor: #ffffff;
-			borderThickness: 1;
-			borderColor: #ffffff;
-			dropShadowEnabled: false;
-			headerStyleName: "mydataGridHeaderStyle";
-		}
-		
-		.mydataGridHeaderStyle {
-			fontWeight: bold;
-			fontStyle: normal;
-			textDecoration: none;
-		}		
-	</fx:Style>
+ <s:VGroup width="100%">
+	 
+	<s:Group width="100%">
+		<s:Label fontSize="18" fontWeight="bold" text="Title"  id="txtTitle"/>
+		<s:HGroup  verticalAlign="middle" right="0">
+			<s:Label text="Previous Note 1 out of 989" />
+			<s:Label text="Next" color="0xFF0000" />
+			<s:Line height="20" />
+			<s:Button  />
+		</s:HGroup>
+	</s:Group>
+ 	
 	
+	<s:Line width="100%" >
+		<s:stroke>
+			<s:SolidColorStroke color="0" />
+		</s:stroke>
+	</s:Line>
 	
-	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
-				  styleName="dataGrid"  
-				  draggableColumns="false" minColumnWidth="100"
-				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
-		
- 
-		<mx:ArrayList>
-			<fx:Object Artist="Pavement" Price="11.99" 
-					   Album="Slanted and Enchanted" />
-			<fx:Object Artist="Pavement" 
-					   Album="Brighten the Corners" Price="11.99" />
-		</mx:ArrayList>
-		<mx:columns>
-			<mx:DataGridColumn dataField="Title"   />
-			<mx:DataGridColumn dataField="Tags"   width="200" />
-			<mx:DataGridColumn dataField="Created"   width="150" />
-			<mx:DataGridColumn dataField="Updated"   width="150"/>			
-		</mx:columns>
-	</mx:DataGrid>
+	 <s:HGroup gap="10">
+		 <view:tag_lister width="350" />
+		 <view:note_attributes />
+	 </s:HGroup>
+	 
+	 <s:Scroller  id="scrolling">
+		 <s:Group>
+			 <mx:Text id="txtContents" >
+				 <mx:text>
+					 sd
+				 </mx:text>
+			 </mx:Text>
+		 </s:Group>
+	 </s:Scroller>
+	 	 
+	 
+ </s:VGroup>
 	
+
 	
 </s:SkinnableContainer>
