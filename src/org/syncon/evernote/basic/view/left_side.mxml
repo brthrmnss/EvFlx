@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					   
+					  height="100%" 
+					  xmlns:comps="org.syncon.comps.*" 
+					  xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:view="org.syncon.evernote.basic.view.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			 	
+			protected function scrllr_showHandler(event:FlexEvent):void
+			{
+				trace('showing scrollers');
+				measureWidth_()
+				// TODO Auto-generated method stub
+			}
+	
+			protected function scrllr_hideHandler(event:FlexEvent):void
+			{
+				trace('hiding scrollers');
+				measureWidth_()
+				// TODO Auto-generated method stub
+			}
+
+			protected function scrllr_creationCompleteHandler(event:FlexEvent):void
+			{
+				if ( this.scrllr.verticalScrollBar.visible )
+					this.scrllr_showHandler(null)
+				this.scrllr.verticalScrollBar.addEventListener(FlexEvent.SHOW, this.scrllr_showHandler )
+				this.scrllr.verticalScrollBar.addEventListener(FlexEvent.HIDE, this.scrllr_hideHandler )
+				// TODO Auto-generated method stub
+			}
+
+			protected function measureWidth_(n:Number=-1): Number
+			{
+				if ( this.scrllr.verticalScrollBar.visible ) 
+				{
+					var newWidth : Number = this.scrllr.width - 5 -  this.scrllr.verticalScrollBar.width
+						if (  this.scrllr.verticalScrollBar.width ==   0 ) 
+							newWidth = this.scrllr.width - 5 -  18
+				}
+				else
+				{
+					newWidth = this.scrllr.width //- 10
+				}
+				
+				
+				if ( n != -1 ) 
+						return newWidth
+				this.vgroup.width = newWidth; 
+				return 0 
+			}  
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+ 
+<!--
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+ 
+	<s:Rect  width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor  color="0xff0000" />
+		</s:fill>
+	</s:Rect>
+	<mx:Spacer height="10" />
+	-->
+ 
+	<!--creationComplete="scrllr_creationCompleteHandler(event)"-->
+	<s:Scroller id="scrllr"
+				x="5" y="5"
+				width="{this.width-10}"  
+				creationComplete="scrllr_creationCompleteHandler(event)"
+				height="{this.height-5-this.ads.height}"
+				 >
+	
+	<s:VGroup  id="vgroup"  paddingRight="0"
+			  width="{this.measureWidth_(this.width)}"  height="100%" >
+		
+		<comps:Drawer id="drawer_"  width="100%"
+					  label="Notebooks"   opened="true" 
+					  backgroundColor="0xD5DFC6"
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="{this.drawer_.width}" />
+		</comps:Drawer>		
+		
+		<comps:Drawer id="drawer2_"  width="100%"
+					  label="Sharing"    
+					  backgroundColor="0xA3D9E5"
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="100%" />
+		</comps:Drawer>		
+		
+		<comps:Drawer id="drawer3_"  width="100%"
+					  label="Tags"   
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="{this.drawer_.width}" />
+		</comps:Drawer>		
+		
+		<comps:Drawer id="drawer4_"  width="100%"
+					  label="Saved Searches"   
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="{this.drawer_.width}" />
+		</comps:Drawer>	
+
+		<comps:Drawer id="drawer5_"  width="100%"
+					  label="Attributes"   
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="{this.drawer_.width}" />
+		</comps:Drawer>	
+		
+		<comps:Drawer id="drawer6_"  width="100%"
+					  label="Trash"   
+					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
+					  >
+			<view:left_notebooks  width="{this.drawer_.width}" />
+		</comps:Drawer>			
+		
+	</s:VGroup>
+
+		
+	</s:Scroller>
+		
+	<!--</s:VGroup>-->
+	<view:ad id="ads" bottom="0" height="160" />
+</s:SkinnableContainer>

@@ -15,3 +15,11 @@ mx|Application
 	overSkin: Embed(source="logo.gif");
 	disabledSkin: Embed(source="logo.gif");	
 }
+
+.ad
+{
+	upSkin: Embed(source="422.gif");
+	downSkin: Embed(source="422.gif");
+	overSkin: Embed(source="422.gif");
+	disabledSkin: Embed(source="422.gif");	
+}

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="150" height="30">
+					  xmlns:mx="library://ns.adobe.com/flex/mx" width="150" height="22">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	
 	
-	<s:SkinnableContainer  width="145" height="12">
+	<s:SkinnableContainer  width="145" height="10">
 		<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 			<s:stroke>
-				<s:SolidColorStroke color="0x000000"    pixelHinting="true"/>
+				<s:SolidColorStroke color="0xCCCCCC"    pixelHinting="true"/>
 			</s:stroke>
 		</s:Rect>
 		
-		<s:SkinnableContainer  id="bar" y="1"   x="3" width="20" height="6" verticalCenter="0">
+		<s:SkinnableContainer  id="bar" y="0"   x="3" width="20" height="5" verticalCenter="0">
 			<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 				<s:fill>
 					<s:SolidColor color="#8CB3D5" />

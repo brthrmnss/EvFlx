@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
-				width="1000" height="600" paddingTop="0"
+				paddingTop="0" 
+				minWidth="960" minHeight="600" 
+				width="1000" height="600" 
+				verticalScrollPolicy="off"
 				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 				creationComplete="onCreationComplete()"
 				 resize="application1_resizeHandler(event)"
-				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*"
+				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:evernote="org.syncon.evernote.*" xmlns:view="org.syncon.evernote.basic.view.*" xmlns:basic1="org.syncon.evernote.basic.*"
 				>
 	<mx:Style source="assets/styles.css" />
 
 	<mx:Script>
 		<![CDATA[
 			import mx.events.ResizeEvent;
-			public function onCreationComplete() : void
+			private var creationComplete : Boolean = false; 
+			private function onCreationComplete() : void
 			{
-				
+				this.creationComplete = true	 
+				this.application1_resizeHandler(null)
 			}
 
 			protected function application1_resizeHandler(event:ResizeEvent):void
 			{
+				if ( this.creationComplete  == false )
+						return ; 
 				this.workspace.height = this.height - (
 					(this.header.height+this.searchbar.height+this.footer.height)
 					+4*4)
@@ -28,14 +35,16 @@
 		]]>
 	</mx:Script>
 	
-	<s:VGroup id="container" horizontalCenter="0" width="90%" y="0" gap="4">
-		<basic:header  id="header"/>
-		<basic:search_bar id="searchbar" />
+	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4">
+		<view:header  id="header"/>
+		<view:search_bar id="searchbar" />
 		<mx:HDividedBox  id="workspace" cornerRadius="8" 
 						 backgroundColor="0xFFFFFF" width="100%" >
-			<basic:left_side  minWidth="225"/>
-			<basic:right_side />
+			<view:left_side  minWidth="225" height="100%"/>
+			<view:right_side  minWidth="520"/>
 		</mx:HDividedBox>
-		<basic:footer_bar  id="footer"/>
+		<view:footer_bar  id="footer"/>
 	</s:VGroup>
+	
+	<basic1:EvernoteBasicContext id="context"  contextView="{this}" />
 </mx:Application>

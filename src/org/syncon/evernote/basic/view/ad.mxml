@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					   
+					  height="160"  width="100%"
+					  xmlns:comps="org.syncon.comps.*" 
+					  xmlns:basic="org.syncon.evernote.view.basic.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			 	
+			[Bindable] public var source : String = '' 
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	<s:Group x="5" y="5" width="{this.width-10}" height="{this.height-10}">
+		
+	
+	 <s:Rect radiusX="8" radiusY="8" height="100%" width="100%" >
+		 <s:stroke>
+			 <s:SolidColorStroke color="0xd2d2d2" />
+		 </s:stroke>
+	 </s:Rect>
+
+		<s:Rect radiusX="8" radiusY="8" 
+				 bottomLeftRadiusX="0" bottomLeftRadiusY="0" bottomRightRadiusX="0" 
+				 bottomRightRadiusY="0"
+				height="18" width="100%" >
+			<s:fill>
+				<s:SolidColor color="0xd2d2d2" />
+			</s:fill>
+		</s:Rect>		
+		
+	<!--	<s:Group id="contentGroup" >
+			<s:BitmapImage horizontalCenter="0" verticalCenter="0" source="{this.source}" />
+			<mx:Button styleName="ad" />
+		</s:Group>-->
+		
+		<mx:Button styleName="ad" horizontalCenter="0" verticalCenter="8"  />
+	</s:Group>
+		
+		
+</s:SkinnableContainer>

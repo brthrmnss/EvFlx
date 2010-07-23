@@ -10,7 +10,7 @@
 	</fx:Script>
 
 	<fx:Metadata>
-		[HostComponent("org.syncon.evernote.view.basic.search_bar")]
+		[HostComponent("org.syncon.evernote.basic.view.search_bar")]
 	</fx:Metadata>
 
 	

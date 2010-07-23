@@ -23,7 +23,7 @@
  
 		<s:List  id="list"  borderVisible="false" 
 				  width="365" height="30" 
-				 itemRenderer="org.syncon.evernote.view.basic.top_links_itemrenderers" >
+				 itemRenderer="org.syncon.evernote.basic.view.top_links_itemrenderers" >
 		
 			<s:layout>
 				<s:TileLayout requestedColumnCount="3"

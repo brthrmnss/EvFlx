@@ -58,7 +58,7 @@
 
 	<s:Rect id="bgStart"  visible="{this.first}"  
 			topRightRadiusX="0"  topRightRadiusY="0" bottomRightRadiusX="0" bottomRightRadiusY="0" 
-			left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
+			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
 				 >
 			<s:fill>
 				<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />
@@ -74,7 +74,7 @@
 	</s:Rect>	
 	<s:Rect id="bgEnd"  visible="{this.last}" 	
 			topLeftRadiusX="0"  topLeftRadiusY="0" bottomLeftRadiusX="0" bottomLeftRadiusY="0" 
-			left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
+			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
 			>
 		<s:fill>
 			<s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" />

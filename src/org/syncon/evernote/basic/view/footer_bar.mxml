@@ -2,7 +2,7 @@
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="40"
-					  xmlns:basic="org.syncon.evernote.view.basic.*">
+					  xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:view="org.syncon.evernote.basic.view.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -14,7 +14,7 @@
 			<s:SolidColor color="#CCCCCC" />
 		</s:fill>
 	</s:Rect>
-	<basic:footer_links  verticalCenter="0" x="10"/>
-	<s:Label text="© 2010, Evernote Corporation. " right="10"   verticalCenter="0" />
+	<view:footer_links  verticalCenter="0" x="20"/>
+	<s:Label text="© 2010, Evernote Corporation. " right="20"   verticalCenter="0" />
 	
 </s:SkinnableContainer>

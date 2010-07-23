@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		alpha.disabled="0.5"
+		minWidth="100" minHeight="15">
+
+	<fx:Metadata>
+		[HostComponent("org.syncon.comps.Drawer")]
+	</fx:Metadata>
+
+	<fx:Declarations>
+		<s:Sine id="sineIn" easeInFraction="0.1" />
+		<s:Sine id="sineOut" easeInFraction="0.9" />
+	</fx:Declarations>
+
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="opened" />
+		<s:State name="disabled" />
+	</s:states>
+
+	<s:transitions>
+		<s:Transition fromState="normal" toState="opened">
+			<s:Parallel>
+				<s:Resize target="{this}" duration="600" easer="{sineOut}" />
+				<s:Resize target="{this.contentGroup}" duration="600" easer="{sineOut}" />
+				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="opened" toState="normal">
+			<s:Parallel>
+				<s:Sequence>
+					<s:Resize target="{this}" duration="600" easer="{sineIn}" />
+					<s:RemoveAction target="{contentGroup}" />
+				</s:Sequence>				
+				<s:Resize target="{this.contentGroup}" duration="600" easer="{sineOut}" />
+				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
+			</s:Parallel>
+			
+		</s:Transition>
+	</s:transitions>
+
+	<!-- bg -->
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="6">
+		<s:fill>
+			<s:SolidColor  id="bgRect" color="#CCCCCC" />
+		</s:fill>
+	</s:Rect>
+
+	<s:HGroup height="25" verticalAlign="middle" x="10">
+		
+		<s:Button id="openButton"   width="12" height="12"
+				  label=""
+				  horizontalCenter="0"
+				  skinClass="org.syncon.comps.skins.Drawer2OpenButtonSkin"
+				  skinClass.opened="org.syncon.comps.skins.Drawer2CloseButtonSkin" />
+		<s:Label id="lblTitle"  text="sdfddd" fontWeight="bold"  />		
+	</s:HGroup>
+	
+	<s:Rect left="0" right="0"  y="25" height="3" radiusX="0" includeIn="opened">
+		<s:fill>
+			<s:SolidColor  color="#FFFFFF" />
+		</s:fill>
+	</s:Rect>
+	<!--<s:Group id="clipper">-->
+		<s:Group id="contentGroup" left="10" right="10" top="32" bottom="5"
+				minWidth="0" minHeight="0" height.opened="100%" height.normal="0"
+				 includeIn="opened"
+				 clipAndEnableScrolling="true">
+			<s:Scroller verticalScrollPolicy="off" />
+			<s:layout>
+				<s:BasicLayout/>
+			</s:layout>
+		</s:Group>
+	<!--</s:Group>-->
+	
+	
+</s:Skin>

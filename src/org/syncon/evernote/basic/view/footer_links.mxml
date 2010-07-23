@@ -22,9 +22,9 @@
 	</fx:Script>
  
 		<s:List  id="list"  borderVisible="false" 
-				 
-				 itemRenderer="org.syncon.evernote.view.basic.footer_links_itemrenderers" >
-		
+			 	  contentBackgroundAlpha="0.0"
+				 itemRenderer="org.syncon.evernote.basic.view.footer_links_itemrenderers" >
+			
 			<s:layout>
 				<s:HorizontalLayout />			
 			</s:layout>
