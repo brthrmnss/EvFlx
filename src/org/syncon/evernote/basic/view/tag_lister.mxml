@@ -8,6 +8,10 @@
 		]]>
 	</fx:Script>
 	 
+	<s:layout>
+		<s:VerticalLayout gap="2"/>
+	</s:layout>	
+	
 	 <s:HGroup gap="10">
 		<s:Label fontWeight="bold" text="Tags:" />
 		 <s:List>
@@ -18,5 +22,12 @@
 		</s:List>
 	 </s:HGroup>
 	  
+	
+	<s:Line width="100%" >
+		<s:stroke>
+			<s:SolidColorStroke  color="#e6e6e6" />
+		</s:stroke>
+	</s:Line>
+
 	
 </s:SkinnableContainer>

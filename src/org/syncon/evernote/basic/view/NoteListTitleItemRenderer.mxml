@@ -3,8 +3,19 @@
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
 						  focusEnabled="true">
+
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			protected function chkBox_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent('checkbox_'+this.chkBox.selected.toString(), this.itemIndex))
+			}
+		]]>
+	</fx:Script>
+
 	 <s:HGroup verticalAlign="middle" x="5" >
-		 <s:CheckBox id="chkBox" />
+		 <s:CheckBox id="chkBox" click="chkBox_clickHandler(event)" />
 		 <s:Label id="lblData"  paddingTop="4"  paddingBottom="0" text="{dataGridListData.label}" />
 	 </s:HGroup>
 	

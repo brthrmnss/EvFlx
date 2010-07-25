@@ -31,12 +31,29 @@
 						menu.fx =  fxs[i]
 					alOptions.addItem( menu )	
 				}
-				
+				this.fxClick = fx
 				this.list.dataProvider = alOptions
 			}
 
 			protected function list_changeHandler(event:IndexChangeEvent):void
 			{
+				//var obj :  MenuVO = this.list.dataProvider.getItemIndex(   event.newIndex )  as  MenuVO
+				var obj :  MenuVO = this.list.selectedItem
+				if ( this.fxClick != null ) 
+				{
+					try {
+						fxClick( obj.name, obj ) 
+					}
+					catch (e:Error) {
+						try {
+							fxClick( obj.name  ) 
+						}
+						catch (e:Error) {}
+					}
+	
+				}
+				
+				this.list.selectedIndex = -1;
 				//event.
 				// TODO Auto-generated method stub
 			}
@@ -48,7 +65,7 @@
 	
 	
 	<s:List  id="list"  borderVisible="false"   contentBackgroundAlpha="0.0"
-			  minWidth="0"   change="list_changeHandler(event)"
+			  minWidth="0"   change="list_changeHandler(event)"     
 			 itemRenderer="org.syncon.evernote.basic.view.control_menu_itemrenderers" >
 		<s:layout>
 			<s:HorizontalLayout gap="1"   />			

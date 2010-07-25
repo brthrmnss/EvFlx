@@ -10,23 +10,44 @@
 		<![CDATA[
 			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.vo.MenuVO;
  
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
 				var options : Array = ['Downloads',  'Blog'  ,'Developers' ,
 					'Contact Us','Technical Support','Terms of Service','Privacy Policy'] 
-				this.list.dataProvider = new ArrayList(options)
+				this.createOptions( options )
 			}
 
+			public function createOptions(labelOptions : Array, fxs : Array=null,
+																fx : Function=null, sendData : Array=null, toolTips : Array=null )  : void{
+				
+				var alOptions :  ArrayList = new ArrayList();
+				for ( var i : int = 0; i < labelOptions.length ; i++ )
+				{
+					var menu : MenuVO = new MenuVO(labelOptions[i]); 
+					if ( toolTips != null ) 
+						menu.toolTip =  toolTips[i]
+					if ( sendData != null ) 							
+						menu.data =  sendData[i]
+					if ( fxs != null ) 						
+						menu.fx =  fxs[i]
+					alOptions.addItem( menu )	
+				}
+				
+				this.list.dataProvider = alOptions
+			}			
+			
 		]]>
 	</fx:Script>
  
 		<s:List  id="list"  borderVisible="false" 
-			 	  contentBackgroundAlpha="0.0"
+			 	  contentBackgroundAlpha="0.0" 
 				 itemRenderer="org.syncon.evernote.basic.view.footer_links_itemrenderers" >
 			
 			<s:layout>
-				<s:HorizontalLayout />			
+				<s:HorizontalLayout gap="3" />			
 			</s:layout>
 
 

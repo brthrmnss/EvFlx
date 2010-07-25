@@ -34,13 +34,18 @@ in accordance with the terms of the license agreement accompanying it.
 		}
 	</fx:Script>
 	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="hovered" />
+	</s:states>	
+	
 	<!-- layer 1: opaque white bg fill -->
 	<s:Rect left="0" right="0" top="0" bottom="0">
 		<s:fill>
 			<s:SolidColor color="0xe6e6e6" />
 		</s:fill>
 		<s:stroke>
-			<s:SolidColorStroke color="0xCCCCCC" />
+			<s:SolidColorStroke color="0xCCCCCC" color.hovered="0xCCCCCC" />
 		</s:stroke>
 	</s:Rect>
 	

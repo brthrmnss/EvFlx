@@ -28,5 +28,4 @@
 		]]>
 	</fx:Script>
 	
-	<s:Button id="btnSearchX" label="TESTING" />
 </s:SkinnableContainer>

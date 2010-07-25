@@ -4,12 +4,67 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				 height="15"
 				autoDrawBackground="false">
+	
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.vo.MenuVO;
+			[Bindable] private var first : Boolean = false;
+			[Bindable] private var middle : Boolean = false;
+			[Bindable] private var last : Boolean = false		;
+			[Bindable] public var menu : MenuVO = new MenuVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				menu = value as MenuVO
+				// set the Label controls appropriately. 
+				txtLbl.text = menu.name.toString(); 
+				txtLbl.toolTip = menu.toolTip.toString(); 				
+				//.firstName + ', ' + value.lastName;
+				//compLabel.text = value.companyID;
+			} 
+			
+			// Override the itemIndex set function to draw a 
+			// white background behind even number items, 
+			// and a green background behind odd numbered items.
+			override public function set itemIndex(value:int):void { 
+				super.itemIndex = value
+				var parent_ : Object = (this.parent as Object)
+				var l : int = parent_.dataProvider.length
+				this.last = false
+				this.first = false; 
+				this.middle = false; 						
+				if ( value == l-1 ) 
+				{
+					this.last = true
+				}
+				else if ( value == 0 ) 
+					this.first = true
+				else
+					this.middle = true
+						
+				if (first )
+					this.seperator.visible = false
+				else
+					this.seperator.visible = true; 
+				return;
+			}
+			
+		]]> 
+	</fx:Script> 
+	<s:layout>
+		<s:HorizontalLayout gap="3"/>
+	</s:layout>
 	<s:states> 
 		<s:State name="normal"/> 
 		<s:State name="hovered"/> 
 		<s:State name="disabled"/> 
 	</s:states> 
-	<s:Label text="{data}" color="0x6E6E6E" 
+	<s:Label id="seperator" text="|" color="0x6E6E6E"  />
+	<s:Label id="txtLbl" color="0x6E6E6E"   
 			  color.hovered="0" useHandCursor.hovered="true" buttonMode.hovered="true"
 			 fontSize="12"  textDecoration="underline"/>
 	

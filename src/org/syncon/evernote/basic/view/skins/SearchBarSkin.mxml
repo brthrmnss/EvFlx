@@ -31,6 +31,6 @@
 		<s:Label id="lblShowing" text="Showing 897 notes in " />
 		<s:DropDownList id="as2" dataProvider="{new ArrayList(['All Notebooks'])}" />
 	</s:HGroup>
-	<s:Button right="10" label="Save Search"  id="btnSearch" verticalCenter="0" />
+	<s:Button right="10" enabled="false" label="Save Search"  id="btnSearch" verticalCenter="0" />
 	
 </s:Skin>

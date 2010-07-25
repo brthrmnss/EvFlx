@@ -2,7 +2,9 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-				autoDrawBackground="false">
+				autoDrawBackground="false"
+				useHandCursor="true"  buttonMode="true"
+				>
 	
 	<fx:Script> 
 		<![CDATA[ 
@@ -91,7 +93,6 @@
 			   verticalAlign="middle" verticalCenter="0"
 			  >
 		<s:Label id="txtLbl" text="Text" color="0x121212"  color.hovered="#4C9EA8"
-				 useHandCursor.hovered="true"  buttonMode.hovered="true"
 				 color.disabled="#86898A" fontSize="10"  textDecoration="underline"/>
 	</s:HGroup>
 	

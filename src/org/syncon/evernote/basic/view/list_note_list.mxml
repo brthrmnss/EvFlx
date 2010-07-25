@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-	
+					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+					   creationComplete="onInit(event)"
+					  >
+
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
@@ -24,18 +26,81 @@
 
 			protected function list_itemClickHandler(event:ListEvent):void
 			{
+				if ( event.rowIndex == this.skipIndex ) 
+				{
+					this.skipIndex = -1
+						return
+				}
 				// TODO Auto-generated method stub
 				if ( this.list.selectedItems.length > 1 ) 
 				{
 					this.dispatchEvent( new CustomEvent( 'multipleItemsSelected' , this.list.selectedItems) ) 
 				}
-				
 				this.dispatchEvent( new CustomEvent( 'clickedNote' ,event.itemRenderer.data) ) 
+					
+				this.list.selectedItems = this.selectedItems.toArray()
 			}
 
+
+			protected function onInit(event:FlexEvent):void
+			{
+				this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
+				this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged ) 					
+			}
+			/**
+			 * Keep a seperate list of selected items
+			 * */
+			public var selectedItems :  ArrayList = new  ArrayList();
+			
+			/**
+			 * When checkbox clicked, it create a selection event, 
+			 * selection event handler will ignore this index, then reset
+			 * skipIndex back to -1
+			 * */
+			private var skipIndex : int =-1
+			private function onSelectedItemsChanged(e:CustomEvent):void
+			{
+				var note : Object = this.list.dataProvider.getItemAt( e.data ) 
+				if ( 'checkbox_'+'true' == e.type ) 
+				{
+					if ( this.selectedItems.getItemIndex( note ) ==-1 ) 
+						this.selectedItems.addItem( note ) 
+				}
+				else
+				{
+					this.selectedItems.removeItem( note ) 					
+				}
+				this.list.selectedItems = this.selectedItems.toArray()
+					
+				this.skipIndex = int(e.data)
+			}
+			
+			//[Bindable] public var notes : ArrayCollection = new ArrayCollection()
+			public function set notes ( notes :  ArrayCollection )  : void
+			{
+				this.list.dataProvider = notes
+			}			
+			
+			public function createdAtDate( item:Object, column:DataGridColumn)   :  String
+			{
+				return dateFormatter.format( item.createdAt ) 
+			}		
+			public function updatedAtDate(item:Object, column:DataGridColumn)  :  String
+			{
+				return dateFormatter.format( item.updatedAt ) 
+			}				
+			public function getLabelName(item:Object, column:DataGridColumn)  :  String
+			{
+				return item.tagNames.join(' ');
+			}					
+			
 		]]>
 	</fx:Script>
 	
+	<fx:Declarations>
+		<mx:DateFormatter id="dateFormatter" formatString=" MM/DD/YY L:NN A" />
+	</fx:Declarations>
+		
 	<!--
 	<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 		<s:fill>
@@ -74,23 +139,24 @@
 	
 	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
 				  styleName="dataGrid"   itemClick="list_itemClickHandler(event)"
-				   selectionColor="0xB4CDD2"  rollOverColor="#B4CDD2"
+				   selectionColor="0xB4CDD2"  rollOverColor="#ffffff" useRollOver="false"
 				  draggableColumns="false" minColumnWidth="100"  
-				  allowMultipleSelection="true"
+				  allowMultipleSelection="true"  selectable="true"
 				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
 		
- 
+ <!--
 		<mx:ArrayList>
 			<fx:Object Title="Pavement" Price="11.99" 
 					   Tags="{['.log', 'work']}" />
 			<fx:Object Title="Pavement 2" 
 					   Tags="Brighten the Corners" Price="11.99" />
 		</mx:ArrayList>
+		-->
 		<mx:columns>
-			<mx:DataGridColumn dataField="Title"  itemRenderer="org.syncon.evernote.basic.view.NoteListTitleItemRenderer"  />
-			<mx:DataGridColumn dataField="Tags"   width="200" />
-			<mx:DataGridColumn dataField="Created"   width="150" />
-			<mx:DataGridColumn dataField="Updated"   width="150"/>			
+			<mx:DataGridColumn headerText="Title" dataField="title"  itemRenderer="org.syncon.evernote.basic.view.NoteListTitleItemRenderer"  />
+			<mx:DataGridColumn headerText="Tags" dataField="tags"   width="200" itemRenderer="org.syncon.evernote.basic.view.NoteListTagItemRenderer" />
+			<mx:DataGridColumn resizable="false" headerText="Created" dataField="Created"  labelFunction="{createdAtDate}" width="150" />
+			<mx:DataGridColumn resizable="false" headerText="Updated" dataField="Updated"  labelFunction="{updatedAtDate}"   width="150"/>			
 		</mx:columns>
 	</mx:DataGrid>
 	

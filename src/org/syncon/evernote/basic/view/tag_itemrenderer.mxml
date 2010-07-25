@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				autoDrawBackground="false" minHeight="18"
+				useHandCursor="true"  buttonMode="true"
+				>
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import com.evernote.edam.type.Tag;
+			
+			import org.syncon.evernote.basic.vo.MenuVO;
+			[Bindable] public var tag :  Tag = new Tag();
+			public var tagName : String = '';
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				tag = value as Tag
+				if ( tag == null )
+				{
+					tagName = value as String
+					txtLbl.text = tagName.toString(); 
+				}		
+				else
+				{
+					txtLbl.text = tag.name.toString(); 
+				}
+				
+			} 
+			
+			
+		]]> 
+	</fx:Script> 
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 
+
+	
+	
+ 
+		<s:Rect id="bgStart"   
+				left="0" right="0" top="0" bottom="0" radiusX="9" radiusY="9"
+				>
+			<s:fill>
+				<s:SolidColor color="#369FAB"   />
+			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke   color="#e6e6e6" pixelHinting="true"   />
+			</s:stroke>
+		</s:Rect>
+		
+	<s:Rect  
+			left="1" right="1" top="1" bottom="1" radiusX="8" radiusY="8"
+			>
+		<s:stroke>
+			<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
+		</s:stroke>
+	</s:Rect>	
+	
+		<s:Ellipse  width="10"   x="5" height="10"  verticalCenter="0">
+			<s:fill>
+				<s:SolidColor color="0xA6C6D0" />
+			</s:fill>
+		</s:Ellipse>
+		
+		<s:Label id="txtLbl" text="Text" color="#FFFFFF" 
+				  verticalCenter="0.5" x="20" paddingRight="8" fontSize="10"
+				 color.hovered="#0" />
+	
+	
+</s:ItemRenderer>

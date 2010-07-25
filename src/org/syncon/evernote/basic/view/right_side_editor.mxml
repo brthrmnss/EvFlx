@@ -11,11 +11,20 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
 
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
-				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort'] )
-				this.menuOrderOrder.createOptions(  ['Pic', 'List'] )					
+				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort'] ,
+				null, this.doAction, 
+					null, ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort']  )
+					this.menuOrderOrder.createOptions(  ['Pic', 'List'], null, this.doAction )
+			}
+			
+			public function doAction(str:String, data:Object):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
 			}
 
 		]]>
@@ -30,14 +39,14 @@
 		</s:fill>
 	</s:Rect>		
  -->
-	<view:control_menu x="10" y="10" id="menuButtons" />
+	<view:control_menu x="5" y="5" id="menuButtons" />
 	
-	<s:HGroup right="10" y="10" verticalAlign="middle"  >
+	<s:HGroup right="5" y="5" verticalAlign="middle"  >
 		
 		<view:bandwidth_usage right="150" />
 		<view:control_menu right="0" id="menuOrderOrder" />		
 	</s:HGroup>
 
-	<view:list_editor y="50" width="{this.width-20}"
+	<view:list_editor y="45" width="{this.width-15}"
 					  height="{this.height-50-10}"  x="10" />
 </s:SkinnableContainer>

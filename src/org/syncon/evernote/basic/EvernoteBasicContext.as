@@ -1,5 +1,6 @@
 package  org.syncon.evernote.basic
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -9,6 +10,8 @@ package  org.syncon.evernote.basic
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
+	import org.syncon.evernote.basic.controller.CreateDefaultDataCommand;
+	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.view.RightSideMediator;
 	import org.syncon.evernote.basic.view.right_side;
 	import org.syncon.evernote.services.*;
@@ -39,19 +42,24 @@ package  org.syncon.evernote.basic
 		{
 			 
 			// Model
-			//injector.mapSingleton( PopupModel  )		
+			injector.mapSingleton( EvernoteAPIModel  )		
 			// Controller
 			//commandMap.mapEvent(AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS, AddPopupsKeyboardShortcutsCommand);				
+			commandMap.mapEvent(CreateDefaultDataCommand.START,  CreateDefaultDataCommand, null, false );				
 			
 			// Services
 			// View
-			mediatorMap.mapView(  right_side, RightSideMediator );			
+			mediatorMap.mapView(  right_side, RightSideMediator );		
+			//setTimeout( this.onInit, 2500
+			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 			//this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
 		}
 		
-		public function onInit()  : void
+		public function onInit(e:Event)  : void
 		{
+			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 		}
+	 
  
 	}
 }

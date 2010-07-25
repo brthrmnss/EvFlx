@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+					  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:comps="org.syncon.comps.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import com.evernote.edam.type.Note;
+			
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.events.FlexEvent;
 /* 			override public function set height ( n : Number )  : void
 			{
 				super.height = n 
@@ -17,10 +19,67 @@
 			{
 				super.width = n 
 				this.list.width = n -10
-			}	 */		
+			}	 */
+			private var _note : Note =  new Note()
+			public function set note ( n : Note ) : void
+			{
+				this._note = n; 
+				this.setUp();
+			}
+			public function setUp()  : void
+			{
+				//http://blog.flexexamples.com/2009/10/06/displaying-html-formatted-text-in-a-spark-richtext-control-in-flex-4/ omg
+				//this.lblNotebook.content = this.bold('Notebook:')+this._note.notebookGuid//.toString()
+				/* 
+				this.lblNotebook.textFlow =TextConverter.importToFlow(
+					 this.bold('Notebook:')+this._note.notebookGuid,
+					TextConverter.TEXT_FIELD_HTML_FORMAT)
+				this.lblCreated.textFlow =TextConverter.importToFlow(
+					this.bold('Created:')+this._note.active,
+					TextConverter.TEXT_FIELD_HTML_FORMAT)					
+					 */
+			}
+			private function bold(n : String): String
+			{
+				return '<b>'+n+'</b>'				
+			}
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.setUp()
+			}
+
 		]]>
 	</fx:Script>
 	
-
-	<s:Label text="Attributes:" fontWeight="bold" />
+	<fx:Declarations>
+		<mx:DateFormatter id="formatter" />
+	</fx:Declarations>	
+	
+	<s:layout>
+		<s:VerticalLayout gap="2"/>
+	</s:layout>
+	<comps:Drawer id="drawer6_"  width="300"
+				  label="Note attributes:"   
+				  skinClass="org.syncon.comps.skins.DrawerSkinMinimalist"		
+				  >
+		<comps:layout>
+			<s:VerticalLayout gap="0" />
+		</comps:layout>
+		<s:TileGroup verticalGap="0"   width="300"  >
+			<s:Label fontWeight="bold"  text="Notebook:" /><s:Label  id="lblNotebook" text="wut?" />
+			<s:Label fontWeight="bold"  text="Created:" /><s:Label  id="lblCreated" />
+			<s:Label fontWeight="bold"  text="Modified:" /><s:Label  id="lblModified" />
+			<s:Label fontWeight="bold"  text="Size:" /><s:Label  id="lblSize" />
+			
+		</s:TileGroup>
+		<mx:LinkButton label="View Note History" paddingLeft="0" color="#6BA92F" />
+	</comps:Drawer>			
+	
+	<s:Line width="100%" >
+		<s:stroke>
+			<s:SolidColorStroke color="0xe6e6e6" />
+		</s:stroke>
+	</s:Line>
+	
+<!--	<s:Label text="Note attributes:" fontWeight="bold" />-->
 </s:SkinnableContainer>

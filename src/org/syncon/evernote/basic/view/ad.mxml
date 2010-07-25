@@ -23,7 +23,7 @@
 	
 	 <s:Rect radiusX="8" radiusY="8" height="100%" width="100%" >
 		 <s:stroke>
-			 <s:SolidColorStroke color="0xd2d2d2" />
+			 <s:SolidColorStroke color="0xE6E6E6" />
 		 </s:stroke>
 	 </s:Rect>
 
@@ -32,7 +32,7 @@
 				 bottomRightRadiusY="0"
 				height="18" width="100%" >
 			<s:fill>
-				<s:SolidColor color="0xd2d2d2" />
+				<s:SolidColor color="0xE6E6E6" />
 			</s:fill>
 		</s:Rect>		
 		

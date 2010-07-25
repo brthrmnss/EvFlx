@@ -69,8 +69,8 @@ package  org.syncon.comps {
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
-			
-			this.bgRect.color = this.getStyle('backgroundColor' )
+			if ( this.bgRect != null ) 
+				this.bgRect.color = this.getStyle('backgroundColor' )
 			super.updateDisplayList( unscaledWidth, unscaledHeight) 
 		}
 		

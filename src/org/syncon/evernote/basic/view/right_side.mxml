@@ -8,11 +8,13 @@
 
 	<s:states> 
 		<s:State name="normal"/> 
+		<s:State name="search"/> 		
 		<s:State name="view"/> 
 		<s:State name="edit"/> 
 	</s:states> 	
 	
 	<view:right_side_list id="list" includeIn="normal"  width="100%" />
+	<view:right_side_list id="search" includeIn="search"  width="100%" />	
 	<view:right_side_view id="view" includeIn="view" width="100%" />
 	<view:right_side_editor id="edit" includeIn="edit" width="100%" />
  
