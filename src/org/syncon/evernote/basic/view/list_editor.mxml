@@ -8,23 +8,41 @@
 	<fx:Script>
 		<![CDATA[
 			import com.evernote.edam.type.Note;
-			
+			import com.evernote.edam.type.Notebook;
 			import flashx.textLayout.conversion.TextConverter;
+			import mx.collections.ArrayCollection;
+			import spark.events.IndexChangeEvent;
+			
+			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
+
 			private var _note : Note = new Note()
+			public function get note () : Note { return this._note } 
 			private var dirty : Boolean = false; 
 			public function set note ( n : Note) : void
 			{
 				this._note = n; 
 				this.txtTitle.text = this._note.title
-				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT )
+				//this.dropdownNotebook.fselectedItem = this._note.notebookGuid; 
+				for each ( var notebook_  :  Notebook in this.dropdownNotebook.dataProvider ) 
+				{
+					if ( notebook_.guid == this.note.notebookGuid ) 
+						this.dropdownNotebook.selectedItem = notebook_; 
+				}
 				if ( this._note.guid == ''|| this._note.guid == null ) 
 				{
 					this.txtTitle.setFocus()
 					this.txtTitle.selectAll()
-						this.callLater( this.txtTitle.selectAll )
+					//this.callLater( this.txtTitle.selectAll )
 				}
 				this.dirty = false; 
 			}
+
+			protected function dropdownNotebook_changeHandler(event:IndexChangeEvent):void
+			{
+				this.note.notebookGuid = this.dropdownNotebook.selectedItem.guid
+			}
+
 		]]>
 	</fx:Script>
  
@@ -35,7 +53,9 @@
 				
 			
 			<s:HGroup verticalAlign="middle">
-				<s:Label text="Title:" /> <s:TextInput id="txtTitle" /> <s:Label text="Notebook:" /> <s:DropDownList id="notebooks" />
+				<s:Label text="Title:" /> <s:TextInput id="txtTitle" /> 
+				<s:Label text="Notebook:" /> 
+				<s:DropDownList id="dropdownNotebook"  labelField="name" change="dropdownNotebook_changeHandler(event)"/>
 				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
 			</s:HGroup>
 			<s:HGroup  verticalAlign="middle">

@@ -15,7 +15,13 @@
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
-			public var note  : Note = new Note(); 
+			private var _note : Note = new Note()
+			public function set note ( n : Note) : void
+			{
+				this._note = n; 
+				if ( this.editor != null ) 
+					this.editor.note = _note
+			}			
 			
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -23,7 +29,7 @@
 				null, this.doAction, 
 					null, ['Save and Close']  )
 					this.menuOrderOrder.createOptions(  ['Pic', 'List'], null, this.doAction )
-				this.editor.note = note; 
+				this.editor.note = _note; 
 			}
 			
 			public function doAction(str:String, data:Object):void

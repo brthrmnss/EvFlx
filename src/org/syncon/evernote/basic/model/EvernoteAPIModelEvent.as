@@ -8,6 +8,8 @@ package org.syncon.evernote.basic.model
 		public static const SEARCH_RESULT : String = 'searchResult';
 		public static const NOTEBOOK_RESULT : String = 'notebookResult';
 		public static const CURRENT_NOTEBOOK_CHANGED : String = 'currentNotebookChanged';
+		public static const RECIEVED_TAGS : String = 'recievedTags';		
+		
 		
 		public var data: Object;
 		

@@ -10,8 +10,6 @@ package org.syncon.evernote.basic.model
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
-	import flexunit.utils.ArrayList;
-	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.controls.DateField;
@@ -21,9 +19,25 @@ package org.syncon.evernote.basic.model
 	import org.robotlegs.mvcs.Actor;
 
 	/**
-	 * Dispatched when chart has been changed 
+	 * Dispatched when ...
 	 */
-	[Event(name="tickerUpdated", type="org.robotlegs.stockchart.model.TickerModelEvent")]
+	[Event(name="notesRecieved", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
+	
+	/**
+	 * Dispatched when ...
+	 */
+	[Event(name="searchResult", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
+	
+	/**
+	 * Dispatched when ...
+	 */
+	[Event(name="notebookResult", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
+	
+	/**
+	 * Dispatched when ...
+	 */
+	[Event(name="currentNotebookChanged", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
+	
 	/**
 	* keeps track of all popups cleans up
 	 * ensures stacking order respected
@@ -35,11 +49,13 @@ package org.syncon.evernote.basic.model
 			_notes = new ArrayCollection();
 			_searchResult = new ArrayCollection();
 			_notebooks =  new ArrayCollection();
+			_tags = new ArrayCollection();
 		}		
  
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }
 		private var _searchResult: ArrayCollection 
 		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
+		private var _tags :  ArrayCollection ; public function get tags () : ArrayCollection { return this._tags }		
 		
 		public function loadNotes(e:Array)  : void
 		{
@@ -54,11 +70,21 @@ package org.syncon.evernote.basic.model
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.SEARCH_RESULT, e ) ) 
 		}		
 		
-		public function loadNotebook(e:Array)  : void
+		public function loadNotebooks(e:Array)  : void
 		{
 			this.addAllTo( this._notebooks,  e  ) 
+			for each ( var n : Notebook in e ) 
+			{
+				if ( n.defaultNotebook ) this._defaultNotebook = n; 
+			}
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTEBOOK_RESULT, e ) ) 
 		}	
+		
+		public function loadTags(e:Array)  : void
+		{
+			this.addAllTo( this._tags,  e  ) 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_TAGS, e ) ) 
+		}			
 		
 		private function addAllTo( e:ArrayCollection, arr : Array )  : void
 		{
@@ -71,7 +97,7 @@ package org.syncon.evernote.basic.model
 		}
 		
 		public var notebook : Notebook = new Notebook();
-		public var _defaultNotebok : Notebook = new Notebook();public function get defaultNotebook()  :  Notebook { return this._defaultNotebok }
+		public var _defaultNotebook : Notebook = new Notebook();public function get defaultNotebook()  :  Notebook { return this._defaultNotebook }
 		
 		public function currentNotebook( n : Notebook )  : void
 		{
@@ -84,6 +110,7 @@ package org.syncon.evernote.basic.model
 			var note :  Note = new Note();
 			note.title = 'Note Title'
 			note.notebookGuid = this.defaultNotebook.guid
+			
 			return note 	
 		}
 	}
