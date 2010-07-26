@@ -1,81 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="100%" height="100%" 
+					  xmlns:view="org.syncon.evernote.basic.view.*">
 	
 	<fx:Script>
 		<![CDATA[
-/* 			override public function set height ( n : Number )  : void
+			import com.evernote.edam.type.Note;
+			
+			import flashx.textLayout.conversion.TextConverter;
+			private var _note : Note = new Note()
+			private var dirty : Boolean = false; 
+			public function set note ( n : Note) : void
 			{
-				super.height = n 
-				this.list.height = n -10
+				this._note = n; 
+				this.txtTitle.text = this._note.title
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
+				if ( this._note.guid == ''|| this._note.guid == null ) 
+				{
+					this.txtTitle.setFocus()
+					this.txtTitle.selectAll()
+						this.callLater( this.txtTitle.selectAll )
+				}
+				this.dirty = false; 
 			}
-			override public function set width ( n : Number )  : void
-			{
-				super.width = n 
-				this.list.width = n -10
-			}	 */		
 		]]>
 	</fx:Script>
-	
-	<!--
-	<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
-		<s:fill>
-			<s:SolidColor color="#8CB3D5" />
-		</s:fill>
-	</s:Rect>
-	-->
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		
-		.centered {
-		fontWeight: bold;
-		}
-		
-		.dataGrid {
-			alternatingItemColors: #ffffff, #fefefe;
-			headerColors: #e6e6e6, #e6e6e6;
-			horizontalGridLines: true;
-			horizontalGridLineColor: #cccccc;
-			verticalGridLines: true;
-			verticalGridLineColor: #ffffff;
-			borderThickness: 1;
-			borderColor: #ffffff;
-			dropShadowEnabled: false;
-			headerStyleName: "mydataGridHeaderStyle";
-		}
-		
-		.mydataGridHeaderStyle {
-			fontWeight: bold;
-			fontStyle: normal;
-			textDecoration: none;
-		}		
-	</fx:Style>
-	
-	
-	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
-				  styleName="dataGrid"  
-				  draggableColumns="false" minColumnWidth="100"
-				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
-		
  
-		<mx:ArrayList>
-			<fx:Object Artist="Pavement" Price="11.99" 
-					   Album="Slanted and Enchanted" />
-			<fx:Object Artist="Pavement" 
-					   Album="Brighten the Corners" Price="11.99" />
-		</mx:ArrayList>
-		<mx:columns>
-			<mx:DataGridColumn dataField="Title"   />
-			<mx:DataGridColumn dataField="Tags"   width="200" />
-			<mx:DataGridColumn dataField="Created"   width="150" />
-			<mx:DataGridColumn dataField="Updated"   width="150"/>			
-		</mx:columns>
-	</mx:DataGrid>
+	<view:open_note_in_new_window id="openNoteInNew" right="0" />
+	<s:VGroup width="100%" gap="0">
+		
+		<s:VGroup id="headerBar" width="100%">
+				
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Title:" /> <s:TextInput id="txtTitle" /> <s:Label text="Notebook:" /> <s:DropDownList id="notebooks" />
+				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
+			</s:HGroup>
+			<s:HGroup  verticalAlign="middle">
+				<s:Label text="Tags:" /> <s:TextInput id="txtTags" />
+			</s:HGroup>		
+			<view:richtext_control_panel id="controlp" />
+				
+		</s:VGroup>
+		<s:Group width="100%">
+			<s:Rect width="100%" height="100%"
+					bottomLeftRadiusX="8" bottomLeftRadiusY="8"
+					bottomRightRadiusX="8" bottomRightRadiusY="8"  >
+				<s:stroke>
+					<s:SolidColorStroke color="#549BA9" pixelHinting="true" />
+				</s:stroke>
+			</s:Rect>	
+			
+			<s:Scroller  id="scrolling"  width="100%"   height="{this.height-this.headerBar.height+10}" >
+				<s:Group  width="100%">
+					<s:RichEditableText id="txtContents"  width="100%" 
+										 minHeight="{this.height-this.headerBar.height+10}"
+										 paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
+					</s:RichEditableText>				
+				</s:Group>
+			</s:Scroller>
+		
+		</s:Group>
+	</s:VGroup>
+	
 	
 	
 </s:SkinnableContainer>

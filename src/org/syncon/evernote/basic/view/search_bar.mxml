@@ -3,14 +3,23 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  skinClass="org.syncon.evernote.basic.view.skins.SearchBarSkin"					  
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="40">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import flexunit.utils.ArrayList;
+			
+			import mx.collections.ArrayCollection;
+			
 			import spark.components.Button;
+			import spark.components.DropDownList;
+			import spark.components.Label;
 			[SkinPart(required="true")]
 			public var btnSearch:Button;	
+			
+			[SkinPart(required="true")]
+			public var lblShowing:Label;	
+			
+			[SkinPart(required="true")]
+			public var dropdownNotebooks:DropDownList;				
 			
 			override protected function partAdded(partName:String, instance:Object):void
 			{
@@ -25,6 +34,17 @@
 			{
 				
 			}
+			
+			public function loadNotebooks ( arr :  Array )  : void
+			{
+				this.dropdownNotebooks.dataProvider =  new ArrayCollection( arr ) 
+				this.dropdownNotebooks.selectedIndex = 1;
+			}
+			public function resultCount( i : int ) : void
+			{
+				this.lblShowing.text = 'Showing ' + i.toString() + ' notes in ' 
+			}
+										  
 		]]>
 	</fx:Script>
 	

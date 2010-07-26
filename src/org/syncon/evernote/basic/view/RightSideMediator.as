@@ -42,7 +42,11 @@ package org.syncon.evernote.basic.view
 			
 			ui.list.notes = this.model.notes; 
 		}
-		
+		private function onNewNote()  : Note
+		{
+			
+			return this.model.createNewNote(); 
+		}
 		private function onNoteClicked(e:CustomEvent): void
 		{
 			ui.currentState = StateView
@@ -50,8 +54,9 @@ package org.syncon.evernote.basic.view
 		}
 		private function onNewClicked(e:CustomEvent): void
 		{
-			ui.currentState = StateView
-			ui.view.onNew(); //note = e.data as Note
+			ui.currentState = StateEditor
+			ui.edit.note = this.onNewNote(); //note = e.data as Note
+			//ui.edit.onNew()
 		}
 		private function onListClicked(e:CustomEvent): void
 		{

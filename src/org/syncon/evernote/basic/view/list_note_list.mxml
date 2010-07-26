@@ -139,7 +139,7 @@
 	
 	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
 				  styleName="dataGrid"   itemClick="list_itemClickHandler(event)"
-				   selectionColor="0xB4CDD2"  rollOverColor="#ffffff" useRollOver="false"
+				   selectionColor="0xB4CDD2"  rollOverColor="#e6e6e6" useRollOver="false"
 				  draggableColumns="false" minColumnWidth="100"  
 				  allowMultipleSelection="true"  selectable="true"
 				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">

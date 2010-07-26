@@ -46,23 +46,24 @@
 	
  
 		<s:Rect id="bgStart"   
-				left="0" right="0" top="0" bottom="0" radiusX="9" radiusY="9"
+				left="0" right="0" top="0" bottom="0" radiusX="10" radiusY="10"
 				>
 			<s:fill>
 				<s:SolidColor color="#369FAB"   />
 			</s:fill>
 			<s:stroke>
-				<s:SolidColorStroke   color="#e6e6e6" pixelHinting="true"   />
+				<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
+				<!--<s:SolidColorStroke   color="#e6e6e6" pixelHinting="true"   />-->
 			</s:stroke>
 		</s:Rect>
-		
+<!--		
 	<s:Rect  
 			left="1" right="1" top="1" bottom="1" radiusX="8" radiusY="8"
 			>
 		<s:stroke>
 			<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
 		</s:stroke>
-	</s:Rect>	
+	</s:Rect>	-->
 	
 		<s:Ellipse  width="10"   x="5" height="10"  verticalCenter="0">
 			<s:fill>

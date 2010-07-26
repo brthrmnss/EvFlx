@@ -3,10 +3,7 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark"   width="100%"
 					  skinClass="org.syncon.evernote.basic.view.skins.HeaderSkin"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" height="52">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
 	
 	<s:Button  id="testing" label="Test" />
- 
+
 </s:SkinnableContainer>

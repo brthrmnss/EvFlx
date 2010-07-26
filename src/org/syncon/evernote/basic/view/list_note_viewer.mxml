@@ -4,25 +4,25 @@
 					  xmlns:mx="library://ns.adobe.com/flex/mx" 
 					  width="100%" height="100%" 
 					  xmlns:view="org.syncon.evernote.basic.view.*">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-	
+
 	<fx:Script>
 		<![CDATA[
-/* 			override public function set height ( n : Number )  : void
+			import com.evernote.edam.type.Note;
+			
+			import flashx.textLayout.conversion.TextConverter;
+			private var _note : Note = new Note()
+			public function set note ( n : Note) : void
 			{
-				super.height = n 
-				this.list.height = n -10
+				this._note = n; 
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
 			}
-			override public function set width ( n : Number )  : void
-			{
-				super.width = n 
-				this.list.width = n -10
-			}	 */		
 		]]>
 	</fx:Script>
 	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+		
 	<!--
 	<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 		<s:fill>
@@ -56,11 +56,14 @@
 	 
 	 <s:Scroller  id="scrolling">
 		 <s:Group>
+			 <!--
 			 <mx:Text id="txtContents" >
 				 <mx:text>
 					 sd
 				 </mx:text>
 			 </mx:Text>
+			 -->
+			 <s:RichText id="txtContents" />
 		 </s:Group>
 	 </s:Scroller>
 	 	 

@@ -29,7 +29,7 @@
 	 
 	<s:HGroup x="10" verticalCenter="0"  verticalAlign="middle">
 		<s:Label id="lblShowing" text="Showing 897 notes in " />
-		<s:DropDownList id="as2" dataProvider="{new ArrayList(['All Notebooks'])}" />
+		<s:DropDownList id="dropdownNotebooks" dataProvider="{new ArrayList(['All Notebooks'])}" />
 	</s:HGroup>
 	<s:Button right="10" enabled="false" label="Save Search"  id="btnSearch" verticalCenter="0" />
 	

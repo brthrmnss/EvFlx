@@ -3,6 +3,9 @@
 */
 package org.syncon.evernote.basic.model
 {
+	import com.evernote.edam.type.Note;
+	import com.evernote.edam.type.Notebook;
+	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
@@ -31,25 +34,32 @@ package org.syncon.evernote.basic.model
 		{
 			_notes = new ArrayCollection();
 			_searchResult = new ArrayCollection();
+			_notebooks =  new ArrayCollection();
 		}		
  
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }
 		private var _searchResult: ArrayCollection 
-  
+		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
 		
 		public function loadNotes(e:Array)  : void
 		{
 			this.addAllTo( this._notes,  e  ) 
-			this.dispatch( new    EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, e ) )
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, e ) )
 		}
 		
 		
 		public function loadSearch(e:Array)  : void
 		{
 			this.addAllTo( this._searchResult,  e  ) 
-			this.dispatch( new    EvernoteAPIModelEvent( EvernoteAPIModelEvent.SEARCH_RESULT, e ) ) 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.SEARCH_RESULT, e ) ) 
 		}		
- 
+		
+		public function loadNotebook(e:Array)  : void
+		{
+			this.addAllTo( this._notebooks,  e  ) 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTEBOOK_RESULT, e ) ) 
+		}	
+		
 		private function addAllTo( e:ArrayCollection, arr : Array )  : void
 		{
 			e.source = arr; 
@@ -60,5 +70,21 @@ package org.syncon.evernote.basic.model
 			e.enableAutoUpdate()*/
 		}
 		
+		public var notebook : Notebook = new Notebook();
+		public var _defaultNotebok : Notebook = new Notebook();public function get defaultNotebook()  :  Notebook { return this._defaultNotebok }
+		
+		public function currentNotebook( n : Notebook )  : void
+		{
+			this.notebook = n; 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.CURRENT_NOTEBOOK_CHANGED, n ) ) 
+		}
+		
+		public function createNewNote()  :   Note
+		{
+			var note :  Note = new Note();
+			note.title = 'Note Title'
+			note.notebookGuid = this.defaultNotebook.guid
+			return note 	
+		}
 	}
 }
