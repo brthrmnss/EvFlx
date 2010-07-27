@@ -9,6 +9,8 @@
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
- 
-	<s:List id="list" />
+	<s:Label text="Created At" />
+	<s:Label text="Last Modified" />
+	<s:Label text="Contains" />
+	<s:Label text="Source" />	
 </s:SkinnableContainer>

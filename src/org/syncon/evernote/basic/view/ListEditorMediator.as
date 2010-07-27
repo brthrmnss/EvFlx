@@ -22,9 +22,11 @@ package org.syncon.evernote.basic.view
 		
 		override public function onRegister():void
 		{
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTEBOOK_RESULT, this.onNotebookResult);
+			eventMap.mapListener(eventDispatcher, 
+				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onNotebookResult);
 			this.ui.dropdownNotebook.dataProvider = this.model.notebooks 
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.RECIEVED_TAGS, this.onTagsRecieved);
+			eventMap.mapListener(eventDispatcher, 
+				EvernoteAPIModelEvent.RECIEVED_TAGS, this.onTagsRecieved);
 			this.ui.tags  = this.model.tags 				
 		}
 	 

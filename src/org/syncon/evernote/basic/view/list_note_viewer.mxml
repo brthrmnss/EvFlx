@@ -14,7 +14,9 @@
 			public function set note ( n : Note) : void
 			{
 				this._note = n; 
+				this.txtTitle.text = n.title;
 				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT ) 
 			}
 		]]>
 	</fx:Script>
@@ -63,7 +65,9 @@
 				 </mx:text>
 			 </mx:Text>
 			 -->
-			 <s:RichText id="txtContents" />
+			 <s:RichText id="txtContents" width="{this.width}"
+						 paddingLeft="5" paddingRight="5" paddingTop="5"
+						 paddingBottom="5" />
 		 </s:Group>
 	 </s:Scroller>
 	 	 

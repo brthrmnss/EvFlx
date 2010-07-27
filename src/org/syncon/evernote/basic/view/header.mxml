@@ -4,6 +4,6 @@
 					  skinClass="org.syncon.evernote.basic.view.skins.HeaderSkin"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" height="52">
 	
-	<s:Button  id="testing" label="Test" />
+	 
 
 </s:SkinnableContainer>

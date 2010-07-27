@@ -7,6 +7,7 @@ package org.syncon.evernote.basic.view
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -19,6 +20,8 @@ package org.syncon.evernote.basic.view
 		static public var StateList : String = ''
 		static public var StateEditor : String = 'edit'
 		static public var StateSearch : String = 'search'
+			
+		private var note : Note = new Note()
 			
 		public function RightSideMediator()
 		{
@@ -49,9 +52,26 @@ package org.syncon.evernote.basic.view
 		}
 		private function onNoteClicked(e:CustomEvent): void
 		{
+			var note_ : Note = e.data as Note
+			this.note = note_; 
 			ui.currentState = StateView
 			ui.view.note = e.data as Note
+			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
+				true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) ) 
+			//ui.view.loading = true; 
 		}
+		
+		private function onNoteLoaded(note_:Note):void
+		{
+			this.note = note_; 			
+			ui.view.note = this.note; 
+			//ui.view.loading = false; 
+		}
+		private function onNoteNotLoaded(note:Note):void
+		{
+			//ui.view.loading = false; 
+		}
+		
 		private function onNewClicked(e:CustomEvent): void
 		{
 			ui.currentState = StateEditor
@@ -66,6 +86,7 @@ package org.syncon.evernote.basic.view
 		{
 			ui.currentState = StateEditor
 			//ui.edit.note = e.data as Note			
+			ui.edit.note = this.note; 	
 			
 		}
 		private function onEmailClicked(e:CustomEvent): void

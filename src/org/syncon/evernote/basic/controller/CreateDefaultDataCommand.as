@@ -4,6 +4,8 @@ package  org.syncon.evernote.basic.controller
 	import com.evernote.edam.type.Notebook;
 	import com.evernote.edam.type.Tag;
 	
+	import flash.events.Event;
+	
 	import mx.controls.DateField;
 	import mx.core.ClassFactory;
 	
@@ -14,10 +16,37 @@ package  org.syncon.evernote.basic.controller
 	{
 		[Inject] public var apiModel:EvernoteAPIModel;
 		
-		//[Inject] public var event:ShowPopupEvent;
+		[Inject] public var event: Event;
 		static public var START : String = 'CreateDefaultDataCommand.START'
-		
+		static public var LIVE_DATA : String = 'CreateDefaultDataCommand.LIVE_DATA'
 		override public function execute():void
+		{
+			if ( event.type == START ) 
+			{
+				this.createStartData()				
+			}
+			if ( event.type == LIVE_DATA ) 
+			{
+				this.liveData()
+			}
+		}
+		
+		public function liveData() : void
+		{
+			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
+			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
+			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null ) ) ;
+			import flash.utils.setTimeout; 
+			//setTimeout( this.authenticate, 1000 ) 
+			this.authenticate()
+		}
+		
+		private function authenticate()  : void
+		{
+			this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
+		}
+		
+		public function createStartData() : void
 		{
 			var notes : Array = []; 
 			var note : Note = new Note()

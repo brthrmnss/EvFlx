@@ -1,0 +1,35 @@
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
+				                xmlns:s="library://ns.adobe.com/flex/spark"  
+								                 xmlns:mx="library://ns.adobe.com/flex/mx"  
+												                  minWidth="955" minHeight="600">  
+	    <!--
+	      <fx:Style source="Main.css"/>  
+	    -->
+	      <fx:Script>  
+				        <![CDATA[  
+					            import mx.controls.Alert;  
+					  
+					            import spark.utils.TextFlowUtil;  
+					  
+					            protected function button1_clickHandler(event:MouseEvent):void  
+					            {  
+						                try {  
+							                    descriptionRichText.textFlow = TextFlowUtil.importFromString(textArea.text );  
+						                }  
+						                catch (error:Error)  
+						                {  
+							                    Alert.show("HTML error: " + error.message);  
+						                }  
+					            }  
+					  
+					        ]]>  
+				    </fx:Script>  
+	    
+	      <s:TextArea id="textArea" x="102" y="75"/>  
+	      <s:Button x="102" y="244" label="Submit HTML" click="button1_clickHandler(event)"/>  
+	    
+	      <s:RichText id="descriptionRichText" blendMode="normal"  
+						                color="#000000" fontFamily="Arial"  
+										                  whiteSpaceCollapse="preserve" x="350" y="102"/>  
+	    
+  </s:Application> 

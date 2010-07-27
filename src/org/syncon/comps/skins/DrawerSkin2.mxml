@@ -23,7 +23,7 @@
 	<s:transitions>
 		<s:Transition fromState="normal" toState="opened">
 			<s:Parallel>
-				<s:Resize target="{this}" duration="600" easer="{sineOut}" />
+				<s:Resize target="{this}" duration="300" easer="{sineOut}" />
 				<s:Resize target="{this.contentGroup}" duration="600" easer="{sineOut}" />
 				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
 			</s:Parallel>
@@ -31,7 +31,7 @@
 		<s:Transition fromState="opened" toState="normal">
 			<s:Parallel>
 				<s:Sequence>
-					<s:Resize target="{this}" duration="600" easer="{sineIn}" />
+					<s:Resize target="{this}" duration="300" easer="{sineIn}" />
 					<s:RemoveAction target="{contentGroup}" />
 				</s:Sequence>				
 				<s:Resize target="{this.contentGroup}" duration="600" easer="{sineOut}" />

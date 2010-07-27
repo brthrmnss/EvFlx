@@ -8,6 +8,7 @@ package  org.syncon.evernote.basic.controller
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import mx.controls.Alert;
 	import mx.controls.DateField;
 	import mx.core.ClassFactory;
 	
@@ -15,22 +16,59 @@ package  org.syncon.evernote.basic.controller
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.services.EvernoteService;
-	
+	/**
+	 * Test quing of unauthenticated commands 
+	 * test defreserencing
+	 * 
+	 * */
 	public class EvernoteAPICommand extends Command
 	{
 		[Inject] public var apiModel:EvernoteAPIModel;
 		[Inject] public var service: EvernoteService;
 		[Inject] public var event:EvernoteAPICommandTriggerEvent;
 		private var seqId : int = -1
-		private var timerTimeout : Timer = new Timer(300)
+		private var timerTimeout : Timer = new Timer(3000)
 		private var debug : Boolean = true
 		private var alert : Boolean = false; 
+		private var notAuthenticatedRetryTimer : Timer;
+		private var retryCount : int = 0 ;
+		//private var unauthenticatedEventStore
+		
+		private function onRetry(e:TimerEvent):void
+		{
+			if ( retryCount > 3 ) 
+			{
+				trace(' failed to ' + this.event.type ) 
+				this.deReference()
+				return; 
+			}
+			if ( this.service.auth == null )
+			{
+				this.retryCount++;
+				this.notAuthenticatedRetryTimer.start()
+				return; 
+			}
+			this.notAuthenticatedRetryTimer.stop()
+			this.execute();
+		}
 		
 		override public function execute():void
 		{
-			this.seqId = this.service.incrementSequence()
+			//pre pocessing, if not authenticated store events, this is not a singleton ... mabe on model? 
+			//
+			if ( this.service.auth == null  && event.type != EvernoteAPICommandTriggerEvent.AUTHENTICATE   )
+			{
+				notAuthenticatedRetryTimer = new Timer(2000)
+				notAuthenticatedRetryTimer.addEventListener(TimerEvent.TIMER, this.onRetry )
+				notAuthenticatedRetryTimer.start()
+				trace('not authenticated')
+				return;
+			}
+			if ( event.type != EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
+				this.seqId = this.service.incrementSequence()
 			//functionSuccess = event.fxSuccess
 			//functionFault = event.fxFault; 
+			this.timerTimeout.start();
 			this.timerTimeout.addEventListener(TimerEvent.TIMER, this.onTimeout ) 
 			/*
 			if ( event.type == EvernoteAPICommandTriggerEvent.CREATE_LINKED_NOTEBOOK_TRIGGER ) 
@@ -40,6 +78,12 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.CREATE_LINKED_NOTEBOOK_FAULT, this.onCreateLinkedNotebookFault )
 			}
 			*/
+			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
+			{
+				this.service.getAuth( event.login, event.password )
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
+			}				
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK ) 
 			{
 				this.service.getSyncChunk( event.afterUSN, event.maxEntries, event.fullSyncOnly )
@@ -338,6 +382,20 @@ package  org.syncon.evernote.basic.controller
 		}
 */
 		
+		private function authenticateResultHandler(e:EvernoteServiceEvent)  : void
+		{
+			if ( seqId != this.service.getSequenceNumber()) return; 
+			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
+			//this.model.remotingReady = true; 
+			this.deReference()			
+		}		
+		private function authenticateFaultHandler(e:EvernoteServiceEvent)  : void
+		{
+			//if ( seqId != this.service.getSequenceNumber()) return; 			
+			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
+			this.onFault(); this.deReference()
+		}		
+		
 		private function getSyncChunkResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
@@ -537,7 +595,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			// 
+			this.apiModel.loadNotes( e.data.notes ) 
 			this.deReference()			
 		}		
 		private function findNotesFaultHandler(e:EvernoteServiceEvent)  : void
@@ -946,14 +1004,15 @@ package  org.syncon.evernote.basic.controller
 		
 		private function onFault() : void
 		{
-			var msg : String = 'Error 8332:'+event.type+' call failed';
+			var msg : String = 'Error 8332: '+event.type+' call failed';
 			if ( debug ) 
 			{
 				
 			}
-			if ( alert ) 
+			if ( event.alert ) 
 			{
-				
+				var ee : Alert
+				Alert.show( msg , 'Error...' )
 			}
 		}
 		
@@ -964,6 +1023,13 @@ package  org.syncon.evernote.basic.controller
 		{
 			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
 			//event.dereference()
+				
+			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
+			{
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
+			}		
+				
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_CHUNK, this.getSyncChunkResultHandler )
@@ -1528,5 +1594,61 @@ package  org.syncon.evernote.basic.controller
 		}		
 		*/
 		
+		/**
+		 * Maps user store commands 
+		 * */
+		static public function mapCommands(commandMap :  Object) : void
+		{
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.AUTHENTICATE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
+
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_TAGS_BY_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UNTAG_ALL, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.FIND_NOTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.FIND_NOTE_COUNTS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE_CONTENT, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE_SEARCH_TEXT, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.DELETE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.COPY_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_NOTE_VERSIONS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE_VERSION, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_RESOURCE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_DATA, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_BY_HASH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_RECOGNITION, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_ALTERNATE_DATA, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_ATTRIBUTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_ADS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RANDOM_AD, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_PUBLIC_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_SHARED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_SHARED_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.STRING, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EMAIL_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
+						
+		}
+			
 	}
 }

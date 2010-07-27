@@ -88,7 +88,7 @@
 					  backgroundColor="0xD5DFC6"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="{this.drawer_.width}" />
+			<view:left_notebooks  id="listNotebooks" width="{this.drawer_.width}" />
 		</comps:Drawer>		
 		
 		<comps:Drawer id="drawer2_"  width="100%"
@@ -103,21 +103,22 @@
 					  label="Tags"   
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="{this.drawer_.width}" />
+			<mx:Tree id="treeControl" width="{this.drawer_.width}" />
+			<!--<view:left_notebooks  width="{this.drawer_.width}" />-->
 		</comps:Drawer>		
 		
 		<comps:Drawer id="drawer4_"  width="100%"
 					  label="Saved Searches"   
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="{this.drawer_.width}" />
+			<s:List id="listSavedSearches"  width="{this.drawer4_.width}"/>
 		</comps:Drawer>	
 
 		<comps:Drawer id="drawer5_"  width="100%"
 					  label="Attributes"   
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="{this.drawer_.width}" />
+			<view:left_attributes  width="{this.drawer_.width}" />
 		</comps:Drawer>	
 		
 		<comps:Drawer id="drawer6_"  width="100%"

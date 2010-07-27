@@ -50,19 +50,20 @@ package org.syncon.evernote.basic.model
 			_searchResult = new ArrayCollection();
 			_notebooks =  new ArrayCollection();
 			_tags = new ArrayCollection();
+			_savedSearches = new ArrayCollection();			
 		}		
  
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }
 		private var _searchResult: ArrayCollection 
 		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
-		private var _tags :  ArrayCollection ; public function get tags () : ArrayCollection { return this._tags }		
+		private var _tags :  ArrayCollection ; public function get tags () : ArrayCollection { return this._tags }
+		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
 		
 		public function loadNotes(e:Array)  : void
 		{
 			this.addAllTo( this._notes,  e  ) 
-			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, e ) )
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, this._notes ) )
 		}
-		
 		
 		public function loadSearch(e:Array)  : void
 		{
@@ -77,7 +78,7 @@ package org.syncon.evernote.basic.model
 			{
 				if ( n.defaultNotebook ) this._defaultNotebook = n; 
 			}
-			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTEBOOK_RESULT, e ) ) 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, e ) ) 
 		}	
 		
 		public function loadTags(e:Array)  : void
@@ -86,6 +87,12 @@ package org.syncon.evernote.basic.model
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_TAGS, e ) ) 
 		}			
 		
+		public function loadSavedSearches(e:Array)  : void
+		{
+			this.addAllTo( this._savedSearches,  e  ) 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_TAGS, e ) ) 
+		}			
+				
 		private function addAllTo( e:ArrayCollection, arr : Array )  : void
 		{
 			e.source = arr; 

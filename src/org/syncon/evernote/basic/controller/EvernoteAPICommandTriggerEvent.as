@@ -11,12 +11,18 @@ package   org.syncon.evernote.basic.controller
 	
 	import flash.events.Event;
 	import flash.utils.ByteArray;
-	
+	/**
+	 * Maps note store of Evernote API
+	 * ui --> [ (model-->) command-trigger --> command  --> service 
+	 * <wait/response> 
+	 * service --> command --> model ]--> ui
+	 * */
 	public class EvernoteAPICommandTriggerEvent extends Event
 	{
 		public static const SHOW_POPUP:String = 'showPopup';
 		public static const CREATE_LINKED_NOTEBOOK_TRIGGER:String = 'CREATE_LINKED_NOTEBOOK_TRIGGER'
-	
+		public static const AUTHENTICATE:String = 'authenticate'
+			
 		public static const GET_SYNC_CHUNK:String = "getSyncChunkTrigger";
 		public static const GET_NOTEBOOK:String = "getNotebookTrigger";
 		public static const CREATE_NOTEBOOK:String = "createNotebookTrigger";
@@ -64,6 +70,9 @@ package   org.syncon.evernote.basic.controller
 		public static const STRING:String = "stringTrigger";
 		public static const EMAIL_NOTE:String = "emailNoteTrigger";
 			
+		public var login : String;
+		public var password : String;		
+		
 		public var authenticationToken : String;
 		public var afterUSN : int;
 		public var maxEntries : int;
@@ -123,6 +132,16 @@ package   org.syncon.evernote.basic.controller
 		/** Event method that can create the event 
 		 * all params are considered optional**/
 		 
+		
+		static public function Authenticate( username : String, password :  String, fxSuccess : Function=null,
+													  fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
+		{
+			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.AUTHENTICATE )
+			e.login = username; e.password = password; 
+			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage )
+			return e; 
+		}		
+		
 		static public function CreadteLinkedNotebook( args : Array, fxSuccess : Function=null,
 												fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
 		{
@@ -263,7 +282,7 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}
 		
-		static public function FindNotes(filter:NoteFilter, offset:int=0, maxNotes:int=0, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
+		static public function FindNotes(filter:NoteFilter, offset:int=0, maxNotes:int=1000, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.FIND_NOTES )
 			e.filter=filter; e.offset=offset; e.maxNotes=maxNotes; 
