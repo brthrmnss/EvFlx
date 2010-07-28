@@ -103,7 +103,9 @@
 					  label="Tags"   
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<mx:Tree id="treeControl" width="{this.drawer_.width}" />
+			<mx:Tree id="treeControl"
+					  borderVisible="false" contentBackgroundAlpha="0" labelField="name"
+					 width="{this.drawer_.width}" />
 			<!--<view:left_notebooks  width="{this.drawer_.width}" />-->
 		</comps:Drawer>		
 		

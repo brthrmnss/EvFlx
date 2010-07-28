@@ -10,5 +10,6 @@
 		<s:VerticalLayout />
 	</s:layout>
  
-	<s:List id="list" />
+	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0" width="100%" 
+			 labelField="name"/>
 </s:SkinnableContainer>
