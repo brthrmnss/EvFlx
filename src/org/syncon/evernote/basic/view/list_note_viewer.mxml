@@ -16,15 +16,17 @@
 				this._note = n; 
 				this.txtTitle.text = n.title;
 				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
-				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT ) 
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT )
+					
+			}
+			
+			public function conversionResult(str:String):void
+			{
+				
 			}
 		]]>
 	</fx:Script>
-	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-		
+ 
 	<!--
 	<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 		<s:fill>

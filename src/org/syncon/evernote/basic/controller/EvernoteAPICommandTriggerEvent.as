@@ -22,7 +22,7 @@ package   org.syncon.evernote.basic.controller
 		public static const SHOW_POPUP:String = 'showPopup';
 		public static const CREATE_LINKED_NOTEBOOK_TRIGGER:String = 'CREATE_LINKED_NOTEBOOK_TRIGGER'
 		public static const AUTHENTICATE:String = 'authenticate'
-			
+		
 		public static const GET_SYNC_CHUNK:String = "getSyncChunkTrigger";
 		public static const GET_NOTEBOOK:String = "getNotebookTrigger";
 		public static const CREATE_NOTEBOOK:String = "createNotebookTrigger";
@@ -69,7 +69,7 @@ package   org.syncon.evernote.basic.controller
 		public static const EXPUNGE_LINKED_NOTEBOOK:String = "expungeLinkedNotebookTrigger";
 		public static const STRING:String = "stringTrigger";
 		public static const EMAIL_NOTE:String = "emailNoteTrigger";
-			
+		
 		public var login : String;
 		public var password : String;		
 		
@@ -110,7 +110,7 @@ package   org.syncon.evernote.basic.controller
 		public var linkedNotebookId : Number;
 		public var shareKey : String;
 		public var parameters : NoteEmailParameters;		
-			/*
+		/*
 		public var class_ : Class; 
 		public var name : String; 
 		public var popup : Object; 
@@ -131,10 +131,10 @@ package   org.syncon.evernote.basic.controller
 		
 		/** Event method that can create the event 
 		 * all params are considered optional**/
-		 
+		
 		
 		static public function Authenticate( username : String, password :  String, fxSuccess : Function=null,
-													  fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
+											 fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.AUTHENTICATE )
 			e.login = username; e.password = password; 
@@ -143,14 +143,14 @@ package   org.syncon.evernote.basic.controller
 		}		
 		
 		static public function CreadteLinkedNotebook( args : Array, fxSuccess : Function=null,
-												fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
+													  fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.CREATE_LINKED_NOTEBOOK_TRIGGER )
 			//e.x = x; e.y=y;
 			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage )
 			return e; 
 		}
-	 
+		
 		public function optionalParameters(   fxSuccess_:  Function = null ,
 											  fxFault_ : Function = null, alert_ : Boolean = false , 
 											  alertMessage_ :  String = '' ) : void
@@ -170,7 +170,7 @@ package   org.syncon.evernote.basic.controller
 			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
 			return e; 
 		}
- 
+		
 		static public function GetNotebook(guid:String, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.GET_NOTEBOOK )
@@ -513,13 +513,13 @@ package   org.syncon.evernote.basic.controller
 			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
 			return e; 
 		}
-	 /*
+		/*
 		static public function String(shareKey:String, authenticationToken:String="", fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
-			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.STRING )
-			e.shareKey=shareKey; 
-			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
-			return e; 
+		var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.STRING )
+		e.shareKey=shareKey; 
+		e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
+		return e; 
 		}
 		*/
 		static public function EmailNote(parameters:NoteEmailParameters, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
@@ -530,8 +530,8 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}
 		
-		 
 		
-	
+		
+		
 	}
 }

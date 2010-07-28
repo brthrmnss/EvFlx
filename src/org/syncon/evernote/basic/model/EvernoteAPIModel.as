@@ -61,6 +61,10 @@ package org.syncon.evernote.basic.model
 		
 		public function loadNotes(e:Array)  : void
 		{
+			/*for each ( var n : Object in e ) 
+			{
+				trace( n.title + '||' + n.content )
+			}*/
 			this.addAllTo( this._notes,  e  ) 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, this._notes ) )
 		}

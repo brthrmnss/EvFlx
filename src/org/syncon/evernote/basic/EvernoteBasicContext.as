@@ -11,10 +11,10 @@ package  org.syncon.evernote.basic
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
 	import org.syncon.evernote.basic.controller.CreateDefaultDataCommand;
-	
 	import org.syncon.evernote.basic.controller.EvernoteAPICommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
-	
+	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
+	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.view.*;
 	import org.syncon.evernote.services.*;
@@ -35,7 +35,10 @@ package  org.syncon.evernote.basic
 			//commandMap.mapEvent(AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS, AddPopupsKeyboardShortcutsCommand);				
 			commandMap.mapEvent(CreateDefaultDataCommand.START,  CreateDefaultDataCommand, null, false );
 			commandMap.mapEvent(CreateDefaultDataCommand.LIVE_DATA,  CreateDefaultDataCommand, null, false );
-						
+
+			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
+			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
+			
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.SHOW_POPUP,   EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );				
 			EvernoteAPICommand.mapCommands( commandMap )
 			// Services

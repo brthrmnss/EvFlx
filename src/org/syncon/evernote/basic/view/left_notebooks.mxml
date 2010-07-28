@@ -2,14 +2,33 @@
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
 					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.evernote.edam.type.Notebook;
+			
+			import mx.collections.ArrayCollection;
+			private var _notebooks : ArrayCollection = new ArrayCollection()
+			public function set notebooks ( n : ArrayCollection )  : void
+			{
+				this._notebooks.source = n.source; 
+				var allNotebooksNotebok : Notebook = new Notebook
+				this._notebooks.addItem( allNotebooksNotebok ) 
+				allNotebooksNotebok.name = 'All Notebooks'
+				allNotebooksNotebok; //notebook count
+				this.list.dataProvider = _notebooks
+				
+				this.list.height = 20 * n.length;
+			}
+		]]>
+	</fx:Script>
+	
 	
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
  
 	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0" width="100%" 
+			 selectionColor="0x36722E" rollOverColor="0x598E52"
+			 fontSize="10"  
 			 labelField="name"/>
 </s:SkinnableContainer>
