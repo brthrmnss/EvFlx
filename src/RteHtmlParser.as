@@ -64,10 +64,12 @@ package
 				t1.parent().replace( t1.childIndex(), t1.children() );
 			}
 			
+			try {
 			//add br tag
 			if (SET_BR)
 				xml = add_br_tag(xml);
-			
+			}
+			catch ( e : Error ) {}
 			// add ul tag
 			xml = add_ul_tag(xml);
 			

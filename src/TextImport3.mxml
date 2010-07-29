@@ -10,6 +10,10 @@
 	<fx:Script>  
 		<![CDATA[  
 			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.elements.FlowElement;
+			import flashx.textLayout.elements.ParagraphElement;
+			import flashx.textLayout.elements.TextFlow;
+			import flashx.textLayout.formats.TextLayoutFormat;
 			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
@@ -48,12 +52,94 @@
 				this.txtEvernoteToTf.text = e
 				this.rtEvernoteToTfRendering.content = e; 
 				var ee :  RteHtmlParser = new RteHtmlParser()
+					ee.ignoreParagraphSpace = true; 
 				ee.ParseToRTE(e)
+				ee.ParseToHTML( "<f>"+ee.StringFormat+"</f>" ) ; 
 				this.rtEvernoteToTfRendering_F3.htmlText = ee.XMLFormat
-				this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );  
+				this.rtEvernoteToTfRendering_F3.text = ee.XMLFormat;
+				//var ee : TextConverter
+			 	//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
+				var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"><div id=\"thing\">sdf"+"</div></TextFlow>" )
+				var x :  XMLList = ee.XMLObject.elements('ol')
+			  x  = ee.XMLObject.f.child("ol")
+					  
+				 // tf.appendChild(new XML("<div id=\"thing2\">sdf"+"</div>" ))
+					  var xl : Object = tf.children()[0]
+					  var xl2 : Object = tf.div[0]
+			//	var ooo : Object = x.toXMLString()
+				appendList( x[0], tf.children()[0], false );  
+				var eee : TextFlow =  TextConverter.importToFlow( tf, TextConverter.TEXT_LAYOUT_FORMAT )
+				//	var eeee : TextFlow =TextConverter.importToFlow( ' Here\'s the Evernote logo:<br/>', TextConverter.PLAIN_TEXT_FORMAT )
+			//	var eeeee : TextFlow = TextConverter.importToFlow(tfTxt, TextConverter.TEXT_LAYOUT_FORMAT)
+				//var tff : TextFlow = new TextFlow()
+					//tff.addChild( new FlowElement() ) 
+				//	this.rtEvernoteToTfRendering.textFlow =TextConverter.importToFlow( tf, TextConverter.TEXT_LAYOUT_FORMAT )
+				//importToFlow(markup, TextFilter.TEXT_LAYOUT_FORMAT);
+						//eee.format = new TextFormat(
+				var p : ParagraphElement = new ParagraphElement()
+			//	p.listItem
+					//	var p : ParagraphElement = eeee.mxmlChildren[0] as  ParagraphElement
+					/* 	var format : TextLayoutFormat = p.format
+						p.
+						p.format = p.format */
+						new TextLayoutFormat()
+						eee.formatResolver
+					this.rtEvernoteToTfRendering.textFlow  = eee
+				this.txtEvernoteToTf.text = tf.toString();
 			}
 			
-			
+			private static function appendList(htmlListNode:XML, tlfXml:XML, isOrdered:Boolean):void {
+				//used for ordered lists
+				var count:int = 1;
+				var listEl : String = isOrdered ? "ol" : "ul";
+				
+				//get the li tags
+				for each (var child:XML in htmlListNode.*) {
+					var lineItemXml:XML;
+					var listItemContent:String = child.children().toXMLString();
+					// Ensure content for list item
+					if (listItemContent.length == 0) continue;  
+					
+					listItemContent = listItemContent.toLowerCase();                        
+					listItemContent = listItemContent.replace("<strong>","<span fontWeight='bold'>");
+					listItemContent = listItemContent.replace("</strong>","</span>");
+					
+					if (listItemContent.indexOf("<ul>") > -1) {
+						
+						var preNestedListText:String = listItemContent.substring(0,listItemContent.indexOf(listEl));
+						var nestedList:String = listItemContent.substring(listItemContent.indexOf(listEl), listItemContent.length);
+						var nestedListXml:XML = new XML(nestedList);
+						
+						if(preNestedListText.length > 0) {
+							if(isOrdered) {
+								tlfXml.appendChild(new XML("<p listitem='true' " +
+									"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+									"format='list_item'>" + count + ". " + listItemContent +"</p>"));
+							} else {
+								tlfXml.appendChild(new XML("<p listitem='true' " +
+									"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+									"format='list_item'>\u2022 " + listItemContent + "</p>"));
+							}
+						}                                              
+						appendList(nestedListXml, tlfXml, false);                   
+					} else {
+						if(isOrdered) {
+							tlfXml.appendChild(new XML(
+								"<p listitem='true' " +
+								"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+								" >" + count + ". dddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent +"</p>"));
+						} else {
+							//tlfXml.appendChild(new XML("<p>\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + "</p>"));
+							tlfXml.appendChild(new XML("\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + ""));
+													
+							/* tlfXml.appendChild(new XML("<p listitem='true' " +
+								"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+								">\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + "</p>")); */
+						}
+						count++;
+					}
+				}    
+			}        			
 			
 			protected function onConvertTF(ev:MouseEvent):void  
 			{  
@@ -84,6 +170,15 @@
 			
 		]]>  
 	</fx:Script>  
+	<fx:Declarations>
+		<fx:XML id="tfTxt">
+			<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">
+				<p>Text Using  <span fontWeight="bold">Text Layout Framework</span> Markup</p>
+			</TextFlow>
+		</fx:XML>	
+	</fx:Declarations>
+
+	
 	<s:layout>
 		<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
 	</s:layout>
