@@ -10,20 +10,29 @@
 			import com.evernote.edam.type.Note;
 			
 			import flashx.textLayout.conversion.TextConverter;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			private var _note : Note = new Note()
 			public function set note ( n : Note) : void
 			{
 				this._note = n; 
 				this.txtTitle.text = n.title;
-				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
-				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT )
-					
+				/* this.dispatchEvent( new CustomEvent( 'convertNote', 
+				/* this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT ) 
+				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT ) */  
 			}
 			
 			public function conversionResult(str:String):void
 			{
+				this.txtContents.content  = TextConverter.importToFlow( str, 
+					TextConverter.TEXT_LAYOUT_FORMAT ) 
+			}
+			
+			public function onExport()  : void
+			{
 				
 			}
+			
 		]]>
 	</fx:Script>
  

@@ -37,7 +37,11 @@
 					this.last = false
 					this.first = false; 
 					this.middle = false; 						
-					if ( value == l-1 ) 
+					if ( l == 1 )
+					{
+						this.middle = true; 	
+					}
+					else if ( value == l-1 ) 
 					{
 						this.last = true
 					}

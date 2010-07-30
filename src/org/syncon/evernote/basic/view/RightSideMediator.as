@@ -4,10 +4,15 @@ package org.syncon.evernote.basic.view
 	
 	import flash.events.Event;
 	
+	import flashx.textLayout.conversion.ConversionType;
+	import flashx.textLayout.conversion.TextConverter;
+	import flashx.textLayout.elements.TextFlow;
+	
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -36,6 +41,8 @@ package org.syncon.evernote.basic.view
 			ui.addEventListener( 'clicked'+'Email',this.onEmailClicked ) 
 			ui.addEventListener( 'clicked'+'Delete',this.onDeleteClicked ) 
 			ui.addEventListener( 'clicked'+'Print', this.onPrintClicked ) 
+			ui.addEventListener( 'clicked'+'Save and Close', this.onSaveAndClose ) 				
+			
 			/*
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.SHOW_POPUP, onShowPopup );
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.HIDE_POPUP, onHidePopup);
@@ -56,8 +63,11 @@ package org.syncon.evernote.basic.view
 			this.note = note_; 
 			ui.currentState = StateView
 			ui.view.note = e.data as Note
-			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
-				true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) ) 
+			if ( note_.content == null )
+			{
+				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
+					true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) )
+			}
 			//ui.view.loading = true; 
 		}
 		
@@ -65,8 +75,32 @@ package org.syncon.evernote.basic.view
 		{
 			this.note = note_; 			
 			ui.view.note = this.note; 
+			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
+				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
+				noteTextConvertToTf ) )
 			//ui.view.loading = false; 
 		}
+		
+		/**
+		 * Only occurs after note has been viewed ... 
+		 * */
+		public function noteTextConvertToTf( e  : String )  : void
+		{
+			this.note.content = e; 
+			updateContentText()
+		}
+		public function updateContentText()  : void
+		{
+			if ( ui.view != null && ui.view.viewer != null ) 
+			{
+				ui.view.viewer.conversionResult( this.note.content ) 
+			}
+			if ( ui.edit != null && ui.edit.editor != null ) 
+			{
+				ui.edit.editor.conversionResult( this.note.content ) 				
+			}
+		}
+		
 		private function onNoteNotLoaded(note:Note):void
 		{
 			//ui.view.loading = false; 
@@ -88,7 +122,52 @@ package org.syncon.evernote.basic.view
 			//ui.edit.note = e.data as Note			
 			ui.edit.note = this.note; 	
 			
+			this.updateContentText()
 		}
+		
+		private function onSaveAndClose(  e:CustomEvent): void
+		{
+			//ui.view.loading = true; 				
+		//	ui.view.note = this.note; 
+			var xml : XML = TextConverter.export(  e.data as TextFlow,  
+				TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
+			var ee :  TextConverter
+			var eee :   ConversionType
+			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
+				EvernoteToTextflowCommandTriggerEvent.EXPORT, 
+				 xml.children().toXMLString(),
+				onNoteContentConverted ) )
+			/*	
+			if ( this.ui.view.viewer != null ) 
+				this.ui.view.viewer.txtContents.textFlow = this.ui.edit.editor.txtContents.textFlow;
+			*/
+			//this.note = ui.edit
+			//ui.view.loading = false; 
+		}
+		
+			private function onNoteContentConverted(str: String):void
+			{
+				//var note_ : Note = e.data as Note
+				this.note.content = str
+			/*	if ( note_.content == null )
+				{*/
+					this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( this.note,
+						 onNoteSaved, onNoteSavedFault  ) )
+				/*}*/
+			}			
+			
+			private function onNoteSaved( o:Object):void
+			{
+				//ui.currentState = StateView;
+				 return;
+			}					
+			private function onNoteSavedFault( o:Object):void
+			{
+				//ui.currentState = StateView;
+				return;
+			}					
+			
+			
 		private function onEmailClicked(e:CustomEvent): void
 		{
 		}

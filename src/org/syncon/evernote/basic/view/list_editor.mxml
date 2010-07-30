@@ -43,6 +43,14 @@
 				this.note.notebookGuid = this.dropdownNotebook.selectedItem.guid
 			}
 
+			
+			public function conversionResult(str:String):void
+			{
+				this.txtContents.content  = TextConverter.importToFlow( str, 
+					TextConverter.TEXT_LAYOUT_FORMAT ) 
+			}
+						
+			
 		]]>
 	</fx:Script>
  

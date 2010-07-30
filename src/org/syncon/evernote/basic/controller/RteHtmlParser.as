@@ -1,4 +1,4 @@
-package
+package org.syncon.evernote.basic.controller
 {
 	import flash.xml.XMLDocument;
 	import flash.xml.XMLNode;

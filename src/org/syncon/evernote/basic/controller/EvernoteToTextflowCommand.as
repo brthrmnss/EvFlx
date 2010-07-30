@@ -18,7 +18,7 @@ package  org.syncon.evernote.basic.controller
 				this.exportTextflow()  
 		}
 		
-		public function importEvernoteXML()  : void
+		public function importEvernoteXML()  :  String
 		{
 			this.txt = event.txt
 			this.replaceObvious()
@@ -31,19 +31,177 @@ package  org.syncon.evernote.basic.controller
 				}
 			//}
 */
-			
+			this.postProcessStr()
 			var result : String = this.txt;
-			
-			event.fxResult( result ) 
+			if ( event.fxResult != null ) event.fxResult( result ) 
 				
+			return result 
 		}
 		
-		public function exportTextflow()  : void
+		public function exportTextflow()  :  String
 		{
-			var result : String = '';
-			event.fxResult( result ) 			
+			this.txt  = event.txt
+			this.exportReplaceObvious()
+			this.export_PackageForSending();
+			//this.txt = this.event.txt;
+			var result : String = this.txt
+			if ( event.fxResult != null ) event.fxResult( result ); 			
+			return this.txt 
+		}
+	/*			
+		public function postProcessStr() : void
+		{
+			var ee :  RteHtmlParser = new RteHtmlParser()
+			ee.ignoreParagraphSpace = true; 
+			ee.ParseToRTE(this.txt)
+			ee.ParseToHTML( "<div>"+ee.StringFormat+"</div>" ) ; 
+			//var ee : TextConverter
+			//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
+			var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"><div id=\"thing\">sdf"+"</div><li></li></TextFlow>" )
+			var x :  XMLList = ee.XMLObject.elements('ol')
+			x  = ee.XMLObject.f.child("ol")
+			
+			// tf.appendChild(new XML("<div id=\"thing2\">sdf"+"</div>" ))
+			var xl : Object = tf.children()[0]
+			var xl2 : Object = tf.div[0]
+			tf.children().
+			tf.appendChild( ee.XMLObject.div )
+			
+			//	var ooo : Object = x.toXMLString()
+			appendList( x[0], tf.children()[0], false );
+			
+			this.txt = tf.toXMLString()
+		}
+		*/
+		
+		public function postProcessStr() : void
+		{
+		var ee :  RteHtmlParser = new RteHtmlParser()
+		ee.ignoreParagraphSpace = true; 
+		ee.ParseToRTE(this.txt)
+		ee.ParseToHTML( "<div>"+ee.StringFormat+"</div>" ) ; 
+		//var ee : TextConverter
+		//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
+		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"><div  ></div></TextFlow>" )
+		var x :  XMLList = ee.XMLObject.elements('ol')
+		x  = ee.XMLObject.f.child("ol")
+		
+		// tf.appendChild(new XML("<div id=\"thing2\">sdf"+"</div>" ))
+		var xl : Object = tf.children()[0]
+		var xl2 : Object = tf.div[0]
+		var children :   XMLList = ee.XMLObject.div.children()
+		//tf.children().
+		//tf.appendChild( ee.XMLObject.div )
+		var tfRoot : XML = tf.children()[0]
+		for ( var i : int = 0; i < children.length(); i++ )
+		{
+			var xml_ : XML = children[i]
+			if (  xml_.name() == 'ol' )
+			{
+				var list : XML = new XML('<div/>')
+				appendList( xml_, list , false );
+				tfRoot.appendChild(  list )
+				//x.insertChildAfter(
+			}
+			else
+			{
+				//convert tag
+				///<span style="color: #008000;">s the</span>
+				//if syle set ... convert it ...
+				tfRoot.appendChild( xml_ )
+			}
+
+		}
+		//	var ooo : Object = x.toXMLString()
+		//appendList( x[0], tf.children()[0], false );
+		
+		this.txt = tf.toXMLString()
+		}
+		
+		
+		private static function appendList(htmlListNode:XML, tlfXml:XML, isOrdered:Boolean):void {
+			//used for ordered lists
+			var count:int = 1;
+			var listEl : String = isOrdered ? "ol" : "ul";
+			
+			//get the li tags
+			for each (var child:XML in htmlListNode.*) {
+				var lineItemXml:XML;
+				var listItemContent:String = child.children().toXMLString();
+				// Ensure content for list item
+				if (listItemContent.length == 0) continue;  
+				
+				listItemContent = listItemContent.toLowerCase();                        
+				listItemContent = listItemContent.replace("<strong>","<span fontWeight='bold'>");
+				listItemContent = listItemContent.replace("</strong>","</span>");
+				
+				if (listItemContent.indexOf("<ul>") > -1) {
+					
+					var preNestedListText:String = listItemContent.substring(0,listItemContent.indexOf(listEl));
+					var nestedList:String = listItemContent.substring(listItemContent.indexOf(listEl), listItemContent.length);
+					var nestedListXml:XML = new XML(nestedList);
+					
+					if(preNestedListText.length > 0) {
+						if(isOrdered) {
+							tlfXml.appendChild(new XML("<p listitem='true' " +
+								"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+								"format='list_item'>" + count + ". " + listItemContent +"</p>"));
+						} else {
+							tlfXml.appendChild(new XML("<p listitem='true' " +
+								"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+								"format='list_item'>\u2022 " + listItemContent + "</p>"));
+						}
+					}                                              
+					appendList(nestedListXml, tlfXml, false);                   
+				} else {
+					if(isOrdered) {
+						tlfXml.appendChild(new XML(
+							"<p listitem='true' " +
+							"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+							" >" + count + ". " + listItemContent +"</p>"));
+					} else {
+						//tlfXml.appendChild(new XML("<p>\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + "</p>"));
+						//tlfXml.appendChild(new XML("\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + ""));
+						tlfXml.appendChild(new XML("<p  listitem='true'  paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'  >\u2022 " + listItemContent + "</p>"));
+						
+						/* tlfXml.appendChild(new XML("<p listitem='true' " +
+						"paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'" +
+						">\u2022 ddddddddddddddddddddddddddddddddddddddddddddddddddddd" + listItemContent + "</p>")); */
+					}
+					count++;
+				}
+			}    
+		}  		
+		
+		//<HTML><BODY><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">Here's theEvernote logo:</FONT></P><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">touch</FONT></P><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">dfsddfdddgsdfsdfsdf</FONT></P><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1"></FONT></P><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">sdfasdfsdfsdf</FONT></P><P ALIGN="left"><FONT FACE="Arial" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1"></FONT></P></BODY></HTML>
+		private var bodyStart : String = "<HTML><BODY>"
+		private var bodyClose : String = "</BODY></HTML>"			
+		private var kerning1 : String = ' LETTERSPACING="0" KERNING="1"'
+		private var kerning2 : String = ' LETTERSPACING="0" KERNING="0"'
+		private var fontFace : String = 'FACE="Arial"'
+		private var namespace : String = 'xmlns="http://ns.adobe.com/textLayout/2008"'; 
+		private var txtflow : String = 'TextFlow'	
+			/*
+		private var preamble3 : String = '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">'
+	*/
+		private function exportReplaceObvious() : void
+		{
+			var find : Array =  [bodyStart,bodyClose,kerning1,
+				kerning2,fontFace,txtflow, namespace]; 
+			//this.txt = this.txt.replace( '<?xml version="1.0" encoding="UTF-8"?>', '' )
+			var replace : Array = ['','','','','', 'div', '']; 
+			for  ( var i : int = 0; i < replace.length; i++ )
+			{
+				//find[i] = this.replace( find[i], '"', '\\"' )
+				this.txt = this.replace( this.txt,  find[i], replace[i] )
+			}
 		}
 				
+		private function export_PackageForSending() : void
+		{
+			this.txt = preamble1 +preamble2 + enNoteOpen + this.txt + enNoteClose
+		}		
+		
 		private function replace(original : String, find :  String, replace : String ) :  String
 		{
 			var pattern:RegExp =  new RegExp( find,  'gi' );
@@ -83,5 +241,36 @@ package  org.syncon.evernote.basic.controller
 			}
 		}
 		
+ 	
+		/**
+		 * Take string and exports text flow string
+		 * */
+		static public function Import( txt : String )  :  String
+		{
+			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+			var event : EvernoteToTextflowCommandTriggerEvent = 
+				new EvernoteToTextflowCommandTriggerEvent(
+					EvernoteToTextflowCommandTriggerEvent.IMPORT,
+					txt, null )
+			cmd.event = event
+			cmd.importEvernoteXML()		
+			return cmd.txt
+		}
+		
+		/**
+		 * Takes textflow and exports string
+		 * */
+		static public function Export( txt : String )  :  String
+		{
+			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+			var event : EvernoteToTextflowCommandTriggerEvent = 
+				new EvernoteToTextflowCommandTriggerEvent(
+					EvernoteToTextflowCommandTriggerEvent.EXPORT,
+					txt, null )
+			cmd.event = event
+			cmd.exportTextflow()					
+			return cmd.txt
+		}		
+ 
 	}
 }

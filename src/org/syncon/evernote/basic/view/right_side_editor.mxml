@@ -34,7 +34,14 @@
 			
 			public function doAction(str:String, data:Object):void
 			{
+				if ( str ==  'Save and Close' )
+				{
+					
+					this.dispatchEvent( new CustomEvent( 'clicked'+str, this.editor.txtContents.textFlow ) ) 
+					return; 
+				}
 				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
+				//this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
 			}
 
 			 
@@ -50,7 +57,7 @@
 		</s:fill>
 	</s:Rect>		
  -->
-	<view:control_menu x="5" y="5" id="menuButtons" />
+	<view:control_menu  textDecoration="none" x="5" y="5" id="menuButtons" />
 	
 	<s:HGroup right="5" y="5" verticalAlign="middle"  >
 		

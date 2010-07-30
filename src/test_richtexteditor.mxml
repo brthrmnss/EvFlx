@@ -3,6 +3,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.syncon.evernote.basic.controller.RteHtmlParser;
 			
 			private function parseHTML():void
 			{
