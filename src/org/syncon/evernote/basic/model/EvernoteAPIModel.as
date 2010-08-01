@@ -5,6 +5,7 @@ package org.syncon.evernote.basic.model
 {
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
+	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -124,5 +125,22 @@ package org.syncon.evernote.basic.model
 			
 			return note 	
 		}
+		
+		public function convertTagNamesToTags( names :  Array )  : Array
+		{
+			var tags :  Array = []; 
+			var dict : Dictionary = new Dictionary(true) 
+			for each ( var tag : Tag in this.tags ) 
+			{
+				dict[tag.name] = tag
+			}
+			for each ( var tagName : String in names ) 
+			{
+				if (  dict[tagName] != null ) 
+				tags.push( dict[tagName] ) 
+			}
+			return tags 
+		}
+		
 	}
 }

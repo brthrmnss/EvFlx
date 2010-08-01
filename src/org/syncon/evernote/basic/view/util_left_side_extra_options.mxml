@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  useHandCursor="true" buttonMode="true"
+					  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  >
+	<fx:Metadata>
+		[Event(name="open", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			private var lbl : String = ''; 
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.lblTxt.text = this.lbl;
+			}
+			
+			public function set label ( l :  String ) : void
+			{
+				this.lbl  =l ; 
+				if ( this.lblTxt != null ) this.lblTxt.text = this.lbl
+			}
+
+			public var menuDp :  MenuAutomationVO; // = []; 
+		/* 	public function options ( names : Array, fxs : Array )  : void
+			{	
+				this._options = []
+				for ( var i : int = 0; i < names.length; i++ )
+				{
+					this._options.push( [names[i], fxs[i]] ) 
+				}
+			}
+			public function get options_ ()  : Array
+			{
+				return this._options	
+			} */
+			protected function onClick(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'openMenu', this.menuDp, false ) ) ; 
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:HGroup>
+		<s:Label id="lblTxt" />
+		<s:Line height="10"  >
+			<s:stroke>
+				<s:SolidColorStroke color="0xd2d2d2" />
+			</s:stroke>
+		</s:Line>
+		<s:Button label="Edit" click="onClick(event)">
+<!--			<s:skinClass>
+				<s:Rect/>
+			</s:skinClass>-->
+		</s:Button>
+	</s:HGroup>
+ 
+ 
+	<!--
+	<s:Rect width="10" height="10" radiusX="2" radiusY="2"  x="3">
+		<s:fill>
+			<s:SolidColor color="#549BA9" />
+		</s:fill>
+	</s:Rect>
+		-->
+	
+	
+</s:SkinnableContainer>

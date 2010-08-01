@@ -31,15 +31,16 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);		
 			//ui.list.notes = this.model.notes; 
-		
-			this.ui.treeControl.dataProvider = this.model.tags;
+			if ( this.ui.tags != null )
+			this.ui.tags.tags = this.model.tags;
 			this.ui.listSavedSearches.dataProvider = this.model.savedSearches; 
-			this.ui.listNotebooks.list.dataProvider = this.model.notebooks		
+			if ( this.ui.listNotebooks != null )			
+			this.ui.listNotebooks.notebooks = this.model.notebooks		
 		}
 		
 		private function onRecievedTags(e:EvernoteAPIModelEvent) : void
 		{
-			this.ui.treeControl.dataProvider = e.data as ArrayCollection
+			this.ui.tags.tags = this.model.tags;
 		}		
  
 		private function onRecievedSearches(e:EvernoteAPIModelEvent) : void
@@ -49,7 +50,7 @@ package org.syncon.evernote.basic.view
 		
 		private function onRecievedNotebookList(e:EvernoteAPIModelEvent) : void
 		{
-			this.ui.listNotebooks.list.dataProvider = e.data as ArrayCollection
+			this.ui.listNotebooks.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
 		}				
 		
 		

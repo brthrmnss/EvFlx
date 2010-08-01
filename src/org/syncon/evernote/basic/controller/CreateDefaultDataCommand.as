@@ -36,6 +36,10 @@ package  org.syncon.evernote.basic.controller
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
+			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( ) ) ;		
+			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags()  ) ;					
+			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
+			//this.dispatch(  EvernoteAPICommandTriggerEvent.ListTagsByNotebook( this. null ) ) ;			
 			import flash.utils.setTimeout; 
 			//setTimeout( this.authenticate, 1000 ) 
 			this.authenticate()

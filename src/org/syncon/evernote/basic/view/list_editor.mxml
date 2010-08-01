@@ -3,7 +3,7 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" 
 					  width="100%" height="100%" 
-					  xmlns:view="org.syncon.evernote.basic.view.*">
+					  xmlns:view="org.syncon.evernote.basic.view.*" xmlns:components="brust.components.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -67,7 +67,9 @@
 				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
 			</s:HGroup>
 			<s:HGroup  verticalAlign="middle">
-				<s:Label text="Tags:" /> <s:TextInput id="txtTags" />
+				<s:Label text="Tags:" /><!-- <s:TextInput id="txtTags" />-->
+				<components:SearchInput id="txtTags" />
+				<view:TagListAdjustable id="listTags" draggable="true" />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp" />
 				

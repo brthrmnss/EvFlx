@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
+					   creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
 	<fx:Script>
 		<![CDATA[
@@ -15,10 +16,16 @@
 				this._notebooks.addItem( allNotebooksNotebok ) 
 				allNotebooksNotebok.name = 'All Notebooks'
 				allNotebooksNotebok; //notebook count
+				if ( this.list == null ) return;				
 				this.list.dataProvider = _notebooks
 				
 				this.list.height = 20 * n.length;
 			}
+			
+			protected function skinnablecontainer1_creationCompleteHandler(event:Event):void
+			{
+				this.notebooks = this._notebooks;
+			}			
 		]]>
 	</fx:Script>
 	

@@ -84,7 +84,7 @@
 			  width="{this.measureWidth_(this.width)}"  height="100%" >
 		
 		<comps:Drawer id="drawer_"  width="100%"
-					  label="Notebooks"   opened="true" 
+					  label="Notebooks"   opened="false" 
 					  backgroundColor="0xD5DFC6"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
@@ -100,12 +100,11 @@
 		</comps:Drawer>		
 		
 		<comps:Drawer id="drawer3_"  width="100%"
-					  label="Tags"   
+					  label="Tags"     opened="true"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<mx:Tree id="treeControl"
-					  borderVisible="false" contentBackgroundAlpha="0" labelField="name"
-					 width="{this.drawer_.width}" />
+			<view:left_tag id="tags"  left="0" right="0" />
+	
 			<!--<view:left_notebooks  width="{this.drawer_.width}" />-->
 		</comps:Drawer>		
 		

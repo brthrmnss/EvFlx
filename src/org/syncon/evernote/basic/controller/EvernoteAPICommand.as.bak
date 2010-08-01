@@ -84,35 +84,17 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
 			}				
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_STATE ) 
-			{
-				this.service.getSyncState(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SYNC_STATE, this.getSyncStateResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SYNC_STATE_FAULT, this.getSyncStateFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK ) 
 			{
 				this.service.getSyncChunk( event.afterUSN, event.maxEntries, event.fullSyncOnly )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SYNC_CHUNK, this.getSyncChunkResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SYNC_CHUNK_FAULT, this.getSyncChunkFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_NOTEBOOKS ) 
-			{
-				this.service.listNotebooks(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_NOTEBOOKS, this.listNotebooksResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_NOTEBOOKS_FAULT, this.listNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_NOTEBOOK ) 
 			{
 				this.service.getNotebook( event.guid )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_NOTEBOOK, this.getNotebookResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_NOTEBOOK_FAULT, this.getNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_DEFAULT_NOTEBOOK ) 
-			{
-				this.service.getDefaultNotebook(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_DEFAULT_NOTEBOOK, this.getDefaultNotebookResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_DEFAULT_NOTEBOOK_FAULT, this.getDefaultNotebookFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.CREATE_NOTEBOOK ) 
 			{
@@ -131,12 +113,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.expungeNotebook( event.guid )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_NOTEBOOK, this.expungeNotebookResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_NOTEBOOK_FAULT, this.expungeNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_TAGS ) 
-			{
-				this.service.listTags(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.listTagsResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS_FAULT, this.listTagsFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_TAGS_BY_NOTEBOOK ) 
 			{
@@ -173,12 +149,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.expungeTag( event.guid )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_TAG, this.expungeTagResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_TAG_FAULT, this.expungeTagFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_SEARCHES ) 
-			{
-				this.service.listSearches(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_SEARCHES, this.listSearchesResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_SEARCHES_FAULT, this.listSearchesFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SEARCH ) 
 			{
@@ -270,12 +240,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_NOTES, this.expungeNotesResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_NOTES_FAULT, this.expungeNotesFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_INACTIVE_NOTES ) 
-			{
-				this.service.expungeInactiveNotes(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_INACTIVE_NOTES, this.expungeInactiveNotesResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_INACTIVE_NOTES_FAULT, this.expungeInactiveNotesFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.COPY_NOTE ) 
 			{
 				this.service.copyNote( event.noteGuid, event.toNotebookGuid )
@@ -336,12 +300,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_RESOURCE_ATTRIBUTES, this.getResourceAttributesResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_RESOURCE_ATTRIBUTES_FAULT, this.getResourceAttributesFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_ACCOUNT_SIZE ) 
-			{
-				this.service.getAccountSize(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_ACCOUNT_SIZE, this.getAccountSizeResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_ACCOUNT_SIZE_FAULT, this.getAccountSizeFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_ADS ) 
 			{
 				this.service.getAds( event.adParameters )
@@ -366,12 +324,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.CREATE_SHARED_NOTEBOOK, this.createSharedNotebookResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.CREATE_SHARED_NOTEBOOK_FAULT, this.createSharedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_SHARED_NOTEBOOKS ) 
-			{
-				this.service.listSharedNotebooks(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_SHARED_NOTEBOOKS, this.listSharedNotebooksResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_SHARED_NOTEBOOKS_FAULT, this.listSharedNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_SHARED_NOTEBOOKS ) 
 			{
 				this.service.expungeSharedNotebooks( event.sharedNotebookIds )
@@ -390,36 +342,24 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.UPDATE_LINKED_NOTEBOOK, this.updateLinkedNotebookResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.UPDATE_LINKED_NOTEBOOK_FAULT, this.updateLinkedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_LINKED_NOTEBOOKS ) 
-			{
-				this.service.listLinkedNotebooks(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_LINKED_NOTEBOOKS, this.listLinkedNotebooksResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_LINKED_NOTEBOOKS_FAULT, this.listLinkedNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_LINKED_NOTEBOOK ) 
 			{
 				this.service.expungeLinkedNotebook( event.linkedNotebookId )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_LINKED_NOTEBOOK, this.expungeLinkedNotebookResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EXPUNGE_LINKED_NOTEBOOK_FAULT, this.expungeLinkedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK ) 
+			if ( event.type == EvernoteAPICommandTriggerEvent.STRING ) 
 			{
-				this.service.authenticateToSharedNotebook( event.shareKey )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK, this.authenticateToSharedNotebookResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK_FAULT, this.authenticateToSharedNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SHARED_NOTEBOOK_BY_AUTH ) 
-			{
-				this.service.getSharedNotebookByAuth(  )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SHARED_NOTEBOOK_BY_AUTH, this.getSharedNotebookByAuthResultHandler )
-				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_SHARED_NOTEBOOK_BY_AUTH_FAULT, this.getSharedNotebookByAuthFaultHandler )
+				this.service.string( event.shareKey )
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.STRING, this.stringResultHandler )
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.STRING_FAULT, this.stringFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EMAIL_NOTE ) 
 			{
 				this.service.emailNote( event.parameters )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EMAIL_NOTE, this.emailNoteResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EMAIL_NOTE_FAULT, this.emailNoteFaultHandler )
-			}			
+			}				
 				
 		}
 /*
@@ -456,41 +396,14 @@ package  org.syncon.evernote.basic.controller
 			this.onFault(); this.deReference()
 		}		
 		
-
-		private function getSyncStateResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function getSyncStateFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
 		private function getSyncChunkResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getSyncChunkFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function listNotebooksResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function listNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -500,23 +413,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNotebookFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function getDefaultNotebookResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function getDefaultNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -526,7 +426,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -539,7 +439,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -552,23 +452,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeNotebookFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function listTagsResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function listTagsFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -578,7 +465,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function listTagsByNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -591,7 +478,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getTagFaultHandler(e:EvernoteServiceEvent)  : void
@@ -604,7 +491,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createTagFaultHandler(e:EvernoteServiceEvent)  : void
@@ -617,7 +504,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateTagFaultHandler(e:EvernoteServiceEvent)  : void
@@ -630,7 +517,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function untagAllFaultHandler(e:EvernoteServiceEvent)  : void
@@ -643,23 +530,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeTagFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function listSearchesResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function listSearchesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -669,7 +543,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getSearchFaultHandler(e:EvernoteServiceEvent)  : void
@@ -682,7 +556,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createSearchFaultHandler(e:EvernoteServiceEvent)  : void
@@ -695,7 +569,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateSearchFaultHandler(e:EvernoteServiceEvent)  : void
@@ -708,7 +582,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeSearchFaultHandler(e:EvernoteServiceEvent)  : void
@@ -721,20 +595,20 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			this.apiModel.loadNotes( e.data.notes  as Array );
+			this.apiModel.loadNotes( e.data.notes ) 
 			this.deReference()			
 		}		
-			private function findNotesFaultHandler(e:EvernoteServiceEvent)  : void
-			{
-				if ( seqId != this.service.getSequenceNumber()) return; 			
-				if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-				this.onFault(); this.deReference()
-			}
+		private function findNotesFaultHandler(e:EvernoteServiceEvent)  : void
+		{
+			if ( seqId != this.service.getSequenceNumber()) return; 			
+			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
+			this.onFault(); this.deReference()
+		}
 		private function findNoteCountsResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function findNoteCountsFaultHandler(e:EvernoteServiceEvent)  : void
@@ -747,7 +621,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -760,7 +634,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNoteContentFaultHandler(e:EvernoteServiceEvent)  : void
@@ -773,7 +647,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNoteSearchTextFaultHandler(e:EvernoteServiceEvent)  : void
@@ -786,7 +660,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNoteTagNamesFaultHandler(e:EvernoteServiceEvent)  : void
@@ -799,7 +673,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -812,7 +686,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -825,7 +699,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function deleteNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -838,7 +712,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -851,23 +725,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeNotesFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function expungeInactiveNotesResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function expungeInactiveNotesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -877,7 +738,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function copyNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -890,7 +751,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function listNoteVersionsFaultHandler(e:EvernoteServiceEvent)  : void
@@ -903,7 +764,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getNoteVersionFaultHandler(e:EvernoteServiceEvent)  : void
@@ -916,7 +777,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceFaultHandler(e:EvernoteServiceEvent)  : void
@@ -929,7 +790,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateResourceFaultHandler(e:EvernoteServiceEvent)  : void
@@ -942,7 +803,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceDataFaultHandler(e:EvernoteServiceEvent)  : void
@@ -955,7 +816,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceByHashFaultHandler(e:EvernoteServiceEvent)  : void
@@ -968,7 +829,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceRecognitionFaultHandler(e:EvernoteServiceEvent)  : void
@@ -981,7 +842,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceAlternateDataFaultHandler(e:EvernoteServiceEvent)  : void
@@ -994,23 +855,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getResourceAttributesFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function getAccountSizeResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function getAccountSizeFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -1020,7 +868,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getAdsFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1033,7 +881,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getRandomAdFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1046,7 +894,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function getPublicNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1059,23 +907,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createSharedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function listSharedNotebooksResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function listSharedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -1085,7 +920,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeSharedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1098,7 +933,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function createLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1111,23 +946,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function updateLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function listLinkedNotebooksResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function listLinkedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -1137,7 +959,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function expungeLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1146,27 +968,14 @@ package  org.syncon.evernote.basic.controller
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
 			this.onFault(); this.deReference()
 		}
-		private function authenticateToSharedNotebookResultHandler(e:EvernoteServiceEvent)  : void
+		private function stringResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
-		private function authenticateToSharedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 			
-			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference()
-		}
-		private function getSharedNotebookByAuthResultHandler(e:EvernoteServiceEvent)  : void
-		{
-			if ( seqId != this.service.getSequenceNumber()) return; 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
-			this.deReference()			
-		}		
-		private function getSharedNotebookByAuthFaultHandler(e:EvernoteServiceEvent)  : void
+		private function stringFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
@@ -1176,7 +985,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			// 
 			this.deReference()			
 		}		
 		private function emailNoteFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1185,8 +994,6 @@ package  org.syncon.evernote.basic.controller
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
 			this.onFault(); this.deReference()
 		}		
-		
-		
 		
 		private function onTimeout(e:TimerEvent)  : void
 		{
@@ -1223,30 +1030,15 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
 			}		
 				
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_STATE ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_STATE, this.getSyncStateResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_STATE_FAULT, this.getSyncStateFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_CHUNK, this.getSyncChunkResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_CHUNK_FAULT, this.getSyncChunkFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_NOTEBOOKS ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_NOTEBOOKS, this.listNotebooksResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_NOTEBOOKS_FAULT, this.listNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_NOTEBOOK ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_NOTEBOOK, this.getNotebookResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_NOTEBOOK_FAULT, this.getNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_DEFAULT_NOTEBOOK ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_DEFAULT_NOTEBOOK, this.getDefaultNotebookResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_DEFAULT_NOTEBOOK_FAULT, this.getDefaultNotebookFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.CREATE_NOTEBOOK ) 
 			{
@@ -1262,11 +1054,6 @@ package  org.syncon.evernote.basic.controller
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_NOTEBOOK, this.expungeNotebookResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_NOTEBOOK_FAULT, this.expungeNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_TAGS ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_TAGS, this.listTagsResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_TAGS_FAULT, this.listTagsFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_TAGS_BY_NOTEBOOK ) 
 			{
@@ -1297,11 +1084,6 @@ package  org.syncon.evernote.basic.controller
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_TAG, this.expungeTagResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_TAG_FAULT, this.expungeTagFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_SEARCHES ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_SEARCHES, this.listSearchesResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_SEARCHES_FAULT, this.listSearchesFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SEARCH ) 
 			{
@@ -1378,11 +1160,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_NOTES, this.expungeNotesResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_NOTES_FAULT, this.expungeNotesFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_INACTIVE_NOTES ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_INACTIVE_NOTES, this.expungeInactiveNotesResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_INACTIVE_NOTES_FAULT, this.expungeInactiveNotesFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.COPY_NOTE ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.COPY_NOTE, this.copyNoteResultHandler )
@@ -1433,11 +1210,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_RESOURCE_ATTRIBUTES, this.getResourceAttributesResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_RESOURCE_ATTRIBUTES_FAULT, this.getResourceAttributesFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_ACCOUNT_SIZE ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_ACCOUNT_SIZE, this.getAccountSizeResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_ACCOUNT_SIZE_FAULT, this.getAccountSizeFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_ADS ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_ADS, this.getAdsResultHandler )
@@ -1458,11 +1230,6 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.CREATE_SHARED_NOTEBOOK, this.createSharedNotebookResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.CREATE_SHARED_NOTEBOOK_FAULT, this.createSharedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_SHARED_NOTEBOOKS ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_SHARED_NOTEBOOKS, this.listSharedNotebooksResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_SHARED_NOTEBOOKS_FAULT, this.listSharedNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_SHARED_NOTEBOOKS ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_SHARED_NOTEBOOKS, this.expungeSharedNotebooksResultHandler )
@@ -1478,31 +1245,21 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.UPDATE_LINKED_NOTEBOOK, this.updateLinkedNotebookResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.UPDATE_LINKED_NOTEBOOK_FAULT, this.updateLinkedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.LIST_LINKED_NOTEBOOKS ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_LINKED_NOTEBOOKS, this.listLinkedNotebooksResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.LIST_LINKED_NOTEBOOKS_FAULT, this.listLinkedNotebooksFaultHandler )
-			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EXPUNGE_LINKED_NOTEBOOK ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_LINKED_NOTEBOOK, this.expungeLinkedNotebookResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EXPUNGE_LINKED_NOTEBOOK_FAULT, this.expungeLinkedNotebookFaultHandler )
 			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK ) 
+			if ( event.type == EvernoteAPICommandTriggerEvent.STRING ) 
 			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK, this.authenticateToSharedNotebookResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK_FAULT, this.authenticateToSharedNotebookFaultHandler )
-			}
-			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SHARED_NOTEBOOK_BY_AUTH ) 
-			{
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SHARED_NOTEBOOK_BY_AUTH, this.getSharedNotebookByAuthResultHandler )
-				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SHARED_NOTEBOOK_BY_AUTH_FAULT, this.getSharedNotebookByAuthFaultHandler )
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.STRING, this.stringResultHandler )
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.STRING_FAULT, this.stringFaultHandler )
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.EMAIL_NOTE ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EMAIL_NOTE, this.emailNoteResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.EMAIL_NOTE_FAULT, this.emailNoteFaultHandler )
-			}		
+			}			
 		}
 		
 		/**Function that can create a command event from strict params**/
@@ -1843,23 +1600,18 @@ package  org.syncon.evernote.basic.controller
 		static public function mapCommands(commandMap :  Object) : void
 		{
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.AUTHENTICATE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
- 
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SYNC_STATE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_DEFAULT_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_TAGS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_TAGS_BY_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UNTAG_ALL, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_TAG, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_SEARCHES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_SEARCH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
@@ -1875,7 +1627,6 @@ package  org.syncon.evernote.basic.controller
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.DELETE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_NOTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_INACTIVE_NOTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.COPY_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_NOTE_VERSIONS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_NOTE_VERSION, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
@@ -1886,22 +1637,17 @@ package  org.syncon.evernote.basic.controller
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_RECOGNITION, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_ALTERNATE_DATA, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RESOURCE_ATTRIBUTES, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_ACCOUNT_SIZE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_ADS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_RANDOM_AD, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_PUBLIC_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_SHARED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_SHARED_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_SHARED_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.CREATE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.UPDATE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_LINKED_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EXPUNGE_LINKED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.AUTHENTICATE_TO_SHARED_NOTEBOOK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
-			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SHARED_NOTEBOOK_BY_AUTH, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.STRING, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.EMAIL_NOTE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
-			
-			
+						
 		}
 			
 	}

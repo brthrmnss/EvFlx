@@ -10,6 +10,7 @@
 		<![CDATA[ 
 			import com.evernote.edam.type.Tag;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
 			[Bindable] public var tag :  Tag = new Tag();
 			public var tagName : String = '';
@@ -33,6 +34,13 @@
 			} 
 			
 			
+
+			protected function skinnablecomponent1_clickHandler(event:MouseEvent):void
+			{
+				var e : CustomEvent = new CustomEvent( 'removeTag', this.tag ) 
+				this.dispatchEvent( e )
+			}
+
 		]]> 
 	</fx:Script> 
 	
@@ -46,15 +54,16 @@
 	
  
 		<s:Rect id="bgStart"   
-				left="0" right="0" top="0" bottom="0" radiusX="10" radiusY="10"
+				left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
 				>
 			<s:fill>
-				<s:SolidColor color="#369FAB"   />
+				<s:SolidColor color="#369FAB"    />
 			</s:fill>
+			<!--
 			<s:stroke>
 				<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
-				<!--<s:SolidColorStroke   color="#e6e6e6" pixelHinting="true"   />-->
 			</s:stroke>
+			-->
 		</s:Rect>
 <!--		
 	<s:Rect  
@@ -64,13 +73,14 @@
 			<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
 		</s:stroke>
 	</s:Rect>	-->
+	<s:Group    x="5" click="skinnablecomponent1_clickHandler(event)"  verticalCenter="0"  >
 	
-		<s:Ellipse  width="10"   x="5" height="10"  verticalCenter="0">
+		<s:Ellipse  width="10" height="10"  >
 			<s:fill>
-				<s:SolidColor color="0xA6C6D0" />
+				<s:SolidColor color="0xA6C6D0"  color.hovered="#126778" />
 			</s:fill>
 		</s:Ellipse>
-		
+	</s:Group>
 		<s:Label id="txtLbl" text="Text" color="#FFFFFF" 
 				  verticalCenter="0.5" x="20" paddingRight="8" fontSize="10"
 				 color.hovered="#0" />

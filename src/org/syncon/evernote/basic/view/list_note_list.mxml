@@ -31,6 +31,8 @@
 					this.skipIndex = -1
 						return
 				}
+				if ( event.itemRenderer is NoteListTagItemRenderer )
+					return; 
 				// TODO Auto-generated method stub
 				if ( this.list.selectedItems.length > 1 ) 
 				{

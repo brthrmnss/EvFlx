@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
+					  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:view="org.syncon.evernote.basic.view.*"  >
+	<fx:Script>
+		<![CDATA[
+			import com.evernote.edam.type.Notebook;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			private var _tags : ArrayCollection = new ArrayCollection()
+ 			public function set tags ( n : ArrayCollection )  : void
+			{
+				this._tags.source = n.source; 
+				/* 
+				var allNotebooksNotebok : Notebook = new Notebook
+				this._notebooks.addItem( allNotebooksNotebok ) 
+				allNotebooksNotebok.name = 'All Notebooks'
+				allNotebooksNotebok; //notebook count
+				 */
+				if ( this.list == null ) return;
+				this.list.dataProvider = this._tags
+				
+				this.list.height = 21 * n.length;
+			} 
+
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.tags = this._tags;
+				
+				var ee : MenuAutomationVO = new MenuAutomationVO()
+				ee.setupFlat( 
+					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
+					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
+					[null, null, null, null, null  ] ,
+					null, 
+					[true, true, true, true, true]
+					 )
+				ee.fx = fxGo
+				this.tagEdit.menuDp = ee; //( ['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'], [this.fxGo] )
+			}
+			
+			public function fxGo(n:String) : void
+			{
+				return;
+			}
+
+		]]>
+	</fx:Script>
+	
+	
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+ 
+	<mx:Tree id="list"  itemRenderer="org.syncon.evernote.basic.view.tagTreeRenderer"
+			 borderVisible="false" contentBackgroundAlpha="0" labelField="name"
+			  selectionColor="0x607980"
+			  rollOverColor="0x598E52"
+			 width="{this.width}" />
+	
+	<s:Rect />
+	
+	<s:Rect  width="100%"   height="1" >
+		<s:fill>
+			<s:SolidColor  color="#FFFFFF" />
+		</s:fill>
+	</s:Rect>	
+	
+	<view:util_left_side_extra_options id="tagEdit" label="Edit" />	
+</s:SkinnableContainer>

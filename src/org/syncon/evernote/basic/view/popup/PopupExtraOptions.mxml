@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  height="100%" 
+					  xmlns:comps="org.syncon.comps.*" 
+					  backgroundColor="0xFFFFFF" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.views.IPopup"					  
+					  >
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.popups.views.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import sss.Shelpers.Shelpers.ShelpersUI;
+			import sss.Shelpers.Shelpers.other.TweenerHelpers;
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			public var dp : ArrayCollection =   new ArrayCollection
+			
+			public var creationComplete : Boolean = false; 
+			public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			public  function create(app:Object)  : IPopup
+			{
+				var popup : PopupExtraOptions = new PopupExtraOptions()
+				popup._popupCode =     PopupCode.Create( popup ,app ) 
+				return popup			
+			} 
+			
+			private var _popupCode :   PopupCode; 
+			public function get  popupCode () : PopupCode { return _popupCode  } 
+			public function set  popupCode ( _popupCode_ : PopupCode) : void {   _popupCode = _popupCode_  } 
+			
+			public function show(  )  : void
+			{
+				this.popupCode.open( false, false ) 
+			 
+			}
+			
+			private var menuSet : MenuAutomationVO;
+			
+			public function open( options : MenuAutomationVO, goTo : UIComponent)  : void
+			{
+				this.popupCode.open( false, false ) 
+				
+				this.popupCode.moveToComponent( goTo, 'bl', false ) 
+					
+				this.menuSet = options
+					
+				this.dp.removeAll()
+				for each ( var menu :  MenuVO in options.menuItems ) 
+				{
+					dp.addItem( menu)
+				}
+				this.list.dataProvider = dp; 
+			}			
+			
+			public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+ 
+
+
+			protected function list_changeHandler(event:IndexChangeEvent):void
+			{
+				this.menuSet.onClickIndex( event.newIndex )
+					this.hide();
+			}
+
+		]]>
+	</fx:Script>
+
+	
+	<s:Rect width="100%" height="100%" >
+		<s:stroke>
+			<s:SolidColorStroke color="0x607980" />
+		</s:stroke>
+	</s:Rect>
+	
+	<s:Rect top="2" right="2" bottom="2" left="2" >
+		<s:fill>
+			<s:SolidColor color="0xEDF6F7" />
+		</s:fill>
+	</s:Rect>
+		
+ 
+<s:List id="list" rollOverColor="0x607980"
+		 change="list_changeHandler(event)"
+		 selectionColor="0x607980"  labelField="name"
+		contentBackgroundColor="0xE6E6E6"
+ />	
+	
+</s:SkinnableContainer>

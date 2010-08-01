@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" 
+						  xmlns:mx="library://ns.adobe.com/flex/mx"  
+						  focusEnabled="true">
+
+	<fx:Script>
+		<![CDATA[
+			import com.evernote.edam.type.Note;
+			
+			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			private var _tags : ArrayCollection = new ArrayCollection()
+			public function set tags ( n :  ArrayCollection )  : void
+			{
+				this._tags.source = n.source; 
+				if ( this.list == null ) return;
+				this.list.dataProvider = this._tags
+			} 	
+			
+			public function set tagsArray ( n :  Array )  : void
+			{
+				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) ) 
+				/* this._tags.source = n; 
+				if ( this.list == null ) return;
+				this.list.dataProvider = this._tags */
+			} 			
+			
+			public var  updateNote :Note ;
+	 
+			public function onAdd() : void
+			{
+				if ( this.updateNote != null ) this.updateNote;				
+			}
+			public function onRemove() : void
+			{
+				if ( this.updateNote != null ) this.updateNote;
+			}			
+			
+			private var _draggable : Boolean = false;  
+			public function set draggable ( b : Boolean )  : void{
+				this._draggable = b
+			}
+		]]>
+	</fx:Script>
+
+	<s:List id="list" x="1"
+			borderVisible="false"   contentBackgroundAlpha="0.0"
+		   verticalCenter="0" width="100%"
+			itemRenderer="org.syncon.evernote.basic.view.tag_itemrenderer">
+		<s:layout>
+			<s:HorizontalLayout />
+		</s:layout>
+	</s:List>
+	
+</s:Group>

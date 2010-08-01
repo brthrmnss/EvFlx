@@ -43,7 +43,7 @@
 		</s:fill>
 	</s:Rect>
 	-->
- <s:VGroup width="100%">
+ <s:VGroup width="100%" gap="0">
 	 
 	<s:Group width="100%">
 		<s:Label fontSize="18" fontWeight="bold" text="Title"  id="txtTitle"/>

@@ -48,8 +48,11 @@ package  org.syncon.evernote.basic
 			mediatorMap.mapView(  right_side, RightSideMediator );		
 			mediatorMap.mapView(  list_editor, ListEditorMediator );		
 			mediatorMap.mapView(  top_links, TopLinksMediator );		
-			mediatorMap.mapView(  left_side, LeftSideMediator );					
+			mediatorMap.mapView(  left_side, LeftSideMediator );			
+			mediatorMap.mapView(  TagListAdjustable, TagListAdjustableMediator );						
+			mediatorMap.mapView(  util_left_side_extra_options, UtilsLeftSideExtraOptionsMediator );					
 			
+			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();
 			
 			
@@ -66,11 +69,11 @@ package  org.syncon.evernote.basic
 				
 			
 		}
-		
+		public var subContext :  EvernoteBasicPopupContext =  new EvernoteBasicPopupContext()
 		public function onInit()  : void
 		{
 			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
-			this.dispatchEvent( new Event( CreateDefaultDataCommand.LIVE_DATA ))
+			//this.dispatchEvent( new Event( CreateDefaultDataCommand.LIVE_DATA ))
 			
 		}
 	 

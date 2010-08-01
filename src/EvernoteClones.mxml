@@ -13,13 +13,13 @@
 
 	<mx:Script>
 		<![CDATA[
-			import com.hurlant.math.BigInteger;
+			//import com.hurlant.math.BigInteger;
 			
 			import mx.events.ResizeEvent;
 			private var creationComplete : Boolean = false; 
 			private function onCreationComplete() : void
 			{
-				var b :   BigInteger
+				//var b :   BigInteger
 				this.creationComplete = true	 
 				this.application1_resizeHandler(null)
 			}
