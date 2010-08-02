@@ -43,6 +43,7 @@ package org.syncon.evernote.basic.view
 			ui.addEventListener( 'clicked'+'Print', this.onPrintClicked ) 
 			ui.addEventListener( 'clicked'+'Save and Close', this.onSaveAndClose ) 				
 			
+			ui.addEventListener( 'getNoteTagNames', this.onGetNoteTagNames ) 
 			/*
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.SHOW_POPUP, onShowPopup );
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.HIDE_POPUP, onHidePopup);
@@ -51,6 +52,8 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchResult);	
 			
 			ui.list.notes = this.model.notes; 
+			
+			
 		}
 		private function onNewNote()  : Note
 		{
@@ -70,7 +73,7 @@ package org.syncon.evernote.basic.view
 			}
 			//ui.view.loading = true; 
 		}
-		
+
 		private function onNoteLoaded(note_:Note):void
 		{
 			this.note = note_; 			
@@ -80,6 +83,23 @@ package org.syncon.evernote.basic.view
 				noteTextConvertToTf ) )
 			//ui.view.loading = false; 
 		}
+		
+		
+		
+		private function onGetNoteTagNames(e:CustomEvent): void
+		{
+			var note_ : Note = e.data as Note
+			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNoteTagNames(
+				note_.guid, null
+			) )
+			
+			//ui.view.loading = true; 
+		}
+		private function onTagsLoaded(e:Event):void
+		{
+			//note.dispatchEenet( 'tagsUpdated' ) 
+		}
+						
 		
 		/**
 		 * Only occurs after note has been viewed ... 

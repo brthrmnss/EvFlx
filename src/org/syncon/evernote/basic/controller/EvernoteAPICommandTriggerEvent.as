@@ -622,6 +622,16 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}
 		
+		/**
+		 * Modified version that can dispatch events to note
+		 * */
+		static public function GetNoteTagNames2(note:Note, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
+		{
+			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES )
+			e.guid=note.guid; e.note = note; 
+			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
+			return e; 
+		}				
 		
 		
 	}

@@ -19,15 +19,33 @@
 				this.list.dataProvider = this._tags
 			} 	
 			
+			public var _tagNames : Array;
 			public function set tagsArray ( n :  Array )  : void
 			{
+				if ( n == null ) return; 
+				_tagNames = n; 
 				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) ) 
 				/* this._tags.source = n; 
 				if ( this.list == null ) return;
 				this.list.dataProvider = this._tags */
 			} 			
 			
-			public var  updateNote :Note ;
+			private var  _updateNote :Note ;
+			public function set updateNote ( n : Note )  : void
+			{
+				if ( this._updateNote != null ) 
+				{
+					this._updateNote.e.removeEventListener( 'updatedTags' , this.reload ) 
+				}
+				this._updateNote = n; 
+				this._updateNote.e.addEventListener( 'updatedTags' , this.reload ) 
+			}
+			
+			public function get updateNote () : Note 
+			{
+				return this._updateNote; 
+			}
+						
 	 
 			public function onAdd() : void
 			{
@@ -41,6 +59,12 @@
 			private var _draggable : Boolean = false;  
 			public function set draggable ( b : Boolean )  : void{
 				this._draggable = b
+			}
+			
+			
+			public function reload(e:Event):void
+			{
+				return;
 			}
 		]]>
 	</fx:Script>

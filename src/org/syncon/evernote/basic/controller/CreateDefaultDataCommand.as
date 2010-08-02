@@ -11,11 +11,13 @@ package  org.syncon.evernote.basic.controller
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
+	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.services.EvernoteService;
 	
 	public class CreateDefaultDataCommand extends Command
 	{
 		[Inject] public var apiModel:EvernoteAPIModel;
-		
+		[Inject] public var serivce:EvernoteService;
 		[Inject] public var event: Event;
 		static public var START : String = 'CreateDefaultDataCommand.START'
 		static public var LIVE_DATA : String = 'CreateDefaultDataCommand.LIVE_DATA'
@@ -35,15 +37,24 @@ package  org.syncon.evernote.basic.controller
 		{
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
-			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
+			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags()  ) ;		
+			
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( ) ) ;		
-			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags()  ) ;					
+				
+			this.serivce.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.onListTags ) 
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.ListTagsByNotebook( this. null ) ) ;			
 			import flash.utils.setTimeout; 
 			//setTimeout( this.authenticate, 1000 ) 
 			this.authenticate()
 		}
+		
+		public function onListTags(e:EvernoteServiceEvent):void
+		{
+			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
+			return; 	
+		}
+		
 		
 		private function authenticate()  : void
 		{
@@ -55,17 +66,17 @@ package  org.syncon.evernote.basic.controller
 			var notes : Array = []; 
 			var note : Note = new Note()
 			note.title = 'Note 1' 
-			note.tagNames = ['Tag1', 'Tag2', 'Tag3']
+			note.tagNames = ['.log', 'work', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )
 			notes.push( note ); note = new Note(); 
 			note.title = 'Note 2' 
-			note.tagNames = ['Tag1', 'Tag2', 'Tag3']
+			note.tagNames = ['job', 'Tag2', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )
 			notes.push( note ); note = new Note(); 	
 			note.title = 'Note 3' 
-			note.tagNames = ['Tag1', 'Tag2', 'Tag3']
+			note.tagNames = ['amazon', 'Tag2', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )		
 			notes.push( note ); note = new Note(); 

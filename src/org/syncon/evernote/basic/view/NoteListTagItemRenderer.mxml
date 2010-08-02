@@ -8,16 +8,23 @@
 		<![CDATA[
 			import com.evernote.edam.type.Note;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			private var note : Note = new Note()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
+				note = value as Note
 			 	this.adjustable.tagsArray = value.tagNames  
 				this.adjustable.updateNote = value as Note; 
+				if ( value.tagNames == null ) 
+				{
+					this.dispatchEvent( new CustomEvent('getNoteTagNames', note ) ) 
+				}
 			}  			
 		]]>
 	</fx:Script>
 
  
-	<view:TagListAdjustable id="adjustable" verticalCenter="0" horizontalCenter="0" />
+	<view:TagListAdjustable id="adjustable" verticalCenter="0" horizontalCenter="0" width="100%" />
 	
 </s:MXDataGridItemRenderer>

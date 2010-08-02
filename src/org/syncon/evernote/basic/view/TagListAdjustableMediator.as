@@ -9,6 +9,7 @@ package org.syncon.evernote.basic.view
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -31,15 +32,48 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchChanged);			
 			ui.list.notes = this.model.notes; 
 			*/
+			if ( ui._tagNames != null ) 
+				this.lookupTagNames( this.ui._tagNames ) ; 
 		}
 		private function onRemoveTag(e:CustomEvent): void
 		{
+			if ( this.ui.updateNote == null ) 
+			{
+				trace( ' need a note ' ) ; 
+				return
+			}
+			
+			
+			var noteCopy : Note = new Note()
+			noteCopy.guid = this.ui.updateNote.guid
+				
 			var tag :  Tag = e.data as Tag;
+			for each ( var guid :  String in  this.ui.updateNote.tagGuids )
+			{
+				if ( guid != tag.guid ) 
+					noteCopy.tagGuids.push( guid ) 
+			}
+		
+			this.dispatch( EvernoteAPICommandTriggerEvent.UpdateNote(noteCopy, tagRemoved, tagNoteRemoved) )
 			//this.model.currentNotebook( e.data as Notebook ) 
 		}		
+		
+		private function tagRemoved(e:Event): void
+		{
+			return;
+		}
+		private function tagNoteRemoved(e:Event): void
+		{
+			return; 
+		}		
+		
 		private function onGetGuids(e:CustomEvent): void
 		{
-			var result : Array = this.model.convertTagNamesToTags( e.data as Array ) 
+			this.lookupTagNames( e.data as Array )
+		}
+		public function lookupTagNames( tagNames : Array )  : void
+		{
+			var result : Array = this.model.convertTagNamesToTags(tagNames ) 
 			this.ui.tags = new ArrayCollection( result )  
 		}				
 		/*

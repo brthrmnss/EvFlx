@@ -786,7 +786,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			if ( this.event.note != null ) 
+			{
+				this.event.note.e.dispatchEvent( new Event( 'updatedTags' )  ) 
+			}
 			this.deReference()			
 		}		
 		private function getNoteTagNamesFaultHandler(e:EvernoteServiceEvent)  : void

@@ -3,6 +3,14 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
 					  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:view="org.syncon.evernote.basic.view.*"  >
+	
+	<fx:Metadata>
+		[Event(name="newTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="renameTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="deleteTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="removeFromAllNotes", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+		
+	</fx:Metadata>	
 	<fx:Script>
 		<![CDATA[
 			import com.evernote.edam.type.Notebook;
@@ -10,6 +18,7 @@
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
 			private var _tags : ArrayCollection = new ArrayCollection()
  			public function set tags ( n : ArrayCollection )  : void
@@ -35,7 +44,7 @@
 				ee.setupFlat( 
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
-					[null, null, null, null, null  ] ,
+					['newTag', 'renameTag', 'deleteTag', 'removeFromAllNotes'  ] ,
 					null, 
 					[true, true, true, true, true]
 					 )
@@ -45,6 +54,8 @@
 			
 			public function fxGo(n:String) : void
 			{
+				var selectedItem : Object = this.list.selectedItem
+				this.dispatchEvent( new CustomEvent( n, selectedItem, false ) ) 
 				return;
 			}
 
