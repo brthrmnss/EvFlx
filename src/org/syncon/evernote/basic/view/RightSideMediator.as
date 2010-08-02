@@ -89,8 +89,8 @@ package org.syncon.evernote.basic.view
 		private function onGetNoteTagNames(e:CustomEvent): void
 		{
 			var note_ : Note = e.data as Note
-			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNoteTagNames(
-				note_.guid, null
+			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNoteTagNames2(
+				note_, null
 			) )
 			
 			//ui.view.loading = true; 

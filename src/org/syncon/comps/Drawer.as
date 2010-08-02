@@ -22,11 +22,14 @@ package  org.syncon.comps {
 		[SkinPart(required="false")]
 		public var lblTitle:Label;		
 		
+		[SkinPart(required="false")]
+		public var lblTitleRight:Label;				
 		
 		public function Drawer()  
 		{
 			this.setStyle('backgroundColor', 0xE6E6E6)
 			this.label = this._label; 
+			this.rightLabel = this._rightLabel;
 			this.minHeight = 20
 		}
 		
@@ -81,5 +84,13 @@ package  org.syncon.comps {
 			if ( this.lblTitle != null ) 
 				this.lblTitle.text = s 
 		}
+		
+		private var _rightLabel : String = ''; 
+		public function set rightLabel( s : String ) : void
+		{
+			this._rightLabel = s
+			if ( this.lblTitleRight != null ) 
+				this.lblTitleRight.text = s 
+		}		
 	}
 }

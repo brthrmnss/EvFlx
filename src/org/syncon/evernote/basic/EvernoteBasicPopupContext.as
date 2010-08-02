@@ -9,8 +9,8 @@ package org.syncon.evernote.basic
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
-	import org.robotlegs.popups.controller.default_commands.*;
-	import org.robotlegs.popups.view.popups.default_popups.*;
+	import org.syncon.popups.controller.default_commands.*;
+	import org.syncon.popups.view.popups.default_popups.*;
 	import org.syncon.evernote.basic.view.popup.*;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.model.PopupModel;

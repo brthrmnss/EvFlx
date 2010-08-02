@@ -57,8 +57,13 @@
 				  skinClass.opened="org.syncon.comps.skins.Drawer2CloseButtonSkin" />
 		<s:Label id="lblTitle"  text="sdfddd" fontWeight="bold"  />		
 	</s:HGroup>
-	
-	<s:Rect left="0" right="0"  y="25" height="3" radiusX="0" includeIn="opened">
+	<s:HGroup height="25"   right="10" horizontalAlign="right"
+			  verticalAlign="middle" x="10">
+		
+		 
+		<s:Label id="lblTitleRight"  textAlign="right" text="" fontWeight="bold"  />		
+	</s:HGroup>
+	<s:Rect left="0" right="0"  y="25" height="1" radiusX="0" includeIn="opened">
 		<s:fill>
 			<s:SolidColor  color="#FFFFFF" />
 		</s:fill>

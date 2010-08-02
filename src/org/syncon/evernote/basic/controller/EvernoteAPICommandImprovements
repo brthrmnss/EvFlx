@@ -1,3 +1,19 @@
+sending data to fx in logical form is for laziness purposes, it will work great 
+need some type of tokens to idenitify who called who, external to command function
+idea:
+trigger event makes up own random number based on time / or date is fine
+has field for token data ( ike obj of remoting ) 
+command dispatches eventname + 'result' with new data for event. 
+[dispatch new event for result, with old token] 
+i3:
+dispatch commandEvent event from service's reuslt name
+ name(this is ok it never left service b4 ) 
+set token #, token data, sequence id
+only have to write 1x, pass the event to deference function 
+doesn't work b/c i can't dispatch this event from a command ... thatcn be recieved by another command ?
+so what does a command dispatch to? 
+
+
 package  org.syncon.evernote.basic.controller
 {
 	import com.evernote.edam.type.Note;
@@ -41,7 +57,7 @@ package  org.syncon.evernote.basic.controller
 			if ( retryCount > 3 ) 
 			{
 				trace(' failed to ' + this.event.type ) 
-				this.deReference( )
+				this.deReference()
 				return; 
 			}
 			if ( this.service.auth == null )
@@ -431,7 +447,7 @@ package  org.syncon.evernote.basic.controller
 					return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data)
 			//this.model.x = e.data
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		
 		private function onCreateLinkedNotebookFault(e:EvernoteServiceEvent)  : void
@@ -440,7 +456,7 @@ package  org.syncon.evernote.basic.controller
 				return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data)
 			this.onFault()
-			this.deReference(e)
+			this.deReference()
 		}
 */
 		
@@ -449,13 +465,13 @@ package  org.syncon.evernote.basic.controller
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			//this.model.remotingReady = true; 
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function authenticateFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			//if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}		
 		
 
@@ -464,325 +480,325 @@ package  org.syncon.evernote.basic.controller
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getSyncStateFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getSyncChunkResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getSyncChunkFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listNotebooksResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			this.apiModel.loadNotebooks( e.data as Array ) 
-			this.deReference(e)			
+			
+			this.deReference()			
 		}		
 		private function listNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getDefaultNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getDefaultNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listTagsResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			this.apiModel.loadTags( e.data as  Array )
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listTagsFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listTagsByNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listTagsByNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getTagResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getTagFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createTagResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createTagFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateTagResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateTagFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function untagAllResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function untagAllFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeTagResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeTagFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listSearchesResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listSearchesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getSearchResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getSearchFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createSearchResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createSearchFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateSearchResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateSearchFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeSearchResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeSearchFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function findNotesResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			this.apiModel.loadNotes( e.data.notes  as Array );
-			this.deReference(e)			
+			this.deReference()			
 		}		
 			private function findNotesFaultHandler(e:EvernoteServiceEvent)  : void
 			{
 				if ( seqId != this.service.getSequenceNumber()) return; 			
 				if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-				this.onFault(); this.deReference(e)
+				this.onFault(); this.deReference()
 			}
 		private function findNoteCountsResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function findNoteCountsFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNoteContentResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNoteContentFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNoteSearchTextResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNoteSearchTextFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNoteTagNamesResultHandler(e:EvernoteServiceEvent)  : void
 		{
@@ -794,403 +810,403 @@ package  org.syncon.evernote.basic.controller
 				event.note.tagNames = tags
 				this.event.note.e.dispatchEvent( new CustomEvent( 'updatedTags', event.note )  ) 
 			}
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNoteTagNamesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function deleteNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function deleteNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeNotesResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeNotesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeInactiveNotesResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeInactiveNotesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function copyNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function copyNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listNoteVersionsResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listNoteVersionsFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getNoteVersionResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getNoteVersionFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateResourceResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateResourceFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceDataResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceDataFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceByHashResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceByHashFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceRecognitionResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceRecognitionFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceAlternateDataResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceAlternateDataFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getResourceAttributesResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getResourceAttributesFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getAccountSizeResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getAccountSizeFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getAdsResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getAdsFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getRandomAdResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getRandomAdFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getPublicNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getPublicNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createSharedNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createSharedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listSharedNotebooksResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listSharedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeSharedNotebooksResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeSharedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function createLinkedNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function createLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function updateLinkedNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function updateLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function listLinkedNotebooksResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function listLinkedNotebooksFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function expungeLinkedNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function expungeLinkedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function authenticateToSharedNotebookResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function authenticateToSharedNotebookFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function getSharedNotebookByAuthResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function getSharedNotebookByAuthFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}
 		private function emailNoteResultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
-			this.deReference(e)			
+			this.deReference()			
 		}		
 		private function emailNoteFaultHandler(e:EvernoteServiceEvent)  : void
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
-			this.onFault(); this.deReference(e)
+			this.onFault(); this.deReference()
 		}		
 		
 		
@@ -1219,20 +1235,8 @@ package  org.syncon.evernote.basic.controller
 		/**
 		 * Clean up event handlers
 		 * */
-		private function deReference(e:Object=null) : void
+		private function deReference() : void
 		{
-			if ( e != null ) 
-			{
-				/*
-				var event_ :  EvernoteAPICommandResultEvent = 
-					new EvernoteAPICommandResultEvent( e.type, e.data, this.seqId, 
-							this.event.tokenData, this.event.tokenDate )
-				this.dispatch( event_ ) 
-					*/
-			}
-			
-			this.event.fxFault = null; this.event.fxSuccess = null; 
-			
 			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
 			//event.dereference()
 				

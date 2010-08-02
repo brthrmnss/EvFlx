@@ -6,7 +6,8 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  backgroundColor="0xFFFFFF" 
 					  creationComplete="onInit()" 
-					  implements="org.syncon.popups.views.IPopup"					  
+					  
+					  implements="org.syncon.popups.view.IPopup"					  
 					  >
 	
 	<fx:Declarations>
@@ -22,14 +23,13 @@
 			
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
 			import org.syncon.evernote.basic.vo.MenuVO;
-			import org.syncon.popups.views.IPopup;
+			import org.syncon.popups.view.IPopup;
 			
 			import spark.events.IndexChangeEvent;
 			
 			import sss.Shelpers.Shelpers.ShelpersUI;
 			import sss.Shelpers.Shelpers.other.TweenerHelpers;
 			import sss.Shelpers.Shelpers.ui.PopupCode;
-			
 			public var dp : ArrayCollection =   new ArrayCollection
 			
 			public var creationComplete : Boolean = false; 
@@ -37,6 +37,7 @@
 			{
 				this.creationComplete = true; 
 				this.popupCode.center()
+				this.addEventListener(MouseEvent.ROLL_OUT, this.onRollout ) 
 			}
 			
 			public  function create(app:Object)  : IPopup
@@ -72,6 +73,7 @@
 					dp.addItem( menu)
 				}
 				this.list.dataProvider = dp; 
+				this.list.height = (dp.length+1)*20
 			}			
 			
 			public function hide( ) : void
@@ -86,7 +88,11 @@
 				this.menuSet.onClickIndex( event.newIndex )
 					this.hide();
 			}
-
+	
+			protected function onRollout(e:Event):void
+			{
+				this.hide()
+			}
 		]]>
 	</fx:Script>
 

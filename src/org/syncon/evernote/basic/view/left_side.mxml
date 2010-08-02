@@ -123,10 +123,12 @@
 		</comps:Drawer>	
 		
 		<comps:Drawer id="drawer6_"  width="100%"
-					  label="Trash"   
+					  label="Trash"     
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="{this.drawer_.width}" />
+			<view:left_trash id="trash"  width="{this.drawer_.width}" />
+		<!--	<s:Label id="txtTrash" text="0"  right="0" top="0"/>
+			<s:Label id="txtTrash3" text="ssssssssssssssssssssssssssss"  right="0" top="-5"/>-->
 		</comps:Drawer>			
 		
 	</s:VGroup>

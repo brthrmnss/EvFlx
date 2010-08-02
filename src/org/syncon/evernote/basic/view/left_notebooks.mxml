@@ -11,7 +11,7 @@
 			private var _notebooks : ArrayCollection = new ArrayCollection()
 			public function set notebooks ( n : ArrayCollection )  : void
 			{
-				this._notebooks.source = n.source; 
+				this._notebooks.source = n.toArray(); 
 				var allNotebooksNotebok : Notebook = new Notebook
 				this._notebooks.addItem( allNotebooksNotebok ) 
 				allNotebooksNotebok.name = 'All Notebooks'

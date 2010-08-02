@@ -54,7 +54,8 @@
 				<s:SolidColorStroke color="0xd2d2d2" />
 			</s:stroke>
 		</s:Line>
-		<s:Button label="Edit" click="onClick(event)">
+		<s:Button label="Edit" click="onClick(event)"  
+				  skinClass="org.syncon.evernote.basic.view.skins.InvertedPyramidButtonSkin">
 <!--			<s:skinClass>
 				<s:Rect/>
 			</s:skinClass>-->

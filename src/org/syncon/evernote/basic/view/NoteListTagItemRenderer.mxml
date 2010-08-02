@@ -14,12 +14,12 @@
 				super.data = value; 
 				if (value== null)  return; 
 				note = value as Note
-			 	this.adjustable.tagsArray = value.tagNames  
+			 	this.adjustable.tagNamesArray = value.tagNames  
 				this.adjustable.updateNote = value as Note; 
-				if ( value.tagNames == null ) 
+				/* if ( value.tagNames == null ) 
 				{
 					this.dispatchEvent( new CustomEvent('getNoteTagNames', note ) ) 
-				}
+				} */
 			}  			
 		]]>
 	</fx:Script>

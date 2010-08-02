@@ -13,6 +13,7 @@ package  org.syncon.evernote.basic
 	import org.syncon.evernote.basic.controller.CreateDefaultDataCommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
@@ -41,6 +42,7 @@ package  org.syncon.evernote.basic
 			
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.SHOW_POPUP,   EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );				
 			EvernoteAPICommand.mapCommands( commandMap )
+			EvernoteAPIHelperCommand.mapCommands( commandMap )
 			// Services
 			//injector.mapSingletonOf( EvernoteService, IEvernoteService  )		
 			injector.mapSingleton( EvernoteService )

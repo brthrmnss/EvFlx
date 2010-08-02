@@ -144,5 +144,13 @@ package org.syncon.evernote.basic.model
 			return tags 
 		}
 		
+		private var _trashSize : int =0; 
+		public function get trashSize()  : int { return this._trashSize } 
+		public function set  trashCount( n : int )  : void
+		{
+			this._trashSize = n; 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, n ) ) 
+		}
+		
 	}
 }

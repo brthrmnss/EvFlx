@@ -2,6 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
+						   creationComplete="group1_creationCompleteHandler(event)"
 						  focusEnabled="true">
 
 	<fx:Script>
@@ -9,22 +10,41 @@
 			import com.evernote.edam.type.Note;
 			
 			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			private var _tags : ArrayCollection = new ArrayCollection()
+				
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.list.dataProvider = this._tags
+			}				
+				
 			public function set tags ( n :  ArrayCollection )  : void
 			{
 				this._tags.source = n.source; 
-				if ( this.list == null ) return;
-				this.list.dataProvider = this._tags
+				this._tags.refresh()				
 			} 	
 			
+			
 			public var _tagNames : Array;
-			public function set tagsArray ( n :  Array )  : void
+			/**
+			 * Tag names are set, replace them with the guids 
+			 * */
+			public function set tagNamesArray ( n :  Array )  : void
 			{
-				if ( n == null ) return; 
+				if ( n == null ||  n.length == 0 ) 
+				{	this._tags.removeAll();
+					return
+				} 
 				_tagNames = n; 
-				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) ) 
+	
+				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) )
+			/* 	
+				
+				this._tags.source = n; 
+				this._tags.refresh() */
 				/* this._tags.source = n; 
 				if ( this.list == null ) return;
 				this.list.dataProvider = this._tags */
@@ -39,6 +59,13 @@
 				}
 				this._updateNote = n; 
 				this._updateNote.e.addEventListener( 'updatedTags' , this.reload ) 
+					
+				if ( this._updateNote.tagNames == null ) 
+				{
+					this.dispatchEvent( new CustomEvent('getNoteTagNames', _updateNote ) ) 
+					this._updateNote.tagNames = []; // if user is quikcly scrolling do not redispatch 
+					
+				}
 			}
 			
 			public function get updateNote () : Note 
@@ -62,10 +89,16 @@
 			}
 			
 			
-			public function reload(e:Event):void
+			public function reload(e: CustomEvent):void
 			{
+				if ( e.data != this._updateNote ) 
 				return;
+				
+				if ( this._updateNote.tagNames.length > 0 ) 
+						trace('more than 1' ); 
+				this.tagNamesArray = this._updateNote.tagNames
 			}
+
 		]]>
 	</fx:Script>
 

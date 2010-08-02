@@ -69,6 +69,9 @@ package org.syncon.evernote.basic.view
 		
 		private function onGetGuids(e:CustomEvent): void
 		{
+			//var tagNames : Array = e.data as Array 
+			//if ( tagNames.length == 0 )
+				
 			this.lookupTagNames( e.data as Array )
 		}
 		public function lookupTagNames( tagNames : Array )  : void

@@ -29,7 +29,10 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_SAVED_SEARCHES, this.onRecievedSearches);		
 			eventMap.mapListener(eventDispatcher, 
-				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);		
+				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);	
+			eventMap.mapListener(eventDispatcher, 
+				EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, this.onTrashChanged);					
+			
 			//ui.list.notes = this.model.notes; 
 			if ( this.ui.tags != null )
 			this.ui.tags.tags = this.model.tags;
@@ -53,6 +56,11 @@ package org.syncon.evernote.basic.view
 			this.ui.listNotebooks.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
 		}				
 		
+		private function onTrashChanged(e:EvernoteAPIModelEvent) : void
+		{
+			this.ui.drawer6_.rightLabel    = this.model.trashSize.toString()
+			//	.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
+		}				
 		
 	}
 }

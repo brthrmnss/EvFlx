@@ -6,7 +6,7 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  backgroundColor="0xFFFFFF" 
 					  creationComplete="onInit()" 
-					  implements="org.syncon.popups.views.IPopup"					  
+					  implements="org.syncon.popups.view.IPopup"					  
 					  >
 	
 	<fx:Metadata> 
@@ -21,8 +21,6 @@
 		<![CDATA[
 			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
-			
-			import org.syncon.popups.views.IPopup;
 			
 			import sss.Shelpers.Shelpers.Shelpers;
 			import sss.Shelpers.Shelpers.ShelpersUI;

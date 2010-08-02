@@ -83,6 +83,9 @@ package   org.syncon.evernote.basic.controller
 		public var login : String;
 		public var password : String;		
 		
+		public var tokenData : Object; 
+		public var tokenDate : Number;
+				
 		public var authenticationToken : String;
 		public var afterUSN : int;
 		public var maxEntries : int;

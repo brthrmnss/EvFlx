@@ -12,6 +12,9 @@ package org.syncon.evernote.basic.model
 		public static const RECIEVED_SAVED_SEARCHES : String = 'recievedSavedSearches';		
 		public static const RECIEVED_NOTEBOOK_LIST : String = 'recievedNotebookList';				
 		
+		public static const TRASH_SIZE_CHANGED : String = 'trashSizeChanged';
+				
+		
 		public var data: Object;
 		
 		public function EvernoteAPIModelEvent(type:String, _data:Object = null)
