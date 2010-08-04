@@ -68,7 +68,7 @@
 			</s:HGroup>
 			<s:HGroup  verticalAlign="middle">
 				<s:Label text="Tags:" /><!-- <s:TextInput id="txtTags" />-->
-				<components:SearchInput id="txtTags" />
+				<components:SearchInput skinClass="brust.skins.SearchInputSkin" id="txtTags" />
 				<view:TagListAdjustable id="listTags" draggable="true" />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp" />

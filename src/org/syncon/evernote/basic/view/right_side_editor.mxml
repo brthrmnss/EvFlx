@@ -36,8 +36,10 @@
 			{
 				if ( str ==  'Save and Close' )
 				{
-					
-					this.dispatchEvent( new CustomEvent( 'clicked'+str, this.editor.txtContents.textFlow ) ) 
+					var note :   Object = {}; //new  Note()
+					note.title = this.editor.txtTitle.text
+					note.content = this.editor.txtContents.textFlow
+					this.dispatchEvent( new CustomEvent( 'clicked'+str, note ) ) 
 					return; 
 				}
 				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 

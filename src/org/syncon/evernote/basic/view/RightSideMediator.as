@@ -149,7 +149,8 @@ package org.syncon.evernote.basic.view
 		{
 			//ui.view.loading = true; 				
 		//	ui.view.note = this.note; 
-			var xml : XML = TextConverter.export(  e.data as TextFlow,  
+			this.note.title = e.data.title; 
+			var xml : XML = TextConverter.export(  e.data.content as TextFlow,  
 				TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
 			var ee :  TextConverter
 			var eee :   ConversionType
