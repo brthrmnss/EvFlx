@@ -9,8 +9,6 @@ package  org.syncon.evernote.basic.controller
 	import flash.utils.Timer;
 	
 	import mx.controls.Alert;
-	import mx.controls.DateField;
-	import mx.core.ClassFactory;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.CustomEvent;

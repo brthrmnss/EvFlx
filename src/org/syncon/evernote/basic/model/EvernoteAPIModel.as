@@ -14,10 +14,13 @@ package org.syncon.evernote.basic.model
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.controls.DateField;
+	import mx.core.ClassFactory;
 	import mx.core.UIComponent;
+	import mx.utils.ObjectUtil;
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
+	import org.syncon.evernote.model.Notebook2;
 
 	/**
 	 * Dispatched when ...
@@ -77,10 +80,31 @@ package org.syncon.evernote.basic.model
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.SEARCH_RESULT, e ) ) 
 		}		
 		
+		private function convert( r : Array, class_  : Class )  :  Array 
+		{
+			var arr: Array = []; 
+			var cf : ClassFactory = new ClassFactory(class_)
+			var ee : ObjectUtil
+			var props : Object = ObjectUtil.getClassInfo( r[0] ) 
+				
+			for each ( var o : Object in r ) 
+			{
+				var o2 :  Object =  cf.newInstance();
+				
+				for  each ( var prop :   QName in props.properties ) 
+				{
+					o2[prop.localName] = o[prop.localName] 
+				}
+				arr.push( o2 ) 
+			}
+			return arr; 
+		}
+		
 		public function loadNotebooks(e:Array)  : void
 		{
-			this.addAllTo( this._notebooks,  e  ) 
-			for each ( var n : Notebook in e ) 
+			var e2 : Array = convert( e, Notebook2 ) 
+			this.addAllTo( this._notebooks,  e2  ) 
+			for each ( var n : Notebook in e2 ) 
 			{
 				if ( n.defaultNotebook ) this._defaultNotebook = n; 
 			}
