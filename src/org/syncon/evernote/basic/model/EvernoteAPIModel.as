@@ -3,8 +3,6 @@
 */
 package org.syncon.evernote.basic.model
 {
-	import com.evernote.edam.type.Note;
-	import com.evernote.edam.type.Notebook;
 	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
@@ -20,6 +18,7 @@ package org.syncon.evernote.basic.model
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
+	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 
 	/**
@@ -70,6 +69,7 @@ package org.syncon.evernote.basic.model
 			{
 				trace( n.title + '||' + n.content )
 			}*/
+			e = convert( e,  Note2 ) 
 			this.addAllTo( this._notes,  e  ) 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, this._notes ) )
 		}
@@ -104,7 +104,7 @@ package org.syncon.evernote.basic.model
 		{
 			var e2 : Array = convert( e, Notebook2 ) 
 			this.addAllTo( this._notebooks,  e2  ) 
-			for each ( var n : Notebook in e2 ) 
+			for each ( var n : Notebook2 in e2 ) 
 			{
 				if ( n.defaultNotebook ) this._defaultNotebook = n; 
 			}
@@ -138,18 +138,18 @@ package org.syncon.evernote.basic.model
 			e.enableAutoUpdate()*/
 		}
 		
-		public var notebook : Notebook = new Notebook();
-		public var _defaultNotebook : Notebook = new Notebook();public function get defaultNotebook()  :  Notebook { return this._defaultNotebook }
+		public var notebook : Notebook2 = new Notebook2();
+		public var _defaultNotebook : Notebook2 = new Notebook2();public function get defaultNotebook()  :  Notebook2 { return this._defaultNotebook }
 		
-		public function currentNotebook( n : Notebook )  : void
+		public function currentNotebook( n : Notebook2 )  : void
 		{
 			this.notebook = n; 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.CURRENT_NOTEBOOK_CHANGED, n ) ) 
 		}
 		
-		public function createNewNote()  :   Note
+		public function createNewNote()  :  Note2
 		{
-			var note :  Note = new Note();
+			var note :  Note2 = new Note2();
 			note.title = 'Note Title'
 			note.notebookGuid = this.defaultNotebook.guid
 			

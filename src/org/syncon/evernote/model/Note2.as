@@ -5,9 +5,10 @@ package org.syncon.evernote.model
 	
 	import flash.events.IEventDispatcher;
 
-	[Event(name="cancel", type="flash.events.Event")] 		
-	[Event(name="save", type="flash.events.Event")] 	
-	public class Notebook2 extends  Notebook implements IEventDispatcher
+	[Event(name="changedTags", type="flash.events.Event")] 		
+	[Event(name="updated", type="flash.events.Event")] 	
+	
+	public class Note2 extends  Note implements IEventDispatcher
 	{
 		
 		import flash.events.Event;
@@ -50,7 +51,7 @@ package org.syncon.evernote.model
 		}
 				
 		
-		public function Notebook2()
+		public function Note2()
 		{
 		}
 		
