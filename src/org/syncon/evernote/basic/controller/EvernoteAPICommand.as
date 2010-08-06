@@ -8,6 +8,7 @@ package  org.syncon.evernote.basic.controller
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	
 	import org.robotlegs.mvcs.Command;
@@ -19,7 +20,12 @@ package  org.syncon.evernote.basic.controller
 	/**
 	 * Test quing of unauthenticated commands 
 	 * test defreserencing
+	 * Features
 	 * 
+	 * Won't call api commands until authentication receieved
+	 * can set 'result' on event, and will not call any function, just go 
+	 * straight to server
+	 * Can call result and fault functions
 	 * */
 	public class EvernoteAPICommand extends Command
 	{
@@ -604,7 +610,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			//add tag to new tags and push
+			var allTags : Array  = this.apiModel.tags.toArray()
+			allTags.push( e.data )
+			this.apiModel.loadTags( allTags ) 
 			this.deReference(e)			
 		}		
 		private function createTagFaultHandler(e:EvernoteServiceEvent)  : void
@@ -790,7 +799,11 @@ package  org.syncon.evernote.basic.controller
 			{
 				var tags : Array = (e.data as Array)
 				event.note.tagNames = tags
-				this.event.note.e.dispatchEvent( new CustomEvent( 'updatedTags', event.note )  ) 
+					
+				var result : Array = this.apiModel.convertTagNamesToTags( tags ) 
+				event.note.tags = new ArrayCollection( result )  
+				this.event.note.tagsUpdated()
+					//.dispatchEvent( new CustomEvent( 'updatedTags', event.note )  ) 
 			}
 			this.deReference(e)			
 		}		

@@ -11,6 +11,9 @@ package   org.syncon.evernote.basic.controller
 	
 	import flash.events.Event;
 	import flash.utils.ByteArray;
+	
+	import org.syncon.evernote.model.Note2;
+
 	/**
 	 * Maps note store of Evernote API
 	 * ui --> [ (model-->) command-trigger --> command  --> service 
@@ -103,7 +106,7 @@ package   org.syncon.evernote.basic.controller
 		public var withResourcesData : Boolean;
 		public var withResourcesRecognition : Boolean;
 		public var withResourcesAlternateData : Boolean;
-		public var note : Note;
+		public var note :  Note2;
 		public var noteGuids : Array;
 		public var noteGuid : String;
 		public var toNotebookGuid : String;
@@ -385,7 +388,7 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}
 		
-		static public function CreateNote(note:Note, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
+		static public function CreateNote(note:Note2, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.CREATE_NOTE )
 			e.note=note; 
@@ -393,7 +396,7 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}
 		
-		static public function UpdateNote(note:Note, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
+		static public function UpdateNote(note:Note2, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.UPDATE_NOTE )
 			e.note=note; 
@@ -628,7 +631,7 @@ package   org.syncon.evernote.basic.controller
 		/**
 		 * Modified version that can dispatch events to note
 		 * */
-		static public function GetNoteTagNames2(note:Note, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
+		static public function GetNoteTagNames2(note:Note2, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES )
 			e.guid=note.guid; e.note = note; 

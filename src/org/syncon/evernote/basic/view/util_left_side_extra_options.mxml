@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  useHandCursor="true" buttonMode="true"
+					  useHandCursor="true" buttonMode="true" click="onClick(event)" 
 					  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  >
 	<fx:Metadata>
@@ -54,7 +54,7 @@
 				<s:SolidColorStroke color="0xd2d2d2" />
 			</s:stroke>
 		</s:Line>
-		<s:Button label="Edit" click="onClick(event)"  
+		<s:Button label="Edit" click="onClick(event)"  minWidth="0" 
 				  skinClass="org.syncon.evernote.basic.view.skins.InvertedPyramidButtonSkin">
 <!--			<s:skinClass>
 				<s:Rect/>

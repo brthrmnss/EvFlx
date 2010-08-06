@@ -18,7 +18,7 @@
  
 	<s:Path data="M -5,0 L 5,0 L 0,-6  Z" horizontalCenter="0" rotation="0" verticalCenter="0">
 		<s:fill>
-			<s:SolidColor color="#CCCCCC" />
+			<s:SolidColor color="#CCCCCC"  color.over="#0"/>
 		</s:fill>
 	</s:Path>
 	

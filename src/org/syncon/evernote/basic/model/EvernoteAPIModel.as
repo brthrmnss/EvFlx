@@ -61,6 +61,8 @@ package org.syncon.evernote.basic.model
 		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
 		private var _tags :  ArrayCollection ; public function get tags () : ArrayCollection { return this._tags }
 		private var tagDict : Dictionary = new Dictionary(false)
+		private var tagGuidDict : Dictionary = new Dictionary(false)			
+		
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
 		
 		public function loadNotes(e:Array)  : void
@@ -100,6 +102,15 @@ package org.syncon.evernote.basic.model
 			return arr; 
 		}
 		
+		public function clone( to:Object, from :Object)  : void
+		{
+			var props : Object = ObjectUtil.getClassInfo( from ) 
+			for  each ( var prop :   QName in props.properties ) 
+			{
+				to[prop.localName] = from[prop.localName] 
+			}			
+		}
+		
 		public function loadNotebooks(e:Array)  : void
 		{
 			var e2 : Array = convert( e, Notebook2 ) 
@@ -115,9 +126,11 @@ package org.syncon.evernote.basic.model
 		{
 			this.addAllTo( this._tags,  e  ) 
 			this.tagDict = new Dictionary(true) 
+			tagGuidDict = new Dictionary(false)
 			for each ( var tag : Tag in this.tags ) 
 			{
 				this.tagDict[tag.name] = tag
+				this.tagGuidDict[tag.guid] = tag; 
 			}				
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_TAGS, e ) ) 
 		}			
@@ -159,7 +172,6 @@ package org.syncon.evernote.basic.model
 		public function convertTagNamesToTags( names :  Array )  : Array
 		{
 			var tags :  Array = []; 
-
 			for each ( var tagName : String in names ) 
 			{
 				if (  this.tagDict[tagName] != null ) 
@@ -167,6 +179,16 @@ package org.syncon.evernote.basic.model
 			}
 			return tags 
 		}
+		public function convertTagGuidsToTags( guids :  Array )  : Array
+		{
+			var tags :  Array = []; 
+			for each ( var tagGuid : String in guids ) 
+			{
+				if (  this.tagGuidDict[tagGuid] != null ) 
+					tags.push( this.tagGuidDict[tagGuid] ) 
+			}
+			return tags 
+		}		
 		
 		private var _trashSize : int =0; 
 		public function get trashSize()  : int { return this._trashSize } 

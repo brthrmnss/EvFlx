@@ -15,8 +15,9 @@
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
-			private var _note : Note = new Note()
-			public function set note ( n : Note) : void
+			import org.syncon.evernote.model.Note2;
+			private var _note : Note2 = new Note2()
+			public function set note ( n :  Note2) : void
 			{
 				this._note = n; 
 				this.viewer.note = n; 
@@ -35,7 +36,7 @@
 			}
 			public function onNew()  : void
 			{
-				this.note = new Note()
+				this.note = new Note2()
 			}
 		]]>
 	</fx:Script>

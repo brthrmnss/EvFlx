@@ -1,16 +1,13 @@
 package  org.syncon.evernote.basic.view.popup
 {
-	import com.evernote.edam.type.Note;
-	import com.evernote.edam.type.Notebook;
+	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
 	
-	import mx.collections.ArrayCollection;
-	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
-	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.basic.view.popup.PopupNewTag;
 	
 	public class PopupNewTagMediator extends Mediator
@@ -29,13 +26,33 @@ package  org.syncon.evernote.basic.view.popup
 			this.ui.addEventListener( 'cancel', this.onCancel )
 		}
 		
-		private function onSave(e:EvernoteAPIModelEvent) : void
+		private function onSave(e:Event) : void
 		{
+			var tag :   Tag = new Tag()
+			tag.name = this.ui.txtTagName.text
+			var ee :  EvernoteAPICommandTriggerEvent
+			this.dispatch( 
+				EvernoteAPICommandTriggerEvent.CreateTag( tag, this.onTagCreateResult, this.onTagCreateFault )
+				)
 			//this.ui.treeControl.dataProvider = e.data as ArrayCollection
 		}		
  
-		private function onCancel(e:EvernoteAPIModelEvent) : void
+		public function onTagCreateResult(e:Tag):void
+		{	
+			
+			this.ui.hide();
+			return;
+		}
+		
+		
+		public function onTagCreateFault(e:Tag):void
 		{
+			
+		}		
+		
+		private function onCancel(e:Event) : void
+		{
+			this.ui.hide();
 			//this.ui.listSavedSearches.dataProvider = e.data as ArrayCollection
 		}				
 	 

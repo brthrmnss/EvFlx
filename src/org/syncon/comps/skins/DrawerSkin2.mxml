@@ -39,6 +39,11 @@
 			</s:Parallel>
 			
 		</s:Transition>
+		
+		<s:Transition   >
+			<s:Move  duration="100" id="transitionx"  easer="{sineIn}"
+					 target="{this.headerBar}" xFrom="10" xTo="20" />
+		</s:Transition>
 	</s:transitions>
 
 	<!-- bg -->
@@ -48,7 +53,9 @@
 		</s:fill>
 	</s:Rect>
 
-	<s:HGroup height="25" verticalAlign="middle" x="10">
+	<s:HGroup height="25" verticalAlign="middle" x="10" 
+			  id="headerBar"
+			  useHandCursor="true" buttonMode="true">
 		
 		<s:Button id="openButton"   width="12" height="12"
 				  label=""

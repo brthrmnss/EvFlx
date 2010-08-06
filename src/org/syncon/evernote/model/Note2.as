@@ -4,12 +4,24 @@ package org.syncon.evernote.model
 	import com.evernote.edam.type.Notebook;
 	
 	import flash.events.IEventDispatcher;
+	
+	import mx.collections.ArrayCollection;
+	import mx.events.PropertyChangeEvent;
+	import mx.events.PropertyChangeEventKind;
 
+	
 	[Event(name="changedTags", type="flash.events.Event")] 		
 	[Event(name="updated", type="flash.events.Event")] 	
 	
+	
+	[Event(name="noteUpdated", type="flash.events.Event")] 		
+	[Event(name="noteTagsUpdated", type="flash.events.Event")] 		
+	
 	public class Note2 extends  Note implements IEventDispatcher
 	{
+		
+		static public var  NOTE_UPDATED : String = 'noteUpdated';
+		static public var  NOTE_TAGS_UPDATED : String = 'noteTagsUpdated'				
 		
 		import flash.events.Event;
 		import flash.events.EventDispatcher;
@@ -50,12 +62,49 @@ package org.syncon.evernote.model
 			return eventDispatcher.willTrigger(type);
 		}
 				
+ 
+		override public  function set created(created:  Number):void {
+			super.created = created
+			var date : Date = new Date()
+			date.setTime(   created )
+			//trace( 'created Note ' + created ) 
+			//var dbg : Array = [ date.date, date.month, date.fullYear];
+			this.createdAt = date; 
+		}		
+	 
+ 		public var createdAt : Date;
+		public var updatedAt : Date;		
+		 
+		
+		override public  function set updated(updated:  Number):void {
+			super.updated = updated
+			var date : Date = new Date()
+			date.setTime(   updated )
+			//trace( 'created Note ' + created ) 
+			//var dbg : Array = [ date.date, date.month, date.fullYear];
+			this.updatedAt = date; 
+		}		
+				
 		
 		public function Note2()
 		{
 		}
 		
-		/*[Bindable] 
-		public var name : String = '' ; */
+		//don't init this ...
+		public var tags : ArrayCollection = new ArrayCollection(); 
+		
+		public function noteUpdated() : void
+		{
+			this.dispatchEvent( new Event( NOTE_UPDATED ) )
+			this.dispatchEvent( new PropertyChangeEvent(PropertyChangeEventKind.UPDATE) ) 
+			dispatchEvent(new PropertyChangeEvent('nameChanged', 
+				false, false, PropertyChangeEventKind.UPDATE, 
+				'title', 'l', this.title, this));				
+		}
+		public function tagsUpdated() : void
+		{
+			this.dispatchEvent( new Event( NOTE_TAGS_UPDATED ) ) 
+			this.dispatchEvent( new PropertyChangeEvent(PropertyChangeEventKind.UPDATE) ) 
+		}		
 	}
 }

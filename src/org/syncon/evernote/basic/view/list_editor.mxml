@@ -7,22 +7,36 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import brust.components.SearchMode;
+			import brust.events.SearchInputEvent;
+			
 			import com.evernote.edam.type.Note;
 			import com.evernote.edam.type.Notebook;
+			
 			import flashx.textLayout.conversion.TextConverter;
+			
 			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.model.Note2;
+			import org.syncon.evernote.model.Notebook2;
+			
 			import spark.events.IndexChangeEvent;
 			
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
-
-			private var _note : Note = new Note()
-			public function get note () : Note { return this._note } 
+			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
+			
+			private var _note : Note2 = new Note2()
+			public function get note () : Note2 { return this._note } 
 			private var dirty : Boolean = false; 
-			public function set note ( n : Note) : void
+			public function set note ( n :  Note2) : void
 			{
 				this._note = n; 
 				this.txtTitle.text = this._note.title
 				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT )
+				
+				//this.selectedTags
+				this.listTags.tags = this.note.tags; 
+					
 				//this.dropdownNotebook.fselectedItem = this._note.notebookGuid; 
 				for each ( var notebook_  :  Notebook in this.dropdownNotebook.dataProvider ) 
 				{
@@ -43,14 +57,34 @@
 				this.note.notebookGuid = this.dropdownNotebook.selectedItem.guid
 			}
 
+			public function updateDropdownSize() : void{
+				var maxSize : Number = 0; 
+				for each ( var n :  Notebook2  in this.dropdownNotebook.dataProvider )
+				{
+					if ( maxSize < n.name.length ) 
+						maxSize = n.name.length; 
+				}
+				this.dropdownNotebook.width = maxSize * 8;
+			}
 			
 			public function conversionResult(str:String):void
 			{
 				this.txtContents.content  = TextConverter.importToFlow( str, 
 					TextConverter.TEXT_LAYOUT_FORMAT ) 
 			}
-						
 			
+
+			protected function txtTags_selectHandler(event:SearchInputEvent):void
+			{
+				this.txtTags.text = '';
+				if ( this.listTags.tags.getItemIndex( event.item ) != -1 ) 
+					return; 
+				//this.selectedTags.addItem( event.item ) 
+				this.listTags.tags.addItem( event.item )
+				this.txtTags.showPopUp()
+					
+			}
+
 		]]>
 	</fx:Script>
  
@@ -68,8 +102,14 @@
 			</s:HGroup>
 			<s:HGroup  verticalAlign="middle">
 				<s:Label text="Tags:" /><!-- <s:TextInput id="txtTags" />-->
-				<components:SearchInput skinClass="brust.skins.SearchInputSkin" id="txtTags" />
-				<view:TagListAdjustable id="listTags" draggable="true" />
+				<components:SearchInput
+					  select="txtTags_selectHandler(event)"
+					searchMode="{SearchMode.INFIX_SEARCH}"
+					dataProvider="{this.tags}" labelField="name" promptText="Search"
+					skinClass="brust.skins.SearchInputSkin" id="txtTags" />
+				<view:TagListAdjustable id="listTags"  
+										 liveManiuplation="false"
+										tags="{this.selectedTags}" draggable="true" />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp" />
 				

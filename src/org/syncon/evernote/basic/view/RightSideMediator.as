@@ -1,6 +1,7 @@
 package org.syncon.evernote.basic.view
 {
 	import com.evernote.edam.type.Note;
+	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
 	
@@ -16,6 +17,8 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
+	import org.syncon.evernote.model.Note2;
+	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 	
 	public class RightSideMediator extends Mediator
 	{
@@ -26,8 +29,12 @@ package org.syncon.evernote.basic.view
 		static public var StateEditor : String = 'edit'
 		static public var StateSearch : String = 'search'
 			
-		private var note : Note = new Note()
-			
+		private var note :  Note2 = new Note2()
+			/**
+			 * Refernce to note user selected from the list, this ensures the 
+			 * list is updated immedeatly 
+			 * */
+		private var clickedNote : Note2 = new Note2()
 		public function RightSideMediator()
 		{
 		} 
@@ -55,17 +62,19 @@ package org.syncon.evernote.basic.view
 			
 			
 		}
-		private function onNewNote()  : Note
+		private function onNewNote()  : Note2
 		{
 			
 			return this.model.createNewNote(); 
 		}
 		private function onNoteClicked(e:CustomEvent): void
 		{
-			var note_ : Note = e.data as Note
+			var note_ : Note2 = e.data as Note2
 			this.note = note_; 
+			
+			this.clickedNote= note_;
 			ui.currentState = StateView
-			ui.view.note = e.data as Note
+			ui.view.note = e.data as Note2
 			if ( note_.content == null )
 			{
 				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
@@ -74,9 +83,11 @@ package org.syncon.evernote.basic.view
 			//ui.view.loading = true; 
 		}
 
-		private function onNoteLoaded(note_:Note):void
+		private function onNoteLoaded(note_: Note):void
 		{
-			this.note = note_; 			
+			var note__ :  Note2 = new Note2()
+			this.model.clone( note__, note_ ) 
+			this.note = note__; 			
 			ui.view.note = this.note; 
 			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
 				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
@@ -88,7 +99,7 @@ package org.syncon.evernote.basic.view
 		
 		private function onGetNoteTagNames(e:CustomEvent): void
 		{
-			var note_ : Note = e.data as Note
+			var note_ :  Note2 = e.data as Note2
 			this.dispatch(   EvernoteAPICommandTriggerEvent.GetNoteTagNames2(
 				note_, null
 			) )
@@ -150,6 +161,18 @@ package org.syncon.evernote.basic.view
 			//ui.view.loading = true; 				
 		//	ui.view.note = this.note; 
 			this.note.title = e.data.title; 
+			
+			
+			this.note.tags = this.ui.edit.editor.listTags.tags
+			this.note.tagNames = []
+			this.note.tagGuids = []
+			for each ( var tag :   Tag in  this.ui.edit.editor.listTags.tags )
+			{
+				//if ( guid != tag.guid ) 
+				//	noteCopy.tagGuids.push( guid ) 
+				this.note.tagGuids.push( tag.guid )
+			}			
+			
 			var xml : XML = TextConverter.export(  e.data.content as TextFlow,  
 				TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
 			var ee :  TextConverter
@@ -179,11 +202,16 @@ package org.syncon.evernote.basic.view
 			
 			private function onNoteSaved( o:Object):void
 			{
-				//ui.currentState = StateView;
-				 return;
+				this.model.clone( this.clickedNote, this.note ) 
+				this.clickedNote.noteUpdated() 
+				this.clickedNote.tagsUpdated()
+				this.ui.list.list.list.dataProvider.refresh();
+				ui.currentState = RightSideMediator.StateList;
+				return;
 			}					
 			private function onNoteSavedFault( o:Object):void
 			{
+				this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 'Could not save note') )  
 				//ui.currentState = StateView;
 				return;
 			}					

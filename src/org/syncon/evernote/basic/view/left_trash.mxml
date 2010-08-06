@@ -29,8 +29,8 @@
 				ee.setupFlat( 
 					['Empty Trash'],
 					['Delete all items'],
-					['deleteAllItems' ] ,
 					null, 
+					['deleteAllItems' ] ,
 					[true]
 					 )
 				ee.fx = fxGo

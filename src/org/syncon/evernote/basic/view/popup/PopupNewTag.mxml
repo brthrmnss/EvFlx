@@ -37,7 +37,7 @@
 			public  function create(app:Object)  : IPopup
 			{
 				var popup : PopupNewTag = new PopupNewTag()
-				popup._popupCode =     PopupCode.Create( popup ,app ) 
+				popup._popupCode =  PopupCode.Create( popup ,app ) 
 				return popup			
 			} 
 			
@@ -48,6 +48,9 @@
 			public function show()  : void
 			{
 				this.popupCode.open( false, false ) 
+
+				this.txtTagName.text = ''; 
+				this.txtTagName.setFocus();				
 			}
 			public function hide( ) : void
 			{
@@ -92,7 +95,7 @@
 	 
 	<s:HGroup>
 		<s:Label fontWeight="bold" text="Tag name:" />
-		<s:TextInput />
+		<s:TextInput  id="txtTagName"/>
 	</s:HGroup> 
 	 <s:HGroup>
 		 <s:Button label="Cancel" id="btnCancel"  click="btnCancel_clickHandler(event)" />

@@ -549,7 +549,7 @@ public class SearchInput extends TextInput
         	return itemToLabel(item);
     } 
 	
-	private function showPopUp():void 
+	public function showPopUp():void 
 	{            
 		popUp.displayPopUp = true;
 		

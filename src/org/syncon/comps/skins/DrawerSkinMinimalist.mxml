@@ -18,6 +18,7 @@
 		<s:State name="normal" />
 		<s:State name="opened" />
 		<s:State name="disabled" />
+		<s:State name="hovered" />
 	</s:states>
 
 	<s:transitions>

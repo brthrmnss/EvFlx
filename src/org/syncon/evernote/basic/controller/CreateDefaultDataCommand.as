@@ -12,6 +12,7 @@ package  org.syncon.evernote.basic.controller
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.services.EvernoteService;
 	
 	public class CreateDefaultDataCommand extends Command
@@ -64,22 +65,22 @@ package  org.syncon.evernote.basic.controller
 		public function createStartData() : void
 		{
 			var notes : Array = []; 
-			var note : Note = new Note()
+			var note :  Note2 = new Note2()
 			note.title = 'Note 1' 
 			note.tagNames = ['.log', 'work', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )
-			notes.push( note ); note = new Note(); 
+			notes.push( note ); note = new Note2(); 
 			note.title = 'Note 2' 
 			note.tagNames = ['job', 'Tag2', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )
-			notes.push( note ); note = new Note(); 	
+			notes.push( note ); note = new Note2(); 	
 			note.title = 'Note 3' 
 			note.tagNames = ['amazon', 'Tag2', 'Tag3']
 			note.createdAt = this.newDate( '04/05/1992' )
 			note.updatedAt = this.newDate( '09/05/2005' )		
-			notes.push( note ); note = new Note(); 
+			notes.push( note ); note = new Note2(); 
 			this.apiModel.loadNotes( notes ) 
 				
 			var notebooks : Array = []

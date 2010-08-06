@@ -25,6 +25,7 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onNotebookResult);
 			this.ui.dropdownNotebook.dataProvider = this.model.notebooks 
+			this.ui.updateDropdownSize() 
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_TAGS, this.onTagsRecieved);
 			this.ui.tags  = this.model.tags 				
@@ -33,12 +34,13 @@ package org.syncon.evernote.basic.view
 		private function onNotebookResult(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.dropdownNotebook.dataProvider = new ArrayCollection( e.data as Array )
-			//this.ui.dropdownNotebook.
+			this.ui.updateDropdownSize() 
 		}
 		
 		private function onTagsRecieved(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.tags = new ArrayCollection( e.data as Array )
+			//this.ui
 		}
 				
 	 

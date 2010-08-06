@@ -38,9 +38,9 @@ package  org.syncon.evernote.basic.vo
 				var menu : MenuVO = new MenuVO( names[i])
 				//if ( tooltips != null ) menu.toolTip = tooltips[i]
 				if ( tooltips != null ) menu.toolTip = tooltips[i]
-				if ( fxs != null ) menu.toolTip = fxs[i]
-				if ( data != null ) menu.toolTip = data[i]
-				if ( enabled != null ) menu.toolTip = enabled[i]	
+				if ( fxs != null ) menu.fx = fxs[i]
+				if ( data != null ) menu.data = data[i]
+				if ( enabled != null ) menu.enabled = enabled[i]	
 				this.menuItems.push( menu )
 			}
 		}

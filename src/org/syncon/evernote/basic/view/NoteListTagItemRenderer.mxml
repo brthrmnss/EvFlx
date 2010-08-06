@@ -9,13 +9,15 @@
 			import com.evernote.edam.type.Note;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
-			private var note : Note = new Note()
+			import org.syncon.evernote.model.Note2;
+			private var note :  Note2 = new Note2()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				note = value as Note
-			 	this.adjustable.tagNamesArray = value.tagNames  
-				this.adjustable.updateNote = value as Note; 
+				note = value as Note2
+			 	//this.adjustable.tagNamesArray = note.tagNames  
+				this.adjustable.tags = note.tags; 
+				this.adjustable.updateNote = note; 
 				/* if ( value.tagNames == null ) 
 				{
 					this.dispatchEvent( new CustomEvent('getNoteTagNames', note ) ) 

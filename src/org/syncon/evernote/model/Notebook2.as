@@ -4,12 +4,12 @@ package org.syncon.evernote.model
 	import com.evernote.edam.type.Notebook;
 	
 	import flash.events.IEventDispatcher;
+	
 
-	[Event(name="cancel", type="flash.events.Event")] 		
-	[Event(name="save", type="flash.events.Event")] 	
+
 	public class Notebook2 extends  Notebook implements IEventDispatcher
 	{
-		
+			
 		import flash.events.Event;
 		import flash.events.EventDispatcher;
 		import flash.events.IEventDispatcher;   
@@ -53,6 +53,7 @@ package org.syncon.evernote.model
 		public function Notebook2()
 		{
 		}
+
 		
 		/*[Bindable] 
 		public var name : String = '' ; */

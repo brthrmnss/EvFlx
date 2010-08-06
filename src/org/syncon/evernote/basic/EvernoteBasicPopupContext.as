@@ -90,7 +90,7 @@ package org.syncon.evernote.basic
 		public function customContext() : void
 		{
 			mediatorMap.mapView( PopupNewTag , PopupNewTagMediator, null, false, false );	
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupNewTag, 'popup_new_tag' ) );
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupNewTag, 'popup_new_tag'  ) );
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup' ) );			
 			/*
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_loading, 'loading_popup', false ) );

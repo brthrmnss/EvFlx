@@ -9,8 +9,13 @@
 			
 			import mx.collections.ArrayCollection;
 			private var _notebooks : ArrayCollection = new ArrayCollection()
+				/**
+				 * Stores original notebooks array for quick retrieval
+				 * */
+			private var _rawNotebooks : ArrayCollection;
 			public function set notebooks ( n : ArrayCollection )  : void
 			{
+				this._rawNotebooks = n
 				this._notebooks.source = n.toArray(); 
 				var allNotebooksNotebok : Notebook = new Notebook
 				this._notebooks.addItem( allNotebooksNotebok ) 
@@ -19,12 +24,13 @@
 				if ( this.list == null ) return;				
 				this.list.dataProvider = _notebooks
 				
-				this.list.height = 20 * n.length;
+				this.list.height = 20 * _notebooks.length;
 			}
 			
 			protected function skinnablecontainer1_creationCompleteHandler(event:Event):void
 			{
-				this.notebooks = this._notebooks;
+				if ( this._rawNotebooks != null ) 
+					this.notebooks =  this._rawNotebooks 
 			}			
 		]]>
 	</fx:Script>

@@ -13,6 +13,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
+	import org.syncon.evernote.model.Note2;
 	
 	public class TagListAdjustableMediator extends Mediator
 	{
@@ -35,8 +36,13 @@ package org.syncon.evernote.basic.view
 			if ( ui._tagNames != null ) 
 				this.lookupTagNames( this.ui._tagNames ) ; 
 		}
+		/**
+		 * Assumes tags have already been retrieved
+		 * */
 		private function onRemoveTag(e:CustomEvent): void
 		{
+			if ( ui.liveManiuplation == false ) return; 
+			
 			if ( this.ui.updateNote == null ) 
 			{
 				trace( ' need a note ' ) ; 
@@ -44,25 +50,33 @@ package org.syncon.evernote.basic.view
 			}
 			
 			
-			var noteCopy : Note = new Note()
-			noteCopy.guid = this.ui.updateNote.guid
-				
+			var noteCopy :  Note2 = new Note2()
+			this.model.clone( noteCopy, this.ui.updateNote ) 
+			//noteCopy.guid = this.ui.updateNote.guid
+			//noteCopy.title = this.ui.updateNote.title;
+			noteCopy.tagGuids = []; 	
+			noteCopy.unsetContent()
+			noteCopy.unsetTagNames()
 			var tag :  Tag = e.data as Tag;
 			for each ( var guid :  String in  this.ui.updateNote.tagGuids )
 			{
 				if ( guid != tag.guid ) 
 					noteCopy.tagGuids.push( guid ) 
 			}
-		
-			this.dispatch( EvernoteAPICommandTriggerEvent.UpdateNote(noteCopy, tagRemoved, tagNoteRemoved) )
+			var dbg :  Array = [noteCopy.tagGuids]
+			this.dispatch( EvernoteAPICommandTriggerEvent.UpdateNote(noteCopy,
+				tagRemovedResult, tagRemovedFault ) )
 			//this.model.currentNotebook( e.data as Notebook ) 
 		}		
 		
-		private function tagRemoved(e:Event): void
+		private function tagRemovedResult(e: Note): void
 		{
+			var savedTag : Array = this.model.convertTagGuidsToTags( e.tagGuids )  
+			this.ui.updateNote.tags =  new ArrayCollection( savedTag )
+			this.ui.updateNote.tagsUpdated();
 			return;
 		}
-		private function tagNoteRemoved(e:Event): void
+		private function tagRemovedFault(e:Event): void
 		{
 			return; 
 		}		
