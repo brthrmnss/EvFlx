@@ -61,11 +61,32 @@
 		</s:stroke>
 	</s:Line>
 	
-	 <s:HGroup gap="10">
+	 <s:HGroup gap="10" >
 		 <!--<view:tag_lister width="350" id="lister" />-->
-		 <view:TagListAdjustable width="350" id="lister" />
-		 <view:note_attributes />
+		 <s:VGroup gap="0">
+			 <s:HGroup verticalAlign="middle"  height="25">
+				 <s:Label  text="Tags:" fontWeight="bold" />
+				 <view:TagListAdjustable  width="310" id="lister" />					 
+			 </s:HGroup>
+			 <s:Line width="350" >
+				 <s:stroke>
+					 <s:SolidColorStroke color="0xB5B5B5" />
+				 </s:stroke>
+			 </s:Line>			 
+		 </s:VGroup>
+		 <s:VGroup gap="0"  height="25">
+			 <s:Group >
+				 <view:note_attributes y="5"    />
+			 </s:Group>
+			
+			 <s:Line width="100%" >
+				 <s:stroke>
+					 <s:SolidColorStroke color="0xB5B5B5" />
+				 </s:stroke>
+			 </s:Line>	 			 
+		 </s:VGroup>
 	 </s:HGroup>
+ 
 	 
 	 <s:Scroller  id="scrolling">
 		 <s:Group>

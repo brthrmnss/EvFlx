@@ -74,12 +74,12 @@
 		</s:TileGroup>
 		<mx:LinkButton label="View Note History" paddingLeft="0" color="#6BA92F" />
 	</comps:Drawer>			
-	
+<!--	
 	<s:Line width="100%" >
 		<s:stroke>
 			<s:SolidColorStroke color="0xe6e6e6" />
 		</s:stroke>
 	</s:Line>
-	
+	-->
 <!--	<s:Label text="Note attributes:" fontWeight="bold" />-->
 </s:SkinnableContainer>

@@ -6,7 +6,7 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  backgroundColor="0xFFFFFF" 
 					  creationComplete="onInit()" 
-					  implements="org.syncon.popups.view.IPopup"					  
+					  implements="org.syncon.popups.view.IPopup" xmlns:popup="org.syncon.evernote.basic.view.popup.*"					  
 					  >
 	
 	<fx:Metadata> 
@@ -85,22 +85,22 @@
 	</s:Rect>
 		
  
- <s:VGroup>
-	<s:Label text="New Tag" />
-	 <s:Line left="0" right="0" >
-		 <s:stroke>
-			 <s:SolidColorStroke color="0x3DCCD9" />
-		 </s:stroke>
-	 </s:Line>
+ <s:VGroup paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10">
+	
+	 <popup:PopupHeader label="New Tag" padding="0"  width="100%"/>
 	 
 	<s:HGroup>
 		<s:Label fontWeight="bold" text="Tag name:" />
-		<s:TextInput  id="txtTagName"/>
+		<s:VGroup>
+			<s:TextInput  id="txtTagName" minWidth="{this.hgroup.width}" />
+			<s:HGroup id="hgroup">
+				<s:Button label="Cancel" id="btnCancel"  click="btnCancel_clickHandler(event)" />
+				<s:Button label="Save" id="btnSave" click="btnSave_clickHandler(event)" />		 
+			</s:HGroup>			
+		</s:VGroup>
+
+		
 	</s:HGroup> 
-	 <s:HGroup>
-		 <s:Button label="Cancel" id="btnCancel"  click="btnCancel_clickHandler(event)" />
-		 <s:Button label="Save" id="btnSave" click="btnSave_clickHandler(event)" />		 
-	 </s:HGroup>
  </s:VGroup>
 	
 	

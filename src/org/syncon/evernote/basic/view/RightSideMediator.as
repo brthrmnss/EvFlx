@@ -10,6 +10,7 @@ package org.syncon.evernote.basic.view
 	import flashx.textLayout.elements.TextFlow;
 	
 	import mx.collections.ArrayCollection;
+	import mx.core.UIComponent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
@@ -17,7 +18,9 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
+	import org.syncon.evernote.basic.vo.MenuAutomationVO;
 	import org.syncon.evernote.model.Note2;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 	
 	public class RightSideMediator extends Mediator
@@ -51,6 +54,9 @@ package org.syncon.evernote.basic.view
 			ui.addEventListener( 'clicked'+'Save and Close', this.onSaveAndClose ) 				
 			
 			ui.addEventListener( 'getNoteTagNames', this.onGetNoteTagNames ) 
+				
+			ui.addEventListener( 'clicked'+'Sort', this.onSort ) 								
+				
 			/*
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.SHOW_POPUP, onShowPopup );
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.HIDE_POPUP, onHidePopup);
@@ -156,6 +162,55 @@ package org.syncon.evernote.basic.view
 			this.updateContentText()
 		}
 		
+		private function onSort(e:CustomEvent):void
+		{
+			
+			var ee :  MenuAutomationVO = new MenuAutomationVO()
+			ee.setupFlat( 
+				['Created (newest first)',
+					'Created (oldest first)',
+					'Updated (newest first)',
+					'Updated (oldest first)'],
+				['Created (newest first)',
+					'Created (oldest first)',
+					'Updated (newest first)',
+					'Updated (oldest first)'],
+				null, 
+				['created+', 'created-', 'updated+', 'updated-' ] ,
+				[true, true, true, true]
+			)
+			ee.fx = onSortOption
+			var goTo : UIComponent = this.ui.list.menuButtons.list; //
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'utilsExtraOptionsPopup',[ ee, goTo, '', this.ui.stage.mouseX, this.ui.stage.mouseY ]  ) )  
+		}
+		
+		public function onSortOption(n:String) : void
+		{
+			if ( n == '' ) 
+			{
+				
+			}
+			else if ( n == '' ) 
+			{
+				
+			}
+			else if ( n == '' ) 
+			{
+				
+			}
+			else if ( n == '' ) 
+			{
+				
+			}			
+			 return;
+		}
+
+/*		
+		private function onSort(e:CustomEvent):void
+		{
+			
+		}		
+		*/
 		private function onSaveAndClose(  e:CustomEvent): void
 		{
 			//ui.view.loading = true; 				
@@ -174,7 +229,7 @@ package org.syncon.evernote.basic.view
 			}			
 			
 			var xml : XML = TextConverter.export(  e.data.content as TextFlow,  
-				TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
+			TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
 			var ee :  TextConverter
 			var eee :   ConversionType
 			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 

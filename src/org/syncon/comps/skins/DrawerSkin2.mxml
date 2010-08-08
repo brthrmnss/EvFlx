@@ -42,12 +42,12 @@
 		
 		<s:Transition   >
 			<s:Move  duration="100" id="transitionx"  easer="{sineIn}"
-					 target="{this.headerBar}" xFrom="10" xTo="20" />
+					 target="{this.headerBar}" xFrom="10" xTo="15" />
 		</s:Transition>
 	</s:transitions>
 
 	<!-- bg -->
-	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="6">
+	<s:Rect id="bg" left="0" right="0" top="0" bottom="0" radiusX="6">
 		<s:fill>
 			<s:SolidColor  id="bgRect" color="#CCCCCC" />
 		</s:fill>

@@ -16,9 +16,16 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
+			static public var NEW_TAG : String = 'newTag' ;
+			static public var SELECTED_TAG : String = 'selectedTag';
+			static public var RENAME_TAG : String = 'renameTag' ;
+			static public var DELETE_TAG : String = 'deleteTag';			
+			
 			private var _tags : ArrayCollection = new ArrayCollection()
  			public function set tags ( n : ArrayCollection )  : void
 			{
@@ -44,7 +51,7 @@
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
 					null, 
-					['newTag', 'renameTag', 'deleteTag', 'removeFromAllNotes'  ] ,
+					[NEW_TAG, RENAME_TAG,DELETE_TAG, 'removeFromAllNotes'  ] ,
 					[true, true, true, true, true]
 					 )
 				ee.fx = fxGo
@@ -58,6 +65,12 @@
 				return;
 			}
 
+
+			protected function list_changeHandler(event:ListEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(SELECTED_TAG, this.list.selectedItems ) ) 
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -67,8 +80,8 @@
 	</s:layout>
  
 	<mx:Tree id="list"  itemRenderer="org.syncon.evernote.basic.view.tagTreeRenderer"
-			 borderVisible="false" contentBackgroundAlpha="0" labelField="name"
-			  selectionColor="0x607980"
+			 borderVisible="false" contentBackgroundAlpha="0" labelField="name"  
+			  selectionColor="0x607980" change="list_changeHandler(event)" allowMultipleSelection="true"
 			  rollOverColor="0x598E52"
 			 width="{this.width}" />
 	

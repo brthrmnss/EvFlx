@@ -50,10 +50,13 @@ package  org.syncon.evernote.basic
 			mediatorMap.mapView(  right_side, RightSideMediator );		
 			mediatorMap.mapView(  list_editor, ListEditorMediator );		
 			mediatorMap.mapView(  top_links, TopLinksMediator );		
-			mediatorMap.mapView(  left_side, LeftSideMediator );			
+			mediatorMap.mapView(  left_side, LeftSideMediator );		
+			mediatorMap.mapView(  left_notebooks, LeftNotebooksMediator );					
 			mediatorMap.mapView(  left_tag, LeftTagMediator );					
 			mediatorMap.mapView(  TagListAdjustable, TagListAdjustableMediator );						
 			mediatorMap.mapView(  util_left_side_extra_options, UtilsLeftSideExtraOptionsMediator );					
+			mediatorMap.mapView(  search_bar, SearchBarMediator );				
+			mediatorMap.mapView(  header,  HeaderMediator );	
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();
@@ -77,7 +80,7 @@ package  org.syncon.evernote.basic
 		{
 			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 			this.dispatchEvent( new Event( CreateDefaultDataCommand.LIVE_DATA ))
-			
+			this.subContext.onInit(); 
 		}
 	 
  

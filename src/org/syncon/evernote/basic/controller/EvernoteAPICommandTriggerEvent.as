@@ -89,6 +89,16 @@ package   org.syncon.evernote.basic.controller
 		public var tokenData : Object; 
 		public var tokenDate : Number;
 				
+		/**
+		 * Controls retry count in case of timeout
+		 * if set to -1, will default to command's retrycount setting
+		 * */
+		public var retryCount : int = -1; 
+		/**
+		 * Stores current count of retries
+		 * */
+		public var currentAttempt : int = -1; 
+		
 		public var authenticationToken : String;
 		public var afterUSN : int;
 		public var maxEntries : int;

@@ -10,7 +10,6 @@
 		[Event(name="renameTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
 		[Event(name="deleteTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
 		[Event(name="removeFromAllNotes", type=" org.syncon.evernote.basic.model.CustomEvent")]				
-		
 	</fx:Metadata>	
 	<fx:Script>
 		<![CDATA[

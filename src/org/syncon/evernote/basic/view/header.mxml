@@ -1,8 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					  xmlns:s="library://ns.adobe.com/flex/spark"   width="100%"
+					  xmlns:s="library://ns.adobe.com/flex/spark"   width="100%" creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  skinClass="org.syncon.evernote.basic.view.skins.HeaderSkin"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" height="52">
+	
+	
+	<fx:Metadata>
+		[Event(name="search", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+	</fx:Metadata>	
+		
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.utils.SearchOnEnter;
+			
+			import spark.components.Button;
+			import spark.components.TextInput;
+			
+			static public var SEARCH : String = 'search';			
+			
+			[SkinPart(required="true")]
+			public var btnSearch:Button;		
+			[SkinPart(required="true")]
+			public var txtQuery:TextInput;					
+			
+			private var searchOnEnter : SearchOnEnter; 
+			
+			override protected function partAdded(partName:String, instance:Object):void
+			{
+				super.partAdded(partName, instance);
+				if( instance == btnSearch)
+				{
+					btnSearch.addEventListener(MouseEvent.CLICK, btnSearchClickHandler);
+				}
+				
+				if( instance == txtQuery)
+				{				
+					if ( this.searchOnEnter == null ) 
+						this.searchOnEnter = new SearchOnEnter( this.txtQuery, this.onSearch, this.txtQuery ) 
+					else
+						this.searchOnEnter.refresh( this.txtQuery, this.onSearch, this.txtQuery  ) 
+				}
+			}			
+			
+			protected function btnSearchClickHandler(e:Event)  : void
+			{
+				this.dispatchEvent( new CustomEvent( SEARCH, this.txtQuery.text ) ) 
+			}
+						
+
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//submit on enter to btnSearchClickHandler
+			}
+			public function onSearch() : void
+			{
+				this.btnSearchClickHandler(null)
+			}
+
+		]]>
+	</fx:Script>
 	
 	 
 

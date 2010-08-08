@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"   height="18"
+				autoDrawBackground="false" minHeight="18" creationComplete="itemrenderer1_creationCompleteHandler(event)"
+				useHandCursor="true"  buttonMode="true"
+				>
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import com.evernote.edam.type.Tag;
+			
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuVO;
+			[Bindable] public var tag :  Tag = new Tag();
+			private var txtLbl_1 : String = ''; 
+			private var txtLbl_2 : String = ''; 
+			//public var tagName : String = '';
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				tag = value as Tag
+				if ( tag.name.indexOf('***' ) != -1  ) // == null )
+				{
+					this.currentState = 'label'
+					txtLbl_2 = tag.name.toString().replace( '***', '' )
+					if ( this.txtLbl2 != null ) 
+						txtLbl2.text = txtLbl_2
+				}		
+				else
+				{
+					this.currentState = 'normal'	
+					txtLbl_1 = tag.name.toString();
+					if ( this.txtLbl != null ) 
+						txtLbl.text = txtLbl_1
+					
+				}
+				
+			} 
+			
+			
+
+			protected function skinnablecomponent1_clickHandler(event:MouseEvent):void
+			{
+				var e : CustomEvent = new CustomEvent( 'removeTag', this.tag ) 
+				this.dispatchEvent( e )
+			}
+
+
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if ( this.txtLbl != null ) 
+					txtLbl.text =  this.txtLbl_1
+				if ( this.txtLbl2 != null ) 
+					txtLbl2.text =  this.txtLbl_2
+			}
+
+
+			protected function creationComplete():void
+			{
+				itemrenderer1_creationCompleteHandler(null)
+			}
+
+		]]> 
+	</fx:Script> 
+	<fx:Declarations>
+		<s:SolidColorStroke  id="xColor"  color="#4C9EA8" pixelHinting="true"  weight="1.5" color.hovered="0" />
+	</fx:Declarations>
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+		<s:State name="label"/> 
+	</s:states> 
+
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.xColor, colorBgEllips, txtLbl]}" 
+							  duration="250" />
+		</s:Transition>
+	</s:transitions>
+ 
+	
+	<s:Group excludeFrom="label" height="18">
+	
+		<s:Rect id="bgStart"   height="18" 
+				left="0" right="0"   radiusX="8" radiusY="8"
+				>
+			<s:fill>
+				<s:SolidColor color="#369FAB"    />
+			</s:fill>
+			<!--
+			<s:stroke>
+				<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
+			</s:stroke>
+			-->
+		</s:Rect>
+<!--		
+	<s:Rect  
+			left="1" right="1" top="1" bottom="1" radiusX="8" radiusY="8"
+			>
+		<s:stroke>
+			<s:SolidColorStroke   color="#17464B" pixelHinting="true"   />
+		</s:stroke>
+	</s:Rect>	-->
+	<s:Group    x="5" click="skinnablecomponent1_clickHandler(event)"  verticalCenter="0"  >
+	
+		<s:Ellipse  width="10" height="10"  >
+			<s:fill>
+				<s:SolidColor id="colorBgEllips" color="0xA6C6D0"  color.hovered="#126778" />
+			</s:fill>
+		</s:Ellipse>
+		
+		<s:Line xFrom="-2" xTo="2" yFrom="-2" yTo="2"  
+				 id="graphicX"
+				verticalCenter="-.5" horizontalCenter="-.5"
+				stroke="{this.xColor}" />
+		<s:Line xFrom="-2" xTo="2" yFrom="2" yTo="-2"   
+				 stroke="{this.xColor}"
+				verticalCenter="-.5" horizontalCenter="-.5" />
+	</s:Group>
+		<s:Label id="txtLbl" text="Text" color="#FFFFFF" 
+				  verticalCenter="0.5" x="20" paddingRight="8" fontSize="10" creationComplete="creationComplete()"
+				 color.hovered="#0" />
+	</s:Group>
+	
+	<s:Group  includeIn="label"  height="100%">
+		<s:Label id="txtLbl2" text="Text" color="#437B86"  verticalCenter="2"
+				  paddingRight="2" fontSize="10"  creationComplete="creationComplete()"
+				 color.hovered="#FFFFFF" />		 
+	</s:Group>	
+	
+</s:ItemRenderer>

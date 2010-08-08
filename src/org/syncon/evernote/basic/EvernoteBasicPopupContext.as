@@ -9,13 +9,11 @@ package org.syncon.evernote.basic
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
-	import org.syncon.popups.controller.default_commands.*;
-	import org.syncon.popups.view.popups.default_popups.*;
 	import org.syncon.evernote.basic.view.popup.*;
 	import org.syncon.popups.controller.*;
+	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
- 	
-	import org.syncon.evernote.basic.view.popup.*;
+	import org.syncon.popups.view.popups.default_popups.*;
 	
 	public class EvernoteBasicPopupContext extends Context
 	{
@@ -75,33 +73,55 @@ package org.syncon.evernote.basic
 
 			// Services
 			// View
-
+			mediatorMap.mapView( popup_modal_bg , PopupModalMediator , null, true, true );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
 			
+
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_message, 'popup_alert' ) );
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_confirm, 'popup_confirm' ) );			
 
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS  ) );
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ADD_KEYBOARD_SHORTCUTS, 
 				'popup3', 89 ) ); //ctrl+Y			
-			this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_modal_bg' ) );	
+			//this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_modal_bg' ) );	
 		}
 		
 		public function customContext() : void
 		{
 			mediatorMap.mapView( PopupNewTag , PopupNewTagMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupNewTag, 'popup_new_tag'  ) );
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup' ) );			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup', false ) );
+			mediatorMap.mapView( PopupLogin , PopupLoginMediator, null, false, false );	
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 
+				true, false, true) );						
+			
+			mediatorMap.mapView( PopupLoading , PopupLoadingMediator, null, false, false );	
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLoading, 'popup_loading' ) );				
+			
 			/*
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_loading, 'loading_popup', false ) );
 			mediatorMap.mapView( popup_ticker_settings, PopupTickerSettingsMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_ticker_settings, 'ticker_settings_popup' ) );
 			*/
+			
+			
 		}
 		
 		public function onInit()  : void
 		{
+			 import flash.utils.setTimeout; 
+			// this.contextView.alpha = 0.3
+			//setTimeout( this.onInit2 , 2000 ) 
+			this._this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
 		}
+		public function onInit2()  : void
+		{
+			/*import flash.utils.setTimeout; 
+			setTimeout( this.onInit2 , 10000 )*/
+			this._this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
+			
+		}		
 		
+	 
 	}
 }

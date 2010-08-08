@@ -1,5 +1,6 @@
 package  org.syncon.comps {
 	import flash.events.Event;
+	import flash.events.EventPhase;
 	import flash.events.MouseEvent;
 	
 	import mx.core.UIComponent;
@@ -10,6 +11,7 @@ package  org.syncon.comps {
 	import spark.components.Label;
 	import spark.components.SkinnableContainer;
 	import spark.effects.Move;
+	import spark.primitives.Rect;
 
 	//[Style(name="backgroundColor", type="uint", format="Color", inherit="yes")]
 	[Style(name="headerBackgroundSkin", type="Class", inherit="no")]
@@ -33,6 +35,9 @@ package  org.syncon.comps {
 		public var headerBar:UIComponent;					
 		
 		[SkinPart(required="false")]
+		public var bg:Rect;			
+		
+		[SkinPart(required="false")]
 		public var transitionx:Move;					
 		
 		public function Drawer()  
@@ -44,10 +49,11 @@ package  org.syncon.comps {
 				
 			this.addEventListener(MouseEvent.ROLL_OVER, this.onRollOver ) 
 			this.addEventListener(MouseEvent.ROLL_OUT, this.onRollOut ) 			
-			//this.addEventListener(MouseEvent.CLICK, clickHandler);
-			//this.useHandCursor = true; 
-			//this.buttonMode = true; 				
-				
+			 
+			this.addEventListener(MouseEvent.CLICK, clickBgHandler);
+			this.useHandCursor = true; 
+			this.buttonMode = true; 	
+			
 		}
 		
 		public function onRollOver(e:Event): void
@@ -72,8 +78,36 @@ package  org.syncon.comps {
 			}
 		}
 
-		private function clickHandler(event:MouseEvent):void {
+		
+		private function clickBgHandler(event:MouseEvent):void {
 			//if ( event.bubbles ) return;
+			var items : Array =   [openButton,  this.lblTitleRight,  this.bg, this.skin]; 
+			var found : int = 0 
+			found = items.indexOf( event.target )
+			var found2 : int = 0 
+			found2 = items.indexOf( event.currentTarget )				
+			/*
+			if ( found == -1 )
+			return ;
+			*/
+			/*	
+			if ( found2 == -1 )
+			return ;
+			*/
+			/*	if ( event.eventPhase == EventPhase.BUBBLING_PHASE) 
+			return; */
+			if ( event.target == this.skin && event.localY > this.headerBar.height ) 
+				return;
+		/*	if ( event.currentTarget != this ) 
+				return;*/
+			/*	if ( found == -1 )
+			return ;	*/	
+			//if not in group above, ignore it
+			if ( found  == -1 )
+				return ;						
+			opened = !opened;
+		}		
+		private function clickHandler(event:MouseEvent):void {
 			opened = !opened;
 		}
 

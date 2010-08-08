@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
-					   creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					   creationComplete="onInit(event)"
 					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
+	
+	<fx:Metadata>
+		[Event(name="removedTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="changedNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+	</fx:Metadata>	
+	
 	<fx:Script>
 		<![CDATA[
-			import com.evernote.edam.type.Notebook;
 			
 			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.model.Notebook2;
+			
+			import spark.events.IndexChangeEvent;
+			
+			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';			
+			
 			private var _notebooks : ArrayCollection = new ArrayCollection()
 				/**
 				 * Stores original notebooks array for quick retrieval
@@ -17,7 +30,7 @@
 			{
 				this._rawNotebooks = n
 				this._notebooks.source = n.toArray(); 
-				var allNotebooksNotebok : Notebook = new Notebook
+				var allNotebooksNotebok :  Notebook2 = new Notebook2
 				this._notebooks.addItem( allNotebooksNotebok ) 
 				allNotebooksNotebok.name = 'All Notebooks'
 				allNotebooksNotebok; //notebook count
@@ -25,13 +38,53 @@
 				this.list.dataProvider = _notebooks
 				
 				this.list.height = 20 * _notebooks.length;
+				this.selectedNotebook = this._selectedNotebook; 
 			}
-			
-			protected function skinnablecontainer1_creationCompleteHandler(event:Event):void
+			private var creationComplete :Boolean = false; 
+			protected function onInit(event:Event):void
 			{
+				this.creationComplete = true
+
 				if ( this._rawNotebooks != null ) 
 					this.notebooks =  this._rawNotebooks 
+				
+				this.selectedNotebook = this._selectedNotebook; 
+				
 			}			
+			
+			private var _selectedNotebook  : Notebook2; 
+			/**
+			 * Sets the selected notebook and highlights it on the screen; 
+			 * */
+			public function set  selectedNotebook(e: Notebook2 )  : void
+			{
+				this._selectedNotebook = e; 
+				if ( this.creationComplete == false ) 
+						return; 
+
+								
+					//select ALL
+					if ( e == null ) 
+					{
+						if ( this._rawNotebooks == null ) 
+							return; 		//not ready  or loaded with dates				
+						this.list.selectedIndex = this._rawNotebooks.length
+						return; 
+					}				
+					
+					for  ( var i : int =0; i <  this.list.dataProvider.length; i++ )
+					{
+						var n : Notebook2 = this.list.dataProvider[i]
+						if (n == e ) 
+							this.list.selectedIndex = i;
+					}						
+			}
+
+			protected function notebookChangeHandler(e:IndexChangeEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGED_NOTEBOOK, e.currentTarget.selectedItem ) )
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -42,6 +95,6 @@
  
 	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0" width="100%" 
 			 selectionColor="0x36722E" rollOverColor="0x598E52"
-			 fontSize="10"  
+			 fontSize="10"   change="notebookChangeHandler(event)"
 			 labelField="name"/>
 </s:SkinnableContainer>

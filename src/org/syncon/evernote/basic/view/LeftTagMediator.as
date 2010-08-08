@@ -8,6 +8,7 @@ package org.syncon.evernote.basic.view
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.SearchEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -24,12 +25,18 @@ package org.syncon.evernote.basic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener( 'newTag', this.onNewTag )
+			ui.addEventListener( left_tag.NEW_TAG, this.onNewTag )
+			ui.addEventListener( left_tag.SELECTED_TAG, this.onSelectedTag )	
 		}
 	 
 		private function onNewTag(e:Event):void
 		{
 			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_new_tag'  ) )  			
+		}
+		
+		private function onSelectedTag(e:CustomEvent):void
+		{
+			this.dispatch( new SearchEvent( SearchEvent.SEARCH_TAGS_UPDATED, '', e.data as Array  ) ) 
 		}
 		
 	}

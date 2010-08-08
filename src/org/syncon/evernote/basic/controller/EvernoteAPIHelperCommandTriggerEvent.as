@@ -1,26 +1,16 @@
 package   org.syncon.evernote.basic.controller
 {
-	import com.evernote.edam.notestore.*;
-	import com.evernote.edam.notestore.NoteFilter;
-	import com.evernote.edam.notestore.NoteStore;
-	import com.evernote.edam.notestore.NoteStoreImpl;
-	import com.evernote.edam.type.*;
-	import com.evernote.edam.type.Notebook;
-	import com.evernote.edam.type.User;
-	import com.evernote.edam.userstore.AuthenticationResult;
 	
 	import flash.events.Event;
-	import flash.utils.ByteArray;
 	/**
-	 * Maps note store of Evernote API
-	 * ui --> [ (model-->) command-trigger --> command  --> service 
-	 * <wait/response> 
-	 * service --> command --> model ]--> ui
+	 * Helper Class, enables calling ofmethods that are not user friendly 
 	 * */
 	public class EvernoteAPIHelperCommandTriggerEvent extends Event
 	{
 		public static const GET_TRASH_ITEMS:String = 'trashItem';
-
+		public static const REMOVE_TAG:String = 'removeTag';
+		public static const ADD_TAG:String = 'addTag';
+		
 		public var fxSuccess : Function;
 		public var fxFault : Function; 
 		public var alert : Boolean = false
@@ -40,6 +30,21 @@ package   org.syncon.evernote.basic.controller
 			//e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
 			return e; 
 		}		
+		
+		
+		static public function AddTag( fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPIHelperCommandTriggerEvent
+		{
+			var e : EvernoteAPIHelperCommandTriggerEvent = new EvernoteAPIHelperCommandTriggerEvent( EvernoteAPIHelperCommandTriggerEvent.REMOVE_TAG	)			; 
+			return e; 
+		}		
+		
+		
+		static public function RemoveTag( fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPIHelperCommandTriggerEvent
+		{
+			var e : EvernoteAPIHelperCommandTriggerEvent = new EvernoteAPIHelperCommandTriggerEvent( EvernoteAPIHelperCommandTriggerEvent.ADD_TAG	)			; 
+			return e; 
+		}						
+		
 		
 	}
 }

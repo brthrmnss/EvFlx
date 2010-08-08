@@ -84,7 +84,7 @@
 			  width="{this.measureWidth_(this.width)}"  height="100%" >
 		
 		<comps:Drawer id="drawer_"  width="100%"
-					  label="Notebooks"   opened="false" 
+					  label="Notebooks"   opened="true" 
 					  backgroundColor="0xD5DFC6"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
@@ -100,7 +100,7 @@
 		</comps:Drawer>		
 		
 		<comps:Drawer id="drawer3_"  width="100%"
-					  label="Tags"     opened="true"
+					  label="Tags"     opened="false"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
 			<view:left_tag id="tags"  left="0" right="0" />

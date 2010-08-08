@@ -4,6 +4,7 @@
 package org.syncon.evernote.basic.model
 {
 	import com.evernote.edam.type.Tag;
+	import com.evernote.edam.userstore.AuthenticationResult;
 	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -18,6 +19,7 @@ package org.syncon.evernote.basic.model
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
+	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 
@@ -42,6 +44,11 @@ package org.syncon.evernote.basic.model
 	[Event(name="currentNotebookChanged", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
 	
 	/**
+	 * Dispatched when ...
+	 */
+	[Event(name="preferencesChanged", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
+		
+	/**
 	* keeps track of all popups cleans up
 	 * ensures stacking order respected
 	*/
@@ -64,6 +71,14 @@ package org.syncon.evernote.basic.model
 		private var tagGuidDict : Dictionary = new Dictionary(false)			
 		
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
+		
+		private var _preferences :  PreferencesVO = new PreferencesVO();
+		public function set preferences ( p : PreferencesVO )  : void
+		{
+			this._preferences = p; 
+			this.dispatch( new EvernoteAPIModelEvent( EvernoteAPIModelEvent.PREFERENCES_CHANGED, this._preferences ) )
+		}
+		public function get  preferences ( ) : PreferencesVO  { return this._preferences   }		
 		
 		public function loadNotes(e:Array)  : void
 		{
@@ -117,7 +132,10 @@ package org.syncon.evernote.basic.model
 			this.addAllTo( this._notebooks,  e2  ) 
 			for each ( var n : Notebook2 in e2 ) 
 			{
-				if ( n.defaultNotebook ) this._defaultNotebook = n; 
+				if ( n.defaultNotebook ){
+					this._defaultNotebook = n; 
+				//	this.currentNotebook(  n ) ; //do not set the current notebook to be teh default, it is 'all' by default 
+				}
 			}
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, e ) ) 
 		}	
@@ -196,6 +214,43 @@ package org.syncon.evernote.basic.model
 		{
 			this._trashSize = n; 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, n ) ) 
+		}
+		
+		public var blocking :  ArrayCollection = new ArrayCollection()
+		public var calls :  Dictionary = new Dictionary(true);
+		public function    loadingAdd( index : Object, name : String, blockingP : Boolean = false )  : void
+		{
+			calls[index] = name
+			if ( blockingP ) 
+				blocking.addItem( index ) 
+			 this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.LOADING_CHANGED  ) ) 
+		}
+		public function    loadingRemove( index : Object )  : void
+		{
+			delete calls[index] 
+			if ( this.blocking.getItemIndex( index) != -1 )
+				{ 
+					if ( this.blocking.length > 0 ) 
+						blocking.removeItemAt(  this.blocking.getItemIndex( index) )
+					
+				}
+			 this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.LOADING_CHANGED  ) ) 
+		}				
+		
+		public function authenticated(auth :  AuthenticationResult):void
+		{
+			this.preferences.username = auth.user.username; 
+			this.dispatch( new EvernoteAPIModelEvent(EvernoteAPIModelEvent.AUTHENTICATED ) )
+		}
+		
+		public function map( objs : Array, prop : String  ) : Array
+		{
+			var arr : Array = []; 
+			for each ( var j : Object in objs ) 
+			{
+				arr.push( j[prop] ) 
+			}
+			return arr 
 		}
 		
 	}

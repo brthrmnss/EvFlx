@@ -23,7 +23,9 @@ package org.syncon.evernote.basic.view
 		
 		private function onOpenMenu(e: CustomEvent) : void
 		{
-			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'utilsExtraOptionsPopup',[ e.data, this.ui.lblTxt]  ) )  
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 
+				'utilsExtraOptionsPopup',
+				[ e.data, this.ui.lblTxt, this.ui.lblTxt.text]  ) )  
 		}		
  
  

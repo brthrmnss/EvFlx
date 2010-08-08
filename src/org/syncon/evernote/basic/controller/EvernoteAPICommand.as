@@ -3,6 +3,7 @@ package  org.syncon.evernote.basic.controller
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
 	import com.evernote.edam.type.Tag;
+	import com.evernote.edam.userstore.AuthenticationResult;
 	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -33,16 +34,20 @@ package  org.syncon.evernote.basic.controller
 		[Inject] public var service: EvernoteService;
 		[Inject] public var event:EvernoteAPICommandTriggerEvent;
 		private var seqId : int = -1
-		private var timerTimeout : Timer = new Timer(3000)
+		private var timerTimeout : Timer = new Timer(4000)
 		private var debug : Boolean = true
 		private var alert : Boolean = false; 
 		private var notAuthenticatedRetryTimer : Timer;
-		private var retryCount : int = 0 ;
+		private var retryWaitForAuthenticationCount : int = 0 ;
+		/**
+		 * Max retry count for events
+		 * */
+		private var retryCount : int = 2 ;		
 		//private var unauthenticatedEventStore
 		
-		private function onRetry(e:TimerEvent):void
+		private function onRetry_WaitForAuthentication(e:TimerEvent):void
 		{
-			if ( retryCount > 3 ) 
+			if ( retryWaitForAuthenticationCount > 3 ) 
 			{
 				trace(' failed to ' + this.event.type ) 
 				this.deReference( )
@@ -50,7 +55,7 @@ package  org.syncon.evernote.basic.controller
 			}
 			if ( this.service.auth == null )
 			{
-				this.retryCount++;
+				this.retryWaitForAuthenticationCount++;
 				this.notAuthenticatedRetryTimer.start()
 				return; 
 			}
@@ -60,12 +65,13 @@ package  org.syncon.evernote.basic.controller
 		
 		override public function execute():void
 		{
+
 			//pre pocessing, if not authenticated store events, this is not a singleton ... mabe on model? 
 			//
 			if ( this.service.auth == null  && event.type != EvernoteAPICommandTriggerEvent.AUTHENTICATE   )
 			{
 				notAuthenticatedRetryTimer = new Timer(2000)
-				notAuthenticatedRetryTimer.addEventListener(TimerEvent.TIMER, this.onRetry )
+				notAuthenticatedRetryTimer.addEventListener(TimerEvent.TIMER, this.onRetry_WaitForAuthentication )
 				notAuthenticatedRetryTimer.start()
 				trace('not authenticated')
 				return;
@@ -84,6 +90,7 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.CREATE_LINKED_NOTEBOOK_FAULT, this.onCreateLinkedNotebookFault )
 			}
 			*/
+			this.checkOperations( true ) 
 			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
 			{
 				this.service.getAuth( event.login, event.password )
@@ -453,6 +460,7 @@ package  org.syncon.evernote.basic.controller
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			//this.model.remotingReady = true; 
+			this.apiModel.authenticated( e.data as AuthenticationResult ); 
 			this.deReference(e)			
 		}		
 		private function authenticateFaultHandler(e:EvernoteServiceEvent)  : void
@@ -1208,8 +1216,18 @@ package  org.syncon.evernote.basic.controller
 		
 		private function onTimeout(e:TimerEvent)  : void
 		{
-			this.deReference()
-			this.onFault()
+			this.deReference(null, false )
+			//this.onFault()
+
+			if ( event.currentAttempt > this.retryCount ) 
+			{
+				trace(' gave up ' + event.type + ' after ' + this.retryCount ) ; 
+				this.onFault()
+				return; 
+			}				
+				
+			event.currentAttempt++
+			this.dispatch( event ) 
 		}
 				
 		
@@ -1230,7 +1248,7 @@ package  org.syncon.evernote.basic.controller
 		/**
 		 * Clean up event handlers
 		 * */
-		private function deReference(e:Object=null) : void
+		private function deReference(e:Object=null, disposeEvent : Boolean = true) : void
 		{
 			if ( e != null ) 
 			{
@@ -1242,8 +1260,12 @@ package  org.syncon.evernote.basic.controller
 					*/
 			}
 			
-			this.event.fxFault = null; this.event.fxSuccess = null; 
-			
+			if ( disposeEvent ) 
+			{
+				this.event.fxFault = null; this.event.fxSuccess = null; 
+			}
+		 
+			this.checkOperations( false ) 
 			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
 			//event.dereference()
 				
@@ -1868,6 +1890,30 @@ package  org.syncon.evernote.basic.controller
 		*/
 		
 		/**
+		 * Notify model of current operations in progress
+		 * */
+		public function checkOperations( adding : Boolean = true )  : void
+		{
+			if ( adding ) 
+			{
+				var blocking : Boolean = false 
+				if ( [EvernoteAPICommandTriggerEvent.AUTHENTICATE, 
+					EvernoteAPICommandTriggerEvent.FIND_NOTES, 
+					EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES 
+				].indexOf(event.type) != -1 )  
+				{
+				blocking = true 
+				}
+	 			this.apiModel.loadingAdd( event, event.type , blocking ) 
+			}
+			else
+			{
+				this.apiModel.loadingRemove( event ) 
+			}
+		}
+		
+		
+		/**
 		 * Maps user store commands 
 		 * */
 		static public function mapCommands(commandMap :  Object) : void
@@ -1934,5 +1980,7 @@ package  org.syncon.evernote.basic.controller
 			
 		}
 			
+		
+		
 	}
 }

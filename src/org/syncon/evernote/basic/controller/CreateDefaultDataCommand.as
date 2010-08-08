@@ -11,6 +11,7 @@ package  org.syncon.evernote.basic.controller
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
+	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.services.EvernoteService;
@@ -59,6 +60,10 @@ package  org.syncon.evernote.basic.controller
 		
 		private function authenticate()  : void
 		{
+			var pref : PreferencesVO = new PreferencesVO()
+			pref.username = 'brthrmnss' 
+			pref.password = '12121212'; 
+			//this.apiModel.login(); 
 			this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 		}
 		

@@ -38,9 +38,9 @@
 		<s:Scroller verticalScrollPolicy="off" />
 		<view:top_links />
 		
-		<s:TextInput id="searchBar" />
+		<s:TextInput id="txtQuery" />
 		
-		<s:Button label="Search" />
+		<s:Button id="btnSearch" label="Search" />
 		
 	</s:Group>
 	
