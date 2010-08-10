@@ -96,7 +96,7 @@
 					  backgroundColor="0xA3D9E5"
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<view:left_notebooks  width="100%" />
+			<view:left_sharing   width="100%" />
 		</comps:Drawer>		
 		
 		<comps:Drawer id="drawer3_"  width="100%"
@@ -112,7 +112,7 @@
 					  label="Saved Searches"   
 					  skinClass="org.syncon.comps.skins.DrawerSkin2"		
 					  >
-			<s:List id="listSavedSearches"  width="{this.drawer4_.width}"/>
+			<view:left_searches id="listSavedSearches"  width="{this.drawer4_.width}"/>
 		</comps:Drawer>	
 
 		<comps:Drawer id="drawer5_"  width="100%"

@@ -57,5 +57,31 @@ package  org.syncon.evernote.basic.vo
 			}			
 		}
 		
+		public function disableAll( )  : void
+		{
+			for ( var i  : int = 0; i < this.menuItems.length; i++ )
+			{
+				var menu : MenuVO = this.menuItems[i]
+				menu.enabled = false
+			}
+		}
+		public function enableAll( )  : void
+		{
+			for ( var i  : int = 0; i < this.menuItems.length; i++ )
+			{
+				var menu : MenuVO = this.menuItems[i]
+				menu.enabled = true
+			}
+		}		
+		public function enableIndexes( indexs : Array  )  : void
+		{
+			for ( var i  : int = 0; i < indexs.length; i++ )
+			{
+				var index : int = indexs[i]
+				var menu : MenuVO = this.menuItems[i]
+				menu.enabled = true
+			}
+		}			
+		
 	}
 }

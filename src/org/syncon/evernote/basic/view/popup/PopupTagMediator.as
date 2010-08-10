@@ -8,14 +8,13 @@ package  org.syncon.evernote.basic.view.popup
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
-	import org.syncon.evernote.basic.view.popup.PopupNewTag;
 	
-	public class PopupNewTagMediator extends Mediator
+	public class PopupTagMediator extends Mediator
 	{
-		[Inject] public var ui:PopupNewTag;
+		[Inject] public var ui:PopupTagForm;
 		[Inject] public var model : EvernoteAPIModel;
 			
-		public function PopupNewTagMediator()
+		public function PopupTagMediator()
 		{
 		} 
 		
@@ -28,27 +27,55 @@ package  org.syncon.evernote.basic.view.popup
 		
 		private function onSave(e:Event) : void
 		{
+			
 			var tag :   Tag = new Tag()
+			
+		
 			tag.name = this.ui.txtTagName.text
+			
 			var ee :  EvernoteAPICommandTriggerEvent
-			this.dispatch( 
-				EvernoteAPICommandTriggerEvent.CreateTag( tag, this.onTagCreateResult, this.onTagCreateFault )
-				)
+			if ( this.ui.tag != null ) 
+			{
+				tag.guid = this.ui.tag.guid;
+				this.dispatch( 
+					EvernoteAPICommandTriggerEvent.UpdateTag( tag, this.onTagUpdatedResult, 
+						this.onTagUpdateFault )
+				)				
+			}
+			else
+			{
+				this.dispatch( 
+					EvernoteAPICommandTriggerEvent.CreateTag( tag, this.onTagCreateResult, 
+						this.onTagCreateFault )
+					)
+			}
 			//this.ui.treeControl.dataProvider = e.data as ArrayCollection
 		}		
  
 		public function onTagCreateResult(e:Tag):void
 		{	
-			
 			this.ui.hide();
 			return;
 		}
 		
-		
 		public function onTagCreateFault(e:Tag):void
 		{
-			
 		}		
+		
+		/**
+		 * Service returns numbers
+		 * */
+		public function onTagUpdatedResult(e: Number):void
+		{	
+			this.ui.tag.name = this.ui.txtTagName.text; 
+			this.ui.tag.tagUpdated(); 
+			this.ui.hide();
+			return;
+		}
+		
+		public function onTagUpdateFault(e:Tag):void
+		{
+		}			
 		
 		private function onCancel(e:Event) : void
 		{

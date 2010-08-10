@@ -59,6 +59,7 @@
 			}
 			
 			[Bindable] public var xOffset : Number = 0; 
+			[Bindable] public var rightOffset : Number = 0; 			
 		]]>
 	</fx:Script>
 	
@@ -72,7 +73,8 @@
 			<s:HorizontalLayout />
 			-->
 		 
-			<utils:FlowLayout2 xOffset="{xOffset}" gap="10" paddingLeft="10" border="0" /> 
+			<utils:FlowLayout2 xOffset="{xOffset}" rightOffset="{rightOffset}" 
+						 gap="10" paddingLeft="0" border="0" /> 
 			 
 		</s:layout>
 	</s:List>

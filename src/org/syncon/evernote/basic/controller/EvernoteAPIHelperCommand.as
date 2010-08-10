@@ -17,11 +17,15 @@ package  org.syncon.evernote.basic.controller
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.model.Notebook2;
+	import org.syncon.evernote.model.Tag2;
 	import org.syncon.evernote.services.EvernoteService;
 
 	/**
 	 * Test quing of unauthenticated commands 
 	 * test defreserencing
+	 * 
+	 * needs to call success fx on events ... 
 	 * 
 	 * */
 	public class EvernoteAPIHelperCommand extends Command
@@ -49,6 +53,14 @@ package  org.syncon.evernote.basic.controller
 				//this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
 				//this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
 			}				
+			if ( event.type == EvernoteAPIHelperCommandTriggerEvent.GET_ALL_NOTEBOOK_COUNTS ) 
+			{
+				  filter  = new NoteFilter(); 
+				this.dispatch( EvernoteAPICommandTriggerEvent.FindNoteCounts( filter ,
+					true, onGetNoteCounts ) ) 
+			}				
+						
+			
 				
 		}
  
@@ -68,6 +80,46 @@ package  org.syncon.evernote.basic.controller
 			this.apiModel.trashCount = size;
 			return;
 		}				
+
+		/**
+		 * Copy counts to note and update note
+		 * */
+		private function onGetNoteCounts(e: NoteCollectionCounts )  : void
+		{
+			var size : int =0  ; 
+			var dict : Dictionary = e.notebookCounts
+			for each ( var nb :  Notebook2 in this.apiModel.notebooks   ) 
+			{
+				/*for ( var nb_guid : Object in e.notebookCounts ) 
+				{
+					if ( nb_guid == 
+				}*/
+				if ( e.notebookCounts[nb.guid] != null ) 
+				{
+					nb.noteCount = e.notebookCounts[nb.guid]
+					size += e.notebookCounts[nb.guid]
+					nb.notebookUpdated()
+				}
+				
+			}
+			this.apiModel.noteCount = size; 
+			//let the all notebook count update ...
+			this.apiModel.loadNotebooks( this.apiModel.notebooks.toArray() );//
+			for each ( var t : Tag2 in this.apiModel.tags ) 
+			{
+				if ( e.tagCounts[t.guid] != null ) 
+				{
+					t.noteCount = e.tagCounts[t.guid] ;
+					t.tagUpdated();
+					//nb.noteCount = e.notebookCounts[nb.guid]
+				}
+			}			
+			
+			
+			
+			return;
+		}				
+		
 		
 		private function haveNotes(e:EvernoteAPICommandResultEvent)  : void
 		{
@@ -129,7 +181,8 @@ package  org.syncon.evernote.basic.controller
 		static public function mapCommands(commandMap :  Object) : void
 		{
 			commandMap.mapEvent(EvernoteAPIHelperCommandTriggerEvent.GET_TRASH_ITEMS, EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );			
-  
+			commandMap.mapEvent(EvernoteAPIHelperCommandTriggerEvent.GET_ALL_NOTEBOOK_COUNTS, EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );			
+			
 		}
 			
 	}

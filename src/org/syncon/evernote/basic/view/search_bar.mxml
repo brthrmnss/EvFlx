@@ -7,7 +7,9 @@
 	
 	<fx:Metadata>
 		[Event(name="removedTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
-		[Event(name="changedNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+		[Event(name="changedNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]			
+		[Event(name="clearSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]					
+		[Event(name="saveSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]								
 	</fx:Metadata>	
 	<!--
 	<s:states>
@@ -43,9 +45,13 @@
 			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';
 			static public var REMOVED_TAG : String = 'removedTag'				;
 			static public var CHANGED_ALL_OR_ANY : String = 'changedAllOrAny';
-				
+			static public var CLEAR_SEARCH : String = 'clearSearch';
+			static public var SAVE_SEARCH : String = 'saveSearch';			
+			
 			[SkinPart(required="true")]
 			public var btnSearch:Button;	
+			[SkinPart(required="false")]
+			public var btnClear:Button;	
 			
 			[SkinPart(required="true")]
 			public var lblShowing:Label;	
@@ -73,7 +79,10 @@
 				{
 					btnSearch.addEventListener(MouseEvent.CLICK,header_clickHandler);
 				}
-				
+				if( instance == btnClear)
+				{
+					btnClear.addEventListener(MouseEvent.CLICK,btnClear_clickHandler);
+				}
 				if( instance == dropdownNotebooks)
 				{
 					dropdownNotebooks.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ; 
@@ -83,10 +92,13 @@
 					dropdownAllOrAny.addEventListener(IndexChangeEvent.CHANGE, this.allOrAnyListChanged ) ; 
 				}				
 			}			
-			
+			protected function btnClear_clickHandler(e:MouseEvent) : void
+			{
+				this.dispatchEvent( new CustomEvent( search_bar.CLEAR_SEARCH ) ) 
+			}
 			protected function header_clickHandler(e:Event)  : void
 			{
-				
+				this.dispatchEvent( new CustomEvent( search_bar.SAVE_SEARCH ) ) 
 			}
 			
 			private var _notebooks : ArrayCollection = new ArrayCollection()

@@ -10,6 +10,7 @@ package org.syncon.evernote.basic
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
 	import org.syncon.evernote.basic.view.popup.*;
+	import org.syncon.evernote.basic.view.popup.default_popups.popup_confirm;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
@@ -76,9 +77,10 @@ package org.syncon.evernote.basic
 			mediatorMap.mapView( popup_modal_bg , PopupModalMediator , null, true, true );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
 			
-
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_message, 'popup_alert' ) );
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_confirm, 'popup_confirm' ) );			
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				org.syncon.evernote.basic.view.popup.default_popups.popup_confirm, 'popup_confirm' ) );			
 
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS  ) );
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ADD_KEYBOARD_SHORTCUTS, 
@@ -88,8 +90,12 @@ package org.syncon.evernote.basic
 		
 		public function customContext() : void
 		{
-			mediatorMap.mapView( PopupNewTag , PopupNewTagMediator, null, false, false );	
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupNewTag, 'popup_new_tag'  ) );
+			mediatorMap.mapView( PopupTagForm , PopupTagMediator, null, false, false );	
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupTagForm, 'popup_tag_form'  ) );
+			
+			mediatorMap.mapView( PopupNotebookForm , PopupNotebookMediator, null, false, false );	
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupNotebookForm, 'popup_notebook_form'  ) );			
+			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup', false ) );
 			mediatorMap.mapView( PopupLogin , PopupLoginMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 

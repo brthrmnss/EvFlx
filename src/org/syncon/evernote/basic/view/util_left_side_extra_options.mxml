@@ -14,6 +14,7 @@
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
 			private var lbl : String = ''; 
+			[Bindable] public var popupColor :   Object = -1; 
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub

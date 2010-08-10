@@ -25,7 +25,7 @@ package org.syncon.evernote.basic.view
 		{
 			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 
 				'utilsExtraOptionsPopup',
-				[ e.data, this.ui.lblTxt, this.ui.lblTxt.text]  ) )  
+				[ e.data, this.ui.lblTxt, this.ui.lblTxt.text, -1,-1,this.ui.popupColor]  ) )  
 		}		
  
  

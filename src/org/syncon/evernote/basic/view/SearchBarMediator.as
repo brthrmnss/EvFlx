@@ -29,7 +29,8 @@ package org.syncon.evernote.basic.view
 		{
 			ui.addEventListener(search_bar.CHANGED_NOTEBOOK, this.onChangedNotebookFilter ) 
 			ui.addEventListener(search_bar.REMOVED_TAG, this.onRemovedTag ) 			
-			ui.addEventListener(search_bar.CHANGED_ALL_OR_ANY, this.onChangeAnyOrAllHandler ) 							
+			ui.addEventListener(search_bar.CHANGED_ALL_OR_ANY, this.onChangeAnyOrAllHandler )
+			ui.addEventListener(search_bar.CLEAR_SEARCH, this.onClearSearchHandler ) 						
 			this.model.eventDispatcher.addEventListener(
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);	
 			eventMap.mapListener(eventDispatcher, 
@@ -74,6 +75,11 @@ package org.syncon.evernote.basic.view
 			this.loadSearch()
 		}
 			
+		private function onClearSearchHandler(e:CustomEvent):void
+		{
+			//456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg
+			this.clearSearch();
+		}
 		
 		
 		private function loadSearch()  : void

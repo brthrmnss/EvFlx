@@ -1,5 +1,6 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.notestore.NoteFilter;
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
 	import com.evernote.edam.type.Tag;
@@ -40,8 +41,10 @@ package  org.syncon.evernote.basic.controller
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags()  ) ;		
-			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( ) ) ;		
+			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( this.onListNotebooks ) ) ;		
+			
 			this.serivce.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.onListTags ) 
+				
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.ListTagsByNotebook( this. null ) ) ;			
 			this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetTrash( ) ) ;	
@@ -56,7 +59,14 @@ package  org.syncon.evernote.basic.controller
 			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
 			return; 	
 		}
-		
+		/**
+		 * when recieve notes, update their count; 
+		 * */
+		private function onListNotebooks(e: Array):void
+		{
+			this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( )) ;		
+			return;
+		}
 		
 		private function authenticate()  : void
 		{

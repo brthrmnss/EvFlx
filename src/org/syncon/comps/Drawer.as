@@ -56,14 +56,18 @@ package  org.syncon.comps {
 			
 		}
 		
-		public function onRollOver(e:Event): void
+		public function onRollOver(e : MouseEvent): void
 		{
-			if ( this.transitionx != null ) this.transitionx.play()
+			//if ( this.transitionx != null ) this.transitionx.play()
+			//nderlnie if less than header value 
+			if ( this.headerBar != null && e.localY < (this.headerBar.y+this.headerBar.height)  ) //only on the header bar
+				this.lblTitle.setStyle('textDecoration', 'underline' ) ; 
 		}
 		public function onRollOut(e:Event) : void
 		{
-			if ( this.transitionx != null ) this.transitionx.play(null, true)
+			//if ( this.transitionx != null ) this.transitionx.play(null, true)
 			//this.currentState = 'normal'
+			this.lblTitle.setStyle('textDecoration', 'none' ) ; 
 		}
 		
 		

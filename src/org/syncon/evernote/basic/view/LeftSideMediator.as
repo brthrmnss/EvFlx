@@ -39,9 +39,9 @@ package org.syncon.evernote.basic.view
 			//ui.list.notes = this.model.notes; 
 			if ( this.ui.tags != null )
 			this.ui.tags.tags = this.model.tags;
-			this.ui.listSavedSearches.dataProvider = this.model.savedSearches; 
-			if ( this.ui.listNotebooks != null )			
-			this.ui.listNotebooks.notebooks = this.model.notebooks		
+			if ( this.ui.listSavedSearches != null )			
+			this.ui.listSavedSearches.notebooks = this.model.savedSearches; 
+
 		}
 		
 		
@@ -59,11 +59,13 @@ package org.syncon.evernote.basic.view
  
 		private function onRecievedSearches(e:EvernoteAPIModelEvent) : void
 		{
-			this.ui.listSavedSearches.dataProvider = e.data as ArrayCollection
+			this.ui.listSavedSearches.notebooks = e.data as ArrayCollection
 		}				
 		
-		private function onRecievedNotebookList(e:EvernoteAPIModelEvent) : void
+		private function onRecievedNotebookList(e:EvernoteAPIModelEvent=null) : void
 		{
+			if ( this.ui.listNotebooks == null )return; 		
+			this.ui.listNotebooks.totalNotebookCount = this.model.noteCount; 
 			this.ui.listNotebooks.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
 		}				
 		

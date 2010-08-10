@@ -7,6 +7,7 @@ package  org.syncon.evernote.basic.controller
 	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
@@ -27,6 +28,17 @@ package  org.syncon.evernote.basic.controller
 	 * can set 'result' on event, and will not call any function, just go 
 	 * straight to server
 	 * Can call result and fault functions
+	 * 
+	 * Returned Data
+	 * either send a function (simplification (terse) of eventhandler protocol ) [ easier cleanup ] 
+	 * put a token on the main event and command will dispatch CommandResult with token
+	 * listen to service directly, with no tokens (mayb should add tokens to that too); 
+	 * 	--> service should return tokens, and dispatch tokens. idk how tokens work 
+	 * 	--> i will just return the token object, and dispatch even tiwth teh token ? 
+	 * 
+	 * function closure method is adequet for now, before careful what code you put in here, 
+	 * this command should be very reusable, dispatch event instead of blocking on model 
+	 * 
 	 * */
 	public class EvernoteAPICommand extends Command
 	{
@@ -752,6 +764,8 @@ package  org.syncon.evernote.basic.controller
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
+			//var result :  Dictionary = e.data.notebookCounts 
+			//this.apiModel.loadNotebookCounts( result ) ; 	
 			this.deReference(e)			
 		}		
 		private function findNoteCountsFaultHandler(e:EvernoteServiceEvent)  : void

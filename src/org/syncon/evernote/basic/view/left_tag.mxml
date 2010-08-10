@@ -6,9 +6,10 @@
 	
 	<fx:Metadata>
 		[Event(name="newTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="tagsSelected", type=" org.syncon.evernote.basic.model.CustomEvent")]				
 		[Event(name="renameTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
 		[Event(name="deleteTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
-		[Event(name="removeFromAllNotes", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+		[Event(name="removeTagFromAllNotes", type=" org.syncon.evernote.basic.model.CustomEvent")]				
 	</fx:Metadata>	
 	<fx:Script>
 		<![CDATA[
@@ -20,12 +21,13 @@
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			import org.syncon.evernote.basic.vo.MenuVO;
 			
 			static public var NEW_TAG : String = 'newTag' ;
-			static public var SELECTED_TAG : String = 'selectedTag';
+			static public var TAGS_SELECTED : String = 'tagsSelected';
 			static public var RENAME_TAG : String = 'renameTag' ;
 			static public var DELETE_TAG : String = 'deleteTag';			
-			
+			static public var REMOVE_TAG_FROM_ALL_NOTES : String = 'removeTagFromAllNotes'; 
 			private var _tags : ArrayCollection = new ArrayCollection()
  			public function set tags ( n : ArrayCollection )  : void
 			{
@@ -39,23 +41,30 @@
 				if ( this.list == null ) return;
 				this.list.dataProvider = this._tags
 				
-				this.list.height = 21 * n.length;
+				this.list.height = 22 * n.length;
 			} 
-
+			
+			public var options : MenuAutomationVO; 
+			
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
+				this.createSubMenu()
+			}
+			public function createSubMenu() : void
+			{
+				
 				this.tags = this._tags;
 				
-				var ee : MenuAutomationVO = new MenuAutomationVO()
-				ee.setupFlat( 
+				this.options= new MenuAutomationVO()
+				options.setupFlat( 
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
 					['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'],
 					null, 
-					[NEW_TAG, RENAME_TAG,DELETE_TAG, 'removeFromAllNotes'  ] ,
-					[true, true, true, true, true]
+					[NEW_TAG, RENAME_TAG,DELETE_TAG, REMOVE_TAG_FROM_ALL_NOTES ] ,
+					[true, false, false, false, false]
 					 )
-				ee.fx = fxGo
-				this.tagEdit.menuDp = ee; //( ['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'], [this.fxGo] )
+				options.fx = fxGo
+				this.subMenu.menuDp = options; //( ['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'], [this.fxGo] )
 			}
 			
 			public function fxGo(n:String) : void
@@ -68,7 +77,31 @@
 
 			protected function list_changeHandler(event:ListEvent):void
 			{
-				this.dispatchEvent( new CustomEvent(SELECTED_TAG, this.list.selectedItems ) ) 
+				for ( var i : int = 0 ; i < this.options.menuItems.length; i++ )
+				{
+					var menu : MenuVO = this.options.menuItems[i]
+					
+					menu.enabled = true
+					if ( this.list.selectedItems.length == 0 )
+						if ( i !=  0 ) 
+							menu.enabled = false; 
+					
+				}
+				//if more than 1 selected, only enable new tags
+				if ( this.list.selectedItems.length > 1 ) 
+				{
+					//disable other stuff ...
+					this.options.disableAll();
+					this.options.enableIndexes([0])		
+				}
+				else if ( this.list.selectedItems.length == 1 ) 
+				{
+					//if only 1 tag and has no notes, 
+					//remove remove from tag
+					//this.options.disableIndexes([3])	
+				}
+				this.subMenu.menuDp = this.options
+				this.dispatchEvent( new CustomEvent(TAGS_SELECTED, this.list.selectedItems ) ) 
 			}
 
 		]]>
@@ -93,5 +126,5 @@
 		</s:fill>
 	</s:Rect>	
 	
-	<view:util_left_side_extra_options id="tagEdit" label="Edit" />	
+	<view:util_left_side_extra_options id="subMenu" label="Edit" />	
 </s:SkinnableContainer>

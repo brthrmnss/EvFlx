@@ -24,7 +24,7 @@ package org.syncon.utils
 				private var _gap:Number = 10;
 				private var _xOffset : Number = 0; 
 				private var _paddingLeft : Number = 0; 
-				
+				private var _rightOffset : Number = 0; 
 				public function set border(val:Number):void {
 					_border = val;
 					var layoutTarget:GroupBase = target;
@@ -57,6 +57,16 @@ package org.syncon.utils
 					}
 				}				
 				
+				
+				public function set rightOffset (val:Number):void {
+					_rightOffset = val;
+					var layoutTarget:GroupBase = target;
+					if (layoutTarget) {
+						layoutTarget.invalidateDisplayList();
+					}
+				}				
+				
+				
 				override public function updateDisplayList(containerWidth:Number, containerHeight:Number):void {
 					var x:Number = _border;
 					var row : int = 0; 
@@ -65,7 +75,7 @@ package org.syncon.utils
 					var y:Number = _border;
 					var maxWidth:Number = 0;
 					var maxHeight:Number = 0;
-					
+					var rowRightOffset : Number = _rightOffset; 
 					//loop through all the elements
 					var layoutTarget:GroupBase = target;
 					var count:int = layoutTarget.numElements;
@@ -83,7 +93,7 @@ package org.syncon.utils
 						var elementHeight:Number = element.getLayoutBoundsHeight();
 						
 						//does the element fit on this line, or should we move to the next line?
-						if (x + elementWidth > containerWidth) {
+						if (x + elementWidth > containerWidth - rowRightOffset ) {
 							//start from the left side
 							x = _border;
 							x += _paddingLeft
@@ -92,6 +102,7 @@ package org.syncon.utils
 							if (i > 0) {
 								y += elementHeight + _gap;
 								row++
+									rowRightOffset = 0;
 							}
 						}
 						//position the element

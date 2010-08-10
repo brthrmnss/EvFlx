@@ -13,14 +13,26 @@
 		[Event(name="cancel", type="flash.events.Event")] 		
 		[Event(name="save", type="flash.events.Event")] 
 	</fx:Metadata> 	
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="new" />
+		<s:State name="edit" />		
+	</s:states>
+		
+	
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			
 			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.model.Tag2;
 			
 			import sss.Shelpers.Shelpers.Shelpers;
 			import sss.Shelpers.Shelpers.ShelpersUI;
@@ -28,6 +40,7 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var creationComplete : Boolean = false; 
+			public var tag :  Tag2
 			public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -36,7 +49,7 @@
 			
 			public  function create(app:Object)  : IPopup
 			{
-				var popup : PopupNewTag = new PopupNewTag()
+				var popup : PopupTagForm = new PopupTagForm()
 				popup._popupCode =  PopupCode.Create( popup ,app ) 
 				return popup			
 			} 
@@ -57,6 +70,20 @@
 				this.popupCode.close() 
 			}
 						
+			public function open(existingTag:Tag2=null):void
+			{
+				this.show();
+				this.tag = existingTag; 
+				if ( tag == null ) 
+				{
+					this.currentState = 'new'
+				}
+				else
+				{
+					this.currentState = 'edit'
+					this.txtTagName.text = this.tag.name; 
+				}
+			}
 			
 			protected function btnSave_clickHandler(event:MouseEvent):void
 			{
@@ -87,7 +114,7 @@
  
  <s:VGroup paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10">
 	
-	 <popup:PopupHeader label="New Tag" padding="0"  width="100%"/>
+	 <popup:PopupHeader  label.edit="Edit Tag" label="New Tag" padding="0"  width="100%"/>
 	 
 	<s:HGroup>
 		<s:Label fontWeight="bold" text="Tag name:" />

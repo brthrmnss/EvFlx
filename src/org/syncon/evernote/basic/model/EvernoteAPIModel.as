@@ -22,6 +22,7 @@ package org.syncon.evernote.basic.model
 	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
+	import org.syncon.evernote.model.Tag2;
 
 	/**
 	 * Dispatched when ...
@@ -71,6 +72,8 @@ package org.syncon.evernote.basic.model
 		private var tagGuidDict : Dictionary = new Dictionary(false)			
 		
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
+		
+		public var noteCount : int = 0; 
 		
 		private var _preferences :  PreferencesVO = new PreferencesVO();
 		public function set preferences ( p : PreferencesVO )  : void
@@ -139,9 +142,15 @@ package org.syncon.evernote.basic.model
 			}
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, e ) ) 
 		}	
-		
+		/*
+		public function loadNotebookCounts( notebookCounts : Dictionary, trashCounts : Dictionary ) : void
+		{
+			
+		}
+		*/
 		public function loadTags(e:Array)  : void
 		{
+			var e : Array = convert( e, Tag2 ) 
 			this.addAllTo( this._tags,  e  ) 
 			this.tagDict = new Dictionary(true) 
 			tagGuidDict = new Dictionary(false)

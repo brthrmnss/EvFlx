@@ -13,6 +13,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.popups.controller.ShowPopupEvent;
+	import org.syncon.popups.controller.default_commands.ShowConfirmDialogTriggerEvent;
 	
 	public class LeftTagMediator extends Mediator
 	{
@@ -26,13 +27,53 @@ package org.syncon.evernote.basic.view
 		override public function onRegister():void
 		{
 			ui.addEventListener( left_tag.NEW_TAG, this.onNewTag )
-			ui.addEventListener( left_tag.SELECTED_TAG, this.onSelectedTag )	
+			ui.addEventListener( left_tag.TAGS_SELECTED, this.onSelectedTag )	
+			ui.addEventListener( left_tag.DELETE_TAG, this.onDeleteTag )	
+			ui.addEventListener( left_tag.REMOVE_TAG_FROM_ALL_NOTES, this.onDeTag )	
+			ui.addEventListener( left_tag.RENAME_TAG, this.onRenameTag )					
 		}
 	 
 		private function onNewTag(e:Event):void
 		{
-			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_new_tag'  ) )  			
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_tag_form'  ) )  			
 		}
+		
+		private function onRenameTag(e:CustomEvent):void
+		{
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_tag_form' , [e.data]  ) )  			
+		}
+		
+		private function onDeTag (e:CustomEvent):void
+		{
+			var ee : ShowConfirmDialogTriggerEvent
+			ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP
+			var msg : String = 'Remove the tag "'+e.data.name+
+				'" from all notes? This operation cannot be undone.'
+			ee =  	new ShowConfirmDialogTriggerEvent(
+			ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP, msg,
+			this.onDeTagConfirmed, null, 'UnTag notes?', 'Remove', 'Cancel' ) 
+			this.dispatch( ee  )  			
+		}
+			private function onDeTagConfirmed()  : void
+			{
+				
+			}		
+		
+		private function onDeleteTag(e:CustomEvent):void
+		{
+			var ee : ShowConfirmDialogTriggerEvent
+			ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP
+			var msg : String = 'Are you sure you want to permanently delete the tag "'+
+				e.data.name+'", and all of its sub-tags? This operation cannot be undone.'
+			ee = new ShowConfirmDialogTriggerEvent( 
+			ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP, msg, 
+			this.onDeleteTagConfirmed, null, 'Delete Tag', 'Delete', 'Cancel' ) 
+			this.dispatch( ee  )  			
+		}
+			private function onDeleteTagConfirmed()  : void
+			{
+				
+			}
 		
 		private function onSelectedTag(e:CustomEvent):void
 		{

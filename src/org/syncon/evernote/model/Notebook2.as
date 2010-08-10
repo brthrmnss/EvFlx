@@ -5,11 +5,11 @@ package org.syncon.evernote.model
 	
 	import flash.events.IEventDispatcher;
 	
-
+	[Event(name="notebookUpdated", type="flash.events.Event")] 		
 
 	public class Notebook2 extends  Notebook implements IEventDispatcher
 	{
-			
+		static public var  NOTEBOOK_UPDATED : String = 'notebookUpdated';
 		import flash.events.Event;
 		import flash.events.EventDispatcher;
 		import flash.events.IEventDispatcher;   
@@ -54,7 +54,13 @@ package org.syncon.evernote.model
 		{
 		}
 
+		public function notebookUpdated() : void
+		{
+			this.dispatchEvent( new Event( Notebook2.NOTEBOOK_UPDATED ) )		
+		}
+				
 		
+		public var noteCount : int = 0 ; 
 		/*[Bindable] 
 		public var name : String = '' ; */
 	}

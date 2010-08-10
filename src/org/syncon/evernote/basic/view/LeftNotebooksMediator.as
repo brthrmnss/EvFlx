@@ -14,6 +14,8 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.model.Notebook2;
+	import org.syncon.popups.controller.ShowPopupEvent;
+	import org.syncon.popups.controller.default_commands.ShowConfirmDialogTriggerEvent;
 	
 	public class LeftNotebooksMediator extends Mediator
 	{
@@ -38,7 +40,13 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, this.onTrashChanged);					
 			*/
-			 ui.addEventListener(left_notebooks.CHANGED_NOTEBOOK, this.onChangedNotebook ) ; 
+			 ui.addEventListener(left_notebooks.CHANGED_NOTEBOOK, this.onChangedNotebook ) ;
+			 
+			 ui.addEventListener( left_notebooks.NEW_NOTEBOOK, this.onNewTag )
+			 ui.addEventListener( left_notebooks.DELETE_NOTEBOOK, this.onDeleteTag )	
+			 ui.addEventListener( left_notebooks.VIEW_NOTEBOOK_PROPERTIES, this.onViewNotebookProperties )	
+			 ui.addEventListener( left_notebooks.RENAME_NOTEBOOK, this.onRenameTag )					 
+			 
 		}
 		
 		/*
@@ -65,7 +73,40 @@ package org.syncon.evernote.basic.view
 			this.model.currentNotebook( this.notebookFilter ) ; 			
 		}		
  
-		 
+		private function onNewTag(e:Event):void
+		{
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_notebook_form'  ) )  			
+		}
+		
+		private function onRenameTag(e:CustomEvent):void
+		{
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_notebook_form' , [e.data]  ) )  			
+		}
+		
+		private function onViewNotebookProperties(e:CustomEvent):void
+		{
+			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_notebook_form' , [e.data, true]  ) )  			
+		}				
+		
+		private function onDeleteTag(e:CustomEvent):void
+		{
+			var ee : ShowConfirmDialogTriggerEvent
+			ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP
+			var msg : String = 'Permanently deleting "'+e.data.name+
+				'". '+e.data.noteCount+' active note(s) will be moved to the trash.' +
+				' This operation cannot be undone.'
+			ee = new ShowConfirmDialogTriggerEvent( 
+				ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP, msg, 
+				this.onDeleteTagConfirmed, null, 'Delete Notebook?', 'Delete', 'Cancel' ) 
+			this.dispatch( ee  )  			
+		}
+			private function onDeleteTagConfirmed()  : void
+			{
+				
+			}		
+		
+		
+		
 		
 	}
 }

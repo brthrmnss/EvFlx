@@ -2,25 +2,40 @@
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  width="100%"
 					   creationComplete="onInit(event)"
-					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
+					  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:view="org.syncon.evernote.basic.view.*"  >
 	
 	<fx:Metadata>
-		[Event(name="removedTag", type=" org.syncon.evernote.basic.model.CustomEvent")]		
-		[Event(name="changedNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+		[Event(name="changedNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]
+		[Event(name="newNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]				
+		[Event(name="renameNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="deleteNotebook", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="viewNotebookProperties", type=" org.syncon.evernote.basic.model.CustomEvent")]			
 	</fx:Metadata>	
 	
 	<fx:Script>
 		<![CDATA[
-			
 			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.model.Notebook2;
 			
 			import spark.events.IndexChangeEvent;
 			
-			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';			
+			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';		
+			static public var NEW_NOTEBOOK : String = 'newNotebook' ;
+			static public var RENAME_NOTEBOOK : String = 'renameNotebook' ;
+			static public var DELETE_NOTEBOOK : String = 'deleteNotebook';			
+			static public var VIEW_NOTEBOOK_PROPERTIES : String = 'viewNotebookProperties'; 
 			
+			public var options : MenuAutomationVO; 
+			
+			/**
+			 * Mediator sets this number from model
+			 * */
+			public var totalNotebookCount : int = 0; 
 			private var _notebooks : ArrayCollection = new ArrayCollection()
 				/**
 				 * Stores original notebooks array for quick retrieval
@@ -33,6 +48,7 @@
 				var allNotebooksNotebok :  Notebook2 = new Notebook2
 				this._notebooks.addItem( allNotebooksNotebok ) 
 				allNotebooksNotebok.name = 'All Notebooks'
+				allNotebooksNotebok.noteCount = this.totalNotebookCount; 
 				allNotebooksNotebok; //notebook count
 				if ( this.list == null ) return;				
 				this.list.dataProvider = _notebooks
@@ -49,7 +65,7 @@
 					this.notebooks =  this._rawNotebooks 
 				
 				this.selectedNotebook = this._selectedNotebook; 
-				
+				this.createSubMenu()
 			}			
 			
 			private var _selectedNotebook  : Notebook2; 
@@ -85,6 +101,61 @@
 				this.dispatchEvent( new CustomEvent( CHANGED_NOTEBOOK, e.currentTarget.selectedItem ) )
 			}
 
+			public function createSubMenu() : void
+			{
+				this.options= new MenuAutomationVO()
+				options.setupFlat( 
+					['New Notebook', 'Rename', 'Delete', 'Properties...'],
+					['New Notebook', 'Rename', 'Delete', 'See Properties'],
+					null, 
+					[NEW_NOTEBOOK, RENAME_NOTEBOOK, DELETE_NOTEBOOK, 
+						VIEW_NOTEBOOK_PROPERTIES ] ,
+					[true, false, false, false, false]
+				)
+				options.fx = fxGo
+				this.subMenu.menuDp = options; //( ['New Tag...', 'Rename', 'Delete', 'Remove From All Notes...'], [this.fxGo] )
+			}
+			
+			public function fxGo(n:String) : void
+			{
+				var selectedItem : Object = this.list.selectedItem
+				this.dispatchEvent( new CustomEvent( n, selectedItem, false ) ) 
+				return;
+			}
+			
+			
+			protected function list_changeHandler(event:IndexChangeEvent):void
+			{
+				 //this.options.enableAll(); 
+				 this.options.disableAll();
+				if ( this.list.selectedItems.length == 0 )
+					this.options.enableIndexes([0])	
+				 
+				//if more than 1 selected, only enable new tags
+				if ( this.list.selectedItems.length > 1 ) 
+				{
+					//disable other stuff ...
+					this.options.disableAll();
+					this.options.enableIndexes([0])		
+				}
+				else if ( this.list.selectedItems.length == 1 ) 
+				{
+					if ( this.list.selectedItem.name.toLowerCase() == 'all notebooks' ) 
+					{
+						this.options.disableAll();
+						this.options.enableIndexes([0])
+					}
+					else
+						this.options.enableAll(); 
+					//if only 1 tag and has no notes, 
+					//remove remove from tag
+					//this.options.disableIndexes([3])	
+				}
+				this.subMenu.menuDp = this.options
+				//this.dispatchEvent( new CustomEvent(TAGS_SELECTED, this.list.selectedItems ) ) 
+			}			
+			
+			
 		]]>
 	</fx:Script>
 	
@@ -93,8 +164,18 @@
 		<s:VerticalLayout />
 	</s:layout>
  
-	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0" width="100%" 
-			 selectionColor="0x36722E" rollOverColor="0x598E52"
-			 fontSize="10"   change="notebookChangeHandler(event)"
+	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0.0" width="100%" 
+			 selectionColor="0x36722E" rollOverColor="0x598E52" 
+			 itemRenderer="org.syncon.evernote.basic.view.left_notebook_itemrenderer"
+			 fontSize="10"   change="notebookChangeHandler(event); list_changeHandler(event)"
 			 labelField="name"/>
+	
+	
+	<s:Rect  width="100%"   height="1" >
+		<s:fill>
+			<s:SolidColor  color="#FFFFFF" />
+		</s:fill>
+	</s:Rect>	
+	<view:util_left_side_extra_options  popupColor="#D5DFC6" id="subMenu" label="Edit" />		
+	
 </s:SkinnableContainer>

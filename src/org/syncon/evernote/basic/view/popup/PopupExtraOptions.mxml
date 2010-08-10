@@ -60,7 +60,8 @@
 			private var menuSet : MenuAutomationVO;
 			
 			public function open( options : MenuAutomationVO, goTo : UIComponent=null,
-								  	labelName :  String = '', x_ : Number = -1, y_ : Number =-1  )  : void
+								  	labelName :  String = '', x_ : Number = -1, y_ : Number =-1, 
+									 		bgColor_ : uint = -1 )  : void
 			{
 				this.popupCode.open( false, false ) 
 				var offset : Number =  (labelName!='') ? 0 :-25
@@ -74,7 +75,7 @@
 						this.popupCode.moveToComponent( goTo, 'bl', false );
 					else
 					{
-						this.popupCode.moveToComponent( goTo, 'tl', false );
+						this.popupCode.moveToComponent( goTo, 'tl', false , false,  true, -5,-7);
 				}
 				}
 				this.menuSet = options
@@ -94,6 +95,11 @@
 				}
 				else
 					this.currentState = 'sans_title'
+						
+				if ( bgColor_ != -1 ) 
+				{
+					this.bgColor.color = bgColor_ as uint
+				}
 			}			
 			
 			public function hide( ) : void
@@ -151,11 +157,12 @@
 		 
 		 <s:Rect top="2" right="2" bottom="2" left="2" >
 			 <s:fill>
-				 <s:SolidColor color="0xEDF6F7" />
+				 <s:SolidColor  id="bgColor" color="0xEDF6F7" />
 			 </s:fill>
 		 </s:Rect>		 
-		 <s:List id="list" rollOverColor="0x607980"
+		 <s:List id="list" rollOverColor="0x607980"   
 				 change="list_changeHandler(event)"
+				 itemRenderer="org.syncon.evernote.basic.view.popup.PopupExtraOptions_itemRenderer"
 				 selectionColor="0x607980"  labelField="name"
 				 contentBackgroundColor="0xE6E6E6"
 				 />			 
