@@ -2,14 +2,15 @@
 <s:Skin
 		xmlns:fx="http://ns.adobe.com/mxml/2009"
 		xmlns:mx="library://ns.adobe.com/flex/mx"
-		xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:view="org.syncon.evernote.basic.view.*" >
-<!--
-	<fx:Metadata>
-		[HostComponent("containers.Drawer")]
-	</fx:Metadata>
-
- -->
-	
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:basic="org.syncon.evernote.view.basic.*" 
+		xmlns:view="org.syncon.evernote.basic.view.*" >
+		<!--
+			<fx:Metadata>
+				[HostComponent("containers.Drawer")]
+			</fx:Metadata>
+		 -->
+			
 	<fx:Metadata>
 		[HostComponent("org.syncon.evernote.basic.view.header")]
 	</fx:Metadata>

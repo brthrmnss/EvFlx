@@ -4,6 +4,7 @@
 package org.syncon.evernote.basic.model
 {
 	import com.evernote.edam.type.Tag;
+	import com.evernote.edam.type.User;
 	import com.evernote.edam.userstore.AuthenticationResult;
 	
 	import flash.events.Event;
@@ -23,6 +24,7 @@ package org.syncon.evernote.basic.model
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
+	import org.syncon.popups.controller.ShowPopupEvent;
 
 	/**
 	 * Dispatched when ...
@@ -113,7 +115,8 @@ package org.syncon.evernote.basic.model
 				
 				for  each ( var prop :   QName in props.properties ) 
 				{
-					o2[prop.localName] = o[prop.localName] 
+					if ( o.hasOwnProperty( prop.localName ) )
+						o2[prop.localName] = o[prop.localName] 
 				}
 				arr.push( o2 ) 
 			}
@@ -261,6 +264,27 @@ package org.syncon.evernote.basic.model
 			}
 			return arr 
 		}
+		
+		public function logOut() : void
+		{
+			this.loadNotebooks([])
+			this.loadNotes( [] )
+			this.loadSavedSearches( [] )
+			this.loadSearch( [] )
+			this.loadTags( [] )
+				
+			this.trashCount = 0 
+			//this.trashSize = 0; 
+			
+			var blankAuth :  AuthenticationResult = new AuthenticationResult()
+			blankAuth.user = new User()
+			this.authenticated( blankAuth ) 
+				
+			this.dispatch( new ShowPopupEvent( 
+				ShowPopupEvent.SHOW_POPUP, 
+				'popup_login' ) );	
+		}
+			
 		
 	}
 }

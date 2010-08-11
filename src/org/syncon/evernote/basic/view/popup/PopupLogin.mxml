@@ -11,8 +11,17 @@
 	<fx:Script>
 		<![CDATA[
 			import sss.Shelpers.Shelpers.other.TweenerHelpers;
+			
+			static public var LOGIN : String = 'login'; 
+			static public var REGISTER : String = 'register'
+			static public var FORGOT_PASSWORD : String = 'password' 
+			
 			protected function onLogin(event:MouseEvent):void
 			{
+				/* if ( this.txtPassword.text.length < 4 ) 
+					return; 
+				 */
+				this.dispatchEvent( new Event( LOGIN ) ) ; 
 				// TODO Auto-generated method stub
 			}
 			
@@ -66,14 +75,26 @@
 
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
-				//https://sandbox.evernote.com/Registration.action
+				this.dispatchEvent( new Event( PopupLogin.REGISTER) ) 
 			}
 
 
 			protected function button2_clickHandler(event:MouseEvent):void
 			{
-				//https://sandbox.evernote.com/ForgotPassword.action
+				this.dispatchEvent( new Event( PopupLogin.FORGOT_PASSWORD) ) 
 			}
+			
+			public function set status ( s : String )  : void
+			{
+				this.txtStatus.text = s; 
+			}
+			
+			public function loginOk() : void
+			{
+				this.status = 'Login ok ... loading ...' 
+				setTimeout( this.hide, 2500 ) 
+			}
+			
 
 		]]>
 	</fx:Script>
@@ -89,7 +110,7 @@
 	
  <s:VGroup gap="-1"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader label="Sign in to Evernote"  padding="0"  width="100%"/>
-	 
+	 <s:Label id="txtStatus"  text="Please Login..." />
 	 	<mx:Form>
 			<mx:FormItem label="Username" >
 				<s:TextInput id="txtUsername"  width="200"/>

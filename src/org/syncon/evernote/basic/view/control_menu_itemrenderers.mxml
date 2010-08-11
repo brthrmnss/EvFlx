@@ -2,8 +2,8 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-				autoDrawBackground="false"
-				useHandCursor="true"  buttonMode="true"
+				autoDrawBackground="false"  
+				  
 				>
 	
 	<fx:Script> 
@@ -12,7 +12,11 @@
 			[Bindable] private var first : Boolean = false;
 			[Bindable] private var middle : Boolean = false;
 			[Bindable] private var last : Boolean = false		;
-			[Bindable] public var menu : MenuVO = new MenuVO()
+			[Bindable] public var menu : MenuVO = new MenuVO();
+				
+			[Bindable] private var labelText :  String= ''; 
+			[Bindable] private var labelTooltip : String = '';
+			[Bindable] private var colorR : uint = 0x121212
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				// Check to see if the data property is null. 
@@ -21,8 +25,23 @@
 				// If the data property is not null,
 				menu = value as MenuVO
 				// set the Label controls appropriately. 
-				txtLbl.text = menu.name.toString(); 
-				txtLbl.toolTip = menu.toolTip.toString(); 				
+				this.labelText  = menu.name.toString(); 
+				this.labelTooltip= menu.toolTip.toString(); 	
+				if ( this.menu.enabled == false ) 
+				{
+					this.colorR = 0x808080
+						//set for rollover color
+					this.useHandCursor = false; this.buttonMode = false
+					//this.txtLbl.setStyle('color', '#808080' ) 
+					this.currentState = 'disabled';
+				}
+				else
+				{
+					this.colorR = 0x121212
+					this.useHandCursor = true; this.buttonMode = true
+					//this.txtLbl.setStyle('color', '#121212' ) 
+					this.currentState = 'normal';
+				}
 				//.firstName + ', ' + value.lastName;
 				//compLabel.text = value.companyID;
 			} 
@@ -96,8 +115,12 @@
 	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="10" paddingTop="7"
 			   verticalAlign="middle" verticalCenter="0"
 			  >
-		<s:Label id="txtLbl" text="Text" color="0x121212"  color.hovered="#4C9EA8"
-				 color.disabled="#86898A" fontSize="10"  textDecoration="underline"/>
+		<s:Label id="txtLbl"  text="{this.labelText}"  toolTip="{this.labelTooltip}" 
+				   color="{this.colorR}"  color.hovered="#4C9EA8"
+				  fontSize="10"   fontWeight="bold"/>
+		<!--<s:Label id="txtLbl_Disabled" 
+				  includeIn="disabled"   color.hovered="#808080"
+				  text="{this.labelText}" color="#808080"    fontSize="10"   fontWeight="bold"/>		-->
 	</s:HGroup>
 	
 	

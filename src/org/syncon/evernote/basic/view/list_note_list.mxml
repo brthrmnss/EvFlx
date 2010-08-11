@@ -5,6 +5,10 @@
 					   creationComplete="onInit(event)"
 					  >
 
+	<fx:Metadata>
+		[Event(name="selectionChanged", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+	</fx:Metadata>		
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -12,6 +16,7 @@
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
+			static public var SELECTION_CHANGED :String = 'selectionChanged'
 			import org.syncon.evernote.basic.model.CustomEvent;
 /* 			override public function set height ( n : Number )  : void
 			{
@@ -73,7 +78,7 @@
 					this.selectedItems.removeItem( note ) 					
 				}
 				this.list.selectedItems = this.selectedItems.toArray()
-					
+				this.dispatchEvent( new CustomEvent( 'selectionChanged', this.selectedItems.toArray() ) ) 
 				this.skipIndex = int(e.data)
 			}
 			

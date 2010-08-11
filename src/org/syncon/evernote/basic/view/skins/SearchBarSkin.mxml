@@ -30,7 +30,8 @@
  
 	<view:search_bar_query id="queryList"   y="12" contentBackgroundColor="0xFF0000"
 						    x="10"
-						   xOffset="{this.mainHGroup.width+10+0}" rightOffset="{this.controlBar.width-10-10}"
+						   xOffset="{this.mainHGroup.width+10+0}" 
+						   rightOffset="{this.controlBar.width-10-10-20}"
 						   width="{this.width -20  }"  includeIn="normal"/>	
 	 
 	<s:HGroup id="mainHGroup" x="10"  y="10" verticalAlign="middle">

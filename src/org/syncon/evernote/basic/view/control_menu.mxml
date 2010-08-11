@@ -9,6 +9,7 @@
 		<![CDATA[
 			import mx.collections.ArrayList;
 			
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
 			import org.syncon.evernote.basic.vo.MenuVO;
 			
 			import spark.events.IndexChangeEvent;
@@ -16,6 +17,7 @@
 			 * Function to call when clicked
 			 * */
 			public var fxClick : Function;
+			public var menuDp : MenuAutomationVO = new MenuAutomationVO(); 
 			public function createOptions(labelOptions : Array, fxs : Array=null,
 										  fx : Function=null, sendData : Array=null, toolTips : Array=null )  : void{
 				
@@ -30,15 +32,18 @@
 					if ( fxs != null ) 						
 						menu.fx =  fxs[i]
 					alOptions.addItem( menu )	
+					menuDp.menuItems.push( menu ) 	
 				}
 				this.fxClick = fx
 				this.list.dataProvider = alOptions
+				
 			}
 
 			protected function list_changeHandler(event:IndexChangeEvent):void
 			{
 				//var obj :  MenuVO = this.list.dataProvider.getItemIndex(   event.newIndex )  as  MenuVO
 				var obj :  MenuVO = this.list.selectedItem
+				if ( obj.enabled == false ) return; 
 				if ( this.fxClick != null ) 
 				{
 					try {
@@ -58,6 +63,11 @@
 				// TODO Auto-generated method stub
 			}
 
+			public function update() : void
+			{
+				this.list.dataProvider = new ArrayList(this.menuDp.toArray()); 
+			}
+			
 		]]>
 	</fx:Script>
 	

@@ -2,9 +2,34 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-				 height="15"
+				 height="15" width="140"
 				autoDrawBackground="false">
 	
-	<s:Label text="{data}" color="0x7EBE40" fontSize="12"/>
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.vo.MenuVO;
+			[Bindable] public var menu : MenuVO = new MenuVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				menu = value as MenuVO
+				txtLbl.text = menu.name.toString(); 
+				txtLbl.toolTip = menu.toolTip.toString(); 				
+			} 
+ 
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+	
+	
+	<s:Label   id="txtLbl"
+			  fontWeight="bold" color.hovered="0" textDecoration.hovered="underline"
+			   useHandCursor="true"  buttonMode="true"
+			 color="0x7EBE40" fontSize="10"/>
 	
 </s:ItemRenderer>

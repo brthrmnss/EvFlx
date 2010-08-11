@@ -95,6 +95,7 @@
 			protected function createSubMenu( ):void
 			{
 				var options :  MenuAutomationVO = new MenuAutomationVO()
+				/* 
 				options.setupFlat( 
 					['Rename...', 'Delete...'],
 					[, 'Rename', 'Delete'],
@@ -102,6 +103,8 @@
 					[ RENAME_SEARCH, DELETE_SEARCH ] ,
 					[true, true, true, true, true]
 				)
+					
+				 */	
 				options.fx = fxGo
 				this.subMenu.menuDp = options;
 			}			
@@ -127,6 +130,10 @@
 			 selectionColor="0x36722E" rollOverColor="0x598E52" 
 			 fontSize="10"   change="searchChangeHandler(event)"
 			 labelField="name"/> 
-	
-	<view:util_left_side_extra_options id="subMenu" label="Edit" />	
+	<s:Rect  width="100%"   height="1" >
+		<s:fill>
+			<s:SolidColor  color="#FFFFFF" />
+		</s:fill>
+	</s:Rect>	
+	<view:util_left_side_extra_options id="subMenu" label="Sharing Setup" />	
 </s:SkinnableContainer>

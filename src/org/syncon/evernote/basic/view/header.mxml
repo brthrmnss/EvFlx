@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					  xmlns:s="library://ns.adobe.com/flex/spark"   width="100%" creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  xmlns:s="library://ns.adobe.com/flex/spark"   width="100%" 
+					  creationComplete="onInit(event)"
 					  skinClass="org.syncon.evernote.basic.view.skins.HeaderSkin"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" height="52">
 	
@@ -51,7 +52,7 @@
 			}
 						
 
-			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			protected function onInit(event:FlexEvent):void
 			{
 				//submit on enter to btnSearchClickHandler
 			}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"    
-					   creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					   creationComplete="onInit(event)"
 					  xmlns:mx="library://ns.adobe.com/flex/mx"  >
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -10,25 +10,77 @@
 		<![CDATA[
 			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
+			import spark.events.IndexChangeEvent;
  
-			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			static public var TRUNK : String = 'trunk';			
+			static public var SETTINGS : String = 'settings';			
+			static public var SIGNOUT : String = 'signOut';			
+			static public var INVITE : String = 'inviteAFriend';			
+			static public var UPGRADE : String = 'upgarde';			
+			static public var HELP : String = 'help';		
+			
+			public var options :   MenuAutomationVO = new MenuAutomationVO()
+			
+			protected function onInit(event:FlexEvent):void
 			{
-				var options : Array = ['Trunk', 	'Settings', 	'Sign out (brthrmnss)',
-					'Invite a friend',	'Upgrade / Gift', 	'Help'] 
-				this.list.dataProvider = new ArrayList(options)
+				this.createSubMenu();
 			}
-
+			
+			protected function createSubMenu( ):void
+			{
+			/* 	var options : Array = ['Trunk', 	'Settings', 	'Sign out (brthrmnss)',
+					'Invite a friend',	'Upgrade / Gift', 	'Help']  */
+				options.setupFlat(
+					['Trunk', 	'Settings', 	'Sign out',
+						'Invite a friend',	'Upgrade / Gift', 	'Help'], 
+					['Trunk', 	'Settings', 	'Sign out',
+						'Invite a friend',	'Upgrade / Gift', 	'Help'] ,
+				null, 
+				[ TRUNK, SETTINGS, SIGNOUT, INVITE, UPGRADE, HELP ] ,
+				[true, true, true, true, true, true]
+				)
+				
+				options.fx = fxGo
+					
+				this.list.dataProvider = new ArrayList(options.menuItems)
+				//this.subMenu.menuDp = options;
+			}			
+			
+			public function fxGo(n:String) : void
+			{
+				var selectedItem : Object = this.list.selectedItem
+				this.dispatchEvent( new CustomEvent( n, selectedItem, false ) ) 
+				return;
+			}
+						
+			public function update()  : void
+			{
+				this.list.dataProvider= new ArrayList(options.menuItems)
+			}
+			
+			
+			protected function list_changeHandler(event:IndexChangeEvent):void
+			{
+				this.options.onClickIndex( event.newIndex )
+			}
+						
+			
 		]]>
 	</fx:Script>
  
 		<s:List  id="list"  borderVisible="false" 
-				  width="365" height="30" 
+				  width="420" height="30"  right="0"  
+				  change="list_changeHandler(event)"
 				 itemRenderer="org.syncon.evernote.basic.view.top_links_itemrenderers" >
 		
 			<s:layout>
 				<s:TileLayout requestedColumnCount="3"
 							  requestedRowCount="2"
-							  horizontalGap="0"
+							  horizontalGap="0" horizontalAlign="right"
 							  verticalGap="0" />				
 			</s:layout>
 

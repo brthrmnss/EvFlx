@@ -40,10 +40,10 @@ package  org.syncon.evernote.basic.controller
 		{
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
-			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags()  ) ;		
+			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags(this.onListTags )  ) ;		
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( this.onListNotebooks ) ) ;		
 			
-			this.serivce.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.onListTags ) 
+			//this.serivce.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.onListTags ) 
 				
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.ListTagsByNotebook( this. null ) ) ;			
@@ -54,18 +54,34 @@ package  org.syncon.evernote.basic.controller
 			this.authenticate()
 		}
 		
-		public function onListTags(e:EvernoteServiceEvent):void
+		public function onListTags(e: Object=null):void
 		{
+			this.recievedTags = true; 
 			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
+			
+			if ( recievedTags && recievedNotebooks  ) 	
+			{
+				this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( )) ;		
+				return;
+			}			
 			return; 	
 		}
+		
+		private var recievedTags : Boolean = false; 		
+		private var recievedNotebooks : Boolean = false; 
+		
+		
 		/**
-		 * when recieve notes, update their count; 
+		 * when recieve notes, update their count; if both tags have been retreived
 		 * */
 		private function onListNotebooks(e: Array):void
 		{
-			this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( )) ;		
-			return;
+			this.recievedNotebooks = true; 
+			if ( recievedTags && recievedNotebooks  ) 	
+			{
+				this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( )) ;		
+				return;
+			}
 		}
 		
 		private function authenticate()  : void

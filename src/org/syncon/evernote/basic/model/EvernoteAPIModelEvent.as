@@ -16,7 +16,11 @@ package org.syncon.evernote.basic.model
 		public static const PREFERENCES_CHANGED : String = ' preferencesChanged'
 		
 		public static const LOADING_CHANGED : String = 'loadingChanged'
-		
+		/**
+		 * Where was this supposed to be hooked up? on the notebooks? for ALL NOTEBOOKS?
+		 * */
+		public static const NOTE_COUNT_CHANGED : String = 'noteCountChanged'			
+			
 		public static const AUTHENTICATED : String = 'authenticated' 
 			
 		public var data: Object;

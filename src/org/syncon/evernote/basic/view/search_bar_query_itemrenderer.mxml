@@ -63,6 +63,7 @@
 
 			protected function creationComplete():void
 			{
+				this.data = super.data; 
 				itemrenderer1_creationCompleteHandler(null)
 			}
 
@@ -126,7 +127,8 @@
 				verticalCenter="-.5" horizontalCenter="-.5" />
 	</s:Group>
 		<s:Label id="txtLbl" text="Text" color="#FFFFFF" 
-				  verticalCenter="0.5" x="20" paddingRight="8" fontSize="10" creationComplete="creationComplete()"
+				  verticalCenter="0.5" x="20" paddingRight="8" fontSize="10" 
+				  creationComplete="creationComplete()"
 				 color.hovered="#0" />
 	</s:Group>
 	

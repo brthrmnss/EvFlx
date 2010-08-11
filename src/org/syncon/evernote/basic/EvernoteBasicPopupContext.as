@@ -11,6 +11,7 @@ package org.syncon.evernote.basic
 	import org.robotlegs.mvcs.Context;
 	import org.syncon.evernote.basic.view.popup.*;
 	import org.syncon.evernote.basic.view.popup.default_popups.popup_confirm;
+	import org.syncon.evernote.basic.view.popup.default_popups.popup_message;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
@@ -76,8 +77,9 @@ package org.syncon.evernote.basic
 			// View
 			mediatorMap.mapView( popup_modal_bg , PopupModalMediator , null, true, true );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
-			
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_message, 'popup_alert' ) );
+			this._this.dispatchEvent( new CreatePopupEvent( 
+				CreatePopupEvent.REGISTER_POPUP, 
+				org.syncon.evernote.basic.view.popup.default_popups.popup_message, 'popup_alert' ) );
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
 				org.syncon.evernote.basic.view.popup.default_popups.popup_confirm, 'popup_confirm' ) );			
@@ -118,13 +120,15 @@ package org.syncon.evernote.basic
 			 import flash.utils.setTimeout; 
 			// this.contextView.alpha = 0.3
 			//setTimeout( this.onInit2 , 2000 ) 
-			this._this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
+			this._this.dispatchEvent( new ShowPopupEvent( 
+				ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
 		}
 		public function onInit2()  : void
 		{
 			/*import flash.utils.setTimeout; 
 			setTimeout( this.onInit2 , 10000 )*/
-			this._this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
+			this._this.dispatchEvent( new ShowPopupEvent( 
+				ShowPopupEvent.SHOW_POPUP,  'popup_login' ) );	
 			
 		}		
 		

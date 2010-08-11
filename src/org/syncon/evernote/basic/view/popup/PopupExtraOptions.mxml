@@ -63,6 +63,8 @@
 								  	labelName :  String = '', x_ : Number = -1, y_ : Number =-1, 
 									 		bgColor_ : uint = -1 )  : void
 			{
+				if ( options.menuItems.length == 0 ) 
+					return; 
 				this.popupCode.open( false, false ) 
 				var offset : Number =  (labelName!='') ? 0 :-25
 				if ( x_ != -1  || y_ != -1 )

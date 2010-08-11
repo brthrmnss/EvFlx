@@ -73,15 +73,54 @@ package  org.syncon.evernote.basic.vo
 				menu.enabled = true
 			}
 		}		
-		public function enableIndexes( indexs : Array  )  : void
+		public function enableIndexes( indexs : Array , enable :  Boolean = true )  : void
 		{
-			for ( var i  : int = 0; i < indexs.length; i++ )
+			for each ( var i  : int  in indexs )
 			{
 				var index : int = indexs[i]
 				var menu : MenuVO = this.menuItems[i]
-				menu.enabled = true
+				menu.enabled = enable
 			}
-		}			
+		}
+		public function disableIndexes( indexs : Array  )  : void
+		{
+			enableIndexes(indexs, false)
+		}					
 		
+		
+		public function menuOption(index:int):MenuVO
+		{
+			return this.menuItems[index] as MenuVO
+		}
+		
+		public function toArray() :  Array
+		{
+			return this.menuItems
+		}
+		
+		/***
+		 * Selection
+		 * */
+		
+		public var disableIfNoneSelected : Array = []; 
+		public var disableIf1Selected : Array = []; 
+		public var disableIfMoreThan1Selected : Array = []; 
+		
+		public function selectionChanged(selectedItems:Array )  : void
+		{
+			this.enableAll()	
+			if ( selectedItems.length == 0 ) 
+			{
+				this.disableIndexes( this.disableIfNoneSelected ) 
+			}
+			else if ( selectedItems.length == 1 ) 
+			{
+				this.disableIndexes( this.disableIf1Selected ) 
+			}
+			else if ( selectedItems.length > 1 ) 
+			{
+				this.disableIndexes( this.disableIfMoreThan1Selected ) 
+			}			
+		}
 	}
 }

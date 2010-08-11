@@ -52,7 +52,8 @@ package  org.syncon.evernote.basic
 			mediatorMap.mapView(  top_links, TopLinksMediator );		
 			mediatorMap.mapView(  left_side, LeftSideMediator );		
 			mediatorMap.mapView(  left_notebooks, LeftNotebooksMediator );					
-			mediatorMap.mapView(  left_tag, LeftTagMediator );					
+			mediatorMap.mapView(  left_tag, LeftTagMediator );			
+			mediatorMap.mapView(  left_trash, LeftTrashMediator );					
 			mediatorMap.mapView(  TagListAdjustable, TagListAdjustableMediator );						
 			mediatorMap.mapView(  util_left_side_extra_options, UtilsLeftSideExtraOptionsMediator );					
 			mediatorMap.mapView(  search_bar, SearchBarMediator );				
