@@ -29,7 +29,7 @@
 				if ( this.creationComplete  == false )
 						return ; 
 				this.workspace.height = this.height - (
-					(this.header.height+this.searchbar.height+this.footer.height)
+					(this.header.height+this.searchbar.height+this.footer.height+this.tabbar.height)
 					+4*4)
 					
 				this.container.getStyle('gap')
@@ -40,6 +40,7 @@
 	
 	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4">
 		<view:header  id="header"/>
+		<view:tab_bar id="tabbar" />
 		<view:search_bar id="searchbar" />
 		<mx:HDividedBox  id="workspace" cornerRadius="8" 
 						 backgroundColor="0xFFFFFF" width="100%" >

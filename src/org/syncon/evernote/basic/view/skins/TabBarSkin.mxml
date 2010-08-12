@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin  
+		 xmlns:fx="http://ns.adobe.com/mxml/2009"   
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:view="org.syncon.evernote.basic.view.*" >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.StateChangeEvent;
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.tab_bar")]
+	</fx:Metadata>
+	
+	
+	<s:states>
+		<s:State name="disabled"  />		
+		<s:State name="normal" />
+	</s:states>
+	
+	<!-- bg -->
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8">
+		<s:fill>
+			<s:SolidColor color="#B4CDD2" />
+		</s:fill>
+	</s:Rect>
+	<s:Group width="100%" excludeFrom="disabled">
+		
+	
+	<s:HGroup id="mainHGroup" x="10"  y="10" verticalAlign="middle">
+		<s:HGroup>
+			<s:Label id="lblShowing" text="Notes "  fontWeight="bold" color="0x437B86"/>
+			<s:List id="listNotes"   borderVisible="false"   contentBackgroundAlpha="0.0"
+					minWidth="0"   
+					itemRenderer="org.syncon.evernote.basic.view.control_menu_itemrenderers" >
+				<s:layout>
+					<s:HorizontalLayout gap="1"   />			
+				</s:layout>
+			</s:List>
+		</s:HGroup>
+	</s:HGroup>
+	<s:HGroup  id="controlBar" y="11" right="10" >
+		<s:Button right="10"  label="Clear"  id="btnClear" y="11" />
+		<s:Button right="10"  label="Save"  id="btnSearch" y="11"    />
+	</s:HGroup>
+	
+	</s:Group>
+</s:Skin>

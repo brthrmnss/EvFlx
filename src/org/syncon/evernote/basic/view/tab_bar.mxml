@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="onInit()"
+					  skinClass="org.syncon.evernote.basic.view.skins.TabBarSkin"					  
+					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" minHeight="0">
+	
+	
+	<fx:Metadata>
+		[Event(name="selectedSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="selectedNote", type=" org.syncon.evernote.basic.model.CustomEvent")]			
+		[Event(name="clearSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]					
+		[Event(name="saveSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]								
+	</fx:Metadata>	
+	<!--
+	<s:states>
+		<s:State name="disabled" />	
+		<s:State name="normalx" />
+	</s:states>
+	-->
+	
+	<s:states>
+		<s:State name="normal" enterState="invalidateSkinState()" />
+		<s:State name="disabled" enterState="invalidateSkinState()" />
+	</s:states>
+	
+	<fx:Metadata>
+		[SkinState("normal")]
+		[SkinState("disabled")]
+	</fx:Metadata>	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.model.Notebook2;
+			
+			import spark.components.Button;
+			import spark.components.DropDownList;
+			import spark.components.Label;
+			import spark.components.List;
+			import spark.events.IndexChangeEvent;
+			
+			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';
+			static public var REMOVED_TAG : String = 'removedTag'				;
+			static public var CHANGED_ALL_OR_ANY : String = 'changedAllOrAny';
+			static public var CLEAR_SEARCH : String = 'clearSearch';
+			static public var SAVE_SEARCH : String = 'saveSearch';			
+			
+			[SkinPart(required="true")]
+			public var btnSearch:Button;	
+			[SkinPart(required="false")]
+			public var btnClear:Button;	
+/* 			
+			[SkinPart(required="true")]
+			public var lblShowing:Label;	
+			
+			[SkinPart(required="true")]
+			public var dropdownNotebooks:DropDownList;				
+			
+			[SkinPart(required="true")]
+			public var lblMatch:Label;		 */
+			[SkinPart(required="true")]
+			public var listNotes:List;		
+		 
+			
+			private function onInit()  : void{
+				
+				this.addEventListener( 'removeTag', this.onRemoveTag ) ; 
+				//this.currentState = 'disabled'
+				this.clearSearch()
+			}
+			
+			override protected function partAdded(partName:String, instance:Object):void
+			{
+				super.partAdded(partName, instance);
+				if( instance == btnSearch)
+				{
+					btnSearch.addEventListener(MouseEvent.CLICK,header_clickHandler);
+				}
+				if( instance == btnClear)
+				{
+					btnClear.addEventListener(MouseEvent.CLICK,btnClear_clickHandler);
+				}
+				if( instance == listNotes)
+				{
+					listNotes.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ; 
+				}					
+			}			
+			protected function btnClear_clickHandler(e:MouseEvent) : void
+			{
+				this.dispatchEvent( new CustomEvent( search_bar.CLEAR_SEARCH ) ) 
+			}
+			protected function header_clickHandler(e:Event)  : void
+			{
+				this.dispatchEvent( new CustomEvent( search_bar.SAVE_SEARCH ) ) 
+			}
+			
+			private var _notebooks : ArrayCollection = new ArrayCollection()
+			/**
+			 * Stores original notebooks array for quick retrieval
+			 * */
+			private var _rawNotebooks : ArrayCollection;			
+			public function loadNotebooks ( n :   ArrayCollection )  : void
+			{
+				//this.dropdownNotebooks.labelField = 'name'; 
+				this._rawNotebooks = n
+				this._notebooks.source = n.toArray(); 
+				var allNotebooksNotebok :  Notebook2 = new Notebook2
+				this._notebooks.addItem( allNotebooksNotebok ) 
+				allNotebooksNotebok.name = 'All Notebooks'
+				allNotebooksNotebok; //notebook count				
+				//this.dropdownNotebooks.dataProvider =  this._notebooks; 
+			//	this.dropdownNotebooks.selectedIndex = 0;
+			}			
+			
+			 
+									
+			public function clearSearch() : void
+			{
+				this.currentState = 'disabled'
+				this.invalidateSkinState()
+			}
+			
+			public function allOrAnyListChanged(e:IndexChangeEvent )  : void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGED_ALL_OR_ANY, e.currentTarget.selectedItem ) )
+			}
+			
+			public function notebookDropdownChanged(e:IndexChangeEvent )  : void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGED_NOTEBOOK, e.currentTarget.selectedItem ) )
+			}			
+		 
+			private function onRemoveTag(e:CustomEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(search_bar.REMOVED_TAG, e.data )) ; 
+				return;
+			}
+			
+			override protected function getCurrentSkinState():String {
+				return currentState;
+			}			
+			
+			override protected function measure():void
+			{
+				if (skin)
+				{
+					measuredWidth = skin.getExplicitOrMeasuredWidth();
+					measuredHeight = skin.getExplicitOrMeasuredHeight();
+					if ( this.measuredHeight > 40 )
+						measuredHeight = skin.getExplicitOrMeasuredHeight()+12;					
+					measuredMinWidth = isNaN( skin.explicitWidth ) ? skin.minWidth : skin.explicitWidth;
+					measuredMinHeight = isNaN( skin.explicitHeight ) ? skin.minHeight : skin.explicitHeight;
+				}				
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+	
+	
+</s:SkinnableContainer>
