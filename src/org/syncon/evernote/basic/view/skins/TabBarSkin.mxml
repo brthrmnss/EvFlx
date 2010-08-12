@@ -17,7 +17,8 @@
 	
 	
 	<s:states>
-		<s:State name="disabled"  />		
+		<s:State name="disabled" />
+		<s:State name="active"  />		
 		<s:State name="normal" />
 	</s:states>
 	
@@ -27,7 +28,7 @@
 			<s:SolidColor color="#B4CDD2" />
 		</s:fill>
 	</s:Rect>
-	<s:Group width="100%" excludeFrom="disabled">
+	<s:Group width="100%"  includeIn="active">
 		
 	
 	<s:HGroup id="mainHGroup" x="10"  y="10" verticalAlign="middle">
@@ -35,7 +36,7 @@
 			<s:Label id="lblShowing" text="Notes "  fontWeight="bold" color="0x437B86"/>
 			<s:List id="listNotes"   borderVisible="false"   contentBackgroundAlpha="0.0"
 					minWidth="0"   
-					itemRenderer="org.syncon.evernote.basic.view.control_menu_itemrenderers" >
+					itemRenderer="org.syncon.evernote.basic.view.tab_bar_itemrenderers" >
 				<s:layout>
 					<s:HorizontalLayout gap="1"   />			
 				</s:layout>

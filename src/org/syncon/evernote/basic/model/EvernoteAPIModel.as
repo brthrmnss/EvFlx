@@ -64,6 +64,7 @@ package org.syncon.evernote.basic.model
 			_notebooks =  new ArrayCollection();
 			_tags = new ArrayCollection();
 			_savedSearches = new ArrayCollection();			
+			
 		}		
  
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }

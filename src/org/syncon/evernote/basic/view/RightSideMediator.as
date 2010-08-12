@@ -4,6 +4,8 @@ package org.syncon.evernote.basic.view
 	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	
 	import flashx.textLayout.conversion.ConversionType;
 	import flashx.textLayout.conversion.TextConverter;
@@ -15,6 +17,7 @@ package org.syncon.evernote.basic.view
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.NoteListEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -22,7 +25,20 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
-	
+	/**
+	 * 
+	 * whenin switch mode, you cannot save the normal way , u cannot call that same 
+	 * resultfx b/c it wants to go back to list mode .... here you don't actulaly change the m
+	 * mode fi the saing is being done automatically ... so send that to temp save
+	 * non-blocking save 
+	 * 
+	 * also you have to udpate everythign whendone .... but by then u've trashed the note, 
+	 * params wouldbe great in this instance ... i could find the note from the array?
+	 * 
+	 * don't ave the not unless its' dirty 
+	 * 
+	 * save teh cursor and scorll position please ....
+	 * */
 	public class RightSideMediator extends Mediator
 	{
 		[Inject] public var ui:right_side;
@@ -31,13 +47,32 @@ package org.syncon.evernote.basic.view
 		static public var StateList : String = ''
 		static public var StateEditor : String = 'edit'
 		static public var StateSearch : String = 'search'
+		private var switchLoaded : Boolean = false; 
+		private var _note :  Note2 = new Note2()
 			
-		private var note :  Note2 = new Note2()
+		private function set note ( n : Note2 )  : void
+		{
+			if ( this.switchLoaded ) 
+			{
+				this.ui.edit.saveTemp(true); 
+				this.switchLoaded = false; 
+			}
+			this._note = n; 	
+		}
+		
+		private function get note() : Note2 
+		{
+			return this._note; 
+		}
+			
 			/**
 			 * Refernce to note user selected from the list, this ensures the 
 			 * list is updated immedeatly 
 			 * */
-		private var clickedNote : Note2 = new Note2()
+		//private var clickedNote : Note2 = new Note2()
+		public var control : Boolean = false; 
+		public var shift : Boolean = false; 
+		
 		public function RightSideMediator()
 		{
 		} 
@@ -63,45 +98,81 @@ package org.syncon.evernote.basic.view
 			*/
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTES_RESULT, this.onNoteResult);
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchResult);	
+			eventMap.mapListener(eventDispatcher, NoteListEvent.SWITCH_TO_NOTE, this.onSwitchBackToNote);	
+			
 			
 			ui.list.notes = this.model.notes; 
 			
-			
+			ui.stage.addEventListener(KeyboardEvent.KEY_DOWN, this.onKeyDown )
+			ui.stage.addEventListener(KeyboardEvent.KEY_UP, this.onKeyUp ) 					
 		}
+		
+		public function onKeyDown(e:KeyboardEvent):void
+		{
+			if ( e.keyCode == Keyboard.CONTROL )
+			{
+				this.control = true; 		
+			}
+			if ( e.keyCode == Keyboard.SHIFT )
+			{
+				this.shift = true; 		
+			}			
+		}
+		public function onKeyUp(e:KeyboardEvent):void
+		{
+			if ( e.keyCode == Keyboard.CONTROL )
+			{
+				this.control = false; 	
+			}			
+			if ( e.keyCode == Keyboard.SHIFT )
+			{
+				this.shift = false; 		
+			}			
+		}
+		
 		private function onNewNote()  : Note2
 		{
-			
 			return this.model.createNewNote(); 
 		}
 		private function onNoteClicked(e:CustomEvent): void
 		{
 			var note_ : Note2 = e.data as Note2
-			this.note = note_; 
-			
-			this.clickedNote= note_;
-			ui.currentState = StateView
-			ui.view.note = e.data as Note2
-			if ( note_.content == null )
+			if ( shift == false ) 
 			{
-				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
-					true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) )
+				
+				this.note = note_; 
+				//this.clickedNote= note_;
+				//if ( this.alt, go to edit );
+				ui.currentState = StateView
+				ui.view.note = this.note
+			
+				if ( note_.content == null )
+				{
+					this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
+						true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) )
+				}
+			}
+			if ( this.control ) 
+			{
+				this.dispatch( new NoteListEvent( NoteListEvent.VIEW_NOTE, note_ ) )
 			}
 			//ui.view.loading = true; 
 		}
-
-		private function onNoteLoaded(note_: Note):void
-		{
-			var note__ :  Note2 = new Note2()
-			this.model.clone( note__, note_ ) 
-			this.note = note__; 			
-			ui.view.note = this.note; 
-			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
-				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
-				noteTextConvertToTf ) )
-			//ui.view.loading = false; 
-		}
+			private function onNoteLoaded(note_: Note):void
+			{
+				//var note__ :  Note2 = new Note2()
+				this.model.clone( this.note, note_ )
+				this.updatedNote()
+				//this.note = note__; 			
+				ui.view.note = this.note; 
+				this.convertNoteContents();
 		
-		
+				//ui.view.loading = false; 
+			}
+			private function onNoteNotLoaded(note:Note):void
+			{
+				//ui.view.loading = false; 
+			}		
 		
 		private function onGetNoteTagNames(e:CustomEvent): void
 		{
@@ -117,31 +188,32 @@ package org.syncon.evernote.basic.view
 			//note.dispatchEenet( 'tagsUpdated' ) 
 		}
 						
-		
+		public function convertNoteContents() : void
+		{
+			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
+				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
+				noteTextConvertToTf ) )			
+		}
 		/**
 		 * Only occurs after note has been viewed ... 
 		 * */
 		public function noteTextConvertToTf( e  : String )  : void
 		{
-			this.note.content = e; 
-			updateContentText()
+			//this.note.content = e; 
+			updateContentText(e)
 		}
-		public function updateContentText()  : void
+		public function updateContentText(str:String)  : void
 		{
 			if ( ui.view != null && ui.view.viewer != null ) 
 			{
-				ui.view.viewer.conversionResult( this.note.content ) 
+				ui.view.viewer.conversionResult( str) 
 			}
 			if ( ui.edit != null && ui.edit.editor != null ) 
 			{
-				ui.edit.editor.conversionResult( this.note.content ) 				
+				ui.edit.editor.conversionResult( str ) 				
 			}
 		}
-		
-		private function onNoteNotLoaded(note:Note):void
-		{
-			//ui.view.loading = false; 
-		}
+
 		
 		private function onNewClicked(e:CustomEvent): void
 		{
@@ -153,13 +225,17 @@ package org.syncon.evernote.basic.view
 		{
 			ui.currentState =StateList
 		}
-		private function onEditClicked(e:CustomEvent): void
+		/**
+		 * Assume data was loaded properly in viewer , 
+		 * this is a bad assumption
+		 * */
+		private function onEditClicked(e:CustomEvent  ): void
 		{
 			ui.currentState = StateEditor
 			//ui.edit.note = e.data as Note			
 			ui.edit.note = this.note; 	
 			
-			this.updateContentText()
+			this.convertNoteContents()
 		}
 		
 		private function onSort(e:CustomEvent):void
@@ -215,7 +291,7 @@ package org.syncon.evernote.basic.view
 		{
 			//ui.view.loading = true; 				
 		//	ui.view.note = this.note; 
-			this.note.title = e.data.title; 
+			this.note.title = e.data.tempTitle; 
 			
 			
 			this.note.tags = this.ui.edit.editor.listTags.tags
@@ -228,10 +304,11 @@ package org.syncon.evernote.basic.view
 				this.note.tagGuids.push( tag.guid )
 			}			
 			
-			var xml : XML = TextConverter.export(  e.data.content as TextFlow,  
+			var xml : XML = TextConverter.export(  e.data.tempContent as TextFlow,  
 			TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
-			var ee :  TextConverter
-			var eee :   ConversionType
+			if ( e.data.hasOwnProperty('save') && e.data.save == false ) 
+				return; 
+			
 			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
 				EvernoteToTextflowCommandTriggerEvent.EXPORT, 
 				 xml.children().toXMLString(),
@@ -244,22 +321,73 @@ package org.syncon.evernote.basic.view
 			//ui.view.loading = false; 
 		}
 		
+		//this implies they want to go back to 'edit' a note, note view it. 
+		private function onSwitchBackToNote(e:NoteListEvent):void
+		{
+			//if in an edit mode ....
+			if ( this.ui.edit != null ) 
+				this.ui.edit.saveTemp()
+			this.note = e.data as  Note2; 
+			this.switchLoaded = true; 
+		/*	if ( this.note.content == null )
+			{*/
+				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
+					true, false, false, false, onNoteLoaded2, onNoteNotLoaded2  ) )
+					
+				this
+		/*	}			
+			else
+			{
+				this.onEditClicked( null)
+			}*/
+		}
+			private function onNoteLoaded2(note_: Note):void
+			{
+				//var note__ :  Note2 = new Note2()
+				this.model.clone( this.note, note_ )
+				this.updatedNote()
+				//this.note = note__; 			
+				//ui.view.note = this.note; 
+				this.onEditClicked( null)
+				this.convertNoteContents();
+				//ui.view.loading = false; 
+			}
+			private function onNoteNotLoaded2(note:Note):void
+			{
+				//ui.view.loading = false; 
+			}				
+		
+		
 			private function onNoteContentConverted(str: String):void
 			{
 				//var note_ : Note = e.data as Note
 				this.note.content = str
+				var tempSaveNote : Note2 = new Note2()
+				tempSaveNote.guid = this.note.guid
+				tempSaveNote.content = str; 
+				tempSaveNote.active = true; 
+				tempSaveNote.title = this.note.titleOrTempTitle()
 			/*	if ( note_.content == null )
 				{*/
-					this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( this.note,
+					this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( tempSaveNote,
 						 onNoteSaved, onNoteSavedFault  ) )
 				/*}*/
 			}			
+			/**
+			 * Notifies lists that note has changed
+			 * */
+			private function updatedNote() : void
+			{
+				this.note.noteUpdated() 
+				this.note.tagsUpdated()
+			}
 			
 			private function onNoteSaved( o:Object):void
 			{
-				this.model.clone( this.clickedNote, this.note ) 
-				this.clickedNote.noteUpdated() 
-				this.clickedNote.tagsUpdated()
+				//remove temp content....
+				//this.model.clone(   this.note )
+				this.note.tempContent = ''; this.note.tempTitle = ''; 
+				updatedNote()
 				this.ui.list.list.list.dataProvider.refresh();
 				ui.currentState = RightSideMediator.StateList;
 				return;

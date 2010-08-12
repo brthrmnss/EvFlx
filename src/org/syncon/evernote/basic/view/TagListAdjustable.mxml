@@ -100,11 +100,11 @@
 				//dispatcher is on the event now ... 
 			/* 	if ( e.data != this._updateNote ) 
 				return; */
-				
+			/* 	
 				if ( this._updateNote.tagNames.length > 0 ) 
 						trace('more than 1' ); 
 				if ( e.currentTarget.tagNames.length > 0 ) 
-					trace('more than 1x' ); 				
+					trace('more than 1x' ); 	 */			
 				this.tags = this._updateNote.tags
 			}
 

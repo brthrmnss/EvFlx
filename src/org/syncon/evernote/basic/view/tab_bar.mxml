@@ -2,13 +2,13 @@
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="onInit()"
 					  skinClass="org.syncon.evernote.basic.view.skins.TabBarSkin"					  
-					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" minHeight="0">
+					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"  >
 	
 	
 	<fx:Metadata>
-		[Event(name="selectedSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]		
-		[Event(name="selectedNote", type=" org.syncon.evernote.basic.model.CustomEvent")]			
-		[Event(name="clearSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]					
+		[Event(name="selectedNote", type=" org.syncon.evernote.basic.model.CustomEvent")]		
+		[Event(name="removeNote", type=" org.syncon.evernote.basic.model.CustomEvent")]			
+		[Event(name="clearTabs", type=" org.syncon.evernote.basic.model.CustomEvent")]					
 		[Event(name="saveSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]								
 	</fx:Metadata>	
 	<!--
@@ -20,12 +20,12 @@
 	
 	<s:states>
 		<s:State name="normal" enterState="invalidateSkinState()" />
-		<s:State name="disabled" enterState="invalidateSkinState()" />
+		<s:State name="active" enterState="invalidateSkinState()" />
 	</s:states>
 	
 	<fx:Metadata>
 		[SkinState("normal")]
-		[SkinState("disabled")]
+		[SkinState("active")]
 	</fx:Metadata>	
 	
 	<fx:Script>
@@ -43,12 +43,12 @@
 			import spark.components.List;
 			import spark.events.IndexChangeEvent;
 			
-			static public var CHANGED_NOTEBOOK : String = 'changedNotebook';
-			static public var REMOVED_TAG : String = 'removedTag'				;
+			static public var SELECTED_NOTE : String = 'selectedNote';
+			static public var REMOVE_NOTE : String = 'removeNote'				;
 			static public var CHANGED_ALL_OR_ANY : String = 'changedAllOrAny';
-			static public var CLEAR_SEARCH : String = 'clearSearch';
+			static public var CLEAR_TABS : String = 'clearTabs';
 			static public var SAVE_SEARCH : String = 'saveSearch';			
-			
+			static public var NOTE_LIST_ADDED : String = 'noteListAdded'; 
 			[SkinPart(required="true")]
 			public var btnSearch:Button;	
 			[SkinPart(required="false")]
@@ -86,7 +86,8 @@
 				}
 				if( instance == listNotes)
 				{
-					listNotes.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ; 
+					listNotes.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ;
+					this.dispatchEvent( new Event( tab_bar.NOTE_LIST_ADDED ) ) 
 				}					
 			}			
 			protected function btnClear_clickHandler(e:MouseEvent) : void
@@ -120,7 +121,7 @@
 									
 			public function clearSearch() : void
 			{
-				this.currentState = 'disabled'
+				this.currentState = ''
 				this.invalidateSkinState()
 			}
 			
@@ -131,12 +132,12 @@
 			
 			public function notebookDropdownChanged(e:IndexChangeEvent )  : void
 			{
-				this.dispatchEvent( new CustomEvent( CHANGED_NOTEBOOK, e.currentTarget.selectedItem ) )
+				this.dispatchEvent( new CustomEvent( tab_bar.SELECTED_NOTE, e.currentTarget.selectedItem ) )
 			}			
 		 
 			private function onRemoveTag(e:CustomEvent):void
 			{
-				this.dispatchEvent( new CustomEvent(search_bar.REMOVED_TAG, e.data )) ; 
+				this.dispatchEvent( new CustomEvent(tab_bar.REMOVE_NOTE, e.data )) ; 
 				return;
 			}
 			

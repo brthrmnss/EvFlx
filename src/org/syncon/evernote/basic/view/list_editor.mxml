@@ -31,8 +31,8 @@
 			public function set note ( n :  Note2) : void
 			{
 				this._note = n; 
-				this.txtTitle.text = this._note.title
-				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.TEXT_FIELD_HTML_FORMAT )
+				this.txtTitle.text = this._note.titleOrTempTitle()
+				this.txtContents.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
 				
 				//this.selectedTags
 				this.listTags.tags = this.note.tags; 

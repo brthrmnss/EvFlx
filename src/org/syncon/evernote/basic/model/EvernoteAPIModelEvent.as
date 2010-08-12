@@ -22,7 +22,7 @@ package org.syncon.evernote.basic.model
 		public static const NOTE_COUNT_CHANGED : String = 'noteCountChanged'			
 			
 		public static const AUTHENTICATED : String = 'authenticated' 
-			
+		public static const LOGOUT : String = 'logout'			
 		public var data: Object;
 		
 		public function EvernoteAPIModelEvent(type:String, _data:Object = null)

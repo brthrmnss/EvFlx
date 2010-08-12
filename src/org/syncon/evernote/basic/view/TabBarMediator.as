@@ -7,30 +7,41 @@ package org.syncon.evernote.basic.view
 	import flash.events.Event;
 	
 	import mx.collections.ArrayCollection;
+	import mx.events.FlexEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.NoteListEvent;
 	import org.syncon.evernote.basic.controller.SearchEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.model.Notebook2;
 	
-	public class SearchBarMediator extends Mediator
+	public class TabBarMediator extends Mediator
 	{
-		[Inject] public var ui:search_bar;
+		[Inject] public var ui:tab_bar;
 		[Inject] public var model : EvernoteAPIModel;
 			
-		public function SearchBarMediator()
+		public var notes : ArrayCollection = new ArrayCollection();
+		private var firstTime : Boolean = true
+		public function TabBarMediator()
 		{
 		} 
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener(search_bar.CHANGED_NOTEBOOK, this.onChangedNotebookFilter ) 
-			ui.addEventListener(search_bar.REMOVED_TAG, this.onRemovedTag ) 			
-			ui.addEventListener(search_bar.CHANGED_ALL_OR_ANY, this.onChangeAnyOrAllHandler )
-			ui.addEventListener(search_bar.CLEAR_SEARCH, this.onClearSearchHandler ) 						
+			ui.addEventListener(tab_bar.NOTE_LIST_ADDED, this.onCreationComplete2 ) 
+			
+			ui.addEventListener(tab_bar.SELECTED_NOTE, this.onChangedNote ) 
+			//ui.addEventListener(tab_bar.ADD_NOTE, this.onChangedNote ) 
+			ui.addEventListener(tab_bar.REMOVE_NOTE, this.onRemoveNote ) 				
+			ui.addEventListener(tab_bar.CLEAR_TABS, this.onClearTabsHandler ) 						
+			this.model.eventDispatcher.addEventListener(
+				EvernoteAPIModelEvent.LOGOUT, this.onLogout);	
+			eventMap.mapListener(eventDispatcher, 
+				NoteListEvent.VIEW_NOTE, onViewNote );				
+		/*
 			this.model.eventDispatcher.addEventListener(
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);	
 			eventMap.mapListener(eventDispatcher, 
@@ -41,176 +52,55 @@ package org.syncon.evernote.basic.view
 				SearchEvent.SEARCHED, this.onSearchHandler );		
 			eventMap.mapListener(eventDispatcher, 
 				SearchEvent.SEARCH_TAGS_UPDATED, this.onSearchTagsUpdatedHandler );				
-			
-	/*		eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTEBOOK_RESULT, this.onNotebookResult);
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchChanged);			
-			ui.list.notes = this.model.notes; 
-			*/
-			this.onRecievedNotebookList()
+ */
 		}
-		public 	var nf : NoteFilter = new NoteFilter()
-		public var notebookFilter : Notebook2; 
-		private function onChangedNotebookFilter(e:CustomEvent): void
+		private function onCreationComplete2(e:Event =null):void
+		 {
+			 ui.listNotes.dataProvider = this.notes; 
+		 }
+		 
+		private function onViewNote(e:NoteListEvent):void
 		{
-			this.notebookFilter = e.data as Notebook2
-			if ( this.notebookFilter.guid == '' ) //replace for 'all' notebook
-				this.notebookFilter = null; 
-			nf.notebookGuid = this.notebookFilter.guid;
-			this.loadSearch(); 
-			this.model.currentNotebook( this.notebookFilter ) ; 
-			
-			//this.ui.selectNotebook( e.data as Notebook2 ); 
-		}
-		
-		private function onChangeAnyOrAllHandler(e:CustomEvent): void
-		{
-			if ( e.data.toString().toLowerCase() == 'any' ) 
+			/*if ( this.firstTime )
 			{
-				//this.nf.	
-			}
-			else
-			{
-				
-			}
-			this.loadSearch()
-		}
-			
-		private function onClearSearchHandler(e:CustomEvent):void
-		{
-			//456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg456 jgh kjg hhjgjh  ghghg h hg jhhjjjjjjjjjjj gggggg ggg
-			this.clearSearch();
+				this.firstTime = false
+				this.onCreationComplete2()
+			}*/
+			//check for duplicates 
+			this.notes.addItem( e.data ) ; 
+			this.ui.currentState = 'active'
 		}
 		
-		
-		private function loadSearch()  : void
+		private function onRemoveNote(e:NoteListEvent):void
 		{
-			this.nf.tagGuids = this.model.map( this.tags.toArray(), 'guid' ); 
-			this.dispatch( EvernoteAPICommandTriggerEvent.FindNotes( nf )  )
-		}
-		
-		private function onNotesRecieved(e:EvernoteAPIModelEvent): void
-		{
-			this.ui.resultCount(e.data.length ) 
+			var index : int = this.notes.getItemIndex( e.data ) ;
+			if ( index != -1 ) 
+				this.notes.removeItemAt( index ) ; 
+			if ( this.notes.length == 0 ) 
+				this.ui.currentState = ''
 		}		
 		
-		private function onSearchHandler(e:SearchEvent):void
+	 	private function onLogout(e:Event):void
 		{
-			this.nf.words = e.query; 
-			this.loadSearch(); 
-			this.updateSearch()
+			this.clearTabs()
+		}
+		private function onClearTabsHandler(e:CustomEvent):void
+		{
+			this.clearTabs();
 		}
 		
-		public var tags : ArrayCollection = new ArrayCollection();
-		public function onSearchTagsUpdatedHandler(e:SearchEvent):void
+		 
+		private function onChangedNote(e:CustomEvent): void
 		{
-			this.tags.removeAll()
-			this.tags.addAll( new  ArrayCollection(e.objs)  ) 
-			this.loadSearch(); 
-			this.updateSearch()
+			 this.dispatch( new NoteListEvent( NoteListEvent.SWITCH_TO_NOTE, e.data ) ) ; 
 		}
 		
-		
-		/**
-		 * Use notefilter update display 
-		 * */
-		public function updateSearch()  : void
+		private function clearTabs()  : void
 		{
-			var options : Array =[]; 
-			if ( this.nf.words == null ) this.nf.words = ''; 
-			var split  :  Array = this.nf.words.split(' '); 
-			if ( this.nf.words == '' ) 
-				split = []; 
-			for each ( var option : String in split ) 
-			{
-				if ( option != ' ' ) 
-				{
-					options.push( option ) 
-				}
-			}
-			
-			if ( this.tags.length > 0 ) 
-			{
-				options.push( '***tagged with:' )
-					
-				for each ( var tag :  Object in this.tags ) 
-				{
-					options.push( tag.name ) 
-				}			
-			}
-			
-			this.dispatch( new SearchEvent(SearchEvent.SEARCH_UPDATED, this.nf.words ) ) 
-			this.ui.updateQueryParts( options ); 
-			if ( options.length == 0 ) 
-				this.clearSearch(); 
-			
-		
-			this.loadSearch(); 
+			this.notes.removeAll();
 		}
 		
-		/**
-		 * In the future potential adjust search, but this is coming form teh left side
-		 * */
-		private function onCurrentNotebookChanged(e:EvernoteAPIModelEvent): void
-		{
-			
-			this.notebookFilter = e.data as Notebook2; 
-			this.ui.selectNotebook(this.notebookFilter); 
-			this.clearSearch()
-		}
-		
-		private function clearSearch()  : void
-		{
-			this.tags.removeAll()
-			this.ui.clearSearch();
-			//this.notebookFilter = null; 
-			this.nf = new NoteFilter();
-			if ( this.notebookFilter != null ) 
-				this.nf.notebookGuid = notebookFilter.guid
-			this.dispatch( new SearchEvent(SearchEvent.SEARCH_UPDATED, this.nf.words ) ) 
-		}
-		
-		
-		/**
-		 * When notebooks changed regenerate drop 
-		 * */
-		private function onRecievedNotebookList(e:EvernoteAPIModelEvent=null) : void
-		{
-			this.ui.loadNotebooks(  this.model.notebooks); 
-			this.ui.selectNotebook( this.notebookFilter ); 
-		}				
-				
-		
-		private function onRemovedTag(e:CustomEvent): void
-		{
-			
-			var clipped : Array = []; 
-			//some type of check if this was a word portion
-				var options : Array = nf.words.split(' '); 
-				for each ( var option :  String in options ) 
-				{
-					if ( option != e.data.name.toString() )
-						clipped.push( option ) 
-				}
-			nf.words = clipped.join(' '); 
-			/*if ( clipped.length == 0 ) 
-				nf.words = ''; */
-			//this.model.currentNotebook( e.data as Notebook ) 
-			e.stopImmediatePropagation();
-			this.loadSearch()
-			this.updateSearch()
-		}
-				
-		
-		private function onNotebookResult(e:EvernoteAPIModelEvent) : void
-		{
-			this.ui.loadNotebooks(   e.data as ArrayCollection )
-		}
-		
-		
-		private function onSearchChanged(e:EvernoteAPIModelEvent) : void
-		{
-			this.ui.resultCount(  int( e.data.length )  )
-		}		
+ 	
  
 	}
 }

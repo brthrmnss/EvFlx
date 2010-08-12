@@ -52,8 +52,10 @@
 			protected function onInit(event:FlexEvent):void
 			{
 				this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
-				this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged ) 					
+				this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
+				
 			}
+			
 			/**
 			 * Keep a seperate list of selected items
 			 * */

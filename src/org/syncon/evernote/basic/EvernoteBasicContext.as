@@ -57,6 +57,7 @@ package  org.syncon.evernote.basic
 			mediatorMap.mapView(  TagListAdjustable, TagListAdjustableMediator );						
 			mediatorMap.mapView(  util_left_side_extra_options, UtilsLeftSideExtraOptionsMediator );					
 			mediatorMap.mapView(  search_bar, SearchBarMediator );				
+			mediatorMap.mapView(  tab_bar, TabBarMediator );				
 			mediatorMap.mapView(  header,  HeaderMediator );	
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				

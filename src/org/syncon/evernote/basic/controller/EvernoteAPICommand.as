@@ -1913,6 +1913,8 @@ package  org.syncon.evernote.basic.controller
 				var blocking : Boolean = false 
 				if ( [EvernoteAPICommandTriggerEvent.AUTHENTICATE, 
 					EvernoteAPICommandTriggerEvent.FIND_NOTES, 
+					EvernoteAPICommandTriggerEvent.GET_NOTE, 
+					EvernoteAPICommandTriggerEvent.GET_NOTE_CONTENT, 
 					EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES 
 				].indexOf(event.type) != -1 )  
 				{

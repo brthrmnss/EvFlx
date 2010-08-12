@@ -98,5 +98,21 @@ package org.syncon.evernote.model
 			this.dispatchEvent( new Event( NOTE_TAGS_UPDATED ) ) 
 			this.dispatchEvent( new PropertyChangeEvent(PropertyChangeEventKind.UPDATE) ) 
 		}		
+		
+		public var tempTitle : String = ''; 
+		public var tempContent : String = ''; 
+		public function   titleOrTempTitle() : String
+		{
+			if ( this.tempTitle == '' || this.tempTitle == null ) 
+				return this.title
+			return this.tempTitle
+		}
+		public function   contentOrTempContent() : String
+		{
+			if ( this.tempContent == '' || this.tempContent == null ) 
+				return this.content
+			return this.tempContent			
+		}		
+		
 	}
 }
