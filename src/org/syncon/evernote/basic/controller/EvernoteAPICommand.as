@@ -778,7 +778,6 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
 			this.deReference(e)			
 		}		
 		private function getNoteFaultHandler(e:EvernoteServiceEvent)  : void

@@ -70,7 +70,7 @@
 			</s:List>
 		</s:HGroup>
 	</s:HGroup>
-	<s:HGroup  id="controlBar" y="11" right="10" >
+	<s:HGroup  id="controlBar" y="5" right="10" >
 		<s:Button right="10"  label="Clear"  id="btnClear" y="11" />
 		<s:Button right="10"  label="Save"  id="btnSearch" y="11"    />
 	</s:HGroup>

@@ -5,6 +5,8 @@ package org.syncon.evernote.basic.model
 	public class EvernoteAPIModelEvent extends Event
 	{
 		public static const NOTES_RESULT:String = 'notesRecieved';
+		public static const NOTES_CHANGED:String = 'notesChanged';		
+		
 		public static const SEARCH_RESULT : String = 'searchResult';
 		//public static const NOTEBOOK_RESULT : String = 'notebookResult';
 		public static const CURRENT_NOTEBOOK_CHANGED : String = 'currentNotebookChanged';

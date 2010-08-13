@@ -17,6 +17,7 @@ package  org.syncon.evernote.basic.controller
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.evernote.services.EvernoteService;
@@ -58,7 +59,16 @@ package  org.syncon.evernote.basic.controller
 				  filter  = new NoteFilter(); 
 				this.dispatch( EvernoteAPICommandTriggerEvent.FindNoteCounts( filter ,
 					true, onGetNoteCounts ) ) 
-			}				
+			}		
+			
+			if ( event.type == EvernoteAPIHelperCommandTriggerEvent.DELETE_NOTES ) 
+			{
+				for each ( var note : Note2 in event.notes )
+				{
+					this.dispatch( EvernoteAPICommandTriggerEvent.DeleteNote( 
+						note.guid, this.onNoteTrashed ) )
+				}
+			}					
 						
 			
 				
@@ -181,9 +191,25 @@ package  org.syncon.evernote.basic.controller
 		static public function mapCommands(commandMap :  Object) : void
 		{
 			commandMap.mapEvent(EvernoteAPIHelperCommandTriggerEvent.GET_TRASH_ITEMS, EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );			
-			commandMap.mapEvent(EvernoteAPIHelperCommandTriggerEvent.GET_ALL_NOTEBOOK_COUNTS, EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );			
+			commandMap.mapEvent(EvernoteAPIHelperCommandTriggerEvent.GET_ALL_NOTEBOOK_COUNTS, EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );		
+			var triggers : Array = [EvernoteAPIHelperCommandTriggerEvent.DELETE_NOTES]
+			for each ( var trigger :String in triggers )
+			{
+				commandMap.mapEvent( trigger,
+					EvernoteAPIHelperCommand, EvernoteAPIHelperCommandTriggerEvent, false );		
+			}
 			
 		}
+		private var deletedNoteCount :  int = 0; 
+		private function onNoteTrashed(e:Object):void
+		{
+			this.deletedNoteCount++
+			if ( this.deletedNoteCount == event.notes.length ) 
+				this.apiModel.status = 'Deleted ' +  this.event.notes.length + ' notes' ;
+			this.apiModel.removeNotes( this.event.notes ); 
+			//count till u reah sepfied number
+		}
+		
 			
 	}
 }

@@ -134,5 +134,13 @@ package org.syncon.evernote.model
 			this.dispatchEvent( new Event( Note2.NOTE_SELECTION_CHANGED ) ) 	
 		}
 		
+		public var lastRetrievedTime : Date ; 
+		
+		public function newNote()  : Boolean
+		{
+			if ( this.guid == '' || this.guid == null ) 
+				return true;	
+			return false 
+		}
 	}
 }

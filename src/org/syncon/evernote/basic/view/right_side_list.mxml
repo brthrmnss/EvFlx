@@ -44,6 +44,11 @@
 			
 			public function doAction(str:String, data:Object):void
 			{
+				if ( str == 'Delete' ) 
+				{
+					this.dispatchEvent( new CustomEvent( 'clicked'+str, this.list.list.selectedItems ) ) 
+					return; 
+				}
 				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
 			}
 			

@@ -18,7 +18,7 @@
 	<view:right_side_view id="view" includeIn="view" width="100%" />
 	<view:right_side_editor id="edit" includeIn="edit" width="100%" />
  
-		<s:HGroup right="10" bottom="0" >
+		<s:HGroup right="20" bottom="0" >
 			<s:Label id="lblShift"   text="Shift" />
 			<s:Label id="lblCtrl"  text="Control" />
 		</s:HGroup>

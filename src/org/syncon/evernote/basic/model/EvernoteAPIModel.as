@@ -76,7 +76,13 @@ package org.syncon.evernote.basic.model
 		
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
 		
-		public var noteCount : int = 0; 
+		private var _noteCount : int =0; 
+		public function get noteCount()  : int { return this._noteCount } 
+		public function set  noteCount( n : int )  : void
+		{
+			this._noteCount = n; 
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTE_COUNT_CHANGED, n ) ) 
+		}
 		
 		private var _preferences :  PreferencesVO = new PreferencesVO();
 		public function set preferences ( p : PreferencesVO )  : void
@@ -95,6 +101,27 @@ package org.syncon.evernote.basic.model
 			e = convert( e,  Note2 ) 
 			this.addAllTo( this._notes,  e  ) 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, this._notes ) )
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
+		}
+		
+		public function addNote(n:Note2):void
+		{
+			this._notes.addItemAt( n,0)
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
+							
+		}
+		
+		public function removeNotes(notes : Array )  : void
+		{
+			for each ( var note :  Note2 in notes ) 
+			{
+				if ( this._notes.getItemIndex( note ) != -1 ) 
+					this._notes.removeItemAt( this._notes.getItemIndex( note ) ) 
+			}
+			this.noteCount -= notes.length
+			this.trashCount +=  notes.length
+			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
+				
 		}
 		
 		public function loadSearch(e:Array)  : void
@@ -196,7 +223,9 @@ package org.syncon.evernote.basic.model
 			var note :  Note2 = new Note2();
 			note.title = 'Note Title'
 			note.notebookGuid = this.defaultNotebook.guid
-			
+			note.active = true; 
+			note.content = ''; 
+			note.lastRetrievedTime = new Date();
 			return note 	
 		}
 		
@@ -221,11 +250,11 @@ package org.syncon.evernote.basic.model
 			return tags 
 		}		
 		
-		private var _trashSize : int =0; 
-		public function get trashSize()  : int { return this._trashSize } 
+		private var _trashCount : int =0; 
+		public function get trashCount()  : int { return this._trashCount } 
 		public function set  trashCount( n : int )  : void
 		{
-			this._trashSize = n; 
+			this._trashCount = n; 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, n ) ) 
 		}
 		
@@ -275,7 +304,7 @@ package org.syncon.evernote.basic.model
 			this.loadTags( [] )
 				
 			this.trashCount = 0 
-			//this.trashSize = 0; 
+			//this.trashCount = 0; 
 			
 			var blankAuth :  AuthenticationResult = new AuthenticationResult()
 			blankAuth.user = new User()
@@ -285,6 +314,28 @@ package org.syncon.evernote.basic.model
 				ShowPopupEvent.SHOW_POPUP, 
 				'popup_login' ) );	
 		}
+			
+		
+		
+		public function moreThanXMinutesAgo(mins : Number, date : Date )  :  Boolean
+		{
+			var currentTime : Date = new Date();
+			var ms : Number = mins*60*1000
+			if ( date == null ) 
+				return true
+			if ( date.getTime() + ms < currentTime.getTime() ) 
+			{
+				return true
+			}
+			
+			return false
+		}
+		
+		public function set status( s : String )  : void
+		{
+			return;
+		}
+			
 			
 		
 	}

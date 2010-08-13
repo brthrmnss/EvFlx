@@ -16,6 +16,7 @@ package org.syncon.evernote.basic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.NoteListEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
@@ -26,6 +27,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
+	import org.syncon.popups.controller.default_commands.ShowConfirmDialogTriggerEvent;
 
 	/**
 	 * 
@@ -38,6 +40,9 @@ package org.syncon.evernote.basic.view
 	 * params wouldbe great in this instance ... i could find the note from the array?
 	 * 
 	 * don't ave the not unless its' dirty 
+	 * 
+	 * would like to have new notes up top so i can think about them 
+	 * need x button on notes itemrenderer, some weird focus bug 
 	 * 
 	 * save teh cursor and scorll position please ....
 	 * */
@@ -99,6 +104,8 @@ package org.syncon.evernote.basic.view
 			eventMap.mapListener(eventDispatcher, StockPricePopupEvent.HIDE_POPUP, onHidePopup);
 			*/
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTES_RESULT, this.onNoteResult);
+			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTES_CHANGED, this.onNotesChanged);
+			
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchResult);	
 			eventMap.mapListener(eventDispatcher, NoteListEvent.SWITCH_TO_NOTE, this.onSwitchBackToNote);	
 			
@@ -106,7 +113,9 @@ package org.syncon.evernote.basic.view
 			ui.list.notes = this.model.notes; 
 			
 			ui.stage.addEventListener(KeyboardEvent.KEY_DOWN, this.onKeyDown )
-			ui.stage.addEventListener(KeyboardEvent.KEY_UP, this.onKeyUp ) 					
+			ui.stage.addEventListener(KeyboardEvent.KEY_UP, this.onKeyUp ) 		
+				
+			this.ui.lblCtrl.visible = this.ui.lblShift.visible = false; 
 		}
 		
 		public function onKeyDown(e:KeyboardEvent):void
@@ -223,8 +232,16 @@ package org.syncon.evernote.basic.view
 		
 		private function onNewClicked(e:CustomEvent): void
 		{
-			ui.currentState = StateEditor
-			ui.edit.note = this.onNewNote(); //note = e.data as Note
+			
+			if (  this.control == false )
+			{
+				ui.currentState = StateEditor
+				ui.edit.note = this.onNewNote(); //note = e.data as Note
+			}
+			else
+			{
+				this.dispatch( new NoteListEvent( NoteListEvent.VIEW_NOTE, this.onNewNote() ) )
+			}
 			//ui.edit.onNew()
 		}
 		private function onListClicked(e:CustomEvent): void
@@ -241,8 +258,20 @@ package org.syncon.evernote.basic.view
 			//ui.edit.note = e.data as Note			
 			ui.edit.note = this.note; 	
 			
+			if ( this.note.content == null ) 
+			{
+				//loaded it first
+				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
+					true, false, false, false, onNoteLoadedForEdit, onNoteNotLoaded  ) )
+				return; 
+			}
+			
 			this.convertNoteContents()
 		}
+			private function onNoteLoadedForEdit():void
+			{
+				this.convertNoteContents()
+			}
 		
 		private function onSort(e:CustomEvent):void
 		{
@@ -293,8 +322,29 @@ package org.syncon.evernote.basic.view
 			
 		}		
 		*/
+		
+		public function saveNote(callbackFx:Function=null) : void
+		{
+			if ( this.ui.edit  == null  ) 
+				return;
+			if (  this.ui.edit.editor.isDirty() )
+			{
+				//send real note, and temporary it will be updated later on as necessary 
+				var args : Object = this.ui.edit.getTemp()
+				this.dispatch( 
+					new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE, args.note, 
+						args.tf, callbackFx, 
+						this.saveEditorSwitchedOutNoteFault )
+					//this.ui.edit.saveTemp()
+				)
+			}			
+		}
+		
 		private function onSaveAndClose(  e:CustomEvent): void
 		{
+			
+			this.saveNote( this.onNoteSaved )
+			/*
 			//ui.view.loading = true; 				
 		//	ui.view.note = this.note; 
 			this.note.title = e.data.tempTitle; 
@@ -319,12 +369,10 @@ package org.syncon.evernote.basic.view
 				EvernoteToTextflowCommandTriggerEvent.EXPORT, 
 				 xml.children().toXMLString(),
 				onNoteContentConverted ) )
-			/*	
-			if ( this.ui.view.viewer != null ) 
-				this.ui.view.viewer.txtContents.textFlow = this.ui.edit.editor.txtContents.textFlow;
-			*/
+		 
 			//this.note = ui.edit
 			//ui.view.loading = false; 
+				*/
 		}
 		
 		//this implies they want to go back to 'edit' a note, note view it. 
@@ -333,40 +381,35 @@ package org.syncon.evernote.basic.view
 			//if in an edit mode ....
 			if ( this.ui.edit != null  ) 
 			{
-				if (  this.ui.edit.editor.isDirty() )
-				{
-					var args : Object = this.ui.edit.getTemp()
-					this.dispatch( 
-						new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE, args.note, 
-						args.tf, this.saveEditorSwitchedOutNoteResult, 
-						this.saveEditorSwitchedOutNoteFault )
-					//this.ui.edit.saveTemp()
-					)
-				}
+				this.saveNote( saveEditorSwitchedOutNoteResult )
 			}
 			if ( this.note != null ) 
 				this.note.selected = false
 			this.note = e.data as  Note2;
 			this.note.selected = true; 
 			this.switchLoaded = true; 
-		/*	if ( this.note.content == null )
-			{*/
+	 		if ( this.model.moreThanXMinutesAgo( 5, this.note.lastRetrievedTime   ) &&
+				this.note.newNote() == false )
+			{ 
 				this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
 					true, false, false, false, onNoteLoaded2, onNoteNotLoaded2  ) )
 					
-				this
-		/*	}			
+		 }			
 			else
 			{
-				this.onEditClicked( null)
-			}*/
+				this.onNoteLoaded2( null)
+			} 
 		}
 			private function onNoteLoaded2(note_: Note):void
 			{
+				if ( note_ != null ) 
+				{
 				//var note__ :  Note2 = new Note2()
-				this.model.clone( this.note, note_ )
-				this.updatedNote()
-				//this.note = note__; 			
+					this.model.clone( this.note, note_ )
+					this.updatedNote()
+					this.note.lastRetrievedTime = new Date();
+				}
+					//this.note = note__; 			
 				//ui.view.note = this.note; 
 				this.onEditClicked( null)
 				this.convertNoteContents();
@@ -386,7 +429,7 @@ package org.syncon.evernote.basic.view
 				return;
 			}					
 			
-		
+		/*
 			private function onNoteContentConverted(str: String):void
 			{
 				//var note_ : Note = e.data as Note
@@ -396,13 +439,10 @@ package org.syncon.evernote.basic.view
 				tempSaveNote.content = str; 
 				tempSaveNote.active = true; 
 				tempSaveNote.title = this.note.titleOrTempTitle()
-			/*	if ( note_.content == null )
-				{*/
 					this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( tempSaveNote,
 						 onNoteSaved, onNoteSavedFault  ) )
-				/*}*/
 			}			
-
+*/
 			private function onNoteSaved( o:Object):void
 			{
 				//remove temp content....
@@ -436,7 +476,24 @@ package org.syncon.evernote.basic.view
 		}
 		private function onDeleteClicked(e:CustomEvent): void
 		{
+			var ee : ShowConfirmDialogTriggerEvent 
+			var msg : String =  ''
+			var title : String = 'Delete ' +e.data.length+ ' notes?'
+			ee = new ShowConfirmDialogTriggerEvent(
+				ShowConfirmDialogTriggerEvent.SHOW_CONFIRM_DIALOG_POPUP, msg, 
+				this.onDeleteConfirmed, null, title, 'Delete', 'Cancel', [e.data] ) 
+			this.dispatch( ee  )  			
 		}
+			private function onDeleteConfirmed(notes:Array)  : void
+			{
+				var ee : EvernoteAPIHelperCommandTriggerEvent
+				this.dispatch(   EvernoteAPIHelperCommandTriggerEvent.DeleteNotes(  notes ,
+					this.onNotesDeleted )  )			
+			}
+			private function onNotesDeleted(e:Object=null)  : void
+			{
+				
+			}		
 		private function onPrintClicked(e:CustomEvent): void
 		{
 		}		
@@ -456,6 +513,12 @@ package org.syncon.evernote.basic.view
 			this.ui.currentState = StateList
 			this.ui.list.notes = e.data as ArrayCollection
 		}
+		private function onNotesChanged(e:EvernoteAPIModelEvent) : void
+		{
+			var oldPosition : Number = this.ui.list.list.list.verticalScrollPosition
+			this.ui.list.notes = e.data as ArrayCollection
+			this.ui.list.list.list.verticalScrollPosition = oldPosition; 
+		}		
 		private function onSearchResult(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.currentState = StateSearch

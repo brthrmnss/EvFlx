@@ -36,6 +36,7 @@
 			 * Mediator sets this number from model
 			 * */
 			public var totalNotebookCount : int = 0; 
+			public var allNotebooksNotebok :  Notebook2 = new Notebook2()
 			private var _notebooks : ArrayCollection = new ArrayCollection()
 				/**
 				 * Stores original notebooks array for quick retrieval
@@ -45,7 +46,7 @@
 			{
 				this._rawNotebooks = n
 				this._notebooks.source = n.toArray(); 
-				var allNotebooksNotebok :  Notebook2 = new Notebook2
+				 //= new Notebook2
 				this._notebooks.addItem( allNotebooksNotebok ) 
 				allNotebooksNotebok.name = 'All Notebooks'
 				allNotebooksNotebok.noteCount = this.totalNotebookCount; 

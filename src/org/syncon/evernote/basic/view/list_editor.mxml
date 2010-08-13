@@ -38,6 +38,7 @@
 				if ( this._note != null ) 
 				{
 					this._note.oldCursor = this.txtContents.selectionActivePosition
+					
 				}
 				this._note = n; 
 				
@@ -58,6 +59,10 @@
 					this.txtTitle.setFocus()
 					this.txtTitle.selectAll()
 					//this.callLater( this.txtTitle.selectAll )
+				}
+				else
+				{
+					this.txtContents.setFocus()
 				}
 				this.dirty = false; 
 			}
@@ -101,6 +106,12 @@
 			protected function txtTitle_changeHandler(event:TextOperationEvent):void
 			{
 				this.dirty = true; 
+				if ( this.note.newNote() ) 
+				{
+					
+				}
+				this.note.tempTitle = this.txtTitle.text;
+				this.note.noteUpdated()
 			}
 
 

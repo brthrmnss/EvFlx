@@ -16,6 +16,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
+	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	
 	public class TabBarMediator extends Mediator
@@ -25,6 +26,7 @@ package org.syncon.evernote.basic.view
 			
 		public var notes : ArrayCollection = new ArrayCollection();
 		private var firstTime : Boolean = true
+		public var _selectedNote : Note2;
 		public function TabBarMediator()
 		{
 		} 
@@ -57,8 +59,18 @@ package org.syncon.evernote.basic.view
 		private function onCreationComplete2(e:Event =null):void
 		 {
 			 ui.listNotes.dataProvider = this.notes; 
+			 selectedNote = selectedNote 
 		 }
-		 
+		 public function set selectedNote(n:Note2):void
+		 {
+			 if ( this.ui.listNotes != null ) 
+			 this.ui.listNotes.selectedItem = n
+			this._selectedNote= n; 
+		 }
+		 public function get selectedNote() : Note2
+		 {
+			 return this._selectedNote
+		 }
 		private function onViewNote(e:NoteListEvent):void
 		{
 			/*if ( this.firstTime )
@@ -69,6 +81,9 @@ package org.syncon.evernote.basic.view
 			//check for duplicates 
 			this.notes.addItem( e.data ) ; 
 			this.ui.currentState = 'active'
+			this.selectedNote = e.data as Note2; 
+			//this.ui.listNotes.selectedItem = e.data; 
+			this.dispatch( new NoteListEvent( NoteListEvent.SWITCH_TO_NOTE, e.data ) ) ; 
 		}
 		
 		private function onRemoveNote(e:NoteListEvent):void
@@ -98,6 +113,7 @@ package org.syncon.evernote.basic.view
 		private function clearTabs()  : void
 		{
 			this.notes.removeAll();
+			this.ui.currentState = ''; 
 		}
 		
  	

@@ -19,6 +19,12 @@
 			[Bindable] private var labelTooltip : String = '';
 			[Bindable] private var colorR : uint = 0x121212
 			override public function set data(value:Object):void { 
+				
+				if ( this.note != null ) 
+				{
+					this.note.removeEventListener(Note2.NOTE_SELECTION_CHANGED, this.onUpdate ) 
+					this.note.removeEventListener(Note2.NOTE_UPDATED, this.onUpdate ) 							
+				}
 				super.data = value; 
 				// Check to see if the data property is null. 
 				if (value== null) 
@@ -27,6 +33,7 @@
 				note = value as Note2
 				// set the Label controls appropriately. 
 				this.labelText  = note.title.toString(); 
+				this.onUpdate(null)
 				//this.labelTooltip= note.name.toString(); 	
 			 
 				//.firstName + ', ' + value.lastName;
@@ -39,6 +46,8 @@
 			public function onUpdate(e:Event):void
 			{
 				this.labelText  = note.title.toString(); 
+				//if ( this.note.titleOrTempTitle() != '' ) 
+				this.labelText  = note.titleOrTempTitle();
 				if ( this.note.selected ) 
 				this.bgColor.color = 0xFFFFFF
 				else

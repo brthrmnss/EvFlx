@@ -35,6 +35,7 @@
 			import mx.events.ListEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.model.Note2;
 			import org.syncon.evernote.model.Notebook2;
 			
 			import spark.components.Button;
@@ -65,12 +66,12 @@
 			[SkinPart(required="true")]
 			public var listNotes:List;		
 		 
-			
+			public var selectedNot : Note2
 			private function onInit()  : void{
 				
 				this.addEventListener( 'removeTag', this.onRemoveTag ) ; 
 				//this.currentState = 'disabled'
-				this.clearSearch()
+				this.clearTabs()
 			}
 			
 			override protected function partAdded(partName:String, instance:Object):void
@@ -92,7 +93,7 @@
 			}			
 			protected function btnClear_clickHandler(e:MouseEvent) : void
 			{
-				this.dispatchEvent( new CustomEvent( search_bar.CLEAR_SEARCH ) ) 
+				this.dispatchEvent( new CustomEvent( tab_bar.CLEAR_TABS) ) 
 			}
 			protected function header_clickHandler(e:Event)  : void
 			{
@@ -119,7 +120,7 @@
 			
 			 
 									
-			public function clearSearch() : void
+			public function clearTabs()   : void
 			{
 				this.currentState = ''
 				this.invalidateSkinState()

@@ -6,6 +6,7 @@ package  org.syncon.evernote.basic.controller
 	import flashx.textLayout.conversion.TextConverter;
 	
 	import org.robotlegs.mvcs.Command;
+	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
@@ -17,8 +18,10 @@ package  org.syncon.evernote.basic.controller
 	 * */
 	public class SaveNoteCommand extends Command
 	{
+		[Inject] public var apiModel:EvernoteAPIModel;		
 		[Inject] public var event: SaveNoteCommandTriggerEvent;
 		private var note : Note2 
+		private var createdNew : Boolean = false; 
 		override public function execute():void
 		{
 	 		if ( event.type == SaveNoteCommandTriggerEvent.SAVE_NOTE ) 
@@ -60,18 +63,35 @@ package  org.syncon.evernote.basic.controller
 			tempSaveNote.content = str; 
 			tempSaveNote.active = true; 
 			tempSaveNote.title = this.note.titleOrTempTitle()
-			/*	if ( note_.content == null )
-			{*/
-			this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( tempSaveNote,
+			if ( this.note.newNote() )
+			{ 
+				this.createdNew = true
+				this.dispatch(   EvernoteAPICommandTriggerEvent.CreateNote( tempSaveNote,
+					onNoteSaved, onNoteSavedFault  ) )				
+			}
+			else
+			{
+				this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( tempSaveNote,
 				onNoteSaved, onNoteSavedFault  ) )
-			/*}*/
+			}
 		}				
 		
 		
 		private function onNoteSaved( o:Object):void
 		{
-			//remove temp content....
-			//this.model.clone(   this.note )
+
+			if ( this.createdNew ) 
+			{
+				var oldContent : String = this.note.content
+				//remove temp content....
+				this.apiModel.clone(  this.note, o )				
+				this.apiModel.addNote(this.note) 
+				this.note.content = oldContent; 
+			}
+			else
+			{
+				this.note.title = this.note.titleOrTempTitle()
+			}
 			this.note.tempContent = ''; this.note.tempTitle = ''; 
 			updatedNote()
 			if ( this.event.fxResult != null ) this.event.fxResult(null); //send note , or token? 
