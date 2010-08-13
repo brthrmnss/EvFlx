@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"  
-				  
+				  buttonMode="true" useHandCursor="true"
 				>
 	
 	<fx:Script> 
@@ -31,38 +31,20 @@
 			 
 				//.firstName + ', ' + value.lastName;
 				//compLabel.text = value.companyID;
+				this.note.addEventListener(Note2.NOTE_SELECTION_CHANGED, this.onUpdate ) 
+				this.note.addEventListener(Note2.NOTE_UPDATED, this.onUpdate ) 					
 			} 
 			
-			// Override the itemIndex set function to draw a 
-			// white background behind even number items, 
-			// and a green background behind odd numbered items.
-			override public function set itemIndex(value:int):void { 
-				super.itemIndex = value
-					var parent_ : Object = (this.parent as Object)
-					var l : int = parent_.dataProvider.length
-					this.last = false
-					this.first = false; 
-					this.middle = false; 						
-					if ( l == 1 )
-					{
-						this.middle = true; 	
-					}
-					else if ( value == l-1 ) 
-					{
-						this.last = true
-					}
-					else if ( value == 0 ) this.first = true
-					else
-						this.middle = true
-					return;
-	/* 			if ((value%2) == 0) {
-					myBGColor= 0xFFFFFF;
-				}
-				if ((value%2) == 1) {
-					myBGColor= 0xCCFF66;
-				} */
-			}
 			
+			public function onUpdate(e:Event):void
+			{
+				this.labelText  = note.title.toString(); 
+				if ( this.note.selected ) 
+				this.bgColor.color = 0xFFFFFF
+				else
+				this.bgColor.color = 0xE8E8E8
+			}
+ 
 		]]> 
 	</fx:Script> 
 	
@@ -72,32 +54,15 @@
 		<s:State name="disabled"/> 
 	</s:states> 
 
-	<s:Rect id="bgStart"  visible="{this.first}"  
-			topRightRadiusX="0"  topRightRadiusY="0" bottomRightRadiusX="0" bottomRightRadiusY="0" 
-			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
+	<s:Rect id="bgStart"  
+			topRightRadiusX="5"  topRightRadiusY="5" 	topLeftRadiusX="5"  topLeftRadiusY="5"
+			left="0" right="0" top="0" bottom="0" 
 				 >
 			<s:fill>
-				<s:SolidColor color="#E8E8E8" />
+				<s:SolidColor id="bgColor" color="#E8E8E8" />
 			</s:fill>
 		</s:Rect>	
-	<s:Rect id="bgMiddle"  visible="{this.middle}" 
-			left="0" right="0" top="0" bottom="0" 
-			>
-		
-		<s:fill>
-			<s:SolidColor color="#E8E8E8" />
-		</s:fill>
-	</s:Rect>	
-	<s:Rect id="bgEnd"  visible="{this.last}" 	
-			topLeftRadiusX="0"  topLeftRadiusY="0" bottomLeftRadiusX="0" bottomLeftRadiusY="0" 
-			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
-			>
-		<s:fill>
-			<s:SolidColor color="#E8E8E8" />
-			<!--  <s:SolidColor color="#E8E8E8"  color.hovered="#ACCED2" /> -->
-		</s:fill>
-	</s:Rect>	
-	
+	 
 	
 	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="10" paddingTop="7"
 			   verticalAlign="middle" verticalCenter="0"

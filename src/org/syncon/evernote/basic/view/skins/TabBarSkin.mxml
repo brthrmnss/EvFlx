@@ -15,12 +15,39 @@
 		[HostComponent("org.syncon.evernote.basic.view.tab_bar")]
 	</fx:Metadata>
 	
-	
+	<fx:Declarations>
+		<s:Sine id="sineIn" easeInFraction="0.1" />
+		<s:Sine id="sineOut" easeInFraction="0.9" />
+	</fx:Declarations>
+
 	<s:states>
 		<s:State name="disabled" />
 		<s:State name="active"  />		
 		<s:State name="normal" />
 	</s:states>
+	
+	<s:transitions>
+		<s:Transition fromState="normal" toState="active">
+			<s:Parallel>
+				<s:Resize target="{this}" duration="300" easer="{sineOut}" />
+				<s:Resize target="{this.mainHGroup}" duration="600" easer="{sineOut}" />
+				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="active" toState="normal">
+			<s:Parallel>
+				<s:Sequence>
+					<s:Resize target="{this}" duration="300" easer="{sineIn}" />
+					<s:RemoveAction target="{mainHGroup}" />
+				</s:Sequence>				
+				<s:Resize target="{this.mainHGroup}" duration="600" easer="{sineOut}" />
+				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
+			</s:Parallel>
+			
+		</s:Transition>
+		
+ 
+	</s:transitions>
 	
 	<!-- bg -->
 	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8">

@@ -21,6 +21,7 @@
 			import org.syncon.evernote.model.Notebook2;
 			
 			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
 			
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
 			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
@@ -28,9 +29,18 @@
 			private var _note : Note2 = new Note2()
 			public function get note () : Note2 { return this._note } 
 			private var dirty : Boolean = false; 
+			public function  isDirty() : Boolean
+			{
+				return this.dirty
+			}
 			public function set note ( n :  Note2) : void
 			{
+				if ( this._note != null ) 
+				{
+					this._note.oldCursor = this.txtContents.selectionActivePosition
+				}
 				this._note = n; 
+				
 				this.txtTitle.text = this._note.titleOrTempTitle()
 				this.txtContents.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
 				
@@ -71,6 +81,8 @@
 			{
 				this.txtContents.content  = TextConverter.importToFlow( str, 
 					TextConverter.TEXT_LAYOUT_FORMAT ) 
+					
+				this.txtContents.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}
 			
 
@@ -85,6 +97,18 @@
 					
 			}
 
+
+			protected function txtTitle_changeHandler(event:TextOperationEvent):void
+			{
+				this.dirty = true; 
+			}
+
+
+			protected function txtContents_changeHandler(event:TextOperationEvent):void
+			{
+				this.dirty = true; 
+			}
+
 		]]>
 	</fx:Script>
  
@@ -95,7 +119,7 @@
 				
 			
 			<s:HGroup verticalAlign="middle">
-				<s:Label text="Title:" /> <s:TextInput id="txtTitle" /> 
+				<s:Label text="Title:" /> <s:TextInput id="txtTitle" change="txtTitle_changeHandler(event)" /> 
 				<s:Label text="Notebook:" /> 
 				<s:DropDownList id="dropdownNotebook"  labelField="name" change="dropdownNotebook_changeHandler(event)"/>
 				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
@@ -111,7 +135,7 @@
 										 liveManiuplation="false"
 										tags="{this.selectedTags}" draggable="true" />
 			</s:HGroup>		
-			<view:richtext_control_panel id="controlp" />
+			<view:richtext_control_panel id="controlp"   />
 				
 		</s:VGroup>
 		<s:Group width="100%">
@@ -125,7 +149,7 @@
 			
 			<s:Scroller  id="scrolling"  width="100%"   height="{this.height-this.headerBar.height+10}" >
 				<s:Group  width="100%">
-					<s:RichEditableText id="txtContents"  width="100%" 
+					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
 										 minHeight="{this.height-this.headerBar.height+10}"
 										 paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
 					</s:RichEditableText>				

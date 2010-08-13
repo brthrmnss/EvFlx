@@ -18,6 +18,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.NoteListEvent;
+	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
@@ -25,6 +26,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
+
 	/**
 	 * 
 	 * whenin switch mode, you cannot save the normal way , u cannot call that same 
@@ -54,7 +56,7 @@ package org.syncon.evernote.basic.view
 		{
 			if ( this.switchLoaded ) 
 			{
-				this.ui.edit.saveTemp(true); 
+				//this.ui.edit.saveTemp(true); 
 				this.switchLoaded = false; 
 			}
 			this._note = n; 	
@@ -112,10 +114,12 @@ package org.syncon.evernote.basic.view
 			if ( e.keyCode == Keyboard.CONTROL )
 			{
 				this.control = true; 		
+				this.ui.lblCtrl.visible = true; 
 			}
 			if ( e.keyCode == Keyboard.SHIFT )
 			{
 				this.shift = true; 		
+				this.ui.lblShift.visible = true; 				
 			}			
 		}
 		public function onKeyUp(e:KeyboardEvent):void
@@ -123,10 +127,12 @@ package org.syncon.evernote.basic.view
 			if ( e.keyCode == Keyboard.CONTROL )
 			{
 				this.control = false; 	
+				this.ui.lblCtrl.visible = false; 				
 			}			
 			if ( e.keyCode == Keyboard.SHIFT )
 			{
 				this.shift = false; 		
+				this.ui.lblShift.visible = false; 				
 			}			
 		}
 		
@@ -325,9 +331,23 @@ package org.syncon.evernote.basic.view
 		private function onSwitchBackToNote(e:NoteListEvent):void
 		{
 			//if in an edit mode ....
-			if ( this.ui.edit != null ) 
-				this.ui.edit.saveTemp()
-			this.note = e.data as  Note2; 
+			if ( this.ui.edit != null  ) 
+			{
+				if (  this.ui.edit.editor.isDirty() )
+				{
+					var args : Object = this.ui.edit.getTemp()
+					this.dispatch( 
+						new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE, args.note, 
+						args.tf, this.saveEditorSwitchedOutNoteResult, 
+						this.saveEditorSwitchedOutNoteFault )
+					//this.ui.edit.saveTemp()
+					)
+				}
+			}
+			if ( this.note != null ) 
+				this.note.selected = false
+			this.note = e.data as  Note2;
+			this.note.selected = true; 
 			this.switchLoaded = true; 
 		/*	if ( this.note.content == null )
 			{*/
@@ -356,7 +376,16 @@ package org.syncon.evernote.basic.view
 			{
 				//ui.view.loading = false; 
 			}				
-		
+			private function saveEditorSwitchedOutNoteResult( o:Object):void
+			{
+				return;
+			}					
+			private function saveEditorSwitchedOutNoteFault( o:Object):void
+			{
+				this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 'Could not save note...') )  
+				return;
+			}					
+			
 		
 			private function onNoteContentConverted(str: String):void
 			{
@@ -373,15 +402,7 @@ package org.syncon.evernote.basic.view
 						 onNoteSaved, onNoteSavedFault  ) )
 				/*}*/
 			}			
-			/**
-			 * Notifies lists that note has changed
-			 * */
-			private function updatedNote() : void
-			{
-				this.note.noteUpdated() 
-				this.note.tagsUpdated()
-			}
-			
+
 			private function onNoteSaved( o:Object):void
 			{
 				//remove temp content....
@@ -399,6 +420,16 @@ package org.syncon.evernote.basic.view
 				return;
 			}					
 			
+			
+			/**
+			 * Notifies lists that note has changed
+			 * */
+			private function updatedNote() : void
+			{
+				this.note.noteUpdated() 
+				this.note.tagsUpdated()
+			}
+						
 			
 		private function onEmailClicked(e:CustomEvent): void
 		{

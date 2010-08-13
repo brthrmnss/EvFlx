@@ -13,12 +13,13 @@ package org.syncon.evernote.model
 	
 	[Event(name="noteTagsUpdated", type="flash.events.Event")] 		
 	[Event(name="noteUpdated", type="flash.events.Event")] 		
+	[Event(name="noteSelectionChanged", type="flash.events.Event")] 			
 	
 	public class Note2 extends  Note implements IEventDispatcher
 	{
 		static public var  NOTE_UPDATED : String = 'noteUpdated';
 		static public var  NOTE_TAGS_UPDATED : String = 'noteTagsUpdated'				
-			
+		static public var  NOTE_SELECTION_CHANGED : String = 'noteSelectionChanged'					
 
 		private var _eventDispatcher : IEventDispatcher;
 		
@@ -113,6 +114,25 @@ package org.syncon.evernote.model
 				return this.content
 			return this.tempContent			
 		}		
+		
+		public var oldCursor : int = 0; 
+		
+		public function set selected( s: Boolean):void
+		{
+			if ( s == this.selected ) 
+				return;
+			this._selected = s;
+			this.dispatchEvent( new Event( Note2.NOTE_SELECTION_CHANGED ) )
+		}
+		public function get  selected( ): Boolean 
+		{
+			return this._selected; 
+		}		
+		private var _selected : Boolean = false; 
+		public function selectionChanged() : void
+		{
+			this.dispatchEvent( new Event( Note2.NOTE_SELECTION_CHANGED ) ) 	
+		}
 		
 	}
 }

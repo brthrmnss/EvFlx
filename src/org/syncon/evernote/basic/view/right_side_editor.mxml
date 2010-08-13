@@ -33,7 +33,7 @@
 				this.editor.note = _note; 
 			}
 			
-			public function doAction(str:String, data:Object, save:Boolean=true):void
+			public function doAction(str:String, data:Object, save:Boolean=true,  goBackToListState:Boolean=true):void
 			{
 				if ( str ==  'Save and Close' )
 				{
@@ -41,6 +41,7 @@
 					note.tempTitle = this.editor.txtTitle.text
 					note.tempContent = this.editor.txtContents.textFlow
 					note.save = save; 
+					note.goBackToListState = goBackToListState; 
 					this.dispatchEvent( new CustomEvent( 'clicked'+str, note ) ) 
 					return; 
 				}
@@ -48,11 +49,21 @@
 				//this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
 			}
 
-			public function saveTemp(save:Boolean=false)  : void
+			public function saveTemp(save:Boolean=false, goBackToListState:Boolean=true)  : void
 			{
-				this.doAction('Save and Close' , null , save) ;
+				this.doAction('Save and Close' , null , save, goBackToListState) ;
 				//this._note.tempContent = this.editor.txtContents.textFlow
 				//this._note.tempTitle = this.editor.txtTitle.text
+			}
+			
+			public function getTemp()  : Object
+			{
+				var args : Object = {}
+				this._note.tempTitle = this.editor.txtTitle.text
+				args.tf = this.editor.txtContents.textFlow
+				this._note.tags = this.editor.listTags.tags; 
+				args.note = this._note; 
+				return args
 			}
 			 
 		]]>
