@@ -43,13 +43,32 @@ package  org.syncon.evernote.basic.controller
 		public function exportTextflow()  :  String
 		{
 			this.txt  = event.txt
+			
 			this.exportReplaceObvious()
+				
+				
+			//convert to xml, replac spans with things
+			this.removeSoftLinks()
+				
 			this.export_PackageForSending();
 			//this.txt = this.event.txt;
 			var result : String = this.txt
 			if ( event.fxResult != null ) event.fxResult( result ); 			
 			return this.txt 
 		}
+			/**
+			 * 
+			 * */
+			private function removeSoftLinks()  : void
+			{
+				var ee :   RteHtmlParser_Export = new RteHtmlParser_Export()
+				ee.ignoreParagraphSpace = true; 
+				ee.ParseToRTE(this.txt)
+				var bim : Object = ee.XMLObject
+				this.txt = ee.XMLFormat;
+				//this.exportReplaceSoftLists(); 
+			}
+		
 	/*			
 		public function postProcessStr() : void
 		{
@@ -78,7 +97,7 @@ package  org.syncon.evernote.basic.controller
 		
 		public function postProcessStr() : void
 		{
-		var ee :  RteHtmlParser = new RteHtmlParser()
+		var ee : RteHtmlParser_Import = new RteHtmlParser_Import()
 		ee.ignoreParagraphSpace = true; 
 		try 
 			
@@ -90,13 +109,14 @@ package  org.syncon.evernote.basic.controller
 			var evt : ShowAlertMessageTriggerEvent = new ShowAlertMessageTriggerEvent( 
 				ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 
 				'Could not load the message ', 'Alert' ) 
-			this.dispatch( evt ) 
+			this.dispatch( evt )  
 			return ; 
 		}
+		/*
 		ee.ParseToHTML( "<div>"+ee.StringFormat+"</div>" ) ; 
 		//var ee : TextConverter
 		//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
-		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"><div  ></div></TextFlow>" )
+		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"> </TextFlow>" )
 		var x :  XMLList = ee.XMLObject.elements('ol')
 		x  = ee.XMLObject.f.child("ol")
 		
@@ -106,7 +126,7 @@ package  org.syncon.evernote.basic.controller
 		var children :   XMLList = ee.XMLObject.div.children()
 		//tf.children().
 		//tf.appendChild( ee.XMLObject.div )
-		var tfRoot : XML = tf.children()[0]
+		var tfRoot : XML = tf; //.children()[0]
 		for ( var i : int = 0; i < children.length(); i++ )
 		{
 			var xml_ : XML = children[i]
@@ -125,11 +145,18 @@ package  org.syncon.evernote.basic.controller
 				tfRoot.appendChild( xml_ )
 			}
 
-		}
-		//	var ooo : Object = x.toXMLString()
-		//appendList( x[0], tf.children()[0], false );
-		
+		}*/
+		 var xx : Object = ee.XMLObject
+		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"> </TextFlow>" )
+		/*var tf :  XML = new XML(
+		'<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" verticalAlign="inherit" whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008"><p lineHeight="180%"><span color="#9d9fa2" fontSize="15">dddf</span></p></TextFlow>'
+		)*/
+		for each ( var xml_ :  XML in  ee.XMLObject.children()  )
+		{
+			tf.appendChild( xml_ )
+		}		
 		this.txt = tf.toXMLString()
+		this.txt = this.txt.replace( '•', '  •  ' ) 
 		}
 		
 		
