@@ -1,5 +1,6 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.notestore.SyncState;
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
 	import com.evernote.edam.type.Tag;
@@ -487,7 +488,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
-			
+			this.apiModel.acctSyncState = e.data as  SyncState
 			this.deReference(e)			
 		}		
 		private function getSyncStateFaultHandler(e:EvernoteServiceEvent)  : void

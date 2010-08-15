@@ -8,6 +8,7 @@ package  org.syncon.evernote.basic.controller
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.model.Note2;
+	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 
@@ -51,6 +52,27 @@ package  org.syncon.evernote.basic.controller
 					xml.children().toXMLString(),
 					onNoteContentConverted ) )				
 			}
+			if ( event.type == SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK ) 
+			{
+				this.note = event.note; 
+				//this.note.title = e.data.tempTitle; 
+				if ( this.note.tags == null ) 
+				{
+					throw ( ' need tags to be set first' ) 
+				}
+				//this.note.tags = this.ui.edit.editor.listTags.tags
+				this.note.tagNames = []
+				this.note.tagGuids = []
+				for each (   tag  in this.note.tags  )
+				{
+					//if ( guid != tag.guid ) 
+					//	noteCopy.tagGuids.push( guid ) 
+					this.note.tagGuids.push( tag.guid )
+				}		
+				
+				this.onNoteContentConverted( this.note.content ); 
+			}
+						
 		}
 		
 		
@@ -63,6 +85,7 @@ package  org.syncon.evernote.basic.controller
 			tempSaveNote.content = str; 
 			tempSaveNote.active = true; 
 			tempSaveNote.title = this.note.titleOrTempTitle()
+			tempSaveNote.notebookGuid = this.note.notebookGuid; 
 			if ( this.note.newNote() )
 			{ 
 				this.createdNew = true
@@ -84,7 +107,7 @@ package  org.syncon.evernote.basic.controller
 			{
 				var oldContent : String = this.note.content
 				//remove temp content....
-				this.apiModel.clone(  this.note, o )				
+				this.apiModel.clone(  this.note, o ) 				
 				this.apiModel.addNote(this.note) 
 				this.note.content = oldContent; 
 			}
@@ -92,9 +115,24 @@ package  org.syncon.evernote.basic.controller
 			{
 				this.note.title = this.note.titleOrTempTitle()
 			}
-			this.note.tempContent = ''; this.note.tempTitle = ''; 
-			updatedNote()
-			if ( this.event.fxResult != null ) this.event.fxResult(null); //send note , or token? 
+			
+			
+			if ( this.event.type== SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK ) 
+			{
+				this.apiModel.changedNoteNotebook( this.note, this.event.associatedData as Notebook2 ) 
+			}
+			else ( this.event.type== SaveNoteCommandTriggerEvent.SAVE_NOTE  )  
+			{
+				this.note.tempContent = ''; this.note.tempTitle = ''; 
+				updatedNote()
+			}
+			
+
+			
+			//tell model that this note was saved.... not even model, just plast it this is for the note list 
+			//use note filter on model to figure out how to move it around
+			
+			if ( this.event.fxResult != null ) this.event.fxResult(this.note); //send note , or token? 
 			return;
 		}					
 		private function onNoteSavedFault( o:Object):void

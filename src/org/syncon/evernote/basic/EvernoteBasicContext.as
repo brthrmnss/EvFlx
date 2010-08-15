@@ -47,7 +47,8 @@ package  org.syncon.evernote.basic
 			EvernoteAPICommand.mapCommands( commandMap )
 			EvernoteAPIHelperCommand.mapCommands( commandMap )
 			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE,  SaveNoteCommand, null, false );
-				
+			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,  SaveNoteCommand, null, false );			
+			
 			// Services
 			//injector.mapSingletonOf( EvernoteService, IEvernoteService  )		
 			injector.mapSingleton( EvernoteService )
@@ -64,6 +65,7 @@ package  org.syncon.evernote.basic
 			mediatorMap.mapView(  search_bar, SearchBarMediator );				
 			mediatorMap.mapView(  tab_bar, TabBarMediator );				
 			mediatorMap.mapView(  header,  HeaderMediator );	
+			mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();

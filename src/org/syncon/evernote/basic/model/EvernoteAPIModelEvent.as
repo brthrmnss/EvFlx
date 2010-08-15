@@ -16,7 +16,11 @@ package org.syncon.evernote.basic.model
 		
 		public static const TRASH_SIZE_CHANGED : String = 'trashSizeChanged';
 		public static const PREFERENCES_CHANGED : String = ' preferencesChanged'
+		public static const USER_CHANGED : String = ' userChanged'
+			
+		public static const SYNC_STATE_CHANGED : String = ' syncStateChanged'			
 		
+			
 		public static const LOADING_CHANGED : String = 'loadingChanged'
 		/**
 		 * Where was this supposed to be hooked up? on the notebooks? for ALL NOTEBOOKS?

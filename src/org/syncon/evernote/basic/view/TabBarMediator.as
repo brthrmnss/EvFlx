@@ -79,7 +79,14 @@ package org.syncon.evernote.basic.view
 				this.onCreationComplete2()
 			}*/
 			//check for duplicates 
-			this.notes.addItem( e.data ) ; 
+			var dupe : Boolean = false; 
+			for each ( var j : Note2 in this.notes )
+			{
+				if ( j.guid == e.data.guid && j.newNote() == false ) 
+					dupe = true; 
+			}
+			if ( dupe == false ) 
+				this.notes.addItem( e.data ) ; 
 			this.ui.currentState = 'active'
 			this.selectedNote = e.data as Note2; 
 			//this.ui.listNotes.selectedItem = e.data; 
@@ -114,6 +121,7 @@ package org.syncon.evernote.basic.view
 		{
 			this.notes.removeAll();
 			this.ui.currentState = ''; 
+			this.dispatch( new NoteListEvent( NoteListEvent.CLEARED_NOTES   ) ) ; 
 		}
 		
  	

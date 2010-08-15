@@ -7,9 +7,11 @@ package org.syncon.evernote.basic.view
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
+	import org.syncon.evernote.model.Notebook2;
 	
 	public class ListEditorMediator extends Mediator
 	{
@@ -22,6 +24,7 @@ package org.syncon.evernote.basic.view
 		
 		override public function onRegister():void
 		{
+			this.ui.addEventListener( list_editor.NOTE_NOTEBOOK_CHANGED, this.onNotebookChanged ) 
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onNotebookResult);
 			this.ui.dropdownNotebook.dataProvider = this.model.notebooks 
@@ -43,7 +46,26 @@ package org.syncon.evernote.basic.view
 			//this.ui
 		}
 				
-	 
+		private var oldNotebook : Notebook2; // = this.dropdownNotebook.dataProvider[event.oldIndex] 
+		private var newNotebook : Notebook2; // = this.dropdownNotebook.dataProvider[event.newIndex] 
+					
+	 	public function onNotebookChanged(e:CustomEvent )  : void
+		{
+			this.oldNotebook = e.data.oldNb; 
+			this.newNotebook = e.data.newNb; 
+			//this.ui.note;
+			this.dispatch( 
+				new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,this.ui.note , 
+					null, callbackFx, 
+				null, false, this.oldNotebook )			
+				)
+		}
+		
+		public function callbackFx(e:Object):void
+		{
+			//change notebooks ... 
+		}
+		
 		
 	}
 }

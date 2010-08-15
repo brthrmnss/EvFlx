@@ -2,8 +2,9 @@
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" 
-					  width="100%" height="100%" 
-					  xmlns:view="org.syncon.evernote.basic.view.*" xmlns:components="brust.components.*">
+					  width="100%" height="100%"  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
+					  xmlns:view="org.syncon.evernote.basic.view.*"
+					  xmlns:components="brust.components.*" xmlns:tlf="net.asciiworks.tlf.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -16,7 +17,9 @@
 			import flashx.textLayout.conversion.TextConverter;
 			
 			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			import org.syncon.evernote.model.Notebook2;
 			
@@ -25,6 +28,8 @@
 			
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
 			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
+			
+			static public var NOTE_NOTEBOOK_CHANGED : String = 'noteNotebookChanged'
 			
 			private var _note : Note2 = new Note2()
 			public function get note () : Note2 { return this._note } 
@@ -37,14 +42,15 @@
 			{
 				if ( this._note != null ) 
 				{
-					this._note.oldCursor = this.txtContents.selectionActivePosition
+					this._note.oldCursor = this.txtContents.display.selectionActivePosition
 					
 				}
 				this._note = n; 
 				
 				this.txtTitle.text = this._note.titleOrTempTitle()
-				this.txtContents.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
-				
+				//this.txtContents.display.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
+				this.txtContents.textFlow  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
+					
 				//this.selectedTags
 				this.listTags.tags = this.note.tags; 
 					
@@ -69,7 +75,13 @@
 
 			protected function dropdownNotebook_changeHandler(event:IndexChangeEvent):void
 			{
+				var oldNotebook : Notebook2 = this.dropdownNotebook.dataProvider[event.oldIndex] 
+				var newNotebook : Notebook2 = this.dropdownNotebook.dataProvider[event.newIndex] 
+										
+				//this.dirty = false;
 				this.note.notebookGuid = this.dropdownNotebook.selectedItem.guid
+				this.dispatchEvent( new CustomEvent( NOTE_NOTEBOOK_CHANGED, {note:this.note, oldNb:oldNotebook, newNb:newNotebook}) ) 
+				//this.note.notebookGuid = this.dropdownNotebook.selectedItem.guid
 			}
 
 			public function updateDropdownSize() : void{
@@ -84,10 +96,13 @@
 			
 			public function conversionResult(str:String):void
 			{
-				this.txtContents.content  = TextConverter.importToFlow( str, 
-					TextConverter.TEXT_LAYOUT_FORMAT ) 
+			/* 	return;
+				this.txtContents.display.content  = TextConverter.importToFlow( str, 
+					TextConverter.TEXT_LAYOUT_FORMAT )  */
+				//str = 	'<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" verticalAlign="inherit" whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008"><p lineHeight="180%"><span></span></p></TextFlow>'
+				this.txtContents.textFlowMarkup  = str	
 					
-				this.txtContents.selectRange( this._note.oldCursor, this._note.oldCursor ) 
+					this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}
 			
 
@@ -120,6 +135,18 @@
 				this.dirty = true; 
 			}
 
+
+			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+  				this.txtContents.display.addEventListener('change', txtContents_changeHandler )
+				this.txtContents.removeElement( this.txtContents.toolbar ) 
+				this.controlp.addElement(txtContents.toolbar)
+				this.txtContents.display.setStyle( 'paddingTop',  "8");
+				this.txtContents.display.setStyle( 'paddingRight',  "5");
+				this.txtContents.display.setStyle( 'paddingBottom',  "5");
+				this.txtContents.display.setStyle( 'paddingLeft',  "5");		 
+			}
+
 		]]>
 	</fx:Script>
  
@@ -147,7 +174,7 @@
 										tags="{this.selectedTags}" draggable="true" />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp"   />
-				
+			
 		</s:VGroup>
 		<s:Group width="100%">
 			<s:Rect width="100%" height="100%"
@@ -159,12 +186,31 @@
 			</s:Rect>	
 			
 			<s:Scroller  id="scrolling"  width="100%"   height="{this.height-this.headerBar.height+10}" >
-				<s:Group  width="100%">
-					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
+				<!--
+				<s:Group  width="100%" >
+					
+						<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
 										 minHeight="{this.height-this.headerBar.height+10}"
 										 paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
-					</s:RichEditableText>				
+					</s:RichEditableText>		
+					
 				</s:Group>
+				-->
+				
+				
+				<s:VGroup  width="100%"    >
+					<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
+									   height="{this.height-this.headerBar.height+10}"  
+									>
+						 
+					</tlf:TLFTextEditor>
+					<!--
+					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
+					minHeight="{this.height-this.headerBar.height+10}"
+					paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
+					</s:RichEditableText>		
+					-->
+				</s:VGroup>				
 			</s:Scroller>
 		
 		</s:Group>

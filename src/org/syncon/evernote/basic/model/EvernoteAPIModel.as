@@ -3,6 +3,7 @@
 */
 package org.syncon.evernote.basic.model
 {
+	import com.evernote.edam.notestore.SyncState;
 	import com.evernote.edam.type.Tag;
 	import com.evernote.edam.type.User;
 	import com.evernote.edam.userstore.AuthenticationResult;
@@ -92,6 +93,25 @@ package org.syncon.evernote.basic.model
 		}
 		public function get  preferences ( ) : PreferencesVO  { return this._preferences   }		
 		
+		private var _user : User = new User();
+		public function set user ( p : User )  : void
+		{
+			this._user = p; 
+			this.dispatch( new EvernoteAPIModelEvent( EvernoteAPIModelEvent.USER_CHANGED, this._user ) )
+		}
+		public function get  user ( ) : User  { return this._user   }	
+		
+		private var _syncState :  SyncState = new SyncState();
+		public function set acctSyncState ( p : SyncState )  : void
+		{
+			this._syncState = p; 
+			this.dispatch( new EvernoteAPIModelEvent( EvernoteAPIModelEvent.SYNC_STATE_CHANGED, this._syncState ) )
+		}		
+		
+		public function get  acctSyncState ( ) : SyncState  { return this._syncState   }		
+		
+				
+		
 		public function loadNotes(e:Array)  : void
 		{
 			/*for each ( var n : Object in e ) 
@@ -108,7 +128,22 @@ package org.syncon.evernote.basic.model
 		{
 			this._notes.addItemAt( n,0)
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
-							
+		}
+		
+		public function changedNoteNotebook(note : Note2, oldNotebook : Notebook2 )  : void
+		{
+			for each ( var nb : Notebook2 in this.notebooks )
+			{
+				if ( nb.guid == note.notebookGuid ) 
+				{
+					nb.noteCount++; nb.notebookUpdated()
+				}
+				if ( nb.guid == oldNotebook.guid ) 
+				{
+					nb.noteCount--; nb.notebookUpdated()
+				}				
+			}
+			//return; ... 
 		}
 		
 		public function removeNotes(notes : Array )  : void
@@ -121,7 +156,6 @@ package org.syncon.evernote.basic.model
 			this.noteCount -= notes.length
 			this.trashCount +=  notes.length
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
-				
 		}
 		
 		public function loadSearch(e:Array)  : void
@@ -282,8 +316,10 @@ package org.syncon.evernote.basic.model
 		public function authenticated(auth :  AuthenticationResult):void
 		{
 			this.preferences.username = auth.user.username; 
+			this.user = auth.user; 
 			this.dispatch( new EvernoteAPIModelEvent(EvernoteAPIModelEvent.AUTHENTICATED ) )
 		}
+		
 		
 		public function map( objs : Array, prop : String  ) : Array
 		{

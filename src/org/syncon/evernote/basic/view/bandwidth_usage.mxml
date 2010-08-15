@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					   useHandCursor="true" buttonMode="true"
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="150" height="22">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -8,14 +9,17 @@
 	
 	
 	
-	<s:SkinnableContainer  width="145" height="10">
+	<s:SkinnableContainer  id="progressBar" width="145" height="10">
 		<s:Rect width="100%" height="100%" radiusX="5" radiusY="5" >
 			<s:stroke>
 				<s:SolidColorStroke color="0xCCCCCC"    pixelHinting="true"/>
 			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#FFFFFF" />
+			</s:fill>			
 		</s:Rect>
 		
-		<s:SkinnableContainer  id="bar"   x="3" width="20" height="6" verticalCenter="-0.0">
+		<s:SkinnableContainer  id="usageBar"   x="3" width="20" height="6" verticalCenter="-0.0">
 			<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 				<s:fill>
 					<s:SolidColor color="#8CB3D5" />

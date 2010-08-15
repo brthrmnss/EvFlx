@@ -42,7 +42,7 @@ package  org.syncon.evernote.basic.controller
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags(this.onListTags )  ) ;		
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListNotebooks( this.onListNotebooks ) ) ;		
-			
+			this.dispatch(  EvernoteAPICommandTriggerEvent.GetSyncState( this.onSyncState ) ) ;		
 			//this.serivce.eventDispatcher.addEventListener( EvernoteServiceEvent.LIST_TAGS, this.onListTags ) 
 				
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
@@ -65,6 +65,11 @@ package  org.syncon.evernote.basic.controller
 				return;
 			}			
 			return; 	
+		}
+		
+		public function onSyncState(e:Object):void
+		{
+			trace();
 		}
 		
 		private var recievedTags : Boolean = false; 		

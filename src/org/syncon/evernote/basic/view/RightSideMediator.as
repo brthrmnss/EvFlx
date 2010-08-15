@@ -79,7 +79,7 @@ package org.syncon.evernote.basic.view
 		//private var clickedNote : Note2 = new Note2()
 		public var control : Boolean = false; 
 		public var shift : Boolean = false; 
-		
+		public var allowSimpleLoading : Boolean = false; 
 		public function RightSideMediator()
 		{
 		} 
@@ -108,6 +108,7 @@ package org.syncon.evernote.basic.view
 			
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchResult);	
 			eventMap.mapListener(eventDispatcher, NoteListEvent.SWITCH_TO_NOTE, this.onSwitchBackToNote);	
+			eventMap.mapListener(eventDispatcher, NoteListEvent.CLEARED_NOTES, this.onClearedNotes );				
 			
 			
 			ui.list.notes = this.model.notes; 
@@ -152,7 +153,8 @@ package org.syncon.evernote.basic.view
 		private function onNoteClicked(e:CustomEvent): void
 		{
 			var note_ : Note2 = e.data as Note2
-			if ( shift == false ) 
+			
+			if ( allowSimpleLoading && shift == false ) 
 			{
 				
 				this.note = note_; 
@@ -167,7 +169,8 @@ package org.syncon.evernote.basic.view
 						true, false, false, false, onNoteLoaded, onNoteNotLoaded  ) )
 				}
 			}
-			if ( this.control ) 
+			
+			if ( this.control || allowSimpleLoading == false  ) 
 			{
 				this.dispatch( new NoteListEvent( NoteListEvent.VIEW_NOTE, note_ ) )
 			}
@@ -233,7 +236,7 @@ package org.syncon.evernote.basic.view
 		private function onNewClicked(e:CustomEvent): void
 		{
 			
-			if (  this.control == false )
+			if ( this.allowSimpleLoading &&   this.control == false )
 			{
 				ui.currentState = StateEditor
 				ui.edit.note = this.onNewNote(); //note = e.data as Note
@@ -378,11 +381,9 @@ package org.syncon.evernote.basic.view
 		//this implies they want to go back to 'edit' a note, note view it. 
 		private function onSwitchBackToNote(e:NoteListEvent):void
 		{
-			//if in an edit mode ....
-			if ( this.ui.edit != null  ) 
-			{
+ 
 				this.saveNote( saveEditorSwitchedOutNoteResult )
-			}
+		 
 			if ( this.note != null ) 
 				this.note.selected = false
 			this.note = e.data as  Note2;
@@ -415,10 +416,10 @@ package org.syncon.evernote.basic.view
 				this.convertNoteContents();
 				//ui.view.loading = false; 
 			}
-			private function onNoteNotLoaded2(note:Note):void
-			{
-				//ui.view.loading = false; 
-			}				
+				private function onNoteNotLoaded2(note:Note):void
+				{
+					//ui.view.loading = false; 
+				}				
 			private function saveEditorSwitchedOutNoteResult( o:Object):void
 			{
 				return;
@@ -510,20 +511,38 @@ package org.syncon.evernote.basic.view
 		*/
 		private function onNoteResult(e:EvernoteAPIModelEvent) : void
 		{
+			//need ot now when not to keep selection ... 
 			this.ui.currentState = StateList
 			this.ui.list.notes = e.data as ArrayCollection
+			this.ui.list.list.selectedItems.removeAll() 
 		}
 		private function onNotesChanged(e:EvernoteAPIModelEvent) : void
 		{
 			var oldPosition : Number = this.ui.list.list.list.verticalScrollPosition
+			
 			this.ui.list.notes = e.data as ArrayCollection
 			this.ui.list.list.list.verticalScrollPosition = oldPosition; 
+			this.ui.list.list.selectedItems =  this.ui.list.list.selectedItems ;
+			//this.ui.list.list.selectedItems
 		}		
 		private function onSearchResult(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.currentState = StateSearch
 			this.ui.search.notes = e.data as ArrayCollection			
 		}		
+		
+		private function onClearedNotes(e:NoteListEvent):void
+		{
+			this.ui.currentState = StateList
+			this.refreshNoteList()
+			//refresh? .. we will refresh the notes automatically if you can make it so it doesn't jump or 
+				//remove selections or scroll positions
+		}
+		
+		public function refreshNoteList() : void
+		{
+			
+		}
 		
 	}
 }

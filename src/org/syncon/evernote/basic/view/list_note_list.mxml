@@ -150,7 +150,7 @@
 				  styleName="dataGrid"   itemClick="list_itemClickHandler(event)"
 				   selectionColor="0xB4CDD2"  rollOverColor="#e6e6e6" useRollOver="false"
 				  draggableColumns="false" minColumnWidth="100"  
-				  allowMultipleSelection="true"  selectable="true"
+				  allowMultipleSelection="true"  selectable="false"
 				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
 		
  <!--

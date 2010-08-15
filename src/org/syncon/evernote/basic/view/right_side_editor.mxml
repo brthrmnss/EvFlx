@@ -61,7 +61,8 @@
 				var args : Object = {}
 				this._note.tempTitle = this.editor.txtTitle.text
 				args.tf = this.editor.txtContents.textFlow
-				this._note.tags = this.editor.listTags.tags; 
+				this._note.tags = this.editor.listTags.tags;
+				this._note.notebookGuid = this.editor.dropdownNotebook.selectedItem.guid; 
 				args.note = this._note; 
 				return args
 			}

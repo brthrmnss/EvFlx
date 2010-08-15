@@ -38,7 +38,7 @@
 			<s:Parallel>
 				<s:Sequence>
 					<s:Resize target="{this}" duration="300" easer="{sineIn}" />
-					<s:RemoveAction target="{mainHGroup}" />
+					<!--<s:RemoveAction target="{mainHGroup}" />-->
 				</s:Sequence>				
 				<s:Resize target="{this.mainHGroup}" duration="600" easer="{sineOut}" />
 				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
@@ -62,7 +62,7 @@
 		<s:HGroup>
 			<s:Label id="lblShowing" text="Notes "  fontWeight="bold" color="0x437B86"/>
 			<s:List id="listNotes"   borderVisible="false"   contentBackgroundAlpha="0.0"
-					minWidth="0"   
+					minWidth="0"    focusEnabled="false" 
 					itemRenderer="org.syncon.evernote.basic.view.tab_bar_itemrenderers" >
 				<s:layout>
 					<s:HorizontalLayout gap="1"   />			

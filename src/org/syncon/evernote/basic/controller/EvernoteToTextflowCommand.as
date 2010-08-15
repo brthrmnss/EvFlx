@@ -3,6 +3,8 @@ package  org.syncon.evernote.basic.controller
 	import flash.events.Event;
 	
 	import org.robotlegs.mvcs.Command;
+	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
+
 	/**
 	 * */
 	public class EvernoteToTextflowCommand extends Command
@@ -78,7 +80,19 @@ package  org.syncon.evernote.basic.controller
 		{
 		var ee :  RteHtmlParser = new RteHtmlParser()
 		ee.ignoreParagraphSpace = true; 
+		try 
+			
+		{
 		ee.ParseToRTE(this.txt)
+		}
+		catch ( e : Error ) 
+		{
+			var evt : ShowAlertMessageTriggerEvent = new ShowAlertMessageTriggerEvent( 
+				ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 
+				'Could not load the message ', 'Alert' ) 
+			this.dispatch( evt ) 
+			return ; 
+		}
 		ee.ParseToHTML( "<div>"+ee.StringFormat+"</div>" ) ; 
 		//var ee : TextConverter
 		//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
