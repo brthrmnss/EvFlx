@@ -293,8 +293,10 @@ package org.syncon.evernote.basic.controller
 			 
 			for each (var i:XML in xml.children()) {
 				var children : XMLList = i.children()
-				 var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008"><span fontSize="15">  •  </span> </p> )
-				 wrapper.appendChild(i);	
+				 //var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008" lineHeight="180%" fontSize="15"  ><span >  •  </span> </p> )
+				 var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008" lineHeight="180%"><span fontSize="15">  •  </span></p> )
+				//var dbg : Array = [ wrapper[0], wrapper.@span, wrapper.descendants('span' ) , wrapper.descendants() ] 
+				wrapper.appendChild(i);	
 				 list.appendChild( wrapper );
 			}
 			

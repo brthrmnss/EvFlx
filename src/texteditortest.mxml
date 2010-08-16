@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="application1_creationCompleteHandler(event)"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:tlf="net.asciiworks.tlf.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//this.editor.textFlowMarkup = '<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" verticalAlign="inherit" whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008"><p lineHeight="180%"><span></span></p></TextFlow>'; 
+			
+		//		var xx : Object =EvernoteToTextflowCommand.Import( '<p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>can we just start using the damn</span>  <span color="#009999">thing? ... wtf y not? now it\'s on to checkboxes, texteditors, and formating</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span color="#009999">sdf</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>sd</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span>fd</span></p>' ) 
+				var x2x :  String =EvernoteToTextflowCommand.Export( '<p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>can we just start using the damn</span>  <span color="#009999">thing? ... wtf y not? now it\'s on to checkboxes, texteditors, and formating</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span color="#009999">sdf</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>sd</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span>fd</span></p>' ) 
+				var pattern:RegExp = /></gi;
+				var s : String = x2x.toString().replace(pattern, '>\n<')
+				var reimported :  String =EvernoteToTextflowCommand.Import( x2x ); 
+				//this.editor.textFlowMarkup = '<p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>can we just start using the damn</span>  <span color="#009999">thing? ... wtf y not? now it\'s on to checkboxes, texteditors, and formating</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span color="#009999">sdf</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span fontSize="15">•</span>  <span>sd</span></p><p xmlns="http://ns.adobe.com/textLayout/2008">  <span>fd</span></p>'
+				
+				//reimported = '<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" verticalAlign="inherit" whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008"><p lineHeight="180%"><span color="#ffd87d" fontSize="15">  •  d</span></p><p lineHeight="180%"><span color="#ffd87d" fontSize="15">  •  d</span></p><p lineHeight="180%"><span color="#ffd87d" fontSize="15">  •  d</span></p><p lineHeight="180%"><span color="#ffd87d" fontSize="15">  •  d</span></p></TextFlow>'
+				this.editor.textFlowMarkup = reimported;
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	 
+	<s:Group>
+		<tlf:TLFTextEditor id="editor"    />
+	</s:Group>
+ 
+</s:Application>

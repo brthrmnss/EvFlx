@@ -154,9 +154,13 @@ package  org.syncon.evernote.basic.controller
 		for each ( var xml_ :  XML in  ee.XMLObject.children()  )
 		{
 			tf.appendChild( xml_ )
-		}		
+		}	
+		XML.prettyIndent = 0
+		XML.prettyPrinting = false
 		this.txt = tf.toXMLString()
-		this.txt = this.txt.replace( '•', '  •  ' ) 
+		
+		this.txt = replace( this.txt,  '•', '             •       ' ) 
+	//	this.txt = replace( this.txt,  '>\s<', '' ) 
 		}
 		
 		
