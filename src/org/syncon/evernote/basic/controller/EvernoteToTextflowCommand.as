@@ -243,6 +243,10 @@ package  org.syncon.evernote.basic.controller
 				//find[i] = this.replace( find[i], '"', '\\"' )
 				this.txt = this.replace( this.txt,  find[i], replace[i] )
 			}
+			
+			//replace spans without colors
+			//use the setp through parse to remove unneded spans 
+			this.txt = this.replace( this.txt, '<span>', '<span color="#000000" >' ) ; 
 		}
 				
 		private function export_PackageForSending() : void
