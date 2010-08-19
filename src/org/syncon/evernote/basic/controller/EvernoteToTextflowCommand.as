@@ -2,6 +2,9 @@ package  org.syncon.evernote.basic.controller
 {
 	import flash.events.Event;
 	
+	import flashx.textLayout.elements.SpanElement;
+	import flashx.textLayout.elements.TextFlow;
+	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 
@@ -301,6 +304,40 @@ package  org.syncon.evernote.basic.controller
 			cmd.importEvernoteXML()		
 			return cmd.txt
 		}
+		
+		
+		/**
+		 * Take string and exports text flow string
+		 * */
+		static public function Import2( txt : String )  :   TextFlow
+		{
+			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+			var event : EvernoteToTextflowCommandTriggerEvent = 
+				new EvernoteToTextflowCommandTriggerEvent(
+					EvernoteToTextflowCommandTriggerEvent.IMPORT,
+					txt, null )
+			cmd.event = event
+			var str : String = cmd.importEvernoteXML()		
+			import flashx.textLayout.conversion.ConversionType;
+			import flashx.textLayout.conversion.TextConverter;				
+			var flow:TextFlow = TextConverter.importToFlow(str, TextConverter.TEXT_LAYOUT_FORMAT);
+			for each ( var oo : Object in flow.mxmlChildren ) 
+			{
+				if ( oo.hasOwnProperty('mxmlChildren' ) == false ) 
+					continue; 
+				for each ( var o : Object in oo.mxmlChildren ) 
+				{
+					if ( o  is SpanElement ) 
+					{
+						var span : SpanElement = o as SpanElement
+							trace( span.text ) ; 
+							trace( ' ' + cmd.replace( span.text,  'ooooo', '  •  ' )  )
+						span.text =  cmd.replace( span.text,  'ooooo', '  •  ' ) 
+					}
+				}
+			}
+			return flow
+		}		
 		
 		/**
 		 * Takes textflow and exports string
