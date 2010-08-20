@@ -3,11 +3,12 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"  
-				  buttonMode="true" useHandCursor="true"
+				  buttonMode="true" useHandCursor="true" xmlns:view="org.syncon.evernote.basic.view.*"
 				>
 	
 	<fx:Script> 
 		<![CDATA[ 
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.model.Note2;
 			[Bindable] private var first : Boolean = false;
@@ -54,6 +55,12 @@
 				this.bgColor.color = 0xE8E8E8
 			}
  
+
+			protected function btnClose_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent ( 'closeNoteTab', this.note )  ) ; 
+			}
+
 		]]> 
 	</fx:Script> 
 	
@@ -73,8 +80,8 @@
 		</s:Rect>	
 	 
 	
-	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="10" paddingTop="7"
-			   verticalAlign="middle" verticalCenter="0"
+	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="5" paddingTop="7"
+			   verticalAlign="middle" verticalCenter="0"  gap="1"
 			  >
 		<s:Label id="txtLbl"  text="{this.labelText}"  toolTip="{this.labelTooltip}" 
 				   color="{this.colorR}"  color.hovered="#4C9EA8"
@@ -82,6 +89,7 @@
 		<!--<s:Label id="txtLbl_Disabled" 
 				  includeIn="disabled"   color.hovered="#808080"
 				  text="{this.labelText}" color="#808080"    fontSize="10"   fontWeight="bold"/>		-->
+		<view:close_button id="btnClose" click="btnClose_clickHandler(event)" />
 	</s:HGroup>
 	
 	

@@ -42,7 +42,10 @@ package org.syncon.evernote.basic.view
 			this.model.eventDispatcher.addEventListener(
 				EvernoteAPIModelEvent.LOGOUT, this.onLogout);	
 			eventMap.mapListener(eventDispatcher, 
-				NoteListEvent.VIEW_NOTE, onViewNote );				
+				NoteListEvent.VIEW_NOTE, onViewNote );			
+			eventMap.mapListener(eventDispatcher, 
+				NoteListEvent.DESELECTED, onDeselectNotes );					
+			
 		/*
 			this.model.eventDispatcher.addEventListener(
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onRecievedNotebookList);	
@@ -65,6 +68,8 @@ package org.syncon.evernote.basic.view
 		 {
 			 if ( this.ui.listNotes != null ) 
 			 this.ui.listNotes.selectedItem = n
+			/*	if ( n == null ) 
+					this.ui.listNotes.selectedIndex = -1; */
 			this._selectedNote= n; 
 		 }
 		 public function get selectedNote() : Note2
@@ -93,7 +98,7 @@ package org.syncon.evernote.basic.view
 			this.dispatch( new NoteListEvent( NoteListEvent.SWITCH_TO_NOTE, e.data ) ) ; 
 		}
 		
-		private function onRemoveNote(e:NoteListEvent):void
+		private function onRemoveNote(e:CustomEvent):void
 		{
 			var index : int = this.notes.getItemIndex( e.data ) ;
 			if ( index != -1 ) 
@@ -124,6 +129,17 @@ package org.syncon.evernote.basic.view
 			this.dispatch( new NoteListEvent( NoteListEvent.CLEARED_NOTES   ) ) ; 
 		}
 		
+		public function onDeselectNotes(e:NoteListEvent):void
+		{
+			//how to handle this ... just stop showing it as seleceted ... i don't care about this being in sync
+			if ( this.selectedNote != null ) 
+			{
+			this.selectedNote.selected = false; 
+			this.selectedNote.selectionChanged()
+			}
+			//this.selectedNote = null
+			//this.dispatch( new NoteListEvent( NoteListEvent.SWITCH_TO_NOTE, e.data ) ) ; 
+		}
  	
  
 	}

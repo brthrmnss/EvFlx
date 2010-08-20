@@ -250,6 +250,7 @@ package org.syncon.evernote.basic.view
 		private function onListClicked(e:CustomEvent): void
 		{
 			ui.currentState =StateList
+			this.dispatch( new NoteListEvent( NoteListEvent.DESELECTED  ) )
 		}
 		/**
 		 * Assume data was loaded properly in viewer , 
@@ -382,6 +383,9 @@ package org.syncon.evernote.basic.view
 		private function onSwitchBackToNote(e:NoteListEvent):void
 		{
  
+			if ( this.control ) 
+				return; 
+			
 				this.saveNote( saveEditorSwitchedOutNoteResult )
 		 
 			if ( this.note != null ) 
