@@ -104,7 +104,10 @@ package org.syncon.evernote.basic.view
 			if ( index != -1 ) 
 				this.notes.removeItemAt( index ) ; 
 			if ( this.notes.length == 0 ) 
-				this.ui.currentState = ''
+			{	this.ui.currentState = ''
+				//go back to list state
+				this.dispatch( new NoteListEvent( NoteListEvent.CLEARED_NOTES ) ) ; 
+			}
 		}		
 		
 	 	private function onLogout(e:Event):void

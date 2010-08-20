@@ -3,14 +3,16 @@ package org.syncon.evernote.basic.controller
 	import flash.xml.XMLDocument;
 	import flash.xml.XMLNode;
 	
+	import mx.utils.StringUtil;
+	
 	public class RteHtmlParser_Import
 	{
-		public var SET_P:String = 'DIV';
-		public var SET_LI:String = 'LI';
-		public var SET_FONT:String = 'SPAN';
+		public var SET_P:String = 'div';
+		public var SET_LI:String = 'li';
+		public var SET_FONT:String = 'span';
 		
-		public var SET_UL:String = 'UL';
-		public var SET_BR:String = 'BR';
+		public var SET_UL:String = 'ul';
+		public var SET_BR:String = 'br';
 		
 		public var ignoreParagraphSpace:Boolean = false;
 		
@@ -46,203 +48,8 @@ package org.syncon.evernote.basic.controller
 		{
 			return out_xml;
 		}
-		
-		
-		//________________________________________________________________________________________________________
-		//                                                                                             HTML PARSER
-		
-		public function ParseToHTML(string:String):void
-		{
-			var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
-			var nxml:XMLNode = (ignoreParagraphSpace) ? xml_doc.firstChild : manage_space(xml_doc.firstChild);
-			
-			var xml:XML = XML(nxml.toString());
-			var t1:XML;
-			
-			// Remove all TEXTFORMAT
-			for( t1 = xml..TEXTFORMAT[0]; t1 != null; t1 = xml..TEXTFORMAT[0] ) {
-				t1.parent().replace( t1.childIndex(), t1.children() );
-			}
-			
-			try {
-			//add br tag
-			if (SET_BR)
-				xml = add_br_tag(xml);
-			}
-			catch ( e : Error ) {}
-			// add ul tag
-			xml = add_ul_tag(xml);
-			
-			// format css
-			xml = add_css(xml);
-			
-			// format new names
-			xml = set_new_name(xml);
-			
-			out_xml = xml;
-		}
-		
-		private function add_ul_tag(xml:XML):XML
-		{
-			var t1:XML;
-			var t2:XML = new XML(<BODY />);
-			var el:XMLList = xml.children();
-			var ul:XML;
-			
-			for each (t1 in el) {
-				if (t1.name().localName != 'LI') {
-					t2.appendChild(t1.copy());
-					
-				} else if (t1.childIndex() == 0) {
-					ul = new XML(<UL />);
-					ul.appendChild(t1.copy());
-					t2.appendChild(ul);
-					
-				} else if (el[t1.childIndex()-1].name().localName != 'LI') {
-					ul = new XML(<UL />);
-					ul.appendChild(t1.copy());
-					t2.appendChild(ul);
-					
-				} else {
-					ul.appendChild(t1.copy());
-					
-				}
-			}
-			
-			return t2;
-		}
-		
-		private function add_br_tag(xml:XML):XML
-		{
-			var br:XML;
-			
-			for each (var i:XML in xml.children()) {
-				if (!has_text(i)) {
-					br = copy_attributes(i.descendants('FONT')[0], new XML(<BR />));
-					i.parent().replace(i.childIndex(), br);
-				}
-			}
-			return xml;
-		}
-		
-		private function set_new_name(xml:XML):XML
-		{
-			var t1:XML;
-			// set new P
-			if (SET_P == null)
-			{
-				for( t1 = xml..P[0]; t1 != null; t1 = xml..P[0] ) {
-					t1.parent().replace(t1.childIndex(), t1.children());
-				}
-			}
-			else if (SET_P.toLocaleUpperCase() != 'P') {
-				for( t1 = xml..P[0]; t1 != null; t1 = xml..P[0] ) {
-					t1.setName(SET_P);
-				}
-			}
-			// set new UL
-			if (SET_UL == null)
-			{
-				for( t1 = xml..UL[0]; t1 != null; t1 = xml..UL[0] ) {
-					t1.parent().replace(t1.childIndex(), t1.children());
-				}
-			}
-			else if (SET_UL.toLocaleUpperCase() != 'UL') {
-				for( t1 = xml..UL[0]; t1 != null; t1 = xml..UL[0] ) {
-					t1.setName(SET_FONT);
-				}
-			}
-			// set new LI
-			if (SET_LI == null)
-			{
-				for( t1 = xml..LI[0]; t1 != null; t1 = xml..LI[0] ) {
-					t1.parent().replace(t1.childIndex(), t1.children());
-				}
-			}
-			else if (SET_LI.toLocaleUpperCase() != 'LI') {
-				for( t1 = xml..LI[0]; t1 != null; t1 = xml..LI[0] ) {
-					t1.setName(SET_LI);
-				}
-			}
-			// set new FONT
-			if (SET_FONT == null)
-			{
-				for( t1 = xml..FONT[0]; t1 != null; t1 = xml..FONT[0] ) {
-					t1.parent().replace(t1.childIndex(), t1.children());
-				}
-			}
-			else if (SET_FONT.toLocaleUpperCase() != 'FONT') {
-				for( t1 = xml..FONT[0]; t1 != null; t1 = xml..FONT[0] ) {
-					t1.setName(SET_FONT);
-					// wierd browser rendering on e.g. <span />
-					if (t1 == '') {
-						//t1.setChildren('');
-						//or you can just replace it with nothing
-						t1.parent().replace(t1.childIndex(), '');
-					}
-				}
-			}
-			// set new BR
-			if (SET_BR == null)
-			{
-				for( t1 = xml..BR[0]; t1 != null; t1 = xml..BR[0] ) {
-					t1.parent().replace(t1.childIndex(), t1.children());
-				}
-			}
-			else if (SET_BR.toLocaleUpperCase() != 'BR') {
-				for( t1 = xml..BR[0]; t1 != null; t1 = xml..BR[0] ) {
-					t1.setName(SET_BR);
-					// if it's closed like this <font /> in html
-					// thebrowser might act wierd!
-					t1.setChildren('');
-				}
-			}
-			return xml;
-		}
-		
-		private function add_css(xml:XML):XML
-		{
-			var t1:XML;
-			var t2:XML;
-			// Find all ALIGN
-			for each ( t1 in xml..@ALIGN ) {
-				t2 = t1.parent();
-				t2.@STYLE = "text-align:" + t1 + ";" + t2.@STYLE;
-				delete t2.@ALIGN;
-			}
-			// Find all FACE
-			for each ( t1 in xml..@FACE ) {
-				t2 = t1.parent();
-				t2.@STYLE = "font-family:'" + t1 + "';" + t2.@STYLE;
-				delete t2.@FACE;
-			}
-			// Find all SIZE 
-			for each ( t1 in xml..@SIZE ) {
-				t2 = t1.parent();
-				t2.@STYLE = "font-size:" + t1 + "px;" + t2.@STYLE;
-				delete t2.@SIZE;
-			}
-			// Find all COLOR 
-			for each ( t1 in xml..@COLOR ) {
-				t2 = t1.parent();
-				t2.@STYLE = "color:" + t1 + ";" + t2.@STYLE;
-				delete t2.@COLOR;
-			}
-			// Find all LETTERSPACING 
-			for each ( t1 in xml..@LETTERSPACING ) {
-				t2 = t1.parent();
-				t2.@STYLE = "letter-spacing:" + t1 + "px;" + t2.@STYLE;
-				delete t2.@LETTERSPACING;
-			}
-			// Find all KERNING
-			for each ( t1 in xml..@KERNING ) {
-				t2 = t1.parent();
-				// ? css 
-				delete t2.@KERNING;
-			}
-			return xml;
-		}
-		
+ 
+	  
 		//________________________________________________________________________________________________________
 		
 		
@@ -266,10 +73,11 @@ package org.syncon.evernote.basic.controller
 			
 			// format CSS
 			xml = remove_css(xml);
-			
+			/*
 			// format names
 			xml = rename_tags(xml);
-			
+			*/
+			xml = remove_empty_tags(xml)
 			//add TEXTFORMAT
 			//xml = add_textformat(xml);
 			xml = remove_ul_tag(xml);
@@ -370,13 +178,14 @@ package org.syncon.evernote.basic.controller
 		{
 			var br:XMLList = xml.descendants(SET_BR);
 			var p:XML;
-			var f:XML;
+			//var f:XML;
 			
 			for each (var i:XML in br) {
-				p = new XML(<P />);
-				f = copy_attributes(i, new XML(<FONT />));
-				f.setChildren('');
-				p.appendChild(f);
+				p = new XML(<span />);
+				//p = new XML(<span color="#99cc00">????</span>);
+				/*f = copy_attributes(i, new XML(<FONT />));
+				f.setChildren('');*/
+				//p.appendChild(f);
 				i.parent().replace(i.childIndex(), p);
 			}
 			
@@ -389,10 +198,14 @@ package org.syncon.evernote.basic.controller
 			var ta:Array;
 			var el:XML;
 			var name:String;
-			
-			for each ( var i:XML in xml..@STYLE ) {
+			//var capture : Object = xml..@STYLE 
+			//var capture2 : Object = xml..@style 
+			//var colorsWithHexAttribute:XMLList = xml.( hasOwnProperty( "@style" ) );
+
+			for each ( var i:XML in xml..@style ) {
 				el = i.parent();
-				ar = String(el.@STYLE).split(';');
+				var style : String =  String(el.@STYLE)
+				ar = String(el.@style).split(';');
 				
 				for (var j:uint = 0; j < ar.length; j++) {
 					ta = ar[j].split(':');
@@ -408,20 +221,23 @@ package org.syncon.evernote.basic.controller
 						break;
 						
 						case 'font-size':
-						el.@SIZE = ta[1].split('px').join('');
+						el.@fontSize = ta[1].split('px').join('');
 						break;
 						
+						case 'font-weight':
+							el.@fontWeight = ta[1];
+							break;						
 						case 'color':
-						el.@COLOR = ta[1];
+						el.@color = StringUtil.trim(ta[1] );
 						break;
 						
 						case 'letter-spacing':
-						el.@LETTERSPACING = ta[1].split('px').join('');
+						el.@letterspacing = ta[1].split('px').join('');
 						break;
 					}
 				}
 				
-				delete el.@STYLE;
+				delete el.@style;
 			}
 			
 			return xml;
@@ -446,15 +262,66 @@ package org.syncon.evernote.basic.controller
 					t.setName('LI');
 				}
 			}
-			// set new FONT
-			if (SET_FONT.toLocaleUpperCase() != 'FONT' && SET_FONT != null) {
-				el = xml.descendants(SET_FONT);
-				for each (t in el) {
-					t.setName('FONT');
-				}
-			}
+			
+			return xml;
+		}		
+		
+		private function remove_empty_tags(xml:XML):XML
+		{
+			var t:XML;
+			var el:XMLList;
+/*			t.toXMLString()
+			do 
+			{
+				
+			}*/
+			//some do while loop uptile xml strings are equal
+			 this.promoteEmptyNotes( xml, ['span'] )
+			 this.promoteEmptyNotes( xml, ['span'] )
+			 this.promoteEmptyNotes( xml, ['span'] )
 			return xml;
 		}
+		
+		private function promoteEmptyNotes(xml:XML, onlyTags : Array = null):void
+		{		
+			for each (var i:XML in xml.children()) {
+				//var dbg : Array = [i.toString(), i.valueOf() ] 
+				var vl :  String = i.toString()
+				if ( vl == '' ) 
+					continue; 
+				
+				if ( vl.charAt(0) == '<' && vl.charAt(vl.length-1) == '>' ) 
+				{
+					if (  (onlyTags == null )||
+						
+						(onlyTags != null && 
+										onlyTags.indexOf( i.name().localName ) != -1 )  )
+					{	//continue; 
+					i.parent().replace( i.childIndex(), i.children() )
+					}
+					if ( i.children().length() > 0 ) 
+					{
+						var p : XML = i.children()[0].parent()
+					}
+					if ( p != null )
+						{
+							var pp : Object = p.toString();
+						}
+					this.promoteEmptyNotes( i ) 
+					/*	
+					for each (var i2:XML in i.children()) 
+					{	
+						var dbg2 : Array = [i2.toString(), i2.valueOf() ] 
+						this.promoteEmptyNotes( i2 ) 
+					}
+					*/	
+				}
+
+			}
+			
+			//return xml
+		}
+		
 		
 		private function add_textformat(xml:XML):XML
 		{

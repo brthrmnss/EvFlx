@@ -4,7 +4,7 @@
 					  xmlns:mx="library://ns.adobe.com/flex/mx" 
 					  width="100%" height="100%"  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  xmlns:view="org.syncon.evernote.basic.view.*"
-					  xmlns:components="brust.components.*" xmlns:tlf="net.asciiworks.tlf.*">
+					  xmlns:components="brust.components.*" xmlns:tlf="net.asciiworks.tlf.*" xmlns:controls="acj.controls.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -15,7 +15,6 @@
 			import com.evernote.edam.type.Notebook;
 			
 			import flashx.textLayout.conversion.TextConverter;
-			import flashx.textLayout.elements.TextFlow;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
@@ -106,15 +105,6 @@
 					this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}
 			
-			
-			public function conversionTFResult(tf: TextFlow):void
-			{
-				this.txtContents.textFlow  = new TextFlow	
-				this.txtContents.textFlow  = tf	
-				this.txtContents.textFlow  = new TextFlow	
-				this.txtContents.textFlow  = tf						
-				this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
-			}			
 
 			protected function txtTags_selectHandler(event:SearchInputEvent):void
 			{
@@ -148,13 +138,14 @@
 
 			protected function skinnablecontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
-  				this.txtContents.display.addEventListener('change', txtContents_changeHandler )
+  				//this.txtContents.display.addEventListener('change', txtContents_changeHandler )
 				this.txtContents.removeElement( this.txtContents.toolbar ) 
 				this.controlp.addElement(txtContents.toolbar)
-				this.txtContents.display.setStyle( 'paddingTop',  "8");
-				this.txtContents.display.setStyle( 'paddingRight',  "5");
-				this.txtContents.display.setStyle( 'paddingBottom',  "5");
-				this.txtContents.display.setStyle( 'paddingLeft',  "5");		 
+				//this.txtContents.display.setStyle( 'paddingTop',  "8");
+				//this.txtContents.display.setStyle( 'paddingRight',  "5");
+				//this.txtContents.display.setStyle( 'paddingBottom',  "5");
+				//this.txtContents.display.setStyle( 'paddingLeft',  "5");		 
+				this.txtContents.addEventListener('change', txtContents_changeHandler )
 			}
 
 		]]>
@@ -209,11 +200,12 @@
 				
 				
 				<s:VGroup  width="100%"    >
-					<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
+					<!--<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
 									   height="{this.height-this.headerBar.height+10}"  
-									>
-						 
-					</tlf:TLFTextEditor>
+									>-->
+						<controls:ACJEditor id="txtContents"  width="100%"    automaticallyExpand="false"
+											height="{this.height-this.headerBar.height+10}"  
+											 />
 					<!--
 					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
 					minHeight="{this.height-this.headerBar.height+10}"

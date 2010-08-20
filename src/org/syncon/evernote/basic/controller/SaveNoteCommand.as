@@ -49,7 +49,7 @@ package  org.syncon.evernote.basic.controller
 				*/
 				this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
 					EvernoteToTextflowCommandTriggerEvent.EXPORT, 
-					xml.children().toXMLString(),
+					xml.toXMLString(),
 					onNoteContentConverted ) )				
 			}
 			if ( event.type == SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK ) 
@@ -78,6 +78,9 @@ package  org.syncon.evernote.basic.controller
 		
 		private function onNoteContentConverted(str: String):void
 		{
+			str = str.replace(new RegExp("[\n\r]","g"),"");
+			//str = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd"><en-note><p><span style="color: #99cc00;">_</span></p><p><span style="color: #99cc00;">testing this</span></p><p><span style="color: #99cc00;">ho ho hoasdf...sdf</span></p><p><span style="color: #800000;">asdfasdf</span></p><p><span style="color: #3399ff;">aaaaaaaaaaaaaa</span></p></en-note>'
+			//str = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note><p><span style="color: #99cc00;"> </span></p><p><span style="color: #99cc00;">testing this</span></p><p><span style="color: #99cc00;">ho ho hoasdf...sdf</span></p> <p><span style="color: #99cc00;"><span style="color: #800000;">asdfasdf</span><br clear="none"/></span></p></en-note>'
 			//var note_ : Note = e.data as Note
 			this.note.content = str
 			var tempSaveNote : Note2 = new Note2()
@@ -97,6 +100,7 @@ package  org.syncon.evernote.basic.controller
 				this.dispatch(   EvernoteAPICommandTriggerEvent.UpdateNote( tempSaveNote,
 				onNoteSaved, onNoteSavedFault  ) )
 			}
+			trace( 'saving note content ' + str )
 		}				
 		
 		
@@ -116,7 +120,7 @@ package  org.syncon.evernote.basic.controller
 				this.note.title = this.note.titleOrTempTitle()
 			}
 			
-			
+			trace( 'note content ' + o.content )
 			if ( this.event.type== SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK ) 
 			{
 				this.apiModel.changedNoteNotebook( this.note, this.event.associatedData as Notebook2 ) 

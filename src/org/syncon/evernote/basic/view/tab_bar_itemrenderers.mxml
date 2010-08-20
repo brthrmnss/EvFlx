@@ -89,7 +89,8 @@
 		<!--<s:Label id="txtLbl_Disabled" 
 				  includeIn="disabled"   color.hovered="#808080"
 				  text="{this.labelText}" color="#808080"    fontSize="10"   fontWeight="bold"/>		-->
-		<view:close_button id="btnClose" click="btnClose_clickHandler(event)" />
+		<!--<view:close_button id="btnClose" click="btnClose_clickHandler(event)" />-->
+		<s:Label text="x" click="btnClose_clickHandler(event)" />
 	</s:HGroup>
 	
 	

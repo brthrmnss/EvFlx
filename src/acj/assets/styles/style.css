@@ -1,0 +1,53 @@
+/* CSS file */
+Application{
+	backgroundColor: #000000;
+	backgroundGradientColors: #000000, #572A03; 
+	color: #ffffff;
+}
+
+TextArea {
+	color: #000000;
+}
+
+TextInput {
+	color: #000000;
+}
+
+List {
+	color: #000000;
+}
+
+TabNavigator {
+   cornerRadius: 0;
+   horizontalGap: 3;
+   horizontalAlign: left;
+   paddingLeft: 3;
+   backgroundAlpha: 0.00;
+   backgroundColor: #ffffff;
+   tabStyleName: "myTabs";
+   firstTabStyleName: "myTabs";
+   lastTabStyleName: "myTabs";
+   selectedTabTextStyleName: "mySelectedTabs";
+   paddingRight: 5;
+   paddingLeft: 5;
+   paddingTop: 0;
+   paddingBottom: 5;
+}
+
+.myTabs {
+   highlightAlphas: 0.36, 0.18;
+   fillAlphas: 1, 1;
+   fillColors: #000000,#572a03;
+   backgroundAlpha: 1;
+   backgroundColor: #ffffff;
+   borderColor: #000000;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   themeColor: #572a03;
+
+}
+
+.mySelectedTabs {
+   color: #000000;
+   textRollOverColor: #0b333c;
+}

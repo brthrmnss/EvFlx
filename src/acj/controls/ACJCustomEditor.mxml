@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<controls:ACJEditor
+	xmlns:controls="acj.controls.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	initialize="init()"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.StringUtil;
+			import mx.controls.textClasses.TextRange;
+			import mx.core.mx_internal;
+		    import mx.core.IUITextField;
+		    import mx.core.UITextFormat;
+	
+			use namespace mx_internal;
+			
+			public var previousTextFormat:TextFormat = null;
+			public var textFormatChanged:Boolean = false;
+		
+			private function init():void
+			{
+				this.fontFamilyCombo.visible = false;
+				this.fontFamilyCombo.includeInLayout = false;
+				
+				this.fontSizeCombo.visible = false;
+				this.fontSizeCombo.includeInLayout = false;
+				
+				this.colorPicker.visible = false;
+				this.colorPicker.includeInLayout = false;
+				
+				this.alignButtons.visible = false;
+				this.alignButtons.includeInLayout = false;
+			}
+			
+			override protected function cleanATag(str:String):String
+			{
+				var pattern:RegExp;
+				var str:String;
+				
+				//call the super cleanATag so it gets 
+				//formatted the way it needs to 
+				str = super.cleanATag(str);
+				
+				//now that it's cleand up, call our own setupATagStyle
+				//now we pass it the new string and create a regex
+				//to append the style tag we want to the a tag 
+				str = setupATagStyle(str);
+				
+				return str;
+			}
+			
+			
+			/***
+			 * 
+			 * setupATagStyle() is a function that is used when
+			 * a change happens, it finds all of the a href tags
+			 * and puts an inline style on it
+			 * 
+			 ***/
+			protected function setupATagStyle(str:String):String
+			{
+				var pattern:RegExp;
+				var str:String;
+				
+	            pattern= /rel="external"/gi;
+	            //we need to replace it with the same text, and append to it
+	            //the reason we need to do this, is because str is our whole html 
+	            //text variable, not just our a href tag
+	            str = str.replace(pattern, "rel=\"external\" style=\"color:" + "#8e908f" + "; text-decoration:underline;\" "); 
+
+				//don't forget to adjust the .htmlText property here to be able to 
+				//surround it with the correct style
+				
+				//how do you adjust the html text that is within the htmlText Property
+				//what you have to do is override the setTextStyles function which you see below
+	            return str;
+			}
+			
+			/***
+			 * 
+			 * setTextStyles() is called by most of the change events in the rich text editor
+			 * so when you change your text field, or the combobox that holds all of the fonts
+			 * or the font size, or the link... this function is called
+			 * 
+			 * override it in class that extends ACJEditor in order to inject your own stuff
+			 * 
+			 ***/			
+			override public function setTextStyles(type:String, value:Object = null, tf:TextFormat = null):void
+			{
+				//when you override this function, you pretty much need the next
+				//three vars, tf, begin and end... if you want to inject your own stuff 
+				//you need to manipulate the tf... you can do that by setting
+				//its font, or color, or target... textFormat has a lot of stuff in it
+				//and it's how you manipulate the htmlText... this example shows
+				//how to set the url to be underlined and to be a different color
+				var tf:TextFormat;
+	
+				var beginIndex:int = textArea.getTextField().selectionBeginIndex;
+				var endIndex:int = textArea.getTextField().selectionEndIndex;
+		
+				if (beginIndex == endIndex)
+				{
+					tf = previousTextFormat;
+				}
+				else	
+					tf = new TextFormat();
+					
+				if (type == "url")
+				{
+					if (value != defaultLinkProtocol && value != "")
+					{
+						tf[type] = value;
+						tf["target"] = "_blank";
+						tf["color"] = 0x8E908F;
+						tf["underline"] = "underline";
+					}
+					else if (tf[type] != "")
+					{
+						tf[type] = ""; 
+						tf["target"] = ""; 
+					}
+				}
+				
+				//I REALLY HATE FACT THAT THE RICHTEXTEDITOR HAS THIS FUNCTION SET TO PRIVATE
+				//AND IT HAS TO BE COPY AND PASTED TO IT'S OWN CLASS IN ORDER TO PROVIDE A DECENT
+				//WORK AROUND
+				
+				//here in order to make sure everything still works, we just pass
+				//the tf that we manipulated to the setTextStyles function in the ACJEditor
+				//the base setTextStyles will use that tf that you manipulated in this function
+				//if you pass the tf, to be null, then it will act as it does originally.
+				super.setTextStyles(type,value,tf);
+				
+	
+			}
+		]]>
+	</mx:Script>
+</controls:ACJEditor>

@@ -215,20 +215,20 @@ package org.syncon.evernote.basic.view
 		/**
 		 * Only occurs after note has been viewed ... 
 		 * */
-		public function noteTextConvertToTf( e  : String )  : void
+		public function noteTextConvertToTf( e  : TextFlow )  : void
 		{
 			//this.note.content = e; 
 			updateContentText(e)
 		}
-		public function updateContentText(str:String)  : void
+		public function updateContentText(tf:TextFlow)  : void
 		{
 			if ( ui.view != null && ui.view.viewer != null ) 
 			{
-				ui.view.viewer.conversionResult( str) 
+				ui.view.viewer.conversionTFResult( tf) 
 			}
 			if ( ui.edit != null && ui.edit.editor != null ) 
 			{
-				ui.edit.editor.conversionResult( str ) 				
+				ui.edit.editor.conversionTFResult( tf ) 				
 			}
 		}
 
@@ -417,7 +417,7 @@ package org.syncon.evernote.basic.view
 					//this.note = note__; 			
 				//ui.view.note = this.note; 
 				this.onEditClicked( null)
-				this.convertNoteContents();
+				//this.convertNoteContents();
 				//ui.view.loading = false; 
 			}
 				private function onNoteNotLoaded2(note:Note):void

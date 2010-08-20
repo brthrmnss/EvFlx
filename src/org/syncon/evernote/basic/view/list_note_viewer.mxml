@@ -8,6 +8,8 @@
 	<fx:Script>
 		<![CDATA[
 			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.elements.TextFlow;
+			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			private var _note : Note2 = new Note2()
@@ -21,12 +23,17 @@
 				this.txtContents.content  = TextConverter.importToFlow( n.content, TextConverter.PLAIN_TEXT_FORMAT ) */  
 			}
 			
-			public function conversionResult(str:String):void
+/* 			public function conversionResult(str:String):void
 			{
 				this.txtContents.content  = TextConverter.importToFlow( str, 
 					TextConverter.TEXT_LAYOUT_FORMAT ) 
-			}
-			
+			} */
+			public function conversionTFResult(tf:  TextFlow):void
+			{
+				this.txtContents.textFlow  = tf	
+				//this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
+			}			
+		
 			public function onExport()  : void
 			{
 				

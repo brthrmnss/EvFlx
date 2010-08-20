@@ -53,7 +53,10 @@ package org.syncon.evernote.basic.controller
 		
 		public function ParseToHTML(string:String):void
 		{
-			var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
+			//var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
+			//text flow wrapps content
+			var xml_doc:XMLDocument = new XMLDocument( string );
+			
 			var nxml:XMLNode = (ignoreParagraphSpace) ? xml_doc.firstChild : manage_space(xml_doc.firstChild);
 			
 			var xml:XML = XML(nxml.toString());
@@ -88,24 +91,27 @@ package org.syncon.evernote.basic.controller
 			var t2:XML = new XML(<BODY />);
 			var el:XMLList = xml.children();
 			var ul:XML;
-			
+			var li:XML; 
+			var inList : Boolean = false; 
 			for each (t1 in el) {
-				if (t1.name().localName != 'LI') {
+				
+				
+				if (t1.name().localName == 'p' && t1.children()[0] != null
+					&& t1.children()[0].toString() == '•' )
+				{
+					if ( inList == false ) 
+					{
+						inList = true
+						ul = new XML( <ul /> );
+						t2.appendChild( ul )
+						
+					}
+					li = new XML( <li /> )
+					li.appendChild( t1.children()[1]);
+					ul.appendChild( li ) 
+				} 				
+				else {
 					t2.appendChild(t1.copy());
-					
-				} else if (t1.childIndex() == 0) {
-					ul = new XML(<UL />);
-					ul.appendChild(t1.copy());
-					t2.appendChild(ul);
-					
-				} else if (el[t1.childIndex()-1].name().localName != 'LI') {
-					ul = new XML(<UL />);
-					ul.appendChild(t1.copy());
-					t2.appendChild(ul);
-					
-				} else {
-					ul.appendChild(t1.copy());
-					
 				}
 			}
 			
@@ -205,40 +211,41 @@ package org.syncon.evernote.basic.controller
 			var t1:XML;
 			var t2:XML;
 			// Find all ALIGN
-			for each ( t1 in xml..@ALIGN ) {
+			for each ( t1 in xml..@align ) {
 				t2 = t1.parent();
-				t2.@STYLE = "text-align:" + t1 + ";" + t2.@STYLE;
-				delete t2.@ALIGN;
+				t2.@style = "text-align:" + t1 + ";" + t2.@style;
+				delete t2.@align;
 			}
 			// Find all FACE
-			for each ( t1 in xml..@FACE ) {
+			//fontFamily
+			for each ( t1 in xml..@face ) {
 				t2 = t1.parent();
-				t2.@STYLE = "font-family:'" + t1 + "';" + t2.@STYLE;
-				delete t2.@FACE;
+				t2.@style = "font-family:'" + t1 + "';" + t2.@style;
+				delete t2.@face;
 			}
 			// Find all SIZE 
-			for each ( t1 in xml..@SIZE ) {
+			for each ( t1 in xml..@fontSize ) {
 				t2 = t1.parent();
-				t2.@STYLE = "font-size:" + t1 + "px;" + t2.@STYLE;
-				delete t2.@SIZE;
+				t2.@style = "font-size:" + t1 + "px;" + t2.@style;
+				delete t2.@fontSize;
 			}
 			// Find all COLOR 
-			for each ( t1 in xml..@COLOR ) {
+			for each ( t1 in xml..@color ) {
 				t2 = t1.parent();
-				t2.@STYLE = "color:" + t1 + ";" + t2.@STYLE;
-				delete t2.@COLOR;
+				t2.@style = "color: " + t1 + ";" + t2.@style;
+				delete t2.@color;
 			}
 			// Find all LETTERSPACING 
-			for each ( t1 in xml..@LETTERSPACING ) {
+			for each ( t1 in xml..@letterspacing ) {
 				t2 = t1.parent();
-				t2.@STYLE = "letter-spacing:" + t1 + "px;" + t2.@STYLE;
-				delete t2.@LETTERSPACING;
+				t2.@style = "letter-spacing:" + t1 + "px;" + t2.@style;
+				delete t2.@letterspacing;
 			}
 			// Find all KERNING
-			for each ( t1 in xml..@KERNING ) {
+			for each ( t1 in xml..@kerning ) {
 				t2 = t1.parent();
 				// ? css 
-				delete t2.@KERNING;
+				delete t2.@kerning;
 			}
 			return xml;
 		}
