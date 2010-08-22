@@ -14,7 +14,8 @@
 				if (value== null)  return; 
 				menu = value as MenuVO
 				txtLbl.text = menu.name.toString(); 
-				txtLbl.toolTip = menu.toolTip.toString(); 				
+				txtLbl.toolTip = menu.toolTip.toString();
+				lblVariable.text = menu.name2.toString();
 			} 
  
 		]]> 
@@ -26,10 +27,18 @@
 		<s:State name="disabled"/> 
 	</s:states> 	
 	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl]}"   duration="250" />
+		</s:Transition>
+	</s:transitions>	
 	
+	<s:layout>
+		<s:HorizontalLayout gap="3" />
+	</s:layout>
 	<s:Label   id="txtLbl"
 			  fontWeight="bold" color.hovered="0" textDecoration.hovered="underline"
 			   useHandCursor="true"  buttonMode="true"
-			 color="0x7EBE40" fontSize="10"/>
-	
+			 color="0x7EBE40" fontSize="11"/>
+	<s:Label id="lblVariable"  color="0x696969"  fontSize="11"/>
 </s:ItemRenderer>

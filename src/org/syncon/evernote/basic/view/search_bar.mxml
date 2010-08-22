@@ -111,10 +111,6 @@
 				this.dropdownNotebooks.labelField = 'name'; 
 				this._rawNotebooks = n
 				this._notebooks.source = n.toArray(); 
-				var allNotebooksNotebok :  Notebook2 = new Notebook2
-				this._notebooks.addItem( allNotebooksNotebok ) 
-				allNotebooksNotebok.name = 'All Notebooks'
-				allNotebooksNotebok; //notebook count				
 				this.dropdownNotebooks.dataProvider =  this._notebooks; 
 				this.dropdownNotebooks.selectedIndex = 0;
 				
@@ -136,7 +132,7 @@
 				//select ALL
 				if ( e == null ) 
 				{
-					this.dropdownNotebooks.selectedIndex = this._rawNotebooks.length
+					this.dropdownNotebooks.selectedIndex = this._rawNotebooks.length-1
 					return; 
 				}
 				for  ( var i : int =0; i <  this.dropdownNotebooks.dataProvider.length; i++ )

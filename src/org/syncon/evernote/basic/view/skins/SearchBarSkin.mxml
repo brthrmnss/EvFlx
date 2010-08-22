@@ -29,7 +29,7 @@
 	</s:Rect>
  
 	<view:search_bar_query id="queryList"   y="12" x="10"
-						   xOffset="{this.mainHGroup.width+10+5}" rightOffset="{   this.btnSearch.width - 15 }"
+						   xOffset="{this.mainHGroup.width+10+5}" rightOffset="{   this.controlBar.width + 5  }"
 						   width="{this.width - 10   }"  includeIn="normal"/>
 	
 	
@@ -43,6 +43,10 @@
 		<!--<view:search_bar_query id="queryList"     includeIn="normal"/>-->
 	</s:HGroup>
 	
-	<s:Button right="10"  label="Save Search"  id="btnSearch" y="11"   includeIn="normal"/>
+	<s:HGroup  id="controlBar" includeIn="normal" y="10" right="10" >
+		<s:Button right="10"  label="Clear"  id="btnClear" y="11" />
+		<s:Button right="10"  label="Save"  id="btnSearch" y="11"    />
+	</s:HGroup>	
+	
 	
 </s:Skin>

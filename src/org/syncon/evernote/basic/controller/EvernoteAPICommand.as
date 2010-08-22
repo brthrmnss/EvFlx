@@ -89,7 +89,9 @@ package  org.syncon.evernote.basic.controller
 				trace('not authenticated')
 				return;
 			}
-			if ( event.type != EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
+			//possibly put userStore commands in another class
+			if ( event.type != EvernoteAPICommandTriggerEvent.AUTHENTICATE && 
+				event.type != EvernoteAPICommandTriggerEvent.REFRESH_AUTHENTICATION ) 
 				this.seqId = this.service.incrementSequence()
 			//functionSuccess = event.fxSuccess
 			//functionFault = event.fxFault; 
@@ -109,7 +111,14 @@ package  org.syncon.evernote.basic.controller
 				this.service.getAuth( event.login, event.password )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
-			}				
+			}		
+			if ( event.type == EvernoteAPICommandTriggerEvent.REFRESH_AUTHENTICATION ) 
+			{
+				this.service.refreshAuthentication()
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.REFRESH_AUTHENTICATION, this.refreshAuthenticationResultHandler )
+				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.REFRESH_AUTHENTICATION_FAULT, this.refreshAuthenticationFaultHandler )
+				
+			}					
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_STATE ) 
 			{
 				this.service.getSyncState(  )
@@ -483,6 +492,24 @@ package  org.syncon.evernote.basic.controller
 			this.onFault(); this.deReference(e)
 		}		
 		
+		/**
+		 * Not necessary on UserStore opertations
+		 * */
+		private function refreshAuthenticationResultHandler(e:EvernoteServiceEvent)  : void
+		{
+			//if ( seqId != this.service.getSequenceNumber()) return; 
+			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
+			//this.model.remotingReady = true; 
+			this.apiModel.authenticationRefreshed( e.data as AuthenticationResult ); 
+			this.deReference(e)			
+		}		
+		private function refreshAuthenticationFaultHandler(e:EvernoteServiceEvent)  : void
+		{
+			//if ( seqId != this.service.getSequenceNumber()) return; 			
+			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
+			this.onFault(); this.deReference(e)
+		}		
+				
 
 		private function getSyncStateResultHandler(e:EvernoteServiceEvent)  : void
 		{
@@ -1288,7 +1315,11 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
 			}		
-				
+			if ( event.type == EvernoteAPICommandTriggerEvent.REFRESH_AUTHENTICATION ) 
+			{
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.REFRESH_AUTHENTICATION, this.refreshAuthenticationResultHandler )
+				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.REFRESH_AUTHENTICATION_FAULT, this.refreshAuthenticationFaultHandler )
+			}						
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_SYNC_STATE ) 
 			{
 				this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.GET_SYNC_STATE, this.getSyncStateResultHandler )
@@ -1915,7 +1946,7 @@ package  org.syncon.evernote.basic.controller
 					EvernoteAPICommandTriggerEvent.FIND_NOTES, 
 					EvernoteAPICommandTriggerEvent.GET_NOTE, 
 					EvernoteAPICommandTriggerEvent.GET_NOTE_CONTENT, 
-					EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES 
+					//EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES 
 				].indexOf(event.type) != -1 )  
 				{
 				blocking = true 
@@ -1935,7 +1966,8 @@ package  org.syncon.evernote.basic.controller
 		static public function mapCommands(commandMap :  Object) : void
 		{
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.AUTHENTICATE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
- 
+			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.REFRESH_AUTHENTICATION, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );			
+			
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SYNC_STATE, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.GET_SYNC_CHUNK, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.LIST_NOTEBOOKS, EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );

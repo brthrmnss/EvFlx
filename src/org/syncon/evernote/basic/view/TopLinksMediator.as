@@ -64,9 +64,9 @@ package org.syncon.evernote.basic.view
 		
 		private function onAuthenticated(e:EvernoteAPIModelEvent) : void
 		{
-			0x696969
 			var username  : String = this.model.preferences.username
-			this.ui.options.menuOption(2).name = 'Sign out ' + this.model.preferences.username;
+			this.ui.options.menuOption(2).name = 'Sign out'
+			this.ui.options.menuOption(2).name2 ='(' + this.model.preferences.username  +')'
 			if (  username == '' || username == null  ) 
 				this.ui.options.menuOption(2).name = 'Sign In'
 			this.ui.update(); 

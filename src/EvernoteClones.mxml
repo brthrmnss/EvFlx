@@ -26,13 +26,27 @@
 
 			protected function application1_resizeHandler(event:ResizeEvent):void
 			{
+				var gap : int = 4; 
 				if ( this.creationComplete  == false )
 						return ; 
-				this.workspace.height = this.height - (
-					(this.header.height+this.searchbar.height+this.footer.height+this.tabbar.height)
-					+4*4)
-					
+				var decreaseHeight : Number =  this.header.height+this.searchbar.height+this.footer.height   +4*gap 
+				if ( this.tabbar.height > 0 ) 
+					decreaseHeight += this.tabbar.height + gap
+				this.workspace.height = this.height - decreaseHeight
 				this.container.getStyle('gap')
+			}
+
+
+			protected function tabbar_stateChangedHandler(event:Event):void
+			{
+				//application1_resizeHandler(null)
+			}
+
+
+			protected function tabbar_resizeHandler(event:ResizeEvent):void
+			{
+				application1_resizeHandler(null)
+				// TODO Auto-generated method stub
 			}
 
 		]]>
@@ -40,7 +54,7 @@
 	
 	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4">
 		<view:header  id="header"/>
-		<view:tab_bar id="tabbar" />
+		<view:tab_bar id="tabbar" resize="tabbar_resizeHandler(event)" stateChanged="tabbar_stateChangedHandler(event)"  />
 		<view:search_bar id="searchbar" />
 		<mx:HDividedBox  id="workspace" cornerRadius="8" 
 						 backgroundColor="0xFFFFFF" width="100%" >

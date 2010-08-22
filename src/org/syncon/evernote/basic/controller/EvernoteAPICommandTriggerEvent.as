@@ -25,7 +25,8 @@ package   org.syncon.evernote.basic.controller
 		public static const SHOW_POPUP:String = 'showPopup';
 		public static const CREATE_LINKED_NOTEBOOK_TRIGGER:String = 'CREATE_LINKED_NOTEBOOK_TRIGGER'
 		public static const AUTHENTICATE:String = 'authenticate'
-		
+		public static const REFRESH_AUTHENTICATION:String = 'refreshAuthenticationTriggerEvent'
+			
 		public static const GET_SYNC_STATE:String = "getSyncStateTriggerEvent";
 		public static const GET_SYNC_CHUNK:String = "getSyncChunkTriggerEvent";
 		public static const LIST_NOTEBOOKS:String = "listNotebooksTriggerEvent";
@@ -167,6 +168,15 @@ package   org.syncon.evernote.basic.controller
 			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage )
 			return e; 
 		}		
+		
+		static public function RefreshAuthentication( fxSuccess : Function=null,
+											 fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
+		{
+			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.REFRESH_AUTHENTICATION )
+			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage )
+			return e; 
+		}				
+		
 		
 		static public function CreadteLinkedNotebook( args : Array, fxSuccess : Function=null,
 													  fxFault: Function=null, alert:Boolean=false, alertMessage : String = '' ) :  EvernoteAPICommandTriggerEvent
@@ -352,6 +362,8 @@ package   org.syncon.evernote.basic.controller
 		
 		static public function FindNotes(filter:NoteFilter, offset:int=0, maxNotes:int=0, fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : EvernoteAPICommandTriggerEvent
 		{
+			if ( filter != null ) 
+			trace(  filter.notebookGuid  ) 
 			var e : EvernoteAPICommandTriggerEvent = new EvernoteAPICommandTriggerEvent( EvernoteAPICommandTriggerEvent.FIND_NOTES )
 			e.filter=filter; e.offset=offset; e.maxNotes=maxNotes; 
 			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );

@@ -59,7 +59,7 @@ package org.syncon.evernote.model
 			this.dispatchEvent( new Event( Notebook2.NOTEBOOK_UPDATED ) )		
 		}
 				
-		
+		public var trashCount : int  = 0; 
 		public var noteCount : int = 0 ; 
 		/*[Bindable] 
 		public var name : String = '' ; */

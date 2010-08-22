@@ -84,6 +84,7 @@ package  org.syncon.evernote.basic
 				
 			
 		}
+		
 		public var subContext :  EvernoteBasicPopupContext =  new EvernoteBasicPopupContext()
 		public function onInit()  : void
 		{
@@ -92,6 +93,8 @@ package  org.syncon.evernote.basic
 			this.subContext.onInit(); 
 		}
 	 
+
+				
  
 	}
 }

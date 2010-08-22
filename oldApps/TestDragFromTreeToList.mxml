@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"  layout="horizontal" xmlns:s="library://ns.adobe.com/flex/spark">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ICollectionView;
+			import mx.controls.listClasses.IListItemRenderer;
+			import mx.core.UIComponent;
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			
+			import spark.layouts.supportClasses.DropLocation;
+			import spark.layouts.supportClasses.LayoutBase;
+			
+			public function onListDragEnter(event:DragEvent):void
+			{
+				event.preventDefault();
+				DragManager.acceptDragDrop(event.target as UIComponent);
+				//list.showDropFeedback(event);
+				//list.showDropIndicator();
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);				
+				this.list.layout.showDropIndicator( dropLocal )
+			}
+			
+			public function onListDragOver(event:DragEvent):void
+			{
+				event.preventDefault();
+				//list.showDropFeedback(event);
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);
+				this.list.layout.showDropIndicator( dropLocal ); //createDropIndicator()
+			}
+			
+			public function onListDragExit(event:DragEvent):void
+			{
+				event.preventDefault();
+				//list.hideDropFeedback(event);
+				this.list.destroyDropIndicator()
+			}
+			
+			public function onListDragDrop(event:DragEvent):void
+			{
+				event.preventDefault();
+				list.destroyDropIndicator(); //(event);
+				//var index:int = list.layout.calculateDropLocation( event ) 
+					
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);
+				//this.list.layout.c( dropLocal );					
+				//	var ee :  LayoutBase
+				var index : int = dropLocal.dropIndex
+				//support drag from tree and other listbase components
+				var items:Array = new Array();
+				
+				if(event.dragSource.hasFormat("treeItems"))
+					items = items.concat(event.dragSource.dataForFormat("treeItems") as Array);
+				
+				if(event.dragSource.hasFormat("items"))
+					items = items.concat(event.dragSource.dataForFormat("items") as Array);
+				
+				for each(var item:Object in items)
+				{
+					var obj:Object = new Object()
+					obj.label = item.label as String;
+					(list.dataProvider as ArrayCollection).addItemAt(obj, index);
+				}
+				
+			}
+			
+			public function onListDragComplete(event:DragEvent):void
+			{
+				event.preventDefault();
+				
+				if(event.action == DragManager.MOVE && list.dragMoveEnabled)
+				{
+					//remove moved elements
+					var items:Array = event.dragSource.dataForFormat("items") as Array;
+					var coll:ArrayCollection = list.dataProvider as ArrayCollection;
+					for each(var item:Object in items)
+					{
+						if(coll.contains(item))
+						{
+							coll.removeItemAt(coll.getItemIndex(item));
+						}
+					}
+					
+				}
+			}
+			
+			public function onTreeDragEnter(event:DragEvent):void
+			{
+				event.preventDefault();
+				DragManager.acceptDragDrop(event.target as UIComponent);
+				tree.showDropFeedback(event);
+			}
+			
+			public function onTreeDragOver(event:DragEvent):void
+			{
+				event.preventDefault();
+				tree.showDropFeedback(event);
+			}
+			
+			public function onTreeDragExit(event:DragEvent):void
+			{
+				event.preventDefault();
+				tree.hideDropFeedback(event);
+			}	
+			
+			
+			public function getObjectTarget() : Object {
+				var dropData : Object = tree.mx_internal::_dropData as Object;
+				if (dropData.parent != null) {
+					return dropData.parent;
+				} else {
+					// if there is not parent (root of the tree), I take the root directly
+					var renderer :  IListItemRenderer = tree.indexToItemRenderer(0);
+					return renderer.data;
+				}		
+			}
+			
+			public function onTreeDragDrop(event:DragEvent):void
+			{
+				event.preventDefault();
+				tree.hideDropFeedback(event);
+				var index:int = tree.calculateDropIndex(event);
+				var items:Array = new Array();
+				
+				//we are supporting items from lists and trees
+				if(event.dragSource.hasFormat("treeItems"))
+					items = items.concat(event.dragSource.dataForFormat("treeItems") as Array);
+				
+				if(event.dragSource.hasFormat("itemsByIndex"))
+				{
+					var dragObj:Vector.<Object>=
+					event.dragSource.dataForFormat("itemsByIndex") as Vector.<Object>; 
+					for (var i:Number = 0; i < dragObj.length; i++) { 
+						items.push(dragObj[i])
+					}					
+					
+				}
+				if(event.dragSource.hasFormat("items"))
+					items = items.concat(event.dragSource.dataForFormat("items") as Array);
+				
+				//by default we add elements to the top level, but we could 
+				//calculate the position in the hierarchical structure using the datadescriptor
+				if(index > (tree.dataProvider as ICollectionView).length)
+					index = (tree.dataProvider as ICollectionView).length;
+				
+				var blah : Object = this.getObjectTarget()
+				var droppedOn : Object = this.tree.indexToItemRenderer( index )
+					//this.tree.indexToItemRenderer().
+				for each(var item:Object in items)
+				{
+					var obj:Object = new Object()
+					obj.label = item.label as String;
+					(tree.dataProvider as ArrayCollection).addItemAt(obj, index);
+				}
+			}	
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:ArrayCollection id="listDP">
+		<mx:Object label="list item 1"/>
+		<mx:Object label="list item 2"/>
+		<mx:Object label="list item 3"/>
+	</mx:ArrayCollection>
+	
+	
+	<mx:ArrayCollection id="treeDP">
+		<mx:Object label="tree item 1"/>
+		<mx:Object label="tree item 2"/>
+		<mx:Object label="tree item 3">
+			<mx:children>
+				<mx:ArrayCollection>
+					<mx:Object label="child item 1"/>
+					<mx:Object label="child item 2"/>
+				</mx:ArrayCollection>
+			</mx:children>
+		</mx:Object>
+		
+	</mx:ArrayCollection>
+	
+	<s:List 
+		id="list" 
+		width="50%" 
+		dragEnabled="true" 
+		dataProvider="{listDP}" 
+		dragEnter="onListDragEnter(event)"
+		dragOver="onListDragOver(event)"
+		dragExit="onListDragExit(event)"
+		dragDrop="onListDragDrop(event)"
+		dragComplete="onListDragComplete(event)"
+		labelField="label"
+		dragMoveEnabled="true"
+		>
+		
+	</s:List>
+	
+	
+	<mx:Tree 
+		id="tree" 
+		width="50%" 
+		dragEnabled="true" 
+		dataProvider="{treeDP}" 
+		dragEnter="onTreeDragEnter(event)"
+		dragOver="onTreeDragOver(event)"
+		dragExit="onTreeDragExit(event)"
+		dragDrop="onTreeDragDrop(event)"
+		labelField="label"
+		>
+		
+	</mx:Tree>
+	
+</mx:Application>

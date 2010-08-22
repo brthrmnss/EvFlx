@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				autoDrawBackground="false" 
+				useHandCursor="true"  buttonMode="true"
+				>
+  
+	
+	<fx:Declarations>
+		<s:SolidColorStroke  id="xColor"  color="#4C9EA8" pixelHinting="true"  weight="1.5" color.hovered="0" />
+	</fx:Declarations>	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 
+
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.xColor, colorBgEllips]}" 
+							  duration="250" />
+		</s:Transition>
+	</s:transitions>
+ <!--
+		<s:Rect id="bgStart"   
+				left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8"
+				>
+			<s:fill>
+				<s:SolidColor color="#369FAB"    />
+			</s:fill>
+ 
+		</s:Rect>
+ -->
+	<s:Group    x="5"   verticalCenter="0"  >
+	
+		<s:Ellipse  width="10" height="10"  >
+			<s:fill>
+				<s:SolidColor id="colorBgEllips" color="0xA6C6D0"  color.hovered="#126778" />
+			</s:fill>
+		</s:Ellipse>
+		
+		<s:Line xFrom="-2" xTo="2" yFrom="-2" yTo="2"  
+				 id="graphicX"
+				verticalCenter="-.5" horizontalCenter="-.5"
+				stroke="{this.xColor}" />
+		<s:Line xFrom="-2" xTo="2" yFrom="2" yTo="-2"   
+				 stroke="{this.xColor}"
+				verticalCenter="-.5" horizontalCenter="-.5" />
+	</s:Group>
+ 
+	
+</s:ItemRenderer>

@@ -2,10 +2,18 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-				autoDrawBackground="false"  
+				autoDrawBackground="false"   click="itemrenderer1_clickHandler(event)"
+				addedEffect="{addEffect}" alpha="0"
+			 
 				  buttonMode="true" useHandCursor="true" xmlns:view="org.syncon.evernote.basic.view.*"
 				>
 	
+	
+	<fx:Declarations>
+		<s:Fade id="addEffect" duration="300" alphaFrom="0" alphaTo="1" />
+		<s:Fade id="addEffect2" duration="300" alphaFrom="1" alphaTo="0" />
+	</fx:Declarations>   	
+		
 	<fx:Script> 
 		<![CDATA[ 
 			import org.syncon.evernote.basic.model.CustomEvent;
@@ -49,16 +57,37 @@
 				this.labelText  = note.title.toString(); 
 				//if ( this.note.titleOrTempTitle() != '' ) 
 				this.labelText  = note.titleOrTempTitle();
-				if ( this.note.selected ) 
+/* 				if ( this.note.selected ) 
 				this.bgColor.color = 0xFFFFFF
 				else
-				this.bgColor.color = 0xE8E8E8
+				this.bgColor.color = 0xE8E8E8 */
+					
+				if ( this.note.selected )
+				{
+					this.transColor.colorTo = 0xFFFFFF
+					this.transFade.alphaTo = 1
+				}
+				else
+				{
+					this.transColor.colorTo = 0xE8E8E8
+					this.transFade.alphaTo = 0.75
+				}
+				transColor.play()
+				this.transFade.play();
 			}
  
 
 			protected function btnClose_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent ( 'closeNoteTab', this.note )  ) ; 
+			}
+
+
+			protected function itemrenderer1_clickHandler(event:MouseEvent):void
+			{
+				if ( event.target == this.btnClose || event.currentTarget == this.btnClose ) 
+					return;
+				this.dispatchEvent( new CustomEvent ( 'openNote', this.note )  ) ; 
 			}
 
 		]]> 
@@ -70,6 +99,21 @@
 		<s:State name="disabled"/> 
 	</s:states> 
 
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl]}"  
+							duration="250" />
+		</s:Transition>
+	</s:transitions>	
+	
+	<fx:Declarations>
+		<s:AnimateColor targets="{[this.bgColor]}"   id="transColor"
+						duration="250" />
+		<s:Fade targets="{[this]}"   id="transFade" 
+						duration="800" />		
+	</fx:Declarations>
+	
 	<s:Rect id="bgStart"  
 			topRightRadiusX="5"  topRightRadiusY="5" 	topLeftRadiusX="5"  topLeftRadiusY="5"
 			left="0" right="0" top="0" bottom="0" 
@@ -78,7 +122,7 @@
 				<s:SolidColor id="bgColor" color="#E8E8E8" />
 			</s:fill>
 		</s:Rect>	
-	 
+
 	
 	<s:HGroup paddingBottom="7" paddingLeft="10" paddingRight="5" paddingTop="7"
 			   verticalAlign="middle" verticalCenter="0"  gap="1"
@@ -89,8 +133,8 @@
 		<!--<s:Label id="txtLbl_Disabled" 
 				  includeIn="disabled"   color.hovered="#808080"
 				  text="{this.labelText}" color="#808080"    fontSize="10"   fontWeight="bold"/>		-->
-		<!--<view:close_button id="btnClose" click="btnClose_clickHandler(event)" />-->
-		<s:Label text="x" click="btnClose_clickHandler(event)" />
+		 <view:close_button id="btnClose" click="btnClose_clickHandler(event)" /> 
+		<!--<s:Label text="x" click="btnClose_clickHandler(event)" />-->
 	</s:HGroup>
 	
 	

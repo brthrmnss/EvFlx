@@ -32,11 +32,6 @@
 			
 			public var options : MenuAutomationVO; 
 			
-			/**
-			 * Mediator sets this number from model
-			 * */
-			public var totalNotebookCount : int = 0; 
-			public var allNotebooksNotebok :  Notebook2 = new Notebook2()
 			private var _notebooks : ArrayCollection = new ArrayCollection()
 				/**
 				 * Stores original notebooks array for quick retrieval
@@ -46,16 +41,14 @@
 			{
 				this._rawNotebooks = n
 				this._notebooks.source = n.toArray(); 
-				 //= new Notebook2
-				this._notebooks.addItem( allNotebooksNotebok ) 
-				allNotebooksNotebok.name = 'All Notebooks'
-				allNotebooksNotebok.noteCount = this.totalNotebookCount; 
-				allNotebooksNotebok; //notebook count
-				if ( this.list == null ) return;				
-				this.list.dataProvider = _notebooks
+ 
+				if ( this.listx == null ) return;				
+				this.listx.dataProvider = _notebooks
 				
-				this.list.height = 20 * _notebooks.length;
+				this.listx.height = 20 * _notebooks.length;
 				this.selectedNotebook = this._selectedNotebook; 
+				
+				this.listx.selectedIndex = this._rawNotebooks.length-1
 			}
 			private var creationComplete :Boolean = false; 
 			protected function onInit(event:Event):void
@@ -67,6 +60,7 @@
 				
 				this.selectedNotebook = this._selectedNotebook; 
 				this.createSubMenu()
+					
 			}			
 			
 			private var _selectedNotebook  : Notebook2; 
@@ -75,25 +69,27 @@
 			 * */
 			public function set  selectedNotebook(e: Notebook2 )  : void
 			{
+				//return;
 				this._selectedNotebook = e; 
 				if ( this.creationComplete == false ) 
 						return; 
 
-								
+					//needed for proper selectyion 
+			this.listx.selectedIndex =-1; 					
 					//select ALL
 					if ( e == null ) 
 					{
 						if ( this._rawNotebooks == null ) 
 							return; 		//not ready  or loaded with dates				
-						this.list.selectedIndex = this._rawNotebooks.length
+						this.listx.selectedIndex = this._rawNotebooks.length-1
 						return; 
 					}				
 					
-					for  ( var i : int =0; i <  this.list.dataProvider.length; i++ )
+					for  ( var i : int =0; i <  this.listx.dataProvider.length; i++ )
 					{
-						var n : Notebook2 = this.list.dataProvider[i]
+						var n : Notebook2 = this.listx.dataProvider[i]
 						if (n == e ) 
-							this.list.selectedIndex = i;
+							this.listx.selectedIndex = i;
 					}						
 			}
 
@@ -119,7 +115,7 @@
 			
 			public function fxGo(n:String) : void
 			{
-				var selectedItem : Object = this.list.selectedItem
+				var selectedItem : Object = this.listx.selectedItem
 				this.dispatchEvent( new CustomEvent( n, selectedItem, false ) ) 
 				return;
 			}
@@ -127,21 +123,22 @@
 			
 			protected function list_changeHandler(event:IndexChangeEvent):void
 			{
+				//var selectedItems : Array = this.listx.selectedItems
 				 //this.options.enableAll(); 
 				 this.options.disableAll();
-				if ( this.list.selectedItems.length == 0 )
+				if ( this.listx.selectedItems.length == 0 )
 					this.options.enableIndexes([0])	
 				 
 				//if more than 1 selected, only enable new tags
-				if ( this.list.selectedItems.length > 1 ) 
+				if ( this.listx.selectedItems.length > 1 ) 
 				{
 					//disable other stuff ...
 					this.options.disableAll();
 					this.options.enableIndexes([0])		
 				}
-				else if ( this.list.selectedItems.length == 1 ) 
+				else if ( this.listx.selectedItems.length == 1 ) 
 				{
-					if ( this.list.selectedItem.name.toLowerCase() == 'all notebooks' ) 
+					if ( this.listx.selectedItem.name.toLowerCase() == 'all notebooks' ) 
 					{
 						this.options.disableAll();
 						this.options.enableIndexes([0])
@@ -165,8 +162,9 @@
 		<s:VerticalLayout />
 	</s:layout>
  
-	<s:List id="list" borderVisible="false" contentBackgroundAlpha="0.0" width="100%" 
+	<s:List id="listx" borderVisible="false" contentBackgroundAlpha="0.0" width="100%" 
 			 selectionColor="0x36722E" rollOverColor="0x598E52" 
+			
 			 itemRenderer="org.syncon.evernote.basic.view.left_notebook_itemrenderer"
 			 fontSize="10"   change="notebookChangeHandler(event); list_changeHandler(event)"
 			 labelField="name"/>

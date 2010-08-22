@@ -59,17 +59,20 @@ package org.syncon.evernote.basic.view
 	 */
 		private var notebookFilter : Notebook2
 		/**
-		 * When user changes the notebook , update, and do a search 
+		 * When user changes the notebook , update, and notify someone who can search 
 		 * */
 		private function onChangedNotebook(e:CustomEvent) : void
 		{
 			this.notebookFilter = e.data as Notebook2
-			if ( this.notebookFilter.guid == '' ) //replace for 'all' notebook
-				this.notebookFilter = null; 
+			/*	
 			var nf : NoteFilter = new NoteFilter()
 			nf.notebookGuid = this.notebookFilter.guid;
+			if ( this.notebookFilter.guid == '-1' ) 
+				nf.unsetNotebookGuid();				
 			//var ee :  EvernoteAPICommandTriggerEvent
 			this.dispatch( EvernoteAPICommandTriggerEvent.FindNotes( nf )  )
+				
+			*/
 			this.model.currentNotebook( this.notebookFilter ) ; 			
 		}		
  

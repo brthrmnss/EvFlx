@@ -27,7 +27,7 @@ package org.syncon.evernote.basic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener(search_bar.CHANGED_NOTEBOOK, this.onChangedNotebookFilter ) 
+			ui.addEventListener(search_bar.CHANGED_NOTEBOOK, this.onChangedcurrentNotebook ) 
 			ui.addEventListener(search_bar.REMOVED_TAG, this.onRemovedTag ) 			
 			ui.addEventListener(search_bar.CHANGED_ALL_OR_ANY, this.onChangeAnyOrAllHandler )
 			ui.addEventListener(search_bar.CLEAR_SEARCH, this.onClearSearchHandler ) 						
@@ -47,17 +47,16 @@ package org.syncon.evernote.basic.view
 			ui.list.notes = this.model.notes; 
 			*/
 			this.onRecievedNotebookList()
+				this.currentNotebook = this.model.notebook; //(
 		}
 		public 	var nf : NoteFilter = new NoteFilter()
-		public var notebookFilter : Notebook2; 
-		private function onChangedNotebookFilter(e:CustomEvent): void
+		public var currentNotebook : Notebook2; 
+		private function onChangedcurrentNotebook(e:CustomEvent): void
 		{
-			this.notebookFilter = e.data as Notebook2
-			if ( this.notebookFilter.guid == '' ) //replace for 'all' notebook
-				this.notebookFilter = null; 
-			nf.notebookGuid = this.notebookFilter.guid;
-			this.loadSearch(); 
-			this.model.currentNotebook( this.notebookFilter ) ; 
+			this.currentNotebook = e.data as Notebook2
+			
+			this.doSearch(); 
+			this.model.currentNotebook( this.currentNotebook ) ; 
 			
 			//this.ui.selectNotebook( e.data as Notebook2 ); 
 		}
@@ -72,7 +71,7 @@ package org.syncon.evernote.basic.view
 			{
 				
 			}
-			this.loadSearch()
+			this.doSearch()
 		}
 			
 		private function onClearSearchHandler(e:CustomEvent):void
@@ -82,8 +81,14 @@ package org.syncon.evernote.basic.view
 		}
 		
 		
-		private function loadSearch()  : void
+		private function doSearch()  : void
 		{
+			//var nf : NoteFilter = new NoteFilter()
+			nf.notebookGuid = this.currentNotebook.guid;
+			if ( this.currentNotebook.guid == '-1' ) 
+				nf.unsetNotebookGuid();
+			
+			//trace( this.currentNotebook.name + ' ' + this.currentNotebook.guid  ) 
 			this.nf.tagGuids = this.model.map( this.tags.toArray(), 'guid' ); 
 			this.dispatch( EvernoteAPICommandTriggerEvent.FindNotes( nf )  )
 		}
@@ -96,7 +101,7 @@ package org.syncon.evernote.basic.view
 		private function onSearchHandler(e:SearchEvent):void
 		{
 			this.nf.words = e.query; 
-			this.loadSearch(); 
+			this.doSearch(); 
 			this.updateSearch()
 		}
 		
@@ -105,7 +110,7 @@ package org.syncon.evernote.basic.view
 		{
 			this.tags.removeAll()
 			this.tags.addAll( new  ArrayCollection(e.objs)  ) 
-			this.loadSearch(); 
+			this.doSearch(); 
 			this.updateSearch()
 		}
 		
@@ -122,7 +127,7 @@ package org.syncon.evernote.basic.view
 				split = []; 
 			for each ( var option : String in split ) 
 			{
-				if ( option != ' ' ) 
+				if ( option != ' ' && option != ''  ) 
 				{
 					options.push( option ) 
 				}
@@ -144,7 +149,7 @@ package org.syncon.evernote.basic.view
 				this.clearSearch(); 
 			
 		
-			this.loadSearch(); 
+			this.doSearch(); 
 		}
 		
 		/**
@@ -152,21 +157,26 @@ package org.syncon.evernote.basic.view
 		 * */
 		private function onCurrentNotebookChanged(e:EvernoteAPIModelEvent): void
 		{
+			//do not repeat search if nb the same
+			if ( this.currentNotebook == e.data )
+				return; 
+			this.currentNotebook = e.data as Notebook2; 
+			this.ui.selectNotebook(this.currentNotebook); 
 			
-			this.notebookFilter = e.data as Notebook2; 
-			this.ui.selectNotebook(this.notebookFilter); 
-			this.clearSearch()
+			this.doSearch()
+			//this.clearSearch()
 		}
 		
 		private function clearSearch()  : void
 		{
 			this.tags.removeAll()
 			this.ui.clearSearch();
-			//this.notebookFilter = null; 
+			//this.currentNotebook = null; 
 			this.nf = new NoteFilter();
-			if ( this.notebookFilter != null ) 
-				this.nf.notebookGuid = notebookFilter.guid
+			if ( this.currentNotebook != null ) 
+				this.nf.notebookGuid = currentNotebook.guid
 			this.dispatch( new SearchEvent(SearchEvent.SEARCH_UPDATED, this.nf.words ) ) 
+			this.doSearch()
 		}
 		
 		
@@ -175,8 +185,8 @@ package org.syncon.evernote.basic.view
 		 * */
 		private function onRecievedNotebookList(e:EvernoteAPIModelEvent=null) : void
 		{
-			this.ui.loadNotebooks(  this.model.notebooks); 
-			this.ui.selectNotebook( this.notebookFilter ); 
+			this.ui.loadNotebooks(  this.model.notebooksAndAll() ); 
+			this.ui.selectNotebook( this.currentNotebook ); 
 		}				
 				
 		
@@ -192,21 +202,21 @@ package org.syncon.evernote.basic.view
 						clipped.push( option ) 
 				}
 			nf.words = clipped.join(' '); 
+			
+			if ( this.tags.getItemIndex( e.data ) != -1 ) 
+			{
+				this.tags.removeItemAt( this.tags.getItemIndex( e.data ) ) 
+			}
+			
+		//	nf.tagGuids
 			/*if ( clipped.length == 0 ) 
 				nf.words = ''; */
 			//this.model.currentNotebook( e.data as Notebook ) 
 			e.stopImmediatePropagation();
-			this.loadSearch()
+			this.doSearch()
 			this.updateSearch()
 		}
 				
-		
-		private function onNotebookResult(e:EvernoteAPIModelEvent) : void
-		{
-			this.ui.loadNotebooks(   e.data as ArrayCollection )
-		}
-		
-		
 		private function onSearchChanged(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.resultCount(  int( e.data.length )  )

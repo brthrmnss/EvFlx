@@ -380,9 +380,13 @@ package org.syncon.evernote.basic.view
 		}
 		
 		//this implies they want to go back to 'edit' a note, note view it. 
-		private function onSwitchBackToNote(e:NoteListEvent):void
+		private function onSwitchBackToNote(e:NoteListEvent, wait : Boolean = true):void
 		{
- 
+ 			if ( wait ) 
+			{
+				this.ui.callLater( this.onSwitchBackToNote, [e,false] ) 
+					return; 
+			}
 			if ( this.control ) 
 				return; 
 			

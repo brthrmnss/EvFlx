@@ -16,7 +16,8 @@
 				
 			[Bindable] private var labelText :  String= ''; 
 			[Bindable] private var labelTooltip : String = '';
-			[Bindable] private var colorR : uint = 0x121212
+			[Bindable] private var colorR : uint = 0x121212;
+			[Bindable] private var txtRolloverColor : uint = 0x4C9EA8 		;	
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				// Check to see if the data property is null. 
@@ -27,20 +28,22 @@
 				// set the Label controls appropriately. 
 				this.labelText  = menu.name.toString(); 
 				this.labelTooltip= menu.toolTip.toString(); 	
-				if ( this.menu.enabled == false ) 
-				{
-					this.colorR = 0x808080
-						//set for rollover color
-					this.useHandCursor = false; this.buttonMode = false
-					//this.txtLbl.setStyle('color', '#808080' ) 
-					this.currentState = 'disabled';
-				}
-				else
+				if ( this.menu.enabled   ) 
 				{
 					this.colorR = 0x121212
+					this.txtRolloverColor = 0x4C9EA8						
 					this.useHandCursor = true; this.buttonMode = true
 					//this.txtLbl.setStyle('color', '#121212' ) 
 					this.currentState = 'normal';
+				}
+				else
+				{
+					this.colorR = 0x808080
+					this.txtRolloverColor = 0x808080
+					//set for rollover color
+					this.useHandCursor = false; this.buttonMode = false
+					//this.txtLbl.setStyle('color', '#808080' ) 
+					this.currentState = 'disabled';
 				}
 				//.firstName + ', ' + value.lastName;
 				//compLabel.text = value.companyID;
@@ -78,13 +81,20 @@
 			
 		]]> 
 	</fx:Script> 
-	
+ 
 	<s:states> 
 		<s:State name="normal"/> 
 		<s:State name="hovered"/> 
 		<s:State name="disabled"/> 
 	</s:states> 
-
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl]}"  
+							duration="250" />
+		</s:Transition>
+	</s:transitions>	
+	
 	<s:Rect id="bgStart"  visible="{this.first}"  
 			topRightRadiusX="0"  topRightRadiusY="0" bottomRightRadiusX="0" bottomRightRadiusY="0" 
 			left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5"
@@ -116,7 +126,7 @@
 			   verticalAlign="middle" verticalCenter="0"
 			  >
 		<s:Label id="txtLbl"  text="{this.labelText}"  toolTip="{this.labelTooltip}" 
-				   color="{this.colorR}"  color.hovered="#4C9EA8"
+				   color="{this.colorR}"   color.hovered="{this.txtRolloverColor}"
 				  fontSize="10"   fontWeight="bold"/>
 		<!--<s:Label id="txtLbl_Disabled" 
 				  includeIn="disabled"   color.hovered="#808080"

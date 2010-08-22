@@ -57,6 +57,6 @@
 		<view:control_menu right="0" id="menuOrderOrder" />		
 	</s:HGroup>
 
-	<view:list_note_viewer y="45" width="{this.width-15}" id="viewer"
-					  height="{this.height-50-10}"  x="10" />
+	<view:list_note_viewer y="45" width="{this.width-10}" id="viewer"
+					  height="{this.height-50-10}"  x="5" />
 </s:SkinnableContainer>

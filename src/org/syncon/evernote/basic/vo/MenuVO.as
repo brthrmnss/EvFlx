@@ -3,6 +3,10 @@ package  org.syncon.evernote.basic.vo
 	public class MenuVO  
 	{
 		public var name :  String = ''
+		/**
+		 * Allows for flexibility
+		 * */
+		public var name2 : String = ''; 
 		public var toolTip : String = ''; 
 		public var data : Object = null; 
 		public var fx :  Function;

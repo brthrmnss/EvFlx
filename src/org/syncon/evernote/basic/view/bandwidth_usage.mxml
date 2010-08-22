@@ -5,6 +5,8 @@
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="150" height="22">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:Sine id="sineIn" easeInFraction="0.1" />
+		<s:Resize id="resizeTrans" target="{usageBar}" duration="300" easer="{sineIn}" />
 	</fx:Declarations>
 	
 	

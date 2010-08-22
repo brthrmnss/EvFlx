@@ -55,6 +55,14 @@
 			
 		]]> 
 	</fx:Script> 
+
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl]}"  
+							duration="250" />
+		</s:Transition>
+	</s:transitions>
+
 	<s:layout>
 		<s:HorizontalLayout gap="3"/>
 	</s:layout>

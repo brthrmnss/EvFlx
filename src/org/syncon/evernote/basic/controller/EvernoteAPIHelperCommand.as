@@ -77,17 +77,31 @@ package  org.syncon.evernote.basic.controller
 		private function onGetTrashCounts(e: NoteCollectionCounts )  : void
 		{
 			
-			var size : int =0  ; 
+			var trashSize : int =0  ; 
+			var noteSize : int = 0; 
 			var dict : Dictionary = e.notebookCounts
 			for ( var index : Object in dict ) 
 			{
-				size+=dict[index] 
+				trashSize+=dict[index] 
 			}
+			
+			for each ( var nb :  Notebook2 in this.apiModel.notebooks   ) 
+			{
+				if ( e.notebookCounts[nb.guid] != null ) 
+				{
+					nb.trashCount =  e.notebookCounts[nb.guid]
+					nb.noteCount -= nb.trashCount
+					nb.notebookUpdated()
+				}
+				noteSize += nb.noteCount
+			}			
 			/*if ( seqId != this.service.getSequenceNumber()) return; 
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e.data);
 			
 			this.deReference()		*/	
-			this.apiModel.trashCount = size;
+			this.apiModel.trashCount = trashSize;
+			this.apiModel.noteCount = noteSize; 
+			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);
 			return;
 		}				
 
@@ -126,7 +140,7 @@ package  org.syncon.evernote.basic.controller
 			}			
 			
 			
-			
+			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);
 			return;
 		}				
 		

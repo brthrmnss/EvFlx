@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" 
+						  xmlns:mx="library://ns.adobe.com/flex/mx"  
+						   creationComplete="group1_creationCompleteHandler(event)"
+						  focusEnabled="true">
+
+	<fx:Script>
+		<![CDATA[
+			import com.evernote.edam.type.Note;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.DragEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.DragManager;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.model.Note2;
+			private var _tags : ArrayCollection = new ArrayCollection()
+				
+			/**
+			 * Flag indiates whether tags should be removed instantly 
+			 * */
+			public var liveManiuplation : Boolean = true; 
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.list.dataProvider = this._tags
+				if ( this._draggable ) 
+				{
+					
+				}
+				if ( this._draggableInto ) 
+				{
+					this.list.dropEnabled = true; 
+					//this.list.dro
+				}
+				this.list.dropEnabled = true; 
+			}				
+				
+			public function set tags ( n :  ArrayCollection )  : void
+			{
+				this._tags.source = n.source; 
+				this._tags.refresh()				
+			} 	
+			public function get  tags ( ):  ArrayCollection  
+			{
+				return this._tags			
+			} 				
+			
+			public var _tagNames : Array;
+			/**
+			 * Tag names are set, replace them with the guids 
+			 * */
+/* 			public function set tagNamesArray ( n :  Array )  : void
+			{
+				if ( n == null ||  n.length == 0 ) 
+				{	this._tags.removeAll();
+					return
+				} 
+				_tagNames = n; 
+	
+				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) )
+		 
+			} 			
+			 */
+			private var  _updateNote : Note2 ;
+			public function set updateNote ( n : Note2 )  : void
+			{
+				if ( this._updateNote != null ) 
+				{
+					this._updateNote.removeEventListener(  Note2.NOTE_TAGS_UPDATED , this.reload ) 
+				}
+				this._updateNote = n; 
+				this._updateNote.addEventListener( Note2.NOTE_TAGS_UPDATED , this.reload ) 
+					
+				if ( this._updateNote.tagNames == null ) 
+				{
+					this.dispatchEvent( new CustomEvent('getNoteTagNames', _updateNote ) ) 
+					//this._updateNote.tagNames = []; // if user is quikcly scrolling do not redispatch 
+					this.tags = this.updateNote.tags
+				}
+				else
+				{
+					this.tags = this.updateNote.tags; 
+				}
+			}
+			
+			public function get updateNote () : Note2 
+			{
+				return this._updateNote; 
+			}
+						
+	 
+			public function onAdd() : void
+			{
+				if ( this.updateNote != null ) this.updateNote;				
+			}
+			public function onRemove() : void
+			{
+				if ( this.updateNote != null ) this.updateNote;
+			}			
+			
+			private var _draggable : Boolean = false;  
+			public function set draggable ( b : Boolean )  : void{
+				this._draggable = b
+			}
+			
+			public function set draggableInto ( b : Boolean )  : void{
+				this._draggableInto = b
+			}
+						
+			private var _draggableInto : Boolean = false
+			
+			public function reload(e:  Event):void
+			{
+				//dispatcher is on the event now ... 
+			/* 	if ( e.data != this._updateNote ) 
+				return; */
+			/* 	
+				if ( this._updateNote.tagNames.length > 0 ) 
+						trace('more than 1' ); 
+				if ( e.currentTarget.tagNames.length > 0 ) 
+					trace('more than 1x' ); 	 */			
+				this.tags = this._updateNote.tags
+			}
+
+			/* 
+			
+			private function dragDropHandler(event:DragEvent):void {
+				//if (event.dragSource.hasFormat("itemsByIndex"))
+				//{
+					// Explicitly handle the dragDrop event.            
+					event.preventDefault();
+					
+					// Since you are explicitly handling the dragDrop event,
+					// call hideDropFeedback(event) to have the drop target
+					// hide the drop indicator. 
+					// The drop indicator is created
+					// automatically for the list controls by the built-in 
+					// event handler for the dragOver event.
+					event.currentTarget.hideDropFeedback(event);                    
+					
+					// Get drop target.
+					var dropTarget: Object =  event.currentTarget 
+					
+					var itemsVector:Vector.<Object> = 
+						event.dragSource.dataForFormat('itemsByIndex') as Vector.<Object>;
+					var tempItem:Object = 
+						{ label: itemsVector[0].label, 
+							data: itemsVector[0].data, 
+							date: new Date()
+						};
+					
+					// Get the drop location in the destination.
+					var dropLoc:int = dropTarget.calculateDropIndex(event);
+					
+					//IList(dropTarget.dataProvider).addItemAt(tempItem, dropLoc);
+			//	}
+			}
+			 */
+			protected   function dragEnterHandler(e:DragEvent):void {
+				DragManager.acceptDragDrop(e.dragInitiator);
+				DragManager.acceptDragDrop(this);
+				DragManager.showFeedback(DragManager.COPY);
+		/* 		if ( e.dragSource.hasFormat("presentationFromTree") ) {
+					var dropTarget:ExList = ExList(e.currentTarget);
+					DragManager.acceptDragDrop(e.dragInitiator);
+					DragManager.showFeedback(DragManager.COPY);
+				} else {
+					DragManager.showFeedback(DragManager.NONE);
+				} */
+			}		
+			
+			
+			
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			import spark.layouts.supportClasses.DropLocation;
+			
+			private function dragOverHandler(event:DragEvent):void {
+				
+				// Explpicitly handle the dragOver event.            
+				event.preventDefault();
+				
+				// Since you are explicitly handling the dragOver event,
+				// call showDropIndicator() to have the drop target
+				// display the drop indicator.
+				// The drop indicator is removed
+				// automatically for the list controls by the built-in 
+				// event handler for the dragDrop event.
+				var dropLocal:DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);
+				event.currentTarget.layout.showDropIndicator(dropLocal);
+				
+				if (event.dragSource.hasFormat("itemsByIndex"))
+				{
+					/* 
+					// Set the border to green to indicate that 
+					// this is a drop target.
+					// Since the dragOver event is dispatched continuosly 
+					// as you move over the drop target, only set it once.
+					if (borderColorSet == false) {                 
+						tempBorderColor = 
+							event.currentTarget.getStyle('borderColor');
+						borderColorSet = true;
+					}
+					
+					// Set the drag-feedback indicator based on the 
+					// type of drag-and-drop operation.
+					event.currentTarget.setStyle('borderColor', 'green');
+					 */
+					
+					if (event.ctrlKey) {                    
+						DragManager.showFeedback(DragManager.COPY);
+						return;
+					}
+					else if (event.shiftKey) {
+						DragManager.showFeedback(DragManager.LINK);
+						return;
+					}
+					else {
+						DragManager.showFeedback(DragManager.MOVE);
+						return;
+					}
+				}
+				
+				// Drag not allowed.
+				DragManager.showFeedback(DragManager.NONE);                
+			}
+			
+			private function dragDropHandler(event:DragEvent):void {
+				dragExitHandler(event);
+			}            
+			
+			// Restore the border color.
+			private function dragExitHandler(event:DragEvent):void {
+				/* 
+				event.currentTarget.setStyle('borderColor', tempBorderColor);
+				borderColorSet = true;
+				 */
+			}
+		]]>
+	</fx:Script>
+
+	
+	<s:Rect id="bgStart"  
+			topRightRadiusX="5"  topRightRadiusY="5" 	topLeftRadiusX="5"  topLeftRadiusY="5"
+			left="0" right="0" top="0" bottom="0" 
+			>
+		<s:fill>
+			<s:SolidColor id="bgColor" color="#E8E8E8" />
+		</s:fill>
+	</s:Rect>	
+
+	<!--
+	dragOver="doDragOver(event)"
+	-->
+	<s:List id="list" x="0"
+			borderVisible="true"   contentBackgroundAlpha="1"
+		   verticalCenter="0" width="100%" minHeight="20"
+		   dragOver="dragOverHandler(event);"
+		   dragDrop="dragExitHandler(event);"
+		   dragExit="dragExitHandler(event);" 
+		    dragEnabled="true" dragMoveEnabled="true" dropEnabled="true"
+			itemRenderer="org.syncon.evernote.basic.view.tag_itemrenderer">
+		<s:layout>
+			<s:HorizontalLayout />
+		</s:layout>
+	</s:List>
+	
+</s:Group>

@@ -20,7 +20,9 @@ package org.syncon.evernote.basic.view
 			 eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.USER_CHANGED,
 				this.onUserChanged);	
 			 eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SYNC_STATE_CHANGED,
-				 this.onSyncStateChanged);				 
+				 this.onSyncStateChanged);		
+			 
+			this.updateUsage()
 		}
 		
 		
@@ -40,12 +42,14 @@ package org.syncon.evernote.basic.view
 		
 		public function updateUsage()  : void
 		{
-			if ( this.model.acctSyncState == null || this.model.user == null ) 
+			if ( this.model.acctSyncState == null || this.model.user == null || this.model.user.accounting == null  ) 
 				return; 
 			var percentage : Number = this.model.acctSyncState.uploaded / this.model.user.accounting.uploadLimit
 			if ( isNaN( percentage ) ) 
 				return; 
-			this.ui.usageBar.width = Math.max( percentage * this.ui.progressBar.width, 2 ) 
+			//this.ui.usageBar.width = Math.max( percentage * this.ui.progressBar.width, 2 ) 
+			this.ui.resizeTrans.widthTo    = Math.max( percentage * this.ui.progressBar.width, 2 ) 
+			this.ui.resizeTrans.stop(); this.ui.resizeTrans.play(); 
 			this.ui.usageBar.toolTip = (this.model.acctSyncState.uploaded/1000).toFixed(0) + ' KB out of ' +
 					(this.model.user.accounting.uploadLimit/1000000).toFixed(0) + ' MBs ' 
 			this.ui.toolTip = this.ui.progressBar.toolTip = this.ui.usageBar.toolTip

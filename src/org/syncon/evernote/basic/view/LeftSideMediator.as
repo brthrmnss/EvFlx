@@ -35,8 +35,8 @@ package org.syncon.evernote.basic.view
 				EvernoteAPIModelEvent.CURRENT_NOTEBOOK_CHANGED, this.onCurrentNotebookChanged);				
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.TRASH_SIZE_CHANGED, this.onTrashChanged);					
-			eventMap.mapListener(eventDispatcher, 
-				EvernoteAPIModelEvent.NOTE_COUNT_CHANGED, this.onNoteCountChanged);				
+		/*	eventMap.mapListener(eventDispatcher, 
+				EvernoteAPIModelEvent.NOTE_COUNT_CHANGED, this.onNoteCountChanged);		*/		
 			//ui.list.notes = this.model.notes; 
 			if ( this.ui.tags != null )
 			this.ui.tags.tags = this.model.tags;
@@ -66,8 +66,7 @@ package org.syncon.evernote.basic.view
 		private function onRecievedNotebookList(e:EvernoteAPIModelEvent=null) : void
 		{
 			if ( this.ui.listNotebooks == null )return; 		
-			this.ui.listNotebooks.totalNotebookCount = this.model.noteCount; 
-			this.ui.listNotebooks.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
+			this.ui.listNotebooks.notebooks = this.model.notebooksAndAll()
 		}				
 		
 		private function onTrashChanged(e:EvernoteAPIModelEvent) : void
@@ -75,7 +74,7 @@ package org.syncon.evernote.basic.view
 			this.ui.drawer6_.rightLabel    = this.model.trashCount.toString()
 			//	.notebooks = this.model.notebooks; //s	  = e.data as ArrayCollection
 		}				
-		
+		/*
 		private function onNoteCountChanged(e:EvernoteAPIModelEvent):void
 		{
 			if ( this.ui.listNotebooks == null  )
@@ -83,6 +82,6 @@ package org.syncon.evernote.basic.view
 			this.ui.listNotebooks.allNotebooksNotebok.noteCount = this.model.noteCount; 
 			this.ui.listNotebooks.allNotebooksNotebok.notebookUpdated()
 		}
-		
+		*/
 	}
 }

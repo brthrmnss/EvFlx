@@ -50,7 +50,7 @@
 				
 				this.txtTitle.text = this._note.titleOrTempTitle()
 				//this.txtContents.display.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
-				this.txtContents.textFlow  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
+				//this.txtContents.textFlow  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
 					
 				//this.selectedTags
 				this.listTags.tags = this.note.tags; 
@@ -109,10 +109,12 @@
 			
 			public function conversionTFResult(tf: TextFlow):void
 			{
-				this.txtContents.textFlow  = new TextFlow	
-				this.txtContents.textFlow  = tf	
-				this.txtContents.textFlow  = new TextFlow	
-				this.txtContents.textFlow  = tf						
+				//this.txtContents.textFlow  = new TextFlow	
+				//this.txtContents.textFlow  = tf	
+				//this.txtContents.textFlow  = new TextFlow	
+				this.txtContents.textFlow  = tf			
+					if ( this._note.oldCursor == -1 ) 
+						this._note.oldCursor = 0; 
 				this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}			
 
@@ -172,15 +174,16 @@
 				<s:DropDownList id="dropdownNotebook"  labelField="name" change="dropdownNotebook_changeHandler(event)"/>
 				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
 			</s:HGroup>
-			<s:HGroup  verticalAlign="middle">
-				<s:Label text="Tags:" /><!-- <s:TextInput id="txtTags" />-->
-				<components:SearchInput
+			<s:HGroup id="tagsRow"  verticalAlign="middle" width="100%">
+				<s:Label  id="lblTags" text="Tags: " /><!-- <s:TextInput id="txtTags" />-->
+				<components:SearchInput width="150"
 					  select="txtTags_selectHandler(event)"
 					searchMode="{SearchMode.INFIX_SEARCH}"
 					dataProvider="{this.tags}" labelField="name" promptText="Search"
 					skinClass="brust.skins.SearchInputSkin" id="txtTags" />
-				<view:TagListAdjustable id="listTags"  
-										 liveManiuplation="false"
+				<view:TagListAdjustable id="listTags"   width="{this.width-250}"
+										 liveManiuplation="false"   minHeight="25"
+										  draggableInto="true"
 										tags="{this.selectedTags}" draggable="true" />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp"   />
@@ -191,7 +194,7 @@
 					bottomLeftRadiusX="8" bottomLeftRadiusY="8"
 					bottomRightRadiusX="8" bottomRightRadiusY="8"  >
 				<s:stroke>
-					<s:SolidColorStroke color="#549BA9" pixelHinting="true" />
+					<s:SolidColorStroke color="#549BA9" pixelHinting="true"  />
 				</s:stroke>
 			</s:Rect>	
 			

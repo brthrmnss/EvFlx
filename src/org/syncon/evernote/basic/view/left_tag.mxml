@@ -16,6 +16,7 @@
 			import com.evernote.edam.type.Notebook;
 			
 			import mx.collections.ArrayCollection;
+			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
@@ -104,6 +105,12 @@
 				this.dispatchEvent( new CustomEvent(TAGS_SELECTED, this.list.selectedItems ) ) 
 			}
 
+
+			protected function list_dragStartHandler(event:DragEvent):void
+			{
+				//event.preventDefault()
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -114,8 +121,10 @@
  
 	<mx:Tree id="list"  itemRenderer="org.syncon.evernote.basic.view.tagTreeRenderer"
 			 borderVisible="false" contentBackgroundAlpha="0" labelField="name"  
-			  selectionColor="0x607980" change="list_changeHandler(event)" allowMultipleSelection="true"
-			  rollOverColor="0x598E52"
+			  selectionColor="0x607980" change="list_changeHandler(event)" 
+			  allowMultipleSelection="true" dropEnabled="true"
+			  rollOverColor="0x598E52" 
+			  dragEnabled="true"   dragMoveEnabled="true"			  
 			 width="{this.width}" />
 	
 	<s:Rect />

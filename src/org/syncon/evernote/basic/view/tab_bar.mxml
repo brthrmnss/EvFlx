@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="onInit()"
-					  skinClass="org.syncon.evernote.basic.view.skins.TabBarSkin"					  
+					  skinClass="org.syncon.evernote.basic.view.skins.TabBarSkin"		
+					
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"  >
-	
-	
+
 	<fx:Metadata>
 		[Event(name="selectedNote", type=" org.syncon.evernote.basic.model.CustomEvent")]		
 		[Event(name="removeNote", type=" org.syncon.evernote.basic.model.CustomEvent")]			
 		[Event(name="clearTabs", type=" org.syncon.evernote.basic.model.CustomEvent")]					
-		[Event(name="saveSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]								
+		[Event(name="saveSearch", type=" org.syncon.evernote.basic.model.CustomEvent")]			
+		[Event(name="stateChanged", type="flash.events.Event")]							
 	</fx:Metadata>	
 	<!--
 	<s:states>
@@ -19,8 +20,8 @@
 	-->
 	
 	<s:states>
-		<s:State name="normal" enterState="invalidateSkinState()" />
-		<s:State name="active" enterState="invalidateSkinState()" />
+		<s:State name="normal" enterState="invalidateSkinState();changeState(event)" />
+		<s:State name="active" enterState="invalidateSkinState();changeState(event);" />
 	</s:states>
 	
 	<fx:Metadata>
@@ -50,6 +51,9 @@
 			static public var CLEAR_TABS : String = 'clearTabs';
 			static public var SAVE_SEARCH : String = 'saveSearch';			
 			static public var NOTE_LIST_ADDED : String = 'noteListAdded'; 
+			
+			static public var STATE_CHANGED : String = 'stateChanged'; 			
+			
 			[SkinPart(required="true")]
 			public var btnSearch:Button;	
 			[SkinPart(required="false")]
@@ -70,6 +74,7 @@
 			private function onInit()  : void{
 				
 				this.addEventListener( 'closeNoteTab', this.onRemoveTag ) ; 
+				this.addEventListener( 'openNote', this.onClickNote ) ; 				
 				//this.currentState = 'disabled'
 				this.clearTabs()
 			}
@@ -87,7 +92,7 @@
 				}
 				if( instance == listNotes)
 				{
-					listNotes.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ;
+					//listNotes.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ;
 					this.dispatchEvent( new Event( tab_bar.NOTE_LIST_ADDED ) ) 
 				}					
 			}			
@@ -130,12 +135,22 @@
 			{
 				this.dispatchEvent( new CustomEvent( CHANGED_ALL_OR_ANY, e.currentTarget.selectedItem ) )
 			}
-			
+/* 	
 			public function notebookDropdownChanged(e:IndexChangeEvent )  : void
 			{
 				this.dispatchEvent( new CustomEvent( tab_bar.SELECTED_NOTE, e.currentTarget.selectedItem ) )
 			}			
-		 
+	 */
+			/**
+			 * CAlled hwen note clicked, do not use index switch functionality b/c 
+			 * don't want this to call when clsoe button clicked. 
+			 * */
+			public function onClickNote(e:CustomEvent )  : void
+			{
+				this.dispatchEvent( new CustomEvent( tab_bar.SELECTED_NOTE, e.data ) )
+			}			
+						
+			
 			private function onRemoveTag(e:CustomEvent):void
 			{
 				e.stopImmediatePropagation();
@@ -148,7 +163,7 @@
 			}			
 			
 			override protected function measure():void
-			{
+			{ 
 				if (skin)
 				{
 					measuredWidth = skin.getExplicitOrMeasuredWidth();
@@ -160,7 +175,12 @@
 				}				
 			}
 			
-			
+			public function changeState(o:FlexEvent) : void
+			{
+				this.dispatchEvent( new Event( STATE_CHANGED ) ) 
+				//trace('g ' + o.target.name)
+				setTimeout( this.dispatchEvent, 300+200,  new Event( STATE_CHANGED ) )
+			}
 		]]>
 	</fx:Script>
 	

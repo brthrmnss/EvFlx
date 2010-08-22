@@ -164,8 +164,9 @@
 		<mx:columns>
 			<mx:DataGridColumn headerText="Title" dataField="title"  itemRenderer="org.syncon.evernote.basic.view.NoteListTitleItemRenderer"  />
 			<mx:DataGridColumn headerText="Tags" dataField="tags"   width="200" itemRenderer="org.syncon.evernote.basic.view.NoteListTagItemRenderer" />
-			<mx:DataGridColumn resizable="false" headerText="Created" dataField="Created"  labelFunction="{createdAtDate}" width="150" />
-			<mx:DataGridColumn resizable="false" headerText="Updated" dataField="Updated"  labelFunction="{updatedAtDate}"   width="150"/>			
+			<mx:DataGridColumn resizable="false" headerText="Created" dataField="createdAt"  labelFunction="{createdAtDate}" width="150" />
+			<mx:DataGridColumn resizable="false" headerText="Updated" dataField="updatedAt"  
+							   labelFunction="{updatedAtDate}"   width="150"/>			
 		</mx:columns>
 	</mx:DataGrid>
 	

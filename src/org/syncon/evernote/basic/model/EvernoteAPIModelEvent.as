@@ -28,6 +28,8 @@ package org.syncon.evernote.basic.model
 		public static const NOTE_COUNT_CHANGED : String = 'noteCountChanged'			
 			
 		public static const AUTHENTICATED : String = 'authenticated' 
+		public static const AUTHENTICATION_REFRESHED : String = 'AUTHENTICATION_REFRESHED' 			
+		
 		public static const LOGOUT : String = 'logout'			
 		public var data: Object;
 		

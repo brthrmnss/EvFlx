@@ -91,7 +91,8 @@ package org.syncon.evernote.basic.view
 					dupe = true; 
 			}
 			if ( dupe == false ) 
-				this.notes.addItem( e.data ) ; 
+				this.notes.addItem( e.data ) ;
+			if ( ui.currentState != 'active' ) 
 			this.ui.currentState = 'active'
 			this.selectedNote = e.data as Note2; 
 			//this.ui.listNotes.selectedItem = e.data; 

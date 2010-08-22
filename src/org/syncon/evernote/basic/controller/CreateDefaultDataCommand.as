@@ -6,6 +6,8 @@ package  org.syncon.evernote.basic.controller
 	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.controls.DateField;
 	import mx.core.ClassFactory;
@@ -47,24 +49,39 @@ package  org.syncon.evernote.basic.controller
 				
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.AUTHENTICATE( this. null ) ) ;					
 			//this.dispatch(  EvernoteAPICommandTriggerEvent.ListTagsByNotebook( this. null ) ) ;			
-			this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetTrash( ) ) ;	
 			
+			this.timerEnsureTrashCalled.addEventListener(TimerEvent.TIMER, this.trashNotRecieved ) ; 
 			import flash.utils.setTimeout; 
 			//setTimeout( this.authenticate, 1000 ) 
 			this.authenticate()
 		}
-		
+		private var timerEnsureTrashCalled :  Timer= new Timer(8000)
 		public function onListTags(e: Object=null):void
 		{
-			this.recievedTags = true; 
+			this.recievedTags = true;  
 			this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes( null, 0 ) ) ;
 			
+			this.timerEnsureTrashCalled.start()
 			if ( recievedTags && recievedNotebooks  ) 	
 			{
-				this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( )) ;		
+				this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetNotebookNoteCounts( this.gotNotebookCounts  )) ;		
 				return;
 			}			
 			return; 	
+		}
+		private var recievedTrash : Boolean = false; 
+		private function trashNotRecieved(e:Event):void
+		{
+			this.timerEnsureTrashCalled.stop()
+			if ( this.recievedTrash )
+				return; 
+			
+			this.gotNotebookCounts(null)
+		}
+		private function gotNotebookCounts(e:Object):void
+		{
+			this.recievedTags = true; 
+			this.dispatch(  EvernoteAPIHelperCommandTriggerEvent.GetTrash( ) ) ;	
 		}
 		
 		public function onSyncState(e:Object):void

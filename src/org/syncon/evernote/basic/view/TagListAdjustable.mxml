@@ -10,7 +10,9 @@
 			import com.evernote.edam.type.Note;
 			
 			import mx.collections.ArrayCollection;
+			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
+			import mx.managers.DragManager;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
@@ -24,6 +26,16 @@
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				this.list.dataProvider = this._tags
+				if ( this._draggable ) 
+				{
+					
+				}
+				if ( this._draggableInto ) 
+				{
+					this.list.dropEnabled = true; 
+					//this.list.dro
+				}
+				this.list.dropEnabled = true; 
 			}				
 				
 			public function set tags ( n :  ArrayCollection )  : void
@@ -94,6 +106,11 @@
 				this._draggable = b
 			}
 			
+			public function set draggableInto ( b : Boolean )  : void{
+				this._draggableInto = b
+			}
+						
+			private var _draggableInto : Boolean = false
 			
 			public function reload(e:  Event):void
 			{
@@ -108,12 +125,116 @@
 				this.tags = this._updateNote.tags
 			}
 
+			import mx.collections.ICollectionView;
+			import mx.controls.listClasses.IListItemRenderer;
+			import mx.core.UIComponent;
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			
+			import spark.layouts.supportClasses.DropLocation;
+			import spark.layouts.supportClasses.LayoutBase;			
+			
+			public function onListDragEnter(event:DragEvent):void
+			{
+				event.preventDefault();
+				DragManager.acceptDragDrop(event.target as UIComponent);
+				//list.showDropFeedback(event);
+				//list.showDropIndicator();
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);				
+				this.list.layout.showDropIndicator( dropLocal )
+			}
+			
+			public function onListDragOver(event:DragEvent):void
+			{
+				event.preventDefault();
+				//list.showDropFeedback(event);
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);
+				this.list.layout.showDropIndicator( dropLocal ); //createDropIndicator()
+			}
+			
+			public function onListDragExit(event:DragEvent):void
+			{
+				event.preventDefault();
+				//list.hideDropFeedback(event);
+				this.list.destroyDropIndicator()
+			}
+			
+			public function onListDragDrop(event:DragEvent):void
+			{
+				event.preventDefault();
+				list.destroyDropIndicator(); //(event);
+				//var index:int = list.layout.calculateDropLocation( event ) 
+				
+				var dropLocal: DropLocation = 
+					event.currentTarget.layout.calculateDropLocation(event);
+				//this.list.layout.c( dropLocal );					
+				//	var ee :  LayoutBase
+				var index : int = dropLocal.dropIndex
+				//support drag from tree and other listbase components
+				var items:Array = new Array();
+				
+				if(event.dragSource.hasFormat("treeItems"))
+					items = items.concat(event.dragSource.dataForFormat("treeItems") as Array);
+				
+				if(event.dragSource.hasFormat("items"))
+					items = items.concat(event.dragSource.dataForFormat("items") as Array);
+				
+				for each(var item:Object in items)
+				{
+					var obj:Object = new Object()
+					obj.label = item.label as String;
+					(list.dataProvider as ArrayCollection).addItemAt(obj, index);
+				}
+				
+			}
+			
+			public function onListDragComplete(event:DragEvent):void
+			{
+				event.preventDefault();
+				
+				if(event.action == DragManager.MOVE && list.dragMoveEnabled)
+				{
+					//remove moved elements
+					var items:Array = event.dragSource.dataForFormat("items") as Array;
+					var coll:ArrayCollection = list.dataProvider as ArrayCollection;
+					for each(var item:Object in items)
+					{
+						if(coll.contains(item))
+						{
+							coll.removeItemAt(coll.getItemIndex(item));
+						}
+					}
+					
+				}
+			}
+			
 		]]>
 	</fx:Script>
 
-	<s:List id="list" x="1"
-			borderVisible="false"   contentBackgroundAlpha="0.0"
-		   verticalCenter="0" width="100%"
+	
+	<s:Rect id="bgStart"  
+			topRightRadiusX="5"  topRightRadiusY="5" 	topLeftRadiusX="5"  topLeftRadiusY="5"
+			left="0" right="0" top="0" bottom="0" 
+			>
+		<s:fill>
+			<s:SolidColor id="bgColor" color="#E8E8E8" />
+		</s:fill>
+	</s:Rect>	
+
+	<!--
+	dragOver="doDragOver(event)"
+	-->
+	<s:List id="list" x="0"
+			borderVisible="true"   contentBackgroundAlpha="1"
+		   verticalCenter="0" width="100%" minHeight="20"
+		   dragEnter="onListDragEnter(event)"
+		   dragOver="onListDragOver(event)"
+		   dragExit="onListDragExit(event)"
+		   dragDrop="onListDragDrop(event)"
+		   dragComplete="onListDragComplete(event)"
+		    dragEnabled="true" dragMoveEnabled="true" dropEnabled="true"
 			itemRenderer="org.syncon.evernote.basic.view.tag_itemrenderer">
 		<s:layout>
 			<s:HorizontalLayout />

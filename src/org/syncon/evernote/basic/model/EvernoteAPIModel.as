@@ -10,7 +10,9 @@ package org.syncon.evernote.basic.model
 	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.TimerEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -65,9 +67,15 @@ package org.syncon.evernote.basic.model
 			_notebooks =  new ArrayCollection();
 			_tags = new ArrayCollection();
 			_savedSearches = new ArrayCollection();			
-			
+			this.allNotebooks = new Notebook2()
+			this.allNotebooks.name = 'All Notebooks'
+			this.allNotebooks.guid = '-1'
+			this.timerRefreshToken.addEventListener(TimerEvent.TIMER, this.refreshToken ) 
 		}		
  
+		private var timerRefreshToken : Timer = new Timer(0); 
+	
+		
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }
 		private var _searchResult: ArrayCollection 
 		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
@@ -77,11 +85,18 @@ package org.syncon.evernote.basic.model
 		
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
 		
+		/**
+		 * All notebook option, guid is -1
+		 * */
+		private var allNotebooks : Notebook2 = new Notebook2(); 
+		public function get allNotebooksGuid ()  :  String { return '-1' } 
 		private var _noteCount : int =0; 
 		public function get noteCount()  : int { return this._noteCount } 
 		public function set  noteCount( n : int )  : void
 		{
 			this._noteCount = n; 
+			this.allNotebooks.noteCount = n; 
+			this.allNotebooks.notebookUpdated()
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTE_COUNT_CHANGED, n ) ) 
 		}
 		
@@ -109,9 +124,14 @@ package org.syncon.evernote.basic.model
 		}		
 		
 		public function get  acctSyncState ( ) : SyncState  { return this._syncState   }		
-		
-				
-		
+	
+		public function notebooksAndAll()  :  ArrayCollection
+		{
+			var arr :  ArrayCollection =new ArrayCollection( this.notebooks.toArray() )
+			arr.addItem( this.allNotebooks ) 
+			return arr; 
+		}
+	
 		public function loadNotes(e:Array)  : void
 		{
 			/*for each ( var n : Object in e ) 
@@ -137,10 +157,12 @@ package org.syncon.evernote.basic.model
 				if ( nb.guid == note.notebookGuid ) 
 				{
 					nb.noteCount++; nb.notebookUpdated()
+					this.noteCount++
 				}
 				if ( nb.guid == oldNotebook.guid ) 
 				{
 					nb.noteCount--; nb.notebookUpdated()
+					this.noteCount--
 				}				
 			}
 			//return; ... 
@@ -205,6 +227,7 @@ package org.syncon.evernote.basic.model
 				//	this.currentNotebook(  n ) ; //do not set the current notebook to be teh default, it is 'all' by default 
 				}
 			}
+			
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, e ) ) 
 		}	
 		/*
@@ -317,9 +340,30 @@ package org.syncon.evernote.basic.model
 		{
 			this.preferences.username = auth.user.username; 
 			this.user = auth.user; 
+
+			this.authenticationRefreshed( auth, false ) 
 			this.dispatch( new EvernoteAPIModelEvent(EvernoteAPIModelEvent.AUTHENTICATED ) )
 		}
+
+		private function refreshToken(e:Event) : void
+		{
+			this.timerRefreshToken.stop()	
+			import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+			this.dispatch(  EvernoteAPICommandTriggerEvent.RefreshAuthentication() ) 
+		}			
 		
+		/**
+		 * Called when authtnetcaion refreshed, user  not supplied */
+		public function authenticationRefreshed(auth :  AuthenticationResult, dispatchEvt : Boolean = true):void
+		{
+			var expirationMs : Number = auth.expiration  - auth.currentTime;  
+			this.timerRefreshToken.stop(); 
+			this.timerRefreshToken.delay = expirationMs-1000
+			//this.timerRefreshToken.delay = 1000; 
+			this.timerRefreshToken.start()
+			if ( dispatchEvt ) 
+			this.dispatch( new EvernoteAPIModelEvent(EvernoteAPIModelEvent.AUTHENTICATION_REFRESHED ) )
+		}		
 		
 		public function map( objs : Array, prop : String  ) : Array
 		{
