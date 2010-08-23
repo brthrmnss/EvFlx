@@ -82,6 +82,18 @@ package org.syncon.evernote.model
 			this.dispatchEvent( new Event( TAG_UPDATED ) )		
 		}
 		
+		public var children : Array = []; 
 		
+		public function clone() : Tag2
+		{
+			var t : Tag2 = new Tag2()
+			t.children = this.children
+			t.noteCount = this.noteCount; 
+			t.parentGuid = this.parentGuid
+			t.name = this.name ; 
+			t.guid = this.guid; 
+			
+			return t
+		}
 	}
 }
