@@ -142,5 +142,10 @@ package org.syncon.evernote.model
 				return true;	
 			return false 
 		}
+		
+		/**
+		 * Prevents multiple request to get tag names; 
+		 * */
+		public var gettingTags : Boolean = false; 
 	}
 }

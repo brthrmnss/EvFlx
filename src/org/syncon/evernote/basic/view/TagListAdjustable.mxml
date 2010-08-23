@@ -82,9 +82,13 @@
 				}
 				this._updateNote = n; 
 				this._updateNote.addEventListener( Note2.NOTE_TAGS_UPDATED , this.reload ) 
-					
-				if ( this._updateNote.tagNames == null ) 
+				if ( this._updateNote.gettingTags ) 
 				{
+					var t : Boolean = true; 
+				}
+				if ( this._updateNote.tagNames == null && this._updateNote.gettingTags == false ) 
+				{
+					this._updateNote.gettingTags = true; 
 					this.dispatchEvent( new CustomEvent('getNoteTagNames', _updateNote ) ) 
 					//this._updateNote.tagNames = []; // if user is quikcly scrolling do not redispatch 
 					this.tags = this.updateNote.tags

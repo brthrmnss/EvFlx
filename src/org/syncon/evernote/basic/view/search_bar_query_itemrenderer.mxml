@@ -8,13 +8,12 @@
 	
 	<fx:Script> 
 		<![CDATA[ 
-			import com.evernote.edam.type.Tag;
-			
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
-			[Bindable] public var tag :  Tag = new Tag();
+			import org.syncon.evernote.model.Tag2;
+			[Bindable] public var tag :   Tag2 = new Tag2();
 			private var txtLbl_1 : String = ''; 
 			private var txtLbl_2 : String = ''; 
 			//public var tagName : String = '';
@@ -23,8 +22,8 @@
 				// Check to see if the data property is null. 
 				if (value== null) 
 					return; 
-				// If the data property is not null,
-				tag = value as Tag
+				
+				tag = value as Tag2
 				if ( tag.name.indexOf('***' ) != -1  ) // == null )
 				{
 					this.currentState = 'label'
@@ -38,7 +37,6 @@
 					txtLbl_1 = tag.name.toString();
 					if ( this.txtLbl != null ) 
 						txtLbl.text = txtLbl_1
-					
 				}
 				
 			} 

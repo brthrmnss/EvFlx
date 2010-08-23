@@ -27,35 +27,19 @@
 				this.list.dataProvider = this._tags
 			}				
 			
-			public function set tags ( n :  ArrayCollection )  : void
+			public function set searchOptions ( n :  ArrayCollection )  : void
 			{
 				this._tags.source = n.source; 
 				this._tags.refresh()				
 			} 	
-			public function get  tags ( ):  ArrayCollection  
+			public function get  searchOptions ( ):  ArrayCollection  
 			{
 				return this._tags			
 			} 				
-			
-			public var _tagNames : Array;
-			/**
-			 * Tag names are set, replace them with the guids 
-			 * */
-			 public function set tagNamesArray ( n :  Array )  : void
-			{
-				 var tagsArray : Array = []; 
-	 			for each ( var name : String in n ) 
-				{
-					var t : Tag = new Tag()
-					t.name = name; 
-					tagsArray.push( t ) 
-				}
-				this.tags = new ArrayCollection ( tagsArray ) 
-			} 			
-
+ 
 			public function onClear()  : void
 			{
-				this.tags.removeAll();
+				this.searchOptions.removeAll();
 			}
 			
 			[Bindable] public var xOffset : Number = 0; 

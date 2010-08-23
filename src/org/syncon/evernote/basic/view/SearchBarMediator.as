@@ -3,6 +3,7 @@ package org.syncon.evernote.basic.view
 	import com.evernote.edam.notestore.NoteFilter;
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
+	import com.evernote.edam.type.Tag;
 	
 	import flash.events.Event;
 	
@@ -15,6 +16,7 @@ package org.syncon.evernote.basic.view
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.model.Notebook2;
+	import org.syncon.evernote.model.Tag2;
 	
 	public class SearchBarMediator extends Mediator
 	{
@@ -80,6 +82,29 @@ package org.syncon.evernote.basic.view
 			this.clearSearch();
 		}
 		
+		private function onNotesRecieved(e:EvernoteAPIModelEvent): void
+		{
+			this.ui.resultCount(e.data.length ) 
+		}		
+		
+		private function onSearchHandler(e:SearchEvent):void
+		{
+			this.nf.words = e.query; 
+			//this.doSearch(); 
+			this.updateSearch()
+		}
+		
+		public var tags : ArrayCollection = new ArrayCollection();
+		public function onSearchTagsUpdatedHandler(e:SearchEvent):void
+		{
+			this.tags.removeAll()
+			this.tags.addAll( new  ArrayCollection(e.objs)  ) 
+			//this.doSearch(); 
+			this.updateSearch()
+		}
+		
+		
+		
 		
 		private function doSearch()  : void
 		{
@@ -91,30 +116,7 @@ package org.syncon.evernote.basic.view
 			//trace( this.currentNotebook.name + ' ' + this.currentNotebook.guid  ) 
 			this.nf.tagGuids = this.model.map( this.tags.toArray(), 'guid' ); 
 			this.dispatch( EvernoteAPICommandTriggerEvent.FindNotes( nf )  )
-		}
-		
-		private function onNotesRecieved(e:EvernoteAPIModelEvent): void
-		{
-			this.ui.resultCount(e.data.length ) 
 		}		
-		
-		private function onSearchHandler(e:SearchEvent):void
-		{
-			this.nf.words = e.query; 
-			this.doSearch(); 
-			this.updateSearch()
-		}
-		
-		public var tags : ArrayCollection = new ArrayCollection();
-		public function onSearchTagsUpdatedHandler(e:SearchEvent):void
-		{
-			this.tags.removeAll()
-			this.tags.addAll( new  ArrayCollection(e.objs)  ) 
-			this.doSearch(); 
-			this.updateSearch()
-		}
-		
-		
 		/**
 		 * Use notefilter update display 
 		 * */
@@ -129,28 +131,40 @@ package org.syncon.evernote.basic.view
 			{
 				if ( option != ' ' && option != ''  ) 
 				{
-					options.push( option ) 
+					options.push( SearchOption(option, 'keyword' ) ) 
 				}
 			}
 			
 			if ( this.tags.length > 0 ) 
 			{
-				options.push( '***tagged with:' )
+				options.push( SearchOption('***tagged with:', 'label') )
 					
 				for each ( var tag :  Object in this.tags ) 
 				{
-					options.push( tag.name ) 
+					options.push( tag ) 
 				}			
 			}
 			
 			this.dispatch( new SearchEvent(SearchEvent.SEARCH_UPDATED, this.nf.words ) ) 
 			this.ui.updateQueryParts( options ); 
 			if ( options.length == 0 ) 
-				this.clearSearch(); 
-			
-		
-			this.doSearch(); 
+			{
+				this.clearSearch();
+				return; 
+			}
+			else
+			{
+				this.doSearch();
+			}
 		}
+		
+		public function SearchOption( name : String, guidType :  String = '' ) :   Tag2
+		{
+			var t : Tag2 = new  Tag2()
+			t.name = name; t.guid = guidType; 
+			return t
+		}
+		
 		
 		/**
 		 * In the future potential adjust search, but this is coming form teh left side
@@ -164,7 +178,6 @@ package org.syncon.evernote.basic.view
 			this.ui.selectNotebook(this.currentNotebook); 
 			
 			this.doSearch()
-			//this.clearSearch()
 		}
 		
 		private function clearSearch()  : void
@@ -203,17 +216,19 @@ package org.syncon.evernote.basic.view
 				}
 			nf.words = clipped.join(' '); 
 			
-			if ( this.tags.getItemIndex( e.data ) != -1 ) 
+			if ( e.data is Tag2 )
 			{
-				this.tags.removeItemAt( this.tags.getItemIndex( e.data ) ) 
+				for each ( var tag2 : Tag2 in this.tags ) 
+				{
+					if ( e.data.guid == tag2.guid ) 
+						this.tags.removeItemAt( this.tags.getItemIndex( tag2 ) ) 
+				}
 			}
-			
 		//	nf.tagGuids
 			/*if ( clipped.length == 0 ) 
 				nf.words = ''; */
 			//this.model.currentNotebook( e.data as Notebook ) 
 			e.stopImmediatePropagation();
-			this.doSearch()
 			this.updateSearch()
 		}
 				

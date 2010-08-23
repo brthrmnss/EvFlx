@@ -271,6 +271,7 @@ package  org.syncon.evernote.basic.controller
 			}
 			if ( event.type == EvernoteAPICommandTriggerEvent.GET_NOTE_TAG_NAMES ) 
 			{
+				trace( 'tags for ' + event.note.title + ' ' +  event.guid ) 
 				this.service.getNoteTagNames( event.guid )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_NOTE_TAG_NAMES, this.getNoteTagNamesResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.GET_NOTE_TAG_NAMES_FAULT, this.getNoteTagNamesFaultHandler )
@@ -455,8 +456,10 @@ package  org.syncon.evernote.basic.controller
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EMAIL_NOTE, this.emailNoteResultHandler )
 				this.service.eventDispatcher.addEventListener( EvernoteServiceEvent.EMAIL_NOTE_FAULT, this.emailNoteFaultHandler )
 			}			
-				
+			count ++
+			trace( 'count ' + count  + ' ' +  event.type ) 
 		}
+		static public var count : int = 0
 /*
 		private function onCreatedNotebook(e:EvernoteServiceEvent)  : void
 		{
@@ -848,7 +851,7 @@ package  org.syncon.evernote.basic.controller
 			{
 				var tags : Array = (e.data as Array)
 				event.note.tagNames = tags
-					
+				event.note.gettingTags = false; 	
 				var result : Array = this.apiModel.convertTagNamesToTags( tags ) 
 				event.note.tags = new ArrayCollection( result )  
 				this.event.note.tagsUpdated()
@@ -860,6 +863,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			if ( seqId != this.service.getSequenceNumber()) return; 			
 			if ( this.event.fxFault != null ) this.event.fxFault(e.data);
+			event.note.gettingTags = false; 	
 			this.onFault(); this.deReference(e)
 		}
 		private function createNoteResultHandler(e:EvernoteServiceEvent)  : void
