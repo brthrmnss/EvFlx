@@ -105,10 +105,19 @@
 				this.dispatchEvent( new CustomEvent(TAGS_SELECTED, this.list.selectedItems ) ) 
 			}
 
-
+			public var dragging : Array = []; 
 			protected function list_dragStartHandler(event:DragEvent):void
 			{
+				trace( 'selectedb4 ' +this.list.selectedItems.length ) 
+				this.dragging = this.list.selectedItems; 
 				//event.preventDefault()
+			}
+
+
+			protected function list_dragCompleteHandler(event:DragEvent):void
+			{
+				event.preventDefault()
+				// TODO Auto-generated method stub
 			}
 
 		]]>
@@ -121,9 +130,11 @@
  
 	<mx:Tree id="list"  itemRenderer="org.syncon.evernote.basic.view.tagTreeRenderer"
 			 borderVisible="false" contentBackgroundAlpha="0" labelField="name"  
-			  selectionColor="0x607980" change="list_changeHandler(event)" 
+			  selectionColor="0x607980"
+			  change="list_changeHandler(event)" 
 			  allowMultipleSelection="true" dropEnabled="true"
 			  rollOverColor="0x598E52" 
+			  dragStart="list_dragStartHandler(event)" dragComplete="list_dragCompleteHandler(event)"
 			  dragEnabled="true"   dragMoveEnabled="true"			  
 			 width="{this.width}" />
 	

@@ -41,7 +41,9 @@ package  org.syncon.evernote.basic.controller
 					//if ( guid != tag.guid ) 
 					//	noteCopy.tagGuids.push( guid ) 
 					this.note.tagGuids.push( tag.guid )
+					this.note.tagNames.push( tag.name ) 
 				}		
+				var dbg : Array = [ this.note.tagGuids.join(', ' ) ]
 				var xml : XML = TextConverter.export(  event.tf ,  
 					TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
 			/*	if ( e.data.hasOwnProperty('save') && e.data.save == false ) 
@@ -89,6 +91,7 @@ package  org.syncon.evernote.basic.controller
 			tempSaveNote.active = true; 
 			tempSaveNote.title = this.note.titleOrTempTitle()
 			tempSaveNote.notebookGuid = this.note.notebookGuid; 
+			tempSaveNote.tagGuids = this.note.tagGuids
 			if ( this.note.newNote() )
 			{ 
 				this.createdNew = true

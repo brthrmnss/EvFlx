@@ -77,6 +77,23 @@ package org.syncon.evernote.basic.view
 		
 		private function onSelectedTag(e:CustomEvent):void
 		{
+			var same :  Boolean = true
+			if ( e.data.length != this.ui.dragging.length ) 
+			{
+				same = false; 
+			}
+			else
+			{
+				for each ( var obj : Object in e.data ) 
+				{
+					if ( this.ui.dragging.indexOf( obj ) == -1 ) 
+						same = false; 
+				}				
+			}
+			
+			if ( same )
+				return ; 
+			
 			this.dispatch( new SearchEvent( SearchEvent.SEARCH_TAGS_UPDATED, '', e.data as Array  ) ) 
 		}
 		

@@ -19,7 +19,7 @@
 			<s:SolidColor color="#B4CDD2" />
 		</s:fill>
 	</s:Rect>
-		
+		<!--
 	<s:VGroup paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5">
 		<s:HGroup>
 			<s:Label text="B" fontWeight="bold" />
@@ -33,6 +33,6 @@
 		</s:HGroup>		
 	</s:VGroup>
 
-		
+		-->
 	
 </s:SkinnableContainer>

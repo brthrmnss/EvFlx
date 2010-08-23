@@ -327,10 +327,16 @@ package org.syncon.evernote.basic.view
 		}		
 		*/
 		
-		public function saveNote(callbackFx:Function=null) : void
+		/**
+		 *  
+		 * @param callbackFx
+		 * @return if not was saved now or later
+		 * 
+		 */
+		public function saveNote(callbackFx:Function=null) :  Boolean
 		{
 			if ( this.ui.edit  == null  ) 
-				return;
+				return false;
 			if (  this.ui.edit.editor.isDirty() )
 			{
 				//send real note, and temporary it will be updated later on as necessary 
@@ -341,13 +347,16 @@ package org.syncon.evernote.basic.view
 						this.saveEditorSwitchedOutNoteFault )
 					//this.ui.edit.saveTemp()
 				)
+					return true
 			}			
+			return false; 
 		}
 		
 		private function onSaveAndClose(  e:CustomEvent): void
 		{
 			
-			this.saveNote( this.onNoteSaved )
+			if ( this.saveNote( this.onNoteSaved ) == false ) 
+				this.ui.currentState = RightSideMediator.StateList;
 			/*
 			//ui.view.loading = true; 				
 		//	ui.view.note = this.note; 

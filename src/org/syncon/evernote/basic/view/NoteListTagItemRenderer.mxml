@@ -27,6 +27,6 @@
 	</fx:Script>
 
  
-	<view:TagListAdjustable id="adjustable" verticalCenter="0" horizontalCenter="0" width="100%" />
+	<view:TagListAdjustable id="adjustable" verticalCenter="1" x="5" width="100%" />
 	
 </s:MXDataGridItemRenderer>

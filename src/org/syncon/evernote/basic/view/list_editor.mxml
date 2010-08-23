@@ -51,7 +51,7 @@
 				this.txtTitle.text = this._note.titleOrTempTitle()
 				//this.txtContents.display.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
 				//this.txtContents.textFlow  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
-					
+				var xTags : Array = this.note.tags.toArray()
 				//this.selectedTags
 				this.listTags.tags = this.note.tags; 
 					
@@ -159,6 +159,13 @@
 				this.txtContents.display.setStyle( 'paddingLeft',  "5");		 
 			}
 
+
+			protected function listTags_tagsChangedHandler(event: org.syncon.evernote.basic.model.CustomEvent):void
+			{
+				this.dirty = true; 
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
  
@@ -183,8 +190,8 @@
 					skinClass="brust.skins.SearchInputSkin" id="txtTags" />
 				<view:TagListAdjustable id="listTags"   width="{this.width-250}"
 										 liveManiuplation="false"   minHeight="25"
-										  draggableInto="true"
-										tags="{this.selectedTags}" draggable="true" />
+										  draggableInto="true" tagsChanged="listTags_tagsChangedHandler(event)"
+										tags="{this.selectedTags}"  />
 			</s:HGroup>		
 			<view:richtext_control_panel id="controlp"   />
 			
