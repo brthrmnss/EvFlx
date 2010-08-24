@@ -1,5 +1,7 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.error.EDAMUserException;
+	
 	import flash.events.Event;
 	
 	import flashx.textLayout.conversion.ConversionType;
@@ -131,6 +133,8 @@ package  org.syncon.evernote.basic.controller
 			else ( this.event.type== SaveNoteCommandTriggerEvent.SAVE_NOTE  )  
 			{
 				this.note.tempContent = ''; this.note.tempTitle = ''; 
+				this.note.dirty = false; 
+				//this.note.dirtyUpdated()
 				updatedNote()
 			}
 			
@@ -144,7 +148,15 @@ package  org.syncon.evernote.basic.controller
 		}					
 		private function onNoteSavedFault( o:Object):void
 		{
-			this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 'Could not save note') )  
+			var msg : String = 'Could not save note'; 
+			var eee :   EDAMUserException
+			if ( o is EDAMUserException ) 
+			{
+				msg = 'Could not save note: ' + o.parameter+'.'+ ' Please try again'
+			}
+			this.dispatch( new   ShowAlertMessageTriggerEvent(
+				ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 
+				msg  ) )  
 			//ui.currentState = StateView;
 			return;
 		}				

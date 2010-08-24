@@ -53,11 +53,12 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}		
 		
-		static public function DeleteAllTags( fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : QuickTagEditorCommandTriggerEvent
+		static public function DeleteAllTags( tags : Array , fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : QuickTagEditorCommandTriggerEvent
 		{
 			var e : QuickTagEditorCommandTriggerEvent = 
 				new QuickTagEditorCommandTriggerEvent( 
 					QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS	); 
+			e.tags = tags; 			
 			return e; 
 		}			
 

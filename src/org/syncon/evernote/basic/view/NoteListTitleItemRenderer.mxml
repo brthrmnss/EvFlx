@@ -16,9 +16,11 @@
 
 	 <s:HGroup verticalAlign="middle" x="5" >
 		 <s:CheckBox id="chkBox" click="chkBox_clickHandler(event)"
+					    toolTip="Check to select mutiple items"
 					 useHandCursor="true" buttonMode="true"
 					 />
 		 <s:Label id="lblData"  paddingTop="4"
+				   toolTip="Click to view this entry, Ctrl+Click to open for later"
 				   useHandCursor="true" buttonMode="true"
 				  paddingBottom="0" text="{dataGridListData.label}" />
 	 </s:HGroup>

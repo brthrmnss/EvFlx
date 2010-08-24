@@ -14,12 +14,14 @@ package org.syncon.evernote.model
 	[Event(name="noteTagsUpdated", type="flash.events.Event")] 		
 	[Event(name="noteUpdated", type="flash.events.Event")] 		
 	[Event(name="noteSelectionChanged", type="flash.events.Event")] 			
+	[Event(name="noteDirtyChanged", type="flash.events.Event")] 	
 	
 	public class Note2 extends  Note implements IEventDispatcher
 	{
 		static public var  NOTE_UPDATED : String = 'noteUpdated';
 		static public var  NOTE_TAGS_UPDATED : String = 'noteTagsUpdated'				
 		static public var  NOTE_SELECTION_CHANGED : String = 'noteSelectionChanged'					
+		static public var  NOTE_DIRTY_CHANGED : String = 'noteDirtyChanged'					
 
 		private var _eventDispatcher : IEventDispatcher;
 		
@@ -147,5 +149,19 @@ package org.syncon.evernote.model
 		 * Prevents multiple request to get tag names; 
 		 * */
 		public var gettingTags : Boolean = false; 
+		
+		public function get dirty( ): Boolean 
+		{
+			return this._dirty; 
+		}		
+		private var _dirty : Boolean = false; 
+		public function set dirty(d:Boolean) : void
+		{
+			/*if ( d == this._dirty ) 
+				return; */
+				this._dirty = d; 
+			this.dispatchEvent( new Event( Note2.NOTE_DIRTY_CHANGED ) ) 	
+		}
+		
 	}
 }

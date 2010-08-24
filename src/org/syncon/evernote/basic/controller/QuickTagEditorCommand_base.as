@@ -1,5 +1,7 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.type.Tag;
+	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Dictionary;
@@ -109,7 +111,7 @@ package  org.syncon.evernote.basic.controller
 			if ( t == null ) 
 			{
 				t = new Tag2
-				t.guid = ( int((Math.random()*1000)) + int( Math.random()*1000) ).toString()
+				t.guid = 'new_'+( int((Math.random()*1000)) + int( Math.random()*1000) ).toString()
 				t.name = name
 				this.tagsList.push( t ) 
 				this.flat[name] = t
@@ -313,21 +315,32 @@ package  org.syncon.evernote.basic.controller
 		public var postGuidsToTagDict : Dictionary 
 		public var postRoots : Array; /// = this.postRoots; 
 		public var postRenameDict : Dictionary
+		/**
+		 * Can be used by 
+		 * */
+		public var old_SavedTagsByNameDict : Dictionary = new Dictionary(true)
 		
 		public function onStepDone(e:Object) : void
 		{
 			this.indexProcessing++
-				this.processOutput( true ) 
+			this.old_SavedTagsByNameDict[e.name] = e; 
+			//this.postOldTagNamesDict[e.name] = e; 
+			this.processOutput( true )
+			
 		}
 		public function onStepFault(e:Object) : void
 		{
 			return;
 		}
 		
-		
+		/*
+		array can be traversed to get all notes to update, create and delete
+		*/
+		public var processingSteps : Array = [];
 		
 		public var indexProcessing : int = -1; 
 		public var fxDone  : Function ; 
+		
 		public function processOutput( a :  Boolean )  : Array
 		{
 			var tag : Tag2; 
@@ -342,23 +355,30 @@ package  org.syncon.evernote.basic.controller
 			var relinkTags : Array = []; var createTags : Array = []; 
 			var tasks : Array = []; 
 			var task :  String = ''; 
+			var processingCommands : Array = []
 			if ( indexProcessing != -1  )
 			{
-				if ( indexProcessing >= tags.length -1 ) 
+/*				if ( indexProcessing >= tags.length -1 ) 
 				{
+					
 					trace('complete')
 					this.fxDone()
-				}
+				}*/
 			}		
 			else
 			{
 				if ( a )
-					this.indexProcessing = 0 
+				{
+					this.indexProcessing = 0
+					old_SavedTagsByNameDict  = new Dictionary(true)
+				}
 			}
 			
 			for  ( var i : int = 0; i <  tags.length; i++ ) 
 			{
-				  tag  = tags[i] as Tag2
+				tag  = tags[i] as Tag2
+				
+				//var saveableTag :  Tag  = this.old_SavedTagsByNameDict[tag.name] 
 				if ( indexProcessing != -1  )
 				{
 					if ( i != this.indexProcessing ) 
@@ -371,15 +391,11 @@ package  org.syncon.evernote.basic.controller
 				var oldTag : Tag2 = oldTagNamesDict[tag.name]
 				if ( oldTag == null ) 
 				{
-					createTags.push( oldTag ) 
+					createTags.push( tag ) 
 					task =  'creating ' + tag.name
 					trace(task) ; 
 					tasks.push(task)		
-						if ( a ) 
-						{
-							tag.unsetGuid(); 
-							this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , this.onStepDone , this.onStepFault ))
-						}
+					processingCommands.push( {type:'create', name:tag.name, p:1} )
 				}
 				//old and link changed
 				if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
@@ -391,22 +407,35 @@ package  org.syncon.evernote.basic.controller
 					task = 'change link of ' + tag.name + ' to ' +parentName
 					trace(task) ; 
 					tasks.push(task)	
-					if ( a ) 
-					{
-						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , this.onStepDone , this.onStepFault ))
-					}						
+					processingCommands.push( {type:'link_guid_to', 
+						name:tag.name, guid:tag.guid, linkto:tag.parentGuid, 
+						linkto_parent_name:parentName, p:3} )
 				}		
 				//new and add link
 				if ( oldTag == null &&   tag.parentGuid != null )   
 				{
 					relinkTags.push( oldTag ) 
-					task ='link new upto ' + tag.name
+					if ( tag.parentGuid != null ) 
+						parentName = guidsToTagDict[tag.parentGuid].name
+					task = 'link up new item ' + tag.name + ' to ' +parentName
 					trace(task) ; 
 					tasks.push(task)		
-					if ( a ) 
+					//what if  parent renamed? //what parent not existing?
+					//we will check when saving this type
+					//look at renameDict to see if i'm linking to someone named differently now
+						//(or rename after this step) [check against all named tags] 
+					//check for created tags for name too
+					if ( tag.parentGuid.indexOf( 'new_' ) != -1 ) 
 					{
-						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , this.onStepDone , this.onStepFault ))
-					}							
+						processingCommands.push( {type:'link_new_guid_to_new_tag', 
+						name:tag.name, linktoname:tag.guid, linkto_parent_name:parentName, p:5} )
+					}
+					else
+					{
+						//this could probably be fixed into one step 
+						processingCommands.push( {type:'link_new_guid_to_existing_tag', 
+							name:tag.name, linktoname:tag.guid, linkto:tag.parentGuid, p:4} )						
+					}
 				}
 				//destroy
 				if ( destroy.indexOf( tag.name ) != -1 )   
@@ -414,13 +443,68 @@ package  org.syncon.evernote.basic.controller
 					//relinkTags.push( oldTag ) 
 					task = 'delete ' + tag.name
 					trace(task) ; 
-					tasks.push(task)				
+					tasks.push(task)			
+					processingCommands.push( {type:'delete', guid:tag.guid , p:2} )	
+						
+				}	
+				/*
+				//if renamed
+				var renamedTagsNameToOldName
+				for  ( var oldTagName : String  in renameDict ) 
+				{
+					var renameTo : String = renameDict[oldTagName]
+					//creataeTgs.push( oldTag ) 
+					task =  'rename ' + oldTagName + ' to ' + renameTo 
+					trace(task) ; 
+					tasks.push(task)
 					if ( a ) 
 					{
-						this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , this.onStepDone , this.onStepFault ))
-					}							
+						tag.name = renameTo
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+							this.onStepDone , this.onStepFault ))
+						return null; 
+					}						
 				}					
+				*/
 			}
+			
+			//sort commands 
+			//create, delete, linkA+B, rename
+			
+			if ( a ) 
+			{
+				tag.unsetGuid(); 
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , 
+					this.onStepDone , this.onStepFault ))
+				return null; 
+			}
+			
+			if ( a ) 
+			{
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+					this.onStepDone , this.onStepFault ))
+				return null; 
+			}		
+			
+			if ( a ) 
+			{
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , 
+					this.onStepDone , this.onStepFault ))
+				return null; 
+			}				
+			/*
+			for  ( tag  in createTags ) 
+			{
+				var processingVersion : Tag2 = tag.clone();
+				this.processingSteps.push({type:'create', on_tag:processingVersion })
+			}
+			for  ( tag  in deleteTags ) 
+			{
+				  processingVersion : Tag2 = tag.clone();
+				this.processingSteps.push({type:'delete', on_tag:processingVersion })
+			}		
+			*/
+			/*
 			for  ( var oldTagName : String  in renameDict ) 
 			{
 				var renameTo : String = renameDict[oldTagName]
@@ -428,21 +512,54 @@ package  org.syncon.evernote.basic.controller
 				task =  'rename ' + oldTagName + ' to ' + renameTo 
 				trace(task) ; 
 				tasks.push(task)
+				if ( a ) 
+				{
+					tag.name = renameTo
+					this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+						this.onStepDone , this.onStepFault ))
+					return null; 
+				}						
 			}	
+			*/
+			if ( indexProcessing >= tags.length -1 ) 
+			{
+				trace('complete')
+				this.fxDone()
+			}
+			
 			//export text based array ... use the roots on the NEW array 
 			//all children in children array
 			var txt : String = '';
 			for each (   tag   in roots ) 
 			{	
 				var clonedTagForPrinting : Tag2 = tag.clone()
-				if (   renameDict[oldTagName] != null ) 
-					clonedTagForPrinting.name =  renameDict[oldTagName]
-				txt = this.printMe( tag, txt ) 
+				if (   renameDict[tag.name] != null ) 
+					clonedTagForPrinting.name =  renameDict[tag.name]
+				txt = this.printMe( clonedTagForPrinting, txt ) 
 			}
 			return [[], txt, tasks];
 		}
+		/*
+		public var create : Array  = []
+		public function startEsecution() : void
+		{
+			
+		}
+		*/
+		/**
+		 * 
+		 * create and delete 
+		 * when created store by name in dict1, dict2
+		 * if tag does not need create/delete, store by name in dict2
+		 * use rename dict, for each on save it
+		 * link back up 
+		 * */
 		
-		
+		/**
+		 * this a name based operation .... guid and names are all that is needed
+		 * as you save them, store the saved versions by their names
+		 * instructions say name, tag, guid, command, data, link_to_tag_named
+		 * */
 		private function onTimeout(e: TimerEvent)  : void
 		{
 			this.deReference()
@@ -479,5 +596,159 @@ package  org.syncon.evernote.basic.controller
  
 			
 		public var dispatchEvent : Function 
+		
+		/**
+		public function processOutput( a :  Boolean )  : Array
+		{
+			var tag : Tag2; 
+			var tags : Array = this.postTags; 
+			var oldTagNamesDict : Dictionary = this.postOldTagNamesDict
+			var destroy : Array =this.postDestroy ; 
+			var guidsToTagDict : Dictionary = this.postGuidsToTagDict
+			var roots : Array = this.postRoots; 
+			var renameDict : Dictionary = this.postRenameDict
+			//find different ones 
+			var diff : Array = []; 
+			var relinkTags : Array = []; var createTags : Array = []; 
+			var tasks : Array = []; 
+			var task :  String = ''; 
+			if ( indexProcessing != -1  )
+			{
+ 
+			}		
+			else
+			{
+				if ( a )
+				{
+					this.indexProcessing = 0
+					old_SavedTagsByNameDict  = new Dictionary(true)
+				}
+			}
+			
+			for  ( var i : int = 0; i <  tags.length; i++ ) 
+			{
+				tag  = tags[i] as Tag2
+				
+				//var saveableTag :  Tag  = this.old_SavedTagsByNameDict[tag.name] 
+				if ( indexProcessing != -1  )
+				{
+					if ( i != this.indexProcessing ) 
+						continue; 
+				}
+				if ( tag.name == 'fff' ) 
+				{
+					//trace('fff');
+				}
+				var oldTag : Tag2 = oldTagNamesDict[tag.name]
+				if ( oldTag == null ) 
+				{
+					createTags.push( oldTag ) 
+					task =  'creating ' + tag.name
+					trace(task) ; 
+					tasks.push(task)		
+					if ( a ) 
+					{
+						tag.unsetGuid(); 
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , 
+							this.onStepDone , this.onStepFault ))
+						return null; 
+					}
+				}
+				//old and link changed
+				if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
+				{
+					relinkTags.push( oldTag ) 
+					var parentName : String = 'nothing'; 
+					if ( tag.parentGuid != null ) 
+						parentName = guidsToTagDict[tag.parentGuid].name
+					task = 'change link of ' + tag.name + ' to ' +parentName
+					trace(task) ; 
+					tasks.push(task)	
+					if ( a ) 
+					{
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+							this.onStepDone , this.onStepFault ))
+						return null; 
+					}						
+				}		
+				//new and add link
+				if ( oldTag == null &&   tag.parentGuid != null )   
+				{
+					relinkTags.push( oldTag ) 
+					task ='link new upto ' + tag.name
+					trace(task) ; 
+					tasks.push(task)		
+					if ( a ) 
+					{
+						//use saved version 
+						saveableTag.parentGuid = tag.parentGuid
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( saveableTag , 
+							this.onStepDone , this.onStepFault ))
+						return null; 
+					}							
+				}
+				//destroy
+				if ( destroy.indexOf( tag.name ) != -1 )   
+				{
+					//relinkTags.push( oldTag ) 
+					task = 'delete ' + tag.name
+					trace(task) ; 
+					tasks.push(task)				
+					if ( a ) 
+					{
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , 
+							this.onStepDone , this.onStepFault ))
+						return null; 
+					}							
+				}					
+			}
+			
+			
+			for  ( tag  in createTags ) 
+			{
+				var processingVersion : Tag2 = tag.clone();
+				this.processingSteps.push({type:'create', on_tag:processingVersion })
+			}
+			for  ( tag  in deleteTags ) 
+			{
+				var processingVersion : Tag2 = tag.clone();
+				this.processingSteps.push({type:'delete', on_tag:processingVersion })
+			}			
+			for  ( var oldTagName : String  in renameDict ) 
+			{
+				var renameTo : String = renameDict[oldTagName]
+				//creataeTgs.push( oldTag ) 
+				task =  'rename ' + oldTagName + ' to ' + renameTo 
+				trace(task) ; 
+				tasks.push(task)
+				if ( a ) 
+				{
+					tag.name = renameTo
+					this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+						this.onStepDone , this.onStepFault ))
+					return null; 
+				}						
+			}	
+			
+			if ( indexProcessing >= tags.length -1 ) 
+			{
+				trace('complete')
+				this.fxDone()
+			}
+			
+			//export text based array ... use the roots on the NEW array 
+			//all children in children array
+			var txt : String = '';
+			for each (   tag   in roots ) 
+			{	
+				var clonedTagForPrinting : Tag2 = tag.clone()
+				if (   renameDict[tag.name] != null ) 
+					clonedTagForPrinting.name =  renameDict[oldTagName]
+				txt = this.printMe( clonedTagForPrinting, txt ) 
+			}
+			return [[], txt, tasks];
+		}
+		*/
+		
 	}
 }

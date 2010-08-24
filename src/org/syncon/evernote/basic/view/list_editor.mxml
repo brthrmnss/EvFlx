@@ -44,10 +44,11 @@
 				if ( this._note != null ) 
 				{
 					this._note.oldCursor = this.txtContents.display.selectionActivePosition
-					
+					this._note.removeEventListener(Note2.NOTE_DIRTY_CHANGED, this.onDirtyChanged ) 
 				}
 				this._note = n; 
-				
+				this._note.addEventListener(Note2.NOTE_DIRTY_CHANGED, this.onDirtyChanged ) 
+					
 				this.txtTitle.text = this._note.titleOrTempTitle()
 				//this.txtContents.display.content  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
 				//this.txtContents.textFlow  = TextConverter.importToFlow( n.contentOrTempContent(), TextConverter.TEXT_FIELD_HTML_FORMAT )
@@ -72,8 +73,12 @@
 					this.txtContents.setFocus()
 				}
 				this.dirty = false; 
+				
 			}
-
+			protected function onDirtyChanged(e:Event):void
+			{
+				this.dirty = e.currentTarget.dirty; 
+			}
 			protected function dropdownNotebook_changeHandler(event:IndexChangeEvent):void
 			{
 				var oldNotebook : Notebook2 = this.dropdownNotebook.dataProvider[event.oldIndex] 

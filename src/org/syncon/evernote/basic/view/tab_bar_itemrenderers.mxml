@@ -43,7 +43,7 @@
 				// set the Label controls appropriately. 
 				this.labelText  = note.title.toString(); 
 				this.onUpdate(null)
-				//this.labelTooltip= note.name.toString(); 	
+				 this.labelTooltip= 'Click to view "' + note.title.toString() +'"'; 	
 			 
 				//.firstName + ', ' + value.lastName;
 				//compLabel.text = value.companyID;
@@ -137,5 +137,5 @@
 		<!--<s:Label text="x" click="btnClose_clickHandler(event)" />-->
 	</s:HGroup>
 	
-	
+	<s:Scroller horizontalScrollPolicy="off" />
 </s:ItemRenderer>

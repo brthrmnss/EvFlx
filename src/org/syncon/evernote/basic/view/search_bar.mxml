@@ -49,7 +49,7 @@
 			static public var SAVE_SEARCH : String = 'saveSearch';			
 			
 			[SkinPart(required="true")]
-			public var btnSearch:Button;	
+			public var btnSaveSearch:Button;	
 			[SkinPart(required="false")]
 			public var btnClear:Button;	
 			
@@ -75,16 +75,19 @@
 			override protected function partAdded(partName:String, instance:Object):void
 			{
 				super.partAdded(partName, instance);
-				if( instance == btnSearch)
+				if( instance == btnSaveSearch)
 				{
-					btnSearch.addEventListener(MouseEvent.CLICK,header_clickHandler);
+					btnSaveSearch.toolTip = 'Save Search'; 
+					btnSaveSearch.addEventListener(MouseEvent.CLICK,onSaveSearch);
 				}
 				if( instance == btnClear)
 				{
+					btnClear.toolTip = 'Clear Search';
 					btnClear.addEventListener(MouseEvent.CLICK,btnClear_clickHandler);
 				}
 				if( instance == dropdownNotebooks)
 				{
+					dropdownNotebooks.toolTip = 'Change Notebook Filter'
 					dropdownNotebooks.addEventListener(IndexChangeEvent.CHANGE, this.notebookDropdownChanged ) ; 
 				}					
 				if( instance == dropdownAllOrAny)
@@ -96,7 +99,7 @@
 			{
 				this.dispatchEvent( new CustomEvent( search_bar.CLEAR_SEARCH ) ) 
 			}
-			protected function header_clickHandler(e:Event)  : void
+			protected function onSaveSearch(e:Event)  : void
 			{
 				this.dispatchEvent( new CustomEvent( search_bar.SAVE_SEARCH ) ) 
 			}

@@ -473,7 +473,8 @@ package org.syncon.evernote.basic.view
 			}					
 			private function onNoteSavedFault( o:Object):void
 			{
-				this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 'Could not save note') )  
+				var msg : String = 'Could not save note: ' + 
+				this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP,  msg) )  
 				//ui.currentState = StateView;
 				return;
 			}					

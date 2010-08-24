@@ -1,11 +1,5 @@
 package  org.syncon.evernote.basic.controller
 {
-	import com.evernote.edam.notestore.NoteCollectionCounts;
-	import com.evernote.edam.notestore.NoteFilter;
-	import com.evernote.edam.type.Note;
-	import com.evernote.edam.type.Notebook;
-	import com.evernote.edam.type.Tag;
-	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Dictionary;
@@ -51,9 +45,16 @@ package  org.syncon.evernote.basic.controller
 			}				
 			if ( event.type == QuickTagEditorCommandTriggerEvent.PROCESS_TAGS ) 
 			{
-				var output : Array  = this.base.onProcess(event.instructions, event.tags )
+				this.base.dispatchEvent = this.dispatch; 
+				var output : Array  = this.base.onProcess(event.instructions, event.tags, true )
 			}		
-			
+			if ( event.type == QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS ) 
+			{
+				for each ( var tag_ : Tag2 in this.event.tags )
+				{
+					this.dispatch( EvernoteAPICommandTriggerEvent.ExpungeTag( tag_.guid ) )
+				 }
+			}					
 			 
 			
 				

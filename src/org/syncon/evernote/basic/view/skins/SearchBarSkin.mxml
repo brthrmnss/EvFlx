@@ -45,7 +45,7 @@
 	
 	<s:HGroup  id="controlBar" includeIn="normal" y="10" right="10" >
 		<s:Button right="10"  label="Clear"  id="btnClear" y="11" />
-		<s:Button right="10"  label="Save"  id="btnSearch" y="11"    />
+		<s:Button right="10"  label="Save"  id="btnSaveSearch" y="11"    />
 	</s:HGroup>	
 	
 	

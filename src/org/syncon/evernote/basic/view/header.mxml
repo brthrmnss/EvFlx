@@ -34,6 +34,7 @@
 				super.partAdded(partName, instance);
 				if( instance == btnSearch)
 				{
+					btnSearch.toolTip = 'Click to Search'
 					btnSearch.addEventListener(MouseEvent.CLICK, btnSearchClickHandler);
 				}
 				
