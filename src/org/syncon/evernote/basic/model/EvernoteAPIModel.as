@@ -186,7 +186,7 @@ package org.syncon.evernote.basic.model
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.SEARCH_RESULT, e ) ) 
 		}		
 		
-		private function convert( r : Array, class_  : Class )  :  Array 
+		public function convert( r : Array, class_  : Class )  :  Array 
 		{
 			var arr: Array = []; 
 			var cf : ClassFactory = new ClassFactory(class_)

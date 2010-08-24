@@ -14,10 +14,7 @@ package   org.syncon.evernote.basic.view.tag
 	import org.syncon.evernote.basic.controller.EvernoteAPICommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
-	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
-	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
-	import org.syncon.evernote.basic.controller.SaveNoteCommand;
-	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.QuickTagEditorCommand;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.view.QuickTagEditor;
 	import org.syncon.evernote.basic.view.QuickTagEditorMediator;
@@ -39,17 +36,12 @@ package   org.syncon.evernote.basic.view.tag
 			//commandMap.mapEvent(AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS, AddPopupsKeyboardShortcutsCommand);				
 			commandMap.mapEvent(CreateDefaultDataCommand.START,  CreateDefaultDataCommand, null, false );
 			commandMap.mapEvent(CreateDefaultDataCommand.LIVE_DATA,  CreateDefaultDataCommand, null, false );
-
-			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
-			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
 			
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.SHOW_POPUP,   EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );				
 			
 			EvernoteAPICommand.mapCommands( commandMap )
 			EvernoteAPIHelperCommand.mapCommands( commandMap )
-			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE,  SaveNoteCommand, null, false );
-			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,  SaveNoteCommand, null, false );			
-			
+			QuickTagEditorCommand.mapCommands( commandMap ) 
 			// Services
 			//injector.mapSingletonOf( EvernoteService, IEvernoteService  )		
 			injector.mapSingleton( EvernoteService )

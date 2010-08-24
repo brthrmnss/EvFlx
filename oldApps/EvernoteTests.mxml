@@ -1,42 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="application1_creationCompleteHandler(event)"
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:tag="org.syncon.evernote.basic.view.tag.*">
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
 			
+			import org.syncon.evernote.basic.controller.QuickTagEditorCommand;
+			import org.syncon.evernote.basic.controller.QuickTagEditorCommandTriggerEvent;
 			import org.syncon.evernote.basic.controller.QuickTagEditorCommand_base;
 			private var tags : Array = []; 
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
+				/* 
 				// TODO Auto-generated method stub
 				var ee :  QuickTagEditorCommand_base = new QuickTagEditorCommand_base()
 				this.txtStuff.text = ee.onLoadTags(ee.makeFakeTags())
 				this.tags = ee.tagsList; 
 				this.txtStuff.text = '\naaa---\n\tddd\n\t\tzzz\n\t\t\t777\n\t\t\t888\n\t\t\t999\nbbb\n\tjjj:R:JJjJ\n\t222\n\t333---\n\t\tggg---\n\t\tfff\nccc\n\tlll'		
 				this.button1_clickHandler(null)
+					
+				 */	
+				setTimeout( this.startup , 1000 ) 
 			}
-			
+			public function startup()  : void
+			{
+				this.context.dispatchEvent(QuickTagEditorCommandTriggerEvent.GetNotes( this.goTags )  ) 
+			}
+				
+			protected function goTags(a: Array )  : void
+			{
+				this.tags = a; 
+				var ee :  QuickTagEditorCommand_base = new QuickTagEditorCommand_base()
+				this.txtStuff.text = ee.onLoadTags( this.tags ); 
+			}
 			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				var ee :  QuickTagEditorCommand_base = new QuickTagEditorCommand_base()
-				var activities : Array = ee.onProcess(this.txtStuff.text, this.tags )
+				var output : Array  = ee.onProcess(this.txtStuff.text, this.tags, false )
+				var activities : Array = output[0]
+				txtStuff2.text = output[1]
+				txtStuff3.text = output[2].join('\n')
+				 //txtStuff2.text = ee.onProcessStructure(this.txtStuff.text, this.tags )
 				return; 
+			}
+			
+
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				var ee :  QuickTagEditorCommand  = new QuickTagEditorCommand ()
+				var output : Array  = ee.base.onProcess(this.txtStuff.text, this.tags )
+			}		
+			
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				this.context.dispatchEvent(QuickTagEditorCommandTriggerEvent.DeleteAllTags() ) 
 			}
 			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<tag:QuickTagBasicContext id="context" contextView="{this}" />
 	</fx:Declarations>
+	
 	
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
-	<s:RichEditableText width="500" height="350"  id="txtStuff">
-		
-	</s:RichEditableText>
-	<s:Button label="Done" click="button1_clickHandler(event)" />
+	<s:HGroup>
+		<s:RichEditableText  width="300" height="350"  id="txtStuff" />
+		<s:VGroup>
+			<s:RichEditableText width="300" height="350"  id="txtStuff2" />
+			<s:RichEditableText width="300" height="200"  id="txtStuff3" />
+		</s:VGroup>
+			
+	</s:HGroup>
+ 
+		<s:HGroup>
+			<s:Button label="refresh" click="button2_clickHandler(event)" />
+			<s:Button label="Done" click="button1_clickHandler(event)" />
+			<s:Button label="Commit" click="button3_clickHandler(event)" />
+			<s:Button label="Clear Tags" click="button4_clickHandler(event)" />
+		</s:HGroup>
+	
 </s:Application>

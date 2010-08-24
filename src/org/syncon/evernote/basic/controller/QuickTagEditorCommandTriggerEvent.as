@@ -8,6 +8,7 @@ package   org.syncon.evernote.basic.controller
 	{
 		public static const GET_TAGS:String = 'getTags_QTE';
 		public static const PROCESS_TAGS:String = 'processTags_QTE';
+		public static const DELETE_ALL_TAGS:String = 'deleteAllTags_QTE';		
 		
 		public var fxSuccess : Function;
 		public var fxFault : Function; 
@@ -15,7 +16,8 @@ package   org.syncon.evernote.basic.controller
 		public var alertMessage : String  = ''; 
 		public var args : Object; 
 		
-		public var notes : Array = []; 
+		public var tags : Array = []; 
+		public var instructions : String = ''; 
 		public function QuickTagEditorCommandTriggerEvent(type:String,    args_ : Object = null )  
 		{	
 			this.args = args_
@@ -41,13 +43,23 @@ package   org.syncon.evernote.basic.controller
 			return e; 
 		}		
 		
-		static public function AddTag( fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : QuickTagEditorCommandTriggerEvent
+		static public function Process(instructions : String, tags : Array,  fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : QuickTagEditorCommandTriggerEvent
 		{
 			var e : QuickTagEditorCommandTriggerEvent = 
 				new QuickTagEditorCommandTriggerEvent( 
-					QuickTagEditorCommandTriggerEvent.PROCESS_TAGS	); 
+					QuickTagEditorCommandTriggerEvent.PROCESS_TAGS	);
+			e.tags = tags
+			e.instructions = instructions
 			return e; 
 		}		
+		
+		static public function DeleteAllTags( fxSuccess:Function=null, fxFault:Function=null, alert:Boolean=false, alertMessage : String = '' ) : QuickTagEditorCommandTriggerEvent
+		{
+			var e : QuickTagEditorCommandTriggerEvent = 
+				new QuickTagEditorCommandTriggerEvent( 
+					QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS	); 
+			return e; 
+		}			
 
 	}
 }

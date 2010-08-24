@@ -40,6 +40,8 @@ package  org.syncon.evernote.basic.controller
 		private var notAuthenticatedRetryTimer : Timer;
 		private var retryCount : int = 0 ;
  
+		public var base : QuickTagEditorCommand_base = new QuickTagEditorCommand_base(); 
+		
 		override public function execute():void
 		{
 		 	
@@ -49,7 +51,7 @@ package  org.syncon.evernote.basic.controller
 			}				
 			if ( event.type == QuickTagEditorCommandTriggerEvent.PROCESS_TAGS ) 
 			{
-				 this.processTags()
+				var output : Array  = this.base.onProcess(event.instructions, event.tags )
 			}		
 			
 			 
@@ -57,58 +59,14 @@ package  org.syncon.evernote.basic.controller
 				
 		}
  
-		private function onListTags(e: NoteCollectionCounts )  : void
+	 
+		public function onListTags( tags : Array ) : void
 		{
-			 
-			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);
-			return;
-		}				
- 
-		private function processTags( ) : void
-		{
-			//if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);
-			return;
-		}				
-		
-		 
-		
-		
-		private function onTimeout(e:TimerEvent)  : void
-		{
-			this.deReference()
-			this.onFault()
-		}
-				
-		
-		private function onFault() : void
-		{
-			var msg : String = 'Error 8332: '+event.type+' call failed';
-			if ( debug ) 
-			{
-				
-			}
-			if ( event.alert ) 
-			{
-				var ee : Alert
-				Alert.show( msg , 'Error...' )
-			}
+			tags = this.apiModel.convert( tags, Tag2 ) 
+			event.fxSuccess( tags ) 
 		}
 		
-		/**
-		 * Clean up event handlers
-		 * */
-		private function deReference() : void
-		{
-			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
-			//event.dereference()
-				
-			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
-			{
-				//this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET, this.authenticateResultHandler )
-				//this.service.eventDispatcher.removeEventListener( EvernoteServiceEvent.AUTH_GET_FAULT, this.authenticateFaultHandler )
-			}		
-				
-		}
+			
 		
 		/**
 		 * Maps user store commands 
@@ -119,7 +77,8 @@ package  org.syncon.evernote.basic.controller
 				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );			
 			commandMap.mapEvent(QuickTagEditorCommandTriggerEvent.PROCESS_TAGS, 
 				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );		
-			
+			commandMap.mapEvent(QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS, 
+				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );					
 		}
 		 
 			

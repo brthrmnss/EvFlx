@@ -117,7 +117,7 @@ package  org.syncon.evernote.basic.controller
 			return t; 
 		}
 		static public var RENAME_COMMAND: String = ':R:'
-		public function onProcess( txt : String, oldTagList_  : Array ) :  Array
+		public function onProcess( txt : String, oldTagList_  : Array, automate:Boolean=true ) :  Array
 		{
 			var arr : Array = []
 			var oldTagNamesDict : Dictionary = new Dictionary(true)
@@ -134,6 +134,7 @@ package  org.syncon.evernote.basic.controller
 			var tags :   Array = []; var indentIndex: int = 0; 
 			var allTagsByName : Dictionary = new Dictionary();
 			var lastIndents : int = 0; var renameDict : Dictionary = new Dictionary(true);
+			var guidsToTagDict : Dictionary = new Dictionary(true);
 			var roots : Array = []; 
 			//var parentToBeDeleted : Boolean = false; //it's embedded for chnage
 			for each ( var line : String in lines ) 
@@ -212,102 +213,235 @@ package  org.syncon.evernote.basic.controller
 				{
 					tag = tag.clone()
 				}
+				//we will recreate the children based on the movements later on
+				tag.children = []; 
 				if ( seenNames.indexOf( name ) != -1 ) 
 					throw 'no duplicates' 
 
 				if ( addToParent != null ) 
 				{
-					if ( addToParent != null && destroy.indexOf( addToParent.name ) == -1 ) 
+					//if parent specified, and parent is not about to be destroyed, and it's not about to be destroy 
+					if ( addToParent != null && destroy.indexOf( addToParent.name ) == -1  ) 
 					{
-						var output : String = ''; 
-						for ( i = 0; i <  indents; i++ )
+						//IF UR not about to be deleted
+						if (  destroy.indexOf( tag.name) == -1 )
 						{
-							output += '\t'
-						}		
-						trace(output + name + ' ('+addToParent.name+')')
-						addToParent.children.push( tag ) 
-						tag.parentGuid = addToParent.guid; 
+							var output : String = ''; 
+							for ( i = 0; i <  indents; i++ )
+							{
+								output += '\t'
+							}		
+							trace(output + name + ' ('+addToParent.name+')')
+						 
+							if ( addToParent.children.indexOf( tag ) == -1 ) 
+								addToParent.children.push( tag ) 
+							 
+							tag.parentGuid = addToParent.guid;
+						}
 					}
-					else
+					//either parent is null, or i'm about to destroy parent node
+					else 
 					{
-						for ( i = 0; i <  indents-1; i++ )
+						//IF UR not about to be deleted
+						if (  destroy.indexOf( tag.name) == -1 )
 						{
-							output += '\t'
-						}		
-						//running low on time ... if i delete  a parent node ....it gets linked to top? 
-						//i would prefer it if floats up one level ... no f- that it's confusing .. 
-						//either way is easy ... just get the parents parent guid 
-						/**
-						 * decison : if deleting a node that is not a root note, it's childen become:
-						 * root nodes, or children of the delete node's parent
-						 * i say b, b/c if u wanted them to be root, you culd 've place them ther ein the text file
-						 * */
-						trace(output + name + ' ( removing from '+addToParent.name+')')
-						addToParent.children.push( tag ) 
-						tag.parentGuid = addToParent.parentGuid; 
+							for ( i = 0; i <  indents-1; i++ )
+							{
+								output += '\t'
+							}		
+							//running low on time ... if i delete  a parent node ....it gets linked to top? 
+							//i would prefer it if floats up one level ... no f- that it's confusing .. 
+							//either way is easy ... just get the parents parent guid 
+							/**
+							 * decison : if deleting a node that is not a root note, it's childen become:
+							 * root nodes, or children of the delete node's parent
+							 * i say b, b/c if u wanted them to be root, you culd 've place them ther ein the text file
+							 * */
+							trace(output + name + ' ( removing from '+addToParent.name+')')
+							//1 if parnet pranet exists, if paent prante root node
+							 
+							if ( addToParent.parentGuid != null ) 
+							{
+								var foundIndex : int
+								if ( guidsToTagDict[addToParent.parentGuid].children.indexOf( tag ) == -1 ) 
+									guidsToTagDict[addToParent.parentGuid].children.push( tag ) 
+								
+							}
+							else
+							{
+								if ( roots.indexOf( tag ) == -1 ) 
+									roots.push( tag ) 
+							}
+							 
+							tag.parentGuid = addToParent.parentGuid; 
+						}
 					}
 					
 					//trace( 'will add ' + name + ' to ' + addToParent.name ) 
 				}
 				else
 				{
-					roots.push( tag ) 
+					if ( destroy.indexOf( tag.name ) == -1 ) 
+						roots.push( tag ) 
+					else
+						trace ( ' skippe root ' + name ); 
 					trace( name ); 
 				}
 				seenNames.push( name ) 
 				tags.push( tag ) 
 				allTagsByName[tag.name] = tag
+				guidsToTagDict[tag.guid] = tag
 				//attach to parent ... 
 				//who is parent? 
 				
 				var lastTag : Tag2 = tag; 
 				 lastIndents  = indents
 			}
-			
+			this.postTags = tags
+			this.postOldTagNamesDict = oldTagNamesDict
+				this.postDestroy = destroy
+					this.postGuidsToTagDict  = guidsToTagDict
+						this.postRoots = roots
+							this.postRenameDict = renameDict
+			var output_ : Array = processOutput(automate ) 
+			return output_
+		}				
+		
+		public var postTags : Array 
+		public var postOldTagNamesDict : Dictionary
+		public var postDestroy : Array  
+		public var postGuidsToTagDict : Dictionary 
+		public var postRoots : Array; /// = this.postRoots; 
+		public var postRenameDict : Dictionary
+		
+		public function onStepDone(e:Object) : void
+		{
+			this.indexProcessing++
+				this.processOutput( true ) 
+		}
+		public function onStepFault(e:Object) : void
+		{
+			return;
+		}
+		
+		
+		
+		public var indexProcessing : int = -1; 
+		public var fxDone  : Function ; 
+		public function processOutput( a :  Boolean )  : Array
+		{
+			var tag : Tag2; 
+			var tags : Array = this.postTags; 
+			var oldTagNamesDict : Dictionary = this.postOldTagNamesDict
+			var destroy : Array =this.postDestroy ; 
+			var guidsToTagDict : Dictionary = this.postGuidsToTagDict
+				var roots : Array = this.postRoots; 
+				var renameDict : Dictionary = this.postRenameDict
 			//find different ones 
 			var diff : Array = []; 
 			var relinkTags : Array = []; var createTags : Array = []; 
-			for each ( tag in tags ) 
+			var tasks : Array = []; 
+			var task :  String = ''; 
+			if ( indexProcessing != -1  )
 			{
+				if ( indexProcessing >= tags.length -1 ) 
+				{
+					trace('complete')
+					this.fxDone()
+				}
+			}		
+			else
+			{
+				if ( a )
+					this.indexProcessing = 0 
+			}
+			
+			for  ( var i : int = 0; i <  tags.length; i++ ) 
+			{
+				  tag  = tags[i] as Tag2
+				if ( indexProcessing != -1  )
+				{
+					if ( i != this.indexProcessing ) 
+						continue; 
+				}
 				if ( tag.name == 'fff' ) 
 				{
 					//trace('fff');
 				}
-					var oldTag : Tag2 = oldTagNamesDict[tag.name]
-					if ( oldTag == null ) 
+				var oldTag : Tag2 = oldTagNamesDict[tag.name]
+				if ( oldTag == null ) 
+				{
+					createTags.push( oldTag ) 
+					task =  'creating ' + tag.name
+					trace(task) ; 
+					tasks.push(task)		
+						if ( a ) 
+						{
+							tag.unsetGuid(); 
+							this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , this.onStepDone , this.onStepFault ))
+						}
+				}
+				//old and link changed
+				if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
+				{
+					relinkTags.push( oldTag ) 
+					var parentName : String = 'nothing'; 
+					if ( tag.parentGuid != null ) 
+						parentName = guidsToTagDict[tag.parentGuid].name
+					task = 'change link of ' + tag.name + ' to ' +parentName
+					trace(task) ; 
+					tasks.push(task)	
+					if ( a ) 
 					{
-						createTags.push( oldTag ) 
-						trace( 'creating ' + tag.name ) ; 
-					}
-					//old and link changed
-					if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , this.onStepDone , this.onStepFault ))
+					}						
+				}		
+				//new and add link
+				if ( oldTag == null &&   tag.parentGuid != null )   
+				{
+					relinkTags.push( oldTag ) 
+					task ='link new upto ' + tag.name
+					trace(task) ; 
+					tasks.push(task)		
+					if ( a ) 
 					{
-						relinkTags.push( oldTag ) 
-						trace( 'change link of  ' + tag.name ) ; 						
-					}		
-					//new and add link
-					if ( oldTag == null &&   tag.parentGuid != null )   
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , this.onStepDone , this.onStepFault ))
+					}							
+				}
+				//destroy
+				if ( destroy.indexOf( tag.name ) != -1 )   
+				{
+					//relinkTags.push( oldTag ) 
+					task = 'delete ' + tag.name
+					trace(task) ; 
+					tasks.push(task)				
+					if ( a ) 
 					{
-						relinkTags.push( oldTag ) 
-						trace( 'link new upto ' + tag.name ) ; 						
-					}
-					//destroy
-					if ( destroy.indexOf( tag.name ) != -1 )   
-					{
-						//relinkTags.push( oldTag ) 
-						trace( 'delete ' + tag.name ) ; 						
-					}					
+						this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , this.onStepDone , this.onStepFault ))
+					}							
+				}					
 			}
 			for  ( var oldTagName : String  in renameDict ) 
 			{
 				var renameTo : String = renameDict[oldTagName]
 				//creataeTgs.push( oldTag ) 
-				trace( 'rename ' + oldTagName + ' to ' + renameTo ) ; 
+				task =  'rename ' + oldTagName + ' to ' + renameTo 
+				trace(task) ; 
+				tasks.push(task)
 			}	
 			//export text based array ... use the roots on the NEW array 
-			roots
-			return arr;
-		}				
+			//all children in children array
+			var txt : String = '';
+			for each (   tag   in roots ) 
+			{	
+				var clonedTagForPrinting : Tag2 = tag.clone()
+				if (   renameDict[oldTagName] != null ) 
+					clonedTagForPrinting.name =  renameDict[oldTagName]
+				txt = this.printMe( tag, txt ) 
+			}
+			return [[], txt, tasks];
+		}
+		
 		
 		private function onTimeout(e: TimerEvent)  : void
 		{
@@ -344,5 +478,6 @@ package  org.syncon.evernote.basic.controller
 		}
  
 			
+		public var dispatchEvent : Function 
 	}
 }
