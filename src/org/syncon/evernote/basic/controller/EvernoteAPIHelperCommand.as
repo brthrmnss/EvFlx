@@ -129,16 +129,18 @@ package  org.syncon.evernote.basic.controller
 			this.apiModel.noteCount = size; 
 			//let the all notebook count update ...
 			this.apiModel.loadNotebooks( this.apiModel.notebooks.toArray() );//
-			for each ( var t : Tag2 in this.apiModel.tags ) 
+			if ( e.tagCounts != null ) 
 			{
-				if ( e.tagCounts[t.guid] != null ) 
+				for each ( var t : Tag2 in this.apiModel.tags ) 
 				{
-					t.noteCount = e.tagCounts[t.guid] ;
-					t.tagUpdated();
-					//nb.noteCount = e.notebookCounts[nb.guid]
-				}
-			}			
-			
+					if ( e.tagCounts[t.guid] != null ) 
+					{
+						t.noteCount = e.tagCounts[t.guid] ;
+						t.tagUpdated();
+						//nb.noteCount = e.notebookCounts[nb.guid]
+					}
+				}			
+			}
 			
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);
 			return;
