@@ -1,46 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  creationComplete="onInit(event)" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" 
-					  width="100%" 
-					  height="100%" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:view="org.syncon.evernote.basic.view.*">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+<s:Skin
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	creationComplete="onInit(event)" 		
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:view="org.syncon.evernote.basic.view.*" >
 	<fx:Script>
 		<![CDATA[
-			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
 			public var menuDp : MenuAutomationVO = new MenuAutomationVO()
+			
 			protected function onInit(event:FlexEvent):void
 			{
 				this.menuButtons.createOptions(  ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort'] ,  
 					null, this.doAction, 
-					 null, ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort']  )
+					null, ['New', 'Edit', 'Delete', 'Print', 'Email', 'Sort']  )
 				this.menuDp = this.menuButtons.menuDp
 				this.menuDp.disableIfNoneSelected  = [1,2,3,4]
 				this.menuDp.disableIf1Selected  = [ 3 ]	
 				this.menuDp.disableIfMoreThan1Selected  = [ 1,3,4]
-					
+				
 				this.menuDp.selectionChanged( [] )
 				this.menuButtons.update(); 					
-					
+				
 				this.menuOrderOrder.createOptions(  ['Pic', 'List'], null, this.doAction )	
 				this.list.addEventListener( 'selectionChanged', this.onSelectionChange ) 
 				/* this.menuOrderOrder.toggleMode = true; 
 				this.menuOrderOrder.selectIndex = 1 */
 			}
-
 			public function onSelectionChange ( e: CustomEvent )  : void
 			{
 				this.menuDp.selectionChanged(e.data as Array)
 				this.menuButtons.update(); 
 			}
-				
+			
 			
 			public function doAction(str:String, data:Object):void
 			{
@@ -51,30 +47,28 @@
 				}
 				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
 			}
-			
-			public function set notes ( notes : ArrayCollection )  : void
-			{
-				this.list.notes = notes
-			}
-		]]> 
+		]]>
 	</fx:Script>
 	
- <!--
-	<s:Rect id="bgStart"  
-			left="0" right="0" top="0" bottom="0" 
-			>
-		<s:fill>
-			<s:SolidColor color="#E80000"  />
-		</s:fill>
-	</s:Rect>		
- -->
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.right_side_list_container")]
+	</fx:Metadata>
+	
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />		
+	</s:states>
+	
+	
 	<view:control_menu x="5" y="5" id="menuButtons" />
 	
 	<s:HGroup right="5" y="5" verticalAlign="middle"  >
 		<view:bandwidth_usage right="150" />
 		<view:control_menu right="0" id="menuOrderOrder" />		
 	</s:HGroup>
-
-	<view:list_note_list id="list" y="45" width="{this.width-10}"
-					  height="{this.height-50-10}"  x="5" />
-</s:SkinnableContainer>
+	
+	<view:list_note_list id="list" y="45" width="{this.width-10}" 
+						 skinClass="org.syncon.evernote.basic.view.skins.RightSideListWCSkin"
+						 height="{this.height-50-10}"  x="5" />
+</s:Skin>

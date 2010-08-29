@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:view="org.syncon.evernote.basic.view.*" >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
+			public var menuDp : MenuAutomationVO = new MenuAutomationVO()
+			
+			
+			
+			public function createdAtDate( item:Object, column:DataGridColumn)   :  String
+			{
+				return dateFormatter.format( item.createdAt ) 
+			}		
+			public function updatedAtDate(item:Object, column:DataGridColumn)  :  String
+			{
+				return dateFormatter.format( item.updatedAt ) 
+			}				
+			public function getLabelName(item:Object, column:DataGridColumn)  :  String
+			{
+				return item.tagNames.join(' ');
+			}					
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<mx:DateFormatter id="dateFormatter" formatString=" MM/DD/YY L:NN A" />
+	</fx:Declarations>
+	
+	
+	
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.list_note_list")]
+	</fx:Metadata>
+	
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />		
+	</s:states>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		
+		.centered {
+			fontWeight: bold;
+		}
+		
+		.dataGrid {
+			alternatingItemColors: #ffffff, #fefefe;
+			headerColors: #e6e6e6, #e6e6e6;
+			horizontalGridLines: true;
+			horizontalGridLineColor: #cccccc;
+			verticalGridLines: true;
+			verticalGridLineColor: #ffffff;
+			borderThickness: 1;
+			borderColor: #ffffff;
+			dropShadowEnabled: false;
+			headerStyleName: "mydataGridHeaderStyle";
+		}
+		
+		.mydataGridHeaderStyle {
+			fontWeight: bold;
+			fontStyle: normal;
+			textDecoration: none;
+		}		
+	</fx:Style>
+	
+	
+	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
+				 styleName="dataGrid"  
+				 selectionColor="0xB4CDD2"  rollOverColor="#e6e6e6" useRollOver="false"
+				 draggableColumns="false" minColumnWidth="100"  
+				 allowMultipleSelection="true"  selectable="false"
+				 headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
+		
+		<!--
+		<mx:ArrayList>
+		<fx:Object Title="Pavement" Price="11.99" 
+		Tags="{['.log', 'work']}" />
+		<fx:Object Title="Pavement 2" 
+		Tags="Brighten the Corners" Price="11.99" />
+		</mx:ArrayList>
+		-->
+		<mx:columns>
+			<mx:DataGridColumn headerText="Title" dataField="title"  itemRenderer="org.syncon.evernote.basic.view.NoteListTitleItemRenderer2"  />
+			<mx:DataGridColumn headerText="Tags" dataField="tags"   width="200" itemRenderer="org.syncon.evernote.basic.view.NoteListTagItemRenderer" />
+			<mx:DataGridColumn resizable="false" headerText="Created" dataField="createdAt"  labelFunction="{createdAtDate}" width="150" />
+			<mx:DataGridColumn resizable="false" headerText="Updated" dataField="updatedAt"  
+							   labelFunction="{updatedAtDate}"   width="150"/>			
+		</mx:columns>
+	</mx:DataGrid>
+	
+</s:Skin>

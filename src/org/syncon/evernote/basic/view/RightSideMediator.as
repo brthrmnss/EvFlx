@@ -53,7 +53,7 @@ package org.syncon.evernote.basic.view
 		static public var StateView : String = 'view'
 		static public var StateList : String = ''
 		static public var StateEditor : String = 'edit'
-		static public var StateSearch : String = 'search'
+		//static public var StateSearch : String = 'search'
 		private var switchLoaded : Boolean = false; 
 		private var _note :  Note2 = new Note2()
 			
@@ -235,7 +235,6 @@ package org.syncon.evernote.basic.view
 		
 		private function onNewClicked(e:CustomEvent): void
 		{
-			
 			if ( this.allowSimpleLoading &&   this.control == false )
 			{
 				ui.currentState = StateEditor
@@ -260,6 +259,12 @@ package org.syncon.evernote.basic.view
 		{
 			ui.currentState = StateEditor
 			//ui.edit.note = e.data as Note			
+			if ( ui.edit == null ) 
+			{
+				import flash.utils.setTimeout; 
+				setTimeout( this.onEditClicked, 500, e )
+				return;
+			}
 			ui.edit.note = this.note; 	
 			
 			if ( this.note.content == null ) 
@@ -295,7 +300,10 @@ package org.syncon.evernote.basic.view
 				[true, true, true, true]
 			)
 			ee.fx = onSortOption
-			var goTo : UIComponent = this.ui.list.menuButtons.list; //
+			var goTo : UIComponent = this.ui.list//.menuButtons.list; //
+			goTo =  new  UIComponent;
+			goTo.x = this.ui.mouseX;
+			goTo.y = this.ui.mouseY;
 			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'utilsExtraOptionsPopup',[ ee, goTo, '', this.ui.stage.mouseX, this.ui.stage.mouseY ]  ) )  
 		}
 		
@@ -391,6 +399,7 @@ package org.syncon.evernote.basic.view
 		//this implies they want to go back to 'edit' a note, note view it. 
 		private function onSwitchBackToNote(e:NoteListEvent, wait : Boolean = true):void
 		{
+			//return;
  			if ( wait ) 
 			{
 				this.ui.callLater( this.onSwitchBackToNote, [e,false] ) 
@@ -536,17 +545,17 @@ package org.syncon.evernote.basic.view
 		}
 		private function onNotesChanged(e:EvernoteAPIModelEvent) : void
 		{
-			var oldPosition : Number = this.ui.list.list.list.verticalScrollPosition
+			
 			
 			this.ui.list.notes = e.data as ArrayCollection
-			this.ui.list.list.list.verticalScrollPosition = oldPosition; 
+			
 			this.ui.list.list.selectedItems =  this.ui.list.list.selectedItems ;
 			//this.ui.list.list.selectedItems
 		}		
 		private function onSearchResult(e:EvernoteAPIModelEvent) : void
 		{
-			this.ui.currentState = StateSearch
-			this.ui.search.notes = e.data as ArrayCollection			
+			this.ui.currentState = StateList
+			this.ui.list.notes = e.data as ArrayCollection			
 		}		
 		
 		private function onClearedNotes(e:NoteListEvent):void

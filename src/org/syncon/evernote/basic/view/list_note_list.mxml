@@ -16,6 +16,8 @@
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
+			import spark.components.supportClasses.ListBase;
+			
 			static public var SELECTION_CHANGED :String = 'selectionChanged'
 			import org.syncon.evernote.basic.model.CustomEvent;
 /* 			override public function set height ( n : Number )  : void
@@ -29,6 +31,9 @@
 				this.list.width = n -10
 			}	 */		
 
+			[SkinPart(required="true")]
+			public var list:Object;	//listbase not gooe neough 
+			
 			protected function list_itemClickHandler(event:ListEvent):void
 			{
 				if ( event.rowIndex == this.skipIndex ) 
@@ -48,12 +53,38 @@
 				this.list.selectedItems = this.selectedItems.toArray()
 			}
 
-
+ 
+			
+			override protected function partAdded(partName:String, instance:Object):void
+			{
+				super.partAdded(partName, instance);
+				if( instance == list)
+				{
+					this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
+					this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
+					this.list.addEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )
+					this.list.dataProvider = _notes; 
+				}
+			
+			}			
+			
+			override protected function partRemoved(partName:String, instance:Object):void
+			{
+				super.partRemoved(partName, instance);
+				
+				if (instance == list)
+				{
+					this.list.removeEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
+					this.list.removeEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
+					this.list.removeEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )						
+					this.list.dataProvider = null; 
+				}
+			}
+			
 			protected function onInit(event:FlexEvent):void
 			{
-				this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
-				this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
-				
+				/* this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
+				this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged ) */
 			}
 			
 			/**
@@ -69,7 +100,7 @@
 			private var skipIndex : int =-1
 			private function onSelectedItemsChanged(e:CustomEvent):void
 			{
-				var note : Object = this.list.dataProvider.getItemAt( e.data ) 
+				var note : Object = this.list.dataProvider.getItemAt( int( e.data ) ) 
 				if ( 'checkbox_'+'true' == e.type ) 
 				{
 					if ( this.selectedItems.getItemIndex( note ) ==-1 ) 
@@ -83,33 +114,17 @@
 				this.dispatchEvent( new CustomEvent( 'selectionChanged', this.selectedItems.toArray() ) ) 
 				this.skipIndex = int(e.data)
 			}
-			
-			//[Bindable] public var notes : ArrayCollection = new ArrayCollection()
+
+			private var _notes : ArrayCollection = new ArrayCollection()
 			public function set notes ( notes :  ArrayCollection )  : void
 			{
+				this._notes = notes; 
 				this.list.dataProvider = notes
 			}			
 			
-			public function createdAtDate( item:Object, column:DataGridColumn)   :  String
-			{
-				return dateFormatter.format( item.createdAt ) 
-			}		
-			public function updatedAtDate(item:Object, column:DataGridColumn)  :  String
-			{
-				return dateFormatter.format( item.updatedAt ) 
-			}				
-			public function getLabelName(item:Object, column:DataGridColumn)  :  String
-			{
-				return item.tagNames.join(' ');
-			}					
-			
 		]]>
 	</fx:Script>
-	
-	<fx:Declarations>
-		<mx:DateFormatter id="dateFormatter" formatString=" MM/DD/YY L:NN A" />
-	</fx:Declarations>
-		
+
 	<!--
 	<s:Rect width="100%" height="100%" radiusX="3" radiusY="3" >
 		<s:fill>
@@ -117,58 +132,6 @@
 		</s:fill>
 	</s:Rect>
 	-->
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		
-		.centered {
-		fontWeight: bold;
-		}
-		
-		.dataGrid {
-			alternatingItemColors: #ffffff, #fefefe;
-			headerColors: #e6e6e6, #e6e6e6;
-			horizontalGridLines: true;
-			horizontalGridLineColor: #cccccc;
-			verticalGridLines: true;
-			verticalGridLineColor: #ffffff;
-			borderThickness: 1;
-			borderColor: #ffffff;
-			dropShadowEnabled: false;
-			headerStyleName: "mydataGridHeaderStyle";
-		}
-		
-		.mydataGridHeaderStyle {
-			fontWeight: bold;
-			fontStyle: normal;
-			textDecoration: none;
-		}		
-	</fx:Style>
-	
-	
-	<mx:DataGrid id="list" width="100%" height="100%" headerHeight="24" 
-				  styleName="dataGrid"   itemClick="list_itemClickHandler(event)"
-				   selectionColor="0xB4CDD2"  rollOverColor="#e6e6e6" useRollOver="false"
-				  draggableColumns="false" minColumnWidth="100"  
-				  allowMultipleSelection="true"  selectable="false"
-				  headerBackgroundSkin="org.syncon.evernote.basic.view.skins.CustomDataGridHeaderSkin">
-		
- <!--
-		<mx:ArrayList>
-			<fx:Object Title="Pavement" Price="11.99" 
-					   Tags="{['.log', 'work']}" />
-			<fx:Object Title="Pavement 2" 
-					   Tags="Brighten the Corners" Price="11.99" />
-		</mx:ArrayList>
-		-->
-		<mx:columns>
-			<mx:DataGridColumn headerText="Title" dataField="title"  itemRenderer="org.syncon.evernote.basic.view.NoteListTitleItemRenderer"  />
-			<mx:DataGridColumn headerText="Tags" dataField="tags"   width="200" itemRenderer="org.syncon.evernote.basic.view.NoteListTagItemRenderer" />
-			<mx:DataGridColumn resizable="false" headerText="Created" dataField="createdAt"  labelFunction="{createdAtDate}" width="150" />
-			<mx:DataGridColumn resizable="false" headerText="Updated" dataField="updatedAt"  
-							   labelFunction="{updatedAtDate}"   width="150"/>			
-		</mx:columns>
-	</mx:DataGrid>
-	
+
 	
 </s:SkinnableContainer>

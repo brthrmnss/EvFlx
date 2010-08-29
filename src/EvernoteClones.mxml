@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				paddingTop="0" 
 				minWidth="960" minHeight="600" 
-				width="1000" height="600" 
+				width="1200" height="600" 
 				verticalScrollPolicy="off"
 				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 				creationComplete="onCreationComplete()"
@@ -52,17 +52,26 @@
 		]]>
 	</mx:Script>
 	
-	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4">
+	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4"  >
 		<view:header  id="header"/>
-		<view:tab_bar id="tabbar" resize="tabbar_resizeHandler(event)" stateChanged="tabbar_stateChangedHandler(event)"  />
+		<view:tab_bar id="tabbar" resize="tabbar_resizeHandler(event)"
+					  stateChanged="tabbar_stateChangedHandler(event)"  />
 		<view:search_bar id="searchbar" />
 		<mx:HDividedBox  id="workspace" cornerRadius="8" 
 						 backgroundColor="0xFFFFFF" width="100%" >
 			<view:left_side  minWidth="225" height="100%"/>
-			<view:right_side  minWidth="520"/>
+			<view:right_side  minWidth="520"
+							  skinClass="org.syncon.evernote.basic.view.skins.RightSideDCSkin"
+							  />
 		</mx:HDividedBox>
 		<view:footer_bar  id="footer"/>
 	</s:VGroup>
-	
+<!--
+	<s:HGroup>
+		<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/9ff9e5f6-1a91-471a-8672-57ca707c3be7?seq=465" />
+		<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/e2819c18-0ec0-4926-9ca2-c663754bc7a1?seq=435" />
+		<mx:Image source="http://blstb.msn.com/i/6B/C1486E9999B1E2A28375D509B8F1.jpg" />
+		<mx:Image source="images/cancel.jpg" height="50" />
+	</s:HGroup>-->
 	<basic1:EvernoteBasicContext id="context"  contextView="{this}" />
 </mx:Application>

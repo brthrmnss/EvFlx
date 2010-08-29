@@ -60,6 +60,7 @@ package org.syncon.evernote.basic.model
 	*/
 	public class   EvernoteAPIModel   extends Actor 
 	{
+		static public var EvernoteUrl : String = 'sandbox.evernote.com'
 		public function EvernoteAPIModel()
 		{
 			_notes = new ArrayCollection();
@@ -116,6 +117,8 @@ package org.syncon.evernote.basic.model
 		}
 		public function get  user ( ) : User  { return this._user   }	
 		
+		public var auth : AuthenticationResult;
+		
 		private var _syncState :  SyncState = new SyncState();
 		public function set acctSyncState ( p : SyncState )  : void
 		{
@@ -139,6 +142,15 @@ package org.syncon.evernote.basic.model
 				trace( n.title + '||' + n.content )
 			}*/
 			e = convert( e,  Note2 ) 
+			for each ( var n : Note2 in e ) 
+			{
+				n.thumb = 'http://'+EvernoteUrl+'/shard/'+this.user.shardId +'/thumb/'+n.guid +'?seq='+n.updateSequenceNum
+				//http://www.evernote.com/shard/s26/thumb/e30e9d50-1698-4e37-a891-ff05f703d24f?seq=65
+				//http://sandbox.evernote.com/shard/s1/thumb/941f07d2-6b0a-4fdd-8e75-75260425477f?=414
+				//http://sandbox.evernote.com/shard/s1/thumb/88a1680e-29e5-4b20-813f-cbe6341d3b05?seq=385
+				if ( this.auth != null ) 
+				n.auth = this.auth.authenticationToken
+			}		
 			this.addAllTo( this._notes,  e  ) 
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_RESULT, this._notes ) )
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.NOTES_CHANGED, this._notes ) )
@@ -218,9 +230,9 @@ package org.syncon.evernote.basic.model
 		
 		public function loadNotebooks(e:Array)  : void
 		{
-			var e2 : Array = convert( e, Notebook2 ) 
-			this.addAllTo( this._notebooks,  e2  ) 
-			for each ( var n : Notebook2 in e2 ) 
+			var e : Array = convert( e, Notebook2 ) 
+			this.addAllTo( this._notebooks,  e  ) 
+			for each ( var n : Notebook2 in e ) 
 			{
 				if ( n.defaultNotebook ){
 					this._defaultNotebook = n; 
@@ -340,7 +352,7 @@ package org.syncon.evernote.basic.model
 		{
 			this.preferences.username = auth.user.username; 
 			this.user = auth.user; 
-
+			this.auth = auth; 
 			this.authenticationRefreshed( auth, false ) 
 			this.dispatch( new EvernoteAPIModelEvent(EvernoteAPIModelEvent.AUTHENTICATED ) )
 		}
@@ -358,6 +370,8 @@ package org.syncon.evernote.basic.model
 		{
 			var expirationMs : Number = auth.expiration  - auth.currentTime;  
 			this.timerRefreshToken.stop(); 
+			if ( isNaN( expirationMs ) ) 
+				return; 
 			this.timerRefreshToken.delay = expirationMs-1000
 			//this.timerRefreshToken.delay = 1000; 
 			this.timerRefreshToken.start()

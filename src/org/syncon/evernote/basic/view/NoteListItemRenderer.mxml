@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:MXDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" 
+						  xmlns:mx="library://ns.adobe.com/flex/mx"  
+						  focusEnabled="true" height="50" xmlns:controls="qs.controls.*">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.ResizeEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			protected function chkBox_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent('checkbox_'+this.chkBox.selected.toString(), this.itemIndex))
+			}
+			
+			import org.syncon.evernote.model.Note2;
+			private var note :  Note2 = new Note2()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				note = value as Note2
+					
+				this.lblData.text = note.title; 
+				//this.adjustable.tagNamesArray = note.tagNames  
+				/* this.adjustable.tags = note.tags; 
+				this.adjustable.updateNote = note;  */
+				//trace( this.note.thumb ); 
+				if ( this.note.guid != '' &&  this.note.guid != null ) 
+				{
+		 
+					var req:URLRequest = new URLRequest("http://city-21.com/xml_proxy.php");
+					req.method = URLRequestMethod.GET;
+					
+					//req.data = new URLVariables("name=John+Doe");
+					 var variables:URLVariables = new URLVariables();
+					 variables.url = this.note.thumb  
+					variables.cookie =  'auth='+note.auth		
+					req.data = variables;	 	
+					
+					this.imgPic.source = req; //this.note.thumb; 	
+				 
+					
+					/* 
+					var req:URLRequest = new URLRequest("http://city-21.com/xml_proxy.php");
+					req.method = URLRequestMethod.GET;
+					
+					//req.data = new URLVariables("name=John+Doe");
+					var variables:URLVariables = new URLVariables();
+					variables.url = this.note.thumb  
+					variables.cookie =  'auth='+note.auth		
+					req.data = variables;	 	
+					
+					this.imgPic.source ="http://city-21.com/xml_proxy.php"+
+						'?url='+this.note.thumb+'&cookie='+  'auth='+note.auth		;					
+				  */
+				}
+				/* if ( value.tagNames == null ) 
+				{
+				this.dispatchEvent( new CustomEvent('getNoteTagNames', note ) ) 
+				} */
+			}  				
+
+			protected function image_securityErrorHandler(event:SecurityErrorEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace( 'error ' + event.toString() + event.text ); 				
+			}
+
+
+			protected function image_ioErrorHandler(event:IOErrorEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace( 'error ' + event.toString() + event.text ); 
+			}
+			
+			protected function onComplete(e:Event):void
+			{
+				
+			}
+/*
+			
+			<?php
+			
+			$post_data = $HTTP_RAW_POST_DATA;
+			
+			$header[] = "Content-type: image/jpeg";
+			$header[] = "Content-length: ".strlen($post_data);
+			$header[] = "Cache-Control: max-age=0";
+			$header[] = "Accept-Encoding: gzip,deflate,sdch";
+			$header[] = "Accept-Language: en-US,en;q=0.8";
+			$header[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3";
+			//asdg.sdfs
+			//if ( isset ($_GET['cookie']) ) {
+			// asdf.g.
+			$header[] = "Cookie: ".$_GET['cookie'];
+//print $_GET['url'];
+//}
+$ch = curl_init( $_GET['url'] ); 
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+if ( strlen($post_data)>0 ){
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+}
+
+$response = curl_exec($ch);   
+$response_headers = curl_getinfo($ch);    
+//a.g.d
+if (curl_errno($ch)) {
+    print curl_error($ch);
+ 
+} else {
+    curl_close($ch);
+//print $response_headers['content-type'];
+//Content-Type: image/jpeg
+	//header( 'Content-type: '.$response_headers['content-type']);
+header( 'Content-Type: image/jpeg');
+header( 'Content-Length: '.$response_headers['download_content_length']);
+
+//print  print_r ($response_headers);
+//print $response_headers['content-length'];
+//print 'boo';
+     print $response;
+}
+
+
+?>
+			
+			*/
+
+			protected function group1_resizeHandler(event:ResizeEvent):void
+			{
+				if ( this.group.width > 4 ) 
+					this.group.visible = true
+				else
+					this.group.visible = false; 
+			}
+
+		]]>
+	</fx:Script>
+
+	 <s:HGroup verticalAlign="middle" x="5" verticalCenter="0" >
+		 <s:CheckBox id="chkBox" click="chkBox_clickHandler(event)"
+					    toolTip="Check to select mutiple items"
+					 useHandCursor="true" buttonMode="true"
+					 />
+
+		 <s:Group  id="group" visible="false" resize="group1_resizeHandler(event)" >
+
+			 
+			 
+		  <controls:SuperImage borderStyle="none" y="1" x="1"
+							   id="imgPic" maxWidth="40" maxHeight="40"  />
+		<!--	 <mx:Image id="imgPic"   ioError="image_ioErrorHandler(event)"
+					   securityError="image_securityErrorHandler(event)"
+					   maxWidth="50" maxHeight="50" /> 		-->	 
+			 
+			 
+			 <s:Rect width="100%" height="100%" >
+				 <s:stroke>
+					 <s:SolidColorStroke color="0xDDDDDD" />
+				 </s:stroke>
+			 </s:Rect>
+		 </s:Group>
+
+		 <s:Label id="lblData"  paddingTop="4"
+				   toolTip="Click to view this entry, Ctrl+Click to open for later"
+				   useHandCursor="true" buttonMode="true"
+				  paddingBottom="0"  />
+	 </s:HGroup>
+	
+</s:MXDataGridItemRenderer>

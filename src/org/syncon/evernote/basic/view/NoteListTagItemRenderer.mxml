@@ -6,8 +6,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.evernote.edam.type.Note;
-			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			private var note :  Note2 = new Note2()

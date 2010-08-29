@@ -163,5 +163,7 @@ package org.syncon.evernote.model
 			this.dispatchEvent( new Event( Note2.NOTE_DIRTY_CHANGED ) ) 	
 		}
 		
+		public var thumb :  String = ''; 
+		public var auth : String = ''; 
 	}
 }

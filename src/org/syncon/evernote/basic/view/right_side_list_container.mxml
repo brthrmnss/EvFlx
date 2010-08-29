@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="100%"
+					  height="100%" xmlns:basic="org.syncon.evernote.view.basic.*"
+					  xmlns:view="org.syncon.evernote.basic.view.*">
+ 
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
+			
+			[SkinPart(required="true")]
+			public var list:list_note_list;
+			
+			private var _notes : ArrayCollection = new ArrayCollection()
+			public function set notes ( notes : ArrayCollection )  : void
+			{
+				//make the scroller exposed ...
+				/* var oldPosition : Number = this.list.list.verticalScrollPosition */
+				this._notes = notes; 
+				this.list.notes = _notes
+				/* this.ui.list.list.verticalScrollPosition = oldPosition;  */
+			}
+			
+			override protected function partAdded(partName:String, instance:Object):void
+			{
+				super.partAdded(partName, instance);
+				if ( instance == list ) 
+				{
+					this.list.notes = _notes; 
+				}
+			}				
+		]]> 
+	</fx:Script>
+	
+ <!--
+	<s:Rect id="bgStart"  
+			left="0" right="0" top="0" bottom="0" 
+			>
+		<s:fill>
+			<s:SolidColor color="#E80000"  />
+		</s:fill>
+	</s:Rect>		
+ -->
+
+</s:SkinnableContainer>

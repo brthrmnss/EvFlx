@@ -40,6 +40,8 @@ package  org.syncon.evernote.basic.controller
 		
 		public function liveData() : void
 		{
+			EvernoteAPIModel.EvernoteUrl = 'sandbox.evernote.com';
+			EvernoteService.edamBaseUrl = "https://sandbox.evernote.com";
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 			this.dispatch(  EvernoteAPICommandTriggerEvent.ListTags(this.onListTags )  ) ;		

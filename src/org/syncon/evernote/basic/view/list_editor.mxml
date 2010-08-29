@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
-					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"  
 					  width="100%" height="100%"  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  xmlns:view="org.syncon.evernote.basic.view.*"
 					  xmlns:components="brust.components.*" xmlns:tlf="net.asciiworks.tlf.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import brust.components.SearchInput;
 			import brust.components.SearchMode;
 			import brust.events.SearchInputEvent;
 			
@@ -20,18 +21,82 @@
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
+			import net.asciiworks.tlf.TLFTextEditor;
+			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			import org.syncon.evernote.model.Notebook2;
 			
+			import spark.components.DropDownList;
+			import spark.components.TextInput;
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
+			
+			[SkinPart(required="true")]
+			public var txtTitle:TextInput;
+			[SkinPart(required="true")]
+			public var txtContents:TLFTextEditor;			
+			[SkinPart(required="true")]
+			public var dropdownNotebook:DropDownList;
+			[SkinPart(required="true")]
+			public var txtTags:SearchInput;
+			[SkinPart(required="true")]
+			public var listTags:TagListAdjustable;		
+			[SkinPart(required="true")]
+			public var controlp:richtext_control_panel;				
 			
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
 			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
 			
 			static public var NOTE_NOTEBOOK_CHANGED : String = 'noteNotebookChanged'
 			
+			override protected function partAdded(partName:String, instance:Object):void {
+				super.partAdded(partName, instance);
+				
+				if (instance == this.txtTitle) {
+					this.txtTitle.addEventListener( TextOperationEvent.CHANGE, this.txtTitle_changeHandler ) 
+				}
+				if (instance == this.dropdownNotebook) {
+					this.dropdownNotebook.addEventListener( IndexChangeEvent.CHANGE,
+						this.dropdownNotebook_changeHandler ) 
+				}	
+				if (instance == this.listTags) {
+					this.listTags.addEventListener( TagListAdjustable.TAGS_CHAGNED,
+						this.listTags_tagsChangedHandler ) 
+					this.listTags.tags=this.selectedTags
+				}		
+				if (instance == this.txtTags) {
+					this.txtTags.addEventListener( SearchInputEvent.SELECT,
+						this.txtTags_selectHandler ) 
+					this.txtTags.dataProvider = this.tags; 
+					txtTags.searchMode= SearchMode.INFIX_SEARCH 
+				}					
+			}
+			
+			override protected function partRemoved(partName:String, instance:Object):void {
+				super.partRemoved(partName, instance);
+				
+				if (instance == this.txtTitle) {
+					this.txtTitle.removeEventListener( TextOperationEvent.CHANGE, this.txtTitle_changeHandler ) 
+				}		
+				if (instance == this.dropdownNotebook) {
+					this.dropdownNotebook.removeEventListener( IndexChangeEvent.CHANGE, 
+						this.dropdownNotebook_changeHandler ) 
+				}	
+				if (instance == this.listTags) {
+					this.listTags.removeEventListener( TagListAdjustable.TAGS_CHAGNED,
+						this.listTags_tagsChangedHandler )
+					this.listTags.tags=null;
+				}	
+				if (instance == this.txtTags) {
+					this.txtTags.removeEventListener( SearchInputEvent.SELECT,
+						this.txtTags_selectHandler ) 
+					this.txtTags.dataProvider = null; 
+				}		
+			}
+				
+				
+				
 			private var _note : Note2 = new Note2()
 			public function get note () : Note2 { return this._note } 
 			private var dirty : Boolean = false; 
@@ -173,74 +238,4 @@
 
 		]]>
 	</fx:Script>
- 
-	<view:open_note_in_new_window id="openNoteInNew" right="0" />
-	<s:VGroup width="100%" gap="0">
-		
-		<s:VGroup id="headerBar" width="100%">
-				
-			
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Title:" /> <s:TextInput id="txtTitle" change="txtTitle_changeHandler(event)" /> 
-				<s:Label text="Notebook:" /> 
-				<s:DropDownList id="dropdownNotebook"  labelField="name" change="dropdownNotebook_changeHandler(event)"/>
-				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
-			</s:HGroup>
-			<s:HGroup id="tagsRow"  verticalAlign="middle" width="100%">
-				<s:Label  id="lblTags" text="Tags: " /><!-- <s:TextInput id="txtTags" />-->
-				<components:SearchInput width="150"
-					  select="txtTags_selectHandler(event)"
-					searchMode="{SearchMode.INFIX_SEARCH}"
-					dataProvider="{this.tags}" labelField="name" promptText="Search"
-					skinClass="brust.skins.SearchInputSkin" id="txtTags" />
-				<view:TagListAdjustable id="listTags"   width="{this.width-250}"
-										 liveManiuplation="false"   minHeight="25"
-										  draggableInto="true" tagsChanged="listTags_tagsChangedHandler(event)"
-										tags="{this.selectedTags}"  />
-			</s:HGroup>		
-			<view:richtext_control_panel id="controlp"   />
-			
-		</s:VGroup>
-		<s:Group width="100%">
-			<s:Rect width="100%" height="100%"
-					bottomLeftRadiusX="8" bottomLeftRadiusY="8"
-					bottomRightRadiusX="8" bottomRightRadiusY="8"  >
-				<s:stroke>
-					<s:SolidColorStroke color="#549BA9" pixelHinting="true"  />
-				</s:stroke>
-			</s:Rect>	
-			
-			<s:Scroller  id="scrolling"  width="100%"   height="{this.height-this.headerBar.height+10}" >
-				<!--
-				<s:Group  width="100%" >
-					
-						<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
-										 minHeight="{this.height-this.headerBar.height+10}"
-										 paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
-					</s:RichEditableText>		
-					
-				</s:Group>
-				-->
-				
-				
-				<s:VGroup  width="100%"    >
-					<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
-									   height="{this.height-this.headerBar.height+10}"  
-									>
-						 
-					</tlf:TLFTextEditor>
-					<!--
-					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
-					minHeight="{this.height-this.headerBar.height+10}"
-					paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
-					</s:RichEditableText>		
-					-->
-				</s:VGroup>				
-			</s:Scroller>
-		
-		</s:Group>
-	</s:VGroup>
-	
-	
-	
 </s:SkinnableContainer>
