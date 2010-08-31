@@ -12,13 +12,7 @@
 		]]>
 	</fx:Script>
  
-
-	
-	<s:Rect top="0" bottom="0" right="0" left="0" >
-		<s:fill>
-			<s:SolidColor color="#B4CDD2" />
-		</s:fill>
-	</s:Rect>
+ 
 		<!--
 	<s:VGroup paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5">
 		<s:HGroup>

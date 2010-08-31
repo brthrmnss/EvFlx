@@ -13,7 +13,8 @@ package org.syncon.evernote.basic.controller
 		
 		public var SET_UL:String = 'ul';
 		public var SET_BR:String = 'br';
-		
+		public var SET_EN_TODO:String = 'en-todo';		
+		public static var entodo_marker : String = '~!*entodomarker*!~@'
 		public var ignoreParagraphSpace:Boolean = false;
 		
 		private var out_xml:XML;
@@ -70,7 +71,7 @@ package org.syncon.evernote.basic.controller
 				
 			// remove BR
 			xml = remove_br_tag(xml);
-			
+			xml = remove_enTodo_tag(xml);
 			// format CSS
 			xml = remove_css(xml);
 			/*
@@ -191,6 +192,20 @@ package org.syncon.evernote.basic.controller
 			
 			return xml;
 		}
+		
+		private function remove_enTodo_tag(xml:XML):XML
+		{
+			var todos:XMLList = xml.descendants(SET_EN_TODO);
+			var p:XML;
+			//var f:XML;
+			
+			for each (var i:XML in todos) {
+				p = new XML('<span>'+entodo_marker+'</span>');
+				i.parent().replace(i.childIndex(), p);
+			}
+			
+			return xml;
+		}		
 		
 		private function remove_css(xml:XML):XML
 		{

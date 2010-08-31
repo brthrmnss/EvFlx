@@ -61,5 +61,5 @@
  
 	<view:list_note_list id="list" y="45" width="{this.width-10}" 
 						 skinClass="org.syncon.evernote.basic.view.skins.RightSideListDCSkin"
-						 height="{this.height-50-10}"  x="5" />
+						 height="{this.height-50}"  x="5" />
 </s:Skin>

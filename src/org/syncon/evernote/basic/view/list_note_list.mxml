@@ -16,7 +16,9 @@
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			
+			import spark.components.List;
 			import spark.components.supportClasses.ListBase;
+			import spark.events.IndexChangeEvent;
 			
 			static public var SELECTION_CHANGED :String = 'selectionChanged'
 			import org.syncon.evernote.basic.model.CustomEvent;
@@ -33,7 +35,22 @@
 
 			[SkinPart(required="true")]
 			public var list:Object;	//listbase not gooe neough 
-			
+			protected function list_itemClickHandler2(event:IndexChangeEvent):void
+			{
+				if ( event.newIndex == this.skipIndex ) 
+				{
+					this.skipIndex = -1
+					return
+				}
+				if ( this.list.selectedItems.length > 1 ) 
+				{
+					this.dispatchEvent( new CustomEvent( 'multipleItemsSelected' , this.list.selectedItems) ) 
+				}
+				this.dispatchEvent( new CustomEvent( 'clickedNote' , this._notes.getItemAt( event.newIndex ) 
+							) ) 
+				
+				this.list.selectedItems  = this.selectedItemsVector()
+			}
 			protected function list_itemClickHandler(event:ListEvent):void
 			{
 				if ( event.rowIndex == this.skipIndex ) 
@@ -62,7 +79,14 @@
 				{
 					this.list.addEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
 					this.list.addEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
-					this.list.addEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )
+					if ( list is List ) 
+					{
+						this.list.addEventListener( IndexChangeEvent.CHANGE, this.list_itemClickHandler2 )		
+					}
+					else
+					{
+						this.list.addEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )		
+					}
 					this.list.dataProvider = _notes; 
 				}
 			
@@ -76,7 +100,17 @@
 				{
 					this.list.removeEventListener( 'checkbox_'+'true', this.onSelectedItemsChanged ) 
 					this.list.removeEventListener( 'checkbox_'+'false', this.onSelectedItemsChanged )
-					this.list.removeEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )						
+					if ( list is List ) 
+					{
+						this.list.removeEventListener( IndexChangeEvent.CHANGE, this.list_itemClickHandler2 )		
+							
+					}
+					else
+					{
+						this.list.removeEventListener( ListEvent.ITEM_CLICK, this.list_itemClickHandler )		
+					}
+					
+						
 					this.list.dataProvider = null; 
 				}
 			}
@@ -91,7 +125,14 @@
 			 * Keep a seperate list of selected items
 			 * */
 			public var selectedItems :  ArrayList = new  ArrayList();
-			
+			private function selectedItemsVector()  : Vector.<Object>
+			{
+				var vec : Vector.<Object> = new Vector.<Object>()
+				for each( var i : Object in selectedItems ) {
+					vec.push(i);
+				}
+				return vec
+			}
 			/**
 			 * When checkbox clicked, it create a selection event, 
 			 * selection event handler will ignore this index, then reset
@@ -110,7 +151,16 @@
 				{
 					this.selectedItems.removeItem( note ) 					
 				}
-				this.list.selectedItems = this.selectedItems.toArray()
+				if ( this.list is  List ) 
+				{
+					
+					
+					this.list.selectedItems = this.selectedItemsVector
+				}
+				else //mx component 
+				{
+					this.list.selectedItems = this.selectedItems.toArray()
+				}
 				this.dispatchEvent( new CustomEvent( 'selectionChanged', this.selectedItems.toArray() ) ) 
 				this.skipIndex = int(e.data)
 			}

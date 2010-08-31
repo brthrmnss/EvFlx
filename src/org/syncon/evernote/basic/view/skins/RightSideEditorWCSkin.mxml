@@ -53,7 +53,13 @@
 										draggableInto="true" 
 										/>
 			</s:HGroup>		
-			<view:richtext_control_panel id="controlp"   />
+			<view:richtext_control_panel id="controlp"   >
+				<s:Rect top="0" bottom="0" right="0" left="0" >
+					<s:fill>
+						<s:SolidColor color="#B4CDD2" />
+					</s:fill>
+				</s:Rect>
+			</view:richtext_control_panel>
 			
 		</s:VGroup>
 		<s:Group width="100%">

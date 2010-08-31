@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:MXDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
-						  xmlns:mx="library://ns.adobe.com/flex/mx"  
+						  xmlns:mx="library://ns.adobe.com/flex/mx"   creationComplete="mxdatagriditemrenderer1_creationCompleteHandler(event)"
 						  focusEnabled="true" height="50" xmlns:controls="qs.controls.*">
 
 	<fx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			
+			import sss.Shelpers.Shelpers.FilterHelpers;
+			
+			
+			
+			protected function mxdatagriditemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//FilterHelpers.addLightDropShadow( this.group ) ; 
+			}			
+			
 			protected function chkBox_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent('checkbox_'+this.chkBox.selected.toString(), this.itemIndex))
@@ -141,6 +152,11 @@ header( 'Content-Length: '.$response_headers['download_content_length']);
 		]]>
 	</fx:Script>
 
+		<s:Line bottom="0" left="0" right="0" >
+			<s:stroke>
+				<s:SolidColorStroke color="0xDCDCDC" />
+			</s:stroke>
+		</s:Line>
 	 <s:HGroup verticalAlign="middle" x="5" verticalCenter="0" >
 		 <s:CheckBox id="chkBox" click="chkBox_clickHandler(event)"
 					    toolTip="Check to select mutiple items"
@@ -158,7 +174,7 @@ header( 'Content-Length: '.$response_headers['download_content_length']);
 					   maxWidth="50" maxHeight="50" /> 		-->	 
 			 
 			 
-			 <s:Rect width="100%" height="100%" >
+			 <s:Rect  top="0" right="0" left="0" bottom="0">
 				 <s:stroke>
 					 <s:SolidColorStroke color="0xDDDDDD" />
 				 </s:stroke>
