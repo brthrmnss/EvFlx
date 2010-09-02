@@ -302,13 +302,16 @@ package  org.syncon.evernote.basic.controller
 			cmd.importEvernoteXML()		
 			return cmd.txt
 		}
-		
+		/**
+		 * Post processing, convert xml to tf object
+		 * */
 		private function importPt2(str:String):TextFlow
 		{
 			import flashx.textLayout.conversion.ConversionType;
 			import flashx.textLayout.conversion.TextConverter;				
 			var flow:TextFlow = 
 				TextConverter.importToFlow(str, TextConverter.TEXT_LAYOUT_FORMAT);
+			//this function needs to co deep 
 			for each ( var oo : Object in flow.mxmlChildren ) 
 			{
 				if ( oo.hasOwnProperty('mxmlChildren' ) == false ) 
@@ -322,6 +325,16 @@ package  org.syncon.evernote.basic.controller
 						//trace( ' ' + cmd.replace( span.text,  'ooooo', '  •  ' )  )
 						span.text =  replace( span.text,  'ooooo', '  •  ' ) 
 					}
+					if ( o  is SpanElement ) 
+					{
+						var span : SpanElement = o as SpanElement
+						if ( span.text == RteHtmlParser_Import.entodo_marker )
+						{
+							var index :  int = span.parent.getChildIndex( span )
+							span.parent.removeChildAt( index ) 
+							span.parent.addChildAt(  index, thing  ) 
+						}
+					}					
 				}
 			}
 			return flow			

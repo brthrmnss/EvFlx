@@ -1,0 +1,157 @@
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
+			   xmlns:s="library://ns.adobe.com/flex/spark"  
+			   xmlns:mx="library://ns.adobe.com/flex/mx"  
+			   
+			   creationComplete="onInit(event)"
+			   width="955" height="600">  
+	<!--
+	<fx:Style source="Main.css"/>  
+	-->
+	<fx:Script>  
+		<![CDATA[  
+			import flashx.textLayout.conversion.ConversionType;
+			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.elements.FlowElement;
+			import flashx.textLayout.elements.ParagraphElement;
+			import flashx.textLayout.elements.TextFlow;
+			import flashx.textLayout.formats.TextLayoutFormat;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand_Base;
+			import org.syncon.evernote.basic.controller.RteHtmlParser;
+			
+			import spark.utils.TextFlowUtil;  
+			/* 		
+			protected function button1_clickHandler(event:MouseEvent):void  
+			{  
+			try {  
+			descriptionRichText.textFlow = TextConverter.importToFlow(  
+			(textArea.text ), TextConverter.TEXT_FIELD_HTML_FORMAT )
+			}  
+			catch (error:Error)  
+			{  
+			Alert.show("HTML error: " + error.message);  
+			}  
+			}  
+			*/
+			
+			protected function onConvertEvernote(ev:MouseEvent):void  
+			{  
+				var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+				var event : EvernoteToTextflowCommandTriggerEvent = 
+					new EvernoteToTextflowCommandTriggerEvent(
+						EvernoteToTextflowCommandTriggerEvent.IMPORT,
+						this.txtEvernoteInput.text, this.onEvernoteConverted )
+				cmd.event = event
+				cmd.execute();
+			}  			
+			
+			protected function onEvernoteConverted( tf : TextFlow):void
+			{ 
+				this.rtEvernoteToTfRendering.textFlow  = tf
+				return;
+			}
+			
+			
+			protected function onConvertTF(ev:MouseEvent):void  
+			{  
+				/*
+				var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+				var event : EvernoteToTextflowCommandTriggerEvent = 
+					new EvernoteToTextflowCommandTriggerEvent(
+						EvernoteToTextflowCommandTriggerEvent.EXPORT,
+						this.txtTf.text, this.onTFConverted )
+				cmd.event = event
+				cmd.execute();
+				this.rtTF_Rendering.content = this.txtTf.text; 
+				*/
+			}  			
+			
+			protected function onInit(event:FlexEvent):void
+			{
+				var txt : String = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd"><en-note>Here\'s the Evernote logo:<br/></en-note>'
+				txt = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd"><en-note>Here\'s the Evernote logo:<br/></en-note>'
+				txt = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><table border="0" cellpadding="4"><tbody><tr><td colspan="3" height="60" align="left" bgcolor="#6FB536"><h1><strong><font face="Arial,Helvetica,sans-serif" size="6" color="white">Welcome to Evernote</font></strong></h1></td></tr><tr><td colspan="3" align="left"><font face="Arial,Helvetica,sans-serif" size="2">Use Evernote to save your ideas, things you see, and things you like. Then find them all on any computer or device you use.</font></td></tr><tr><td valign="top" width="320" align="left"><font><font size="3"><font size="3"><b><font color="#252525">A few simple ideas to get you started</font></b></font></font></font><ul><li><font face="Arial,Helvetica,sans-serif" size="2">Click New Note and take down an idea or task.</font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Clip and save a webpage using a <a href="http://www.evernote.com/about/download/web_clipper.php">Web Clipper.</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Use Evernote on your phone to snap a photo of a whiteboard, business card, or wine label. <em>Evernote automatically makes text in your snapshots searchable!</em></font></li></ul><font><font color="#000000" size="3"><font size="3"><b>Lots of useful features</b></font></font></font><ul><li><font face="Arial, Helvetica, sans-serif"><font size="2">Take notes, save images, create to-dos, view PDFs, and more <br /></font></font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Access your Evernote notes from any computer or phone you use</font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Search and find everything, even printed or handwritten text in images</font></li></ul><div><font><font color="#000000" size="3"><font size="3"><b>Install and use Evernote everywhere</b></font></font></font><ul><li><font face="Arial,Helvetica,sans-serif" size="2">Download and install Evernote on all of your computers and phones</font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Install a <a href="http://www.evernote.com/about/download/web_clipper.php">Web Clipper</a> into your web browser</font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Email notes to your Evernote email address</font></li><li><font face="Arial, Helvetica, sans-serif"><font size="2"><font face="Arial,Helvetica,sans-serif" size="2">Save Twitter messages by following <a href="http://s.evernote.com/myen" target="_blank">@myEN</a></font><br /></font></font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Import photos from your digital camera</font></li></ul></div><div><font face="Arial, Helvetica, sans-serif"><font size="2"><br /></font></font></div><div><font face="Arial, Helvetica, sans-serif"><font size="2"><br /></font></font></div><div><font face="Arial,Helvetica,sans-serif" size="2">Interested in getting even more out of Evernote? Check out <a href="http://s.evernote.com/premium">Evernote Premium »</a></font></div><div><br /></div><a href="http://www.evernote.com/about/premium"></a></td><td width="30"></td><td valign="top" width="180"><font><font color="#000000" size="3"><font size="3"><b>Click the link to install Evernote to your computer:</b></font></font></font><ul><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#Windows">Windows</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#Mac">Mac</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#Webclipper">Web browser</a></font></li></ul><font><font color="#000000" size="3"><font size="3"><b>Click the link to install Evernote onto your mobile device:</b></font></font></font><ul><li><font face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://www.evernote.com/about/download/#iPhone">iPhone / iPod</a><br /></font></font></li><li><font face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://www.evernote.com/about/download/ipad.php">iPad</a><br /></font></font></li><li><font face="Arial, Helvetica, sans-serif"><font size="2"><a href="http://www.evernote.com/about/download/android.php">Android</a><br /></font></font></li><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#BlackBerry">BlackBerry</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#PalmPre">Palm Pre</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2"><a href="http://www.evernote.com/about/download/#WinMo">Windows Mobile</a></font></li></ul><p><font><font color="#000000" size="3"><font size="3"><b>Get the latest news</b></font></font></font></p><ul><li><font face="Arial,Helvetica,sans-serif" size="2">Read our <a href="http://s.evernote.com/blog" target="_blank">blog</a></font></li><li><font face="Arial, Helvetica, sans-serif"><font size="2"><font face="Arial,Helvetica,sans-serif" size="2">Follow us on <a href="http://s.evernote.com/tweet" target="_blank">Twitter</a></font><br /></font></font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Be a <a href="http://s.evernote.com/fbook" target="_blank">Facebook fan</a></font></li><li><font face="Arial,Helvetica,sans-serif" size="2">Check out our <a href="http://s.evernote.com/tips" target="_blank">tips blog</a></font></li></ul><a href="http://evernote.tumblr.com/" target="_blank"></a></td></tr></tbody></table></en-note>'
+				txt = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note><p><span style="color: #003399;">vbdfbdfb</span></p><p><span style="color: #00ff00;">dfgdfgdfgdfg</span></p><p><span style="color: #003399;">fgdfg</span></p><p><span style="color: #cc0000;">dfgdfgfggdf</span></p><p><span style="color: #cc0000;"><en-todo/>wt<br clear="none"/></span></p></en-note>'
+				this.txtEvernoteInput.text = txt
+				this.onConvertEvernote(null)
+			}
+			
+		]]>  
+	</fx:Script>
+	<!--	
+	<fx:Declarations>
+	<fx:XML id="tfTxt">
+	<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">
+	<p>Text Using  <span fontWeight="bold">Text Layout Framework</span> Markup</p>
+	</TextFlow>
+	</fx:XML>	
+	</fx:Declarations>
+	-->
+	<!--	<fx:Declarations>
+	<fx:XML id="tfTxt">
+	<TextFlow fontSize="14" paddingLeft="4" paddingTop="4" xmlns="http://ns.adobe.com/textLayout/2008">
+	<p>BEFORE</p>
+	<list listStylePosition="outside" listStyleType="decimal" paddingLeft="24">
+	<listMarkerFormat>
+	<ListMarkerFormat counterIncrement="ordered -1"/></listMarkerFormat>
+	<li>
+	<listMarkerFormat><ListMarkerFormat counterReset="ordered 10" counterIncrement="ordered 0"/></listMarkerFormat>
+	<p>item</p>
+	</li>
+	<li>another</li>
+	<li/><li/><li/><li/><li/><li/><li/><li/>
+	</list>
+	<p  listitem='true'  paragraphStartIndent='15' textIndent='-9' paragraphSpaceAfter='10'  >AFTER</p>
+	</TextFlow>
+	</fx:XML>	
+	</fx:Declarations>-->
+	
+	<s:layout>
+		<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
+	</s:layout>
+	<s:VGroup>
+		
+		<s:Button label="Convert Evernote" click="onConvertEvernote(event)"/>  		
+		<s:HGroup>
+			<s:VGroup>
+				<s:Label text="Input:" />
+				<s:TextArea id="txtEvernoteInput" >
+					<![CDATA[  
+					<?xml version="1.0" encoding="UTF-8"?>
+					<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">
+					<en-note>Here\'s the Evernote logo:<br/>
+					</en-note>
+					]]>  
+				</s:TextArea>
+			</s:VGroup>
+			<!--
+			<s:TextArea id="txtEvernoteToTf" />  
+			<mx:RichTextEditor id="rtEvernoteToTfRendering_F3"  
+							   width="400" height="250"		 />
+			-->
+			<s:RichEditableText id="rtEvernoteToTfRendering" blendMode="normal"  
+								width="400" height="250"						
+								color="#000000" fontFamily="Arial"  
+								whiteSpaceCollapse="collapse"/>  			
+		</s:HGroup>
+		
+		<s:Button  label="Convert TF" click="onConvertTF(event)"/>  		
+		<s:HGroup>
+			<s:TextArea id="txtTf" />  
+			<s:RichText id="rtTF_Rendering" blendMode="normal"  
+						width="400" height="250"			
+						color="#000000" fontFamily="Arial"  
+						whiteSpaceCollapse="preserve" />  					
+			<s:TextArea id="txtTFtoEvernote" />  
+			
+		</s:HGroup>		
+		
+	</s:VGroup>
+	
+	
+</s:Application> 
