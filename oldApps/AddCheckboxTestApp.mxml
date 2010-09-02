@@ -9,8 +9,10 @@
 	-->
 	<fx:Script>  
 		<![CDATA[  
+			import flashx.textLayout.container.ContainerController;
 			import flashx.textLayout.conversion.ConversionType;
 			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.edit.EditManager;
 			import flashx.textLayout.elements.FlowElement;
 			import flashx.textLayout.elements.ParagraphElement;
 			import flashx.textLayout.elements.TextFlow;
@@ -49,10 +51,15 @@
 				cmd.event = event
 				cmd.execute();
 			}  			
-			
-			protected function onEvernoteConverted( tf : TextFlow):void
+			public var holders : EntodoHolders = new EntodoHolders();
+			protected function onEvernoteConverted( tf : TextFlow, chkbox : Array ):void
 			{ 
 				this.rtEvernoteToTfRendering.textFlow  = tf
+				holders.loadUp( chkbox, tf, this.inlineElementsPane ) 
+				tf.interactionManager = new EditManager()
+				tf.flowComposer.addController(
+					new ContainerController( this.rtEvernoteToTfRendering) );      
+				//_textFlow.flowComposer.updateAllControllers(); 
 				return;
 			}
 			
@@ -134,10 +141,17 @@
 			<mx:RichTextEditor id="rtEvernoteToTfRendering_F3"  
 							   width="400" height="250"		 />
 			-->
-			<s:RichEditableText id="rtEvernoteToTfRendering" blendMode="normal"  
-								width="400" height="250"						
-								color="#000000" fontFamily="Arial"  
-								whiteSpaceCollapse="collapse"/>  			
+			<s:Group id="resultHolder">
+				<s:Group>
+					<s:RichEditableText id="rtEvernoteToTfRendering" blendMode="normal"  
+										width="400" height="250"						
+										color="#000000" fontFamily="Arial"  
+										whiteSpaceCollapse="collapse"/>  	
+				</s:Group>
+				
+				<s:Group id="inlineElementsPane" height="100%" width="100%" />
+			</s:Group>
+		
 		</s:HGroup>
 		
 		<s:Button  label="Convert TF" click="onConvertTF(event)"/>  		

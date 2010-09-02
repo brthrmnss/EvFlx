@@ -200,7 +200,7 @@ package org.syncon.evernote.basic.controller
 			//var f:XML;
 			
 			for each (var i:XML in todos) {
-				p = new XML('<span>'+entodo_marker+'</span>');
+				p = new XML('<span id="gggg">'+entodo_marker+'</span>');
 				i.parent().replace(i.childIndex(), p);
 			}
 			

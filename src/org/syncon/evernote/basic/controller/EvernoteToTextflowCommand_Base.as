@@ -4,6 +4,7 @@ package  org.syncon.evernote.basic.controller
 	
 	import flashx.textLayout.conversion.ConversionType;
 	import flashx.textLayout.conversion.TextConverter;
+	import flashx.textLayout.elements.InlineGraphicElement;
 	import flashx.textLayout.elements.SpanElement;
 	import flashx.textLayout.elements.TextFlow;
 
@@ -16,6 +17,8 @@ package  org.syncon.evernote.basic.controller
 		 public var txt :  String = '' 
 			 
 		public var tf : TextFlow ;//
+		
+		public var holders : Array = []; 
 		  public function execute():void
 		{
 			if ( event.type == EvernoteToTextflowCommandTriggerEvent.IMPORT ) 
@@ -40,7 +43,7 @@ package  org.syncon.evernote.basic.controller
 			this.postProcessStr()
 			var result : String = this.txt;
 			this.tf = importPt2( this.txt ) 
-			if ( event.fxResult != null ) event.fxResult( this.tf  ) 
+			if ( event.fxResult != null ) event.fxResult( this.tf, this.holders ) 
 				
 			return result 
 		}
@@ -302,6 +305,9 @@ package  org.syncon.evernote.basic.controller
 			cmd.importEvernoteXML()		
 			return cmd.txt
 		}
+		
+		
+		
 		/**
 		 * Post processing, convert xml to tf object
 		 * */
@@ -312,6 +318,9 @@ package  org.syncon.evernote.basic.controller
 			var flow:TextFlow = 
 				TextConverter.importToFlow(str, TextConverter.TEXT_LAYOUT_FORMAT);
 			//this function needs to co deep 
+			this.checkChildrenImport( flow ) 
+			
+			/*
 			for each ( var oo : Object in flow.mxmlChildren ) 
 			{
 				if ( oo.hasOwnProperty('mxmlChildren' ) == false ) 
@@ -327,19 +336,68 @@ package  org.syncon.evernote.basic.controller
 					}
 					if ( o  is SpanElement ) 
 					{
-						var span : SpanElement = o as SpanElement
+						span   = o as SpanElement
+						var dbg : Array = [span.text , RteHtmlParser_Import.entodo_marker,
+							span.text == RteHtmlParser_Import.entodo_marker]
 						if ( span.text == RteHtmlParser_Import.entodo_marker )
 						{
 							var index :  int = span.parent.getChildIndex( span )
+							var p : Object = span.parent; 
 							span.parent.removeChildAt( index ) 
-							span.parent.addChildAt(  index, thing  ) 
+							
+							// add an empty InlineGraphicElement as a placeholder
+							var pHolder:InlineGraphicElement = new InlineGraphicElement();
+							pHolder.width = 30;
+							pHolder.height = 30;
+							
+							
+							//var ee  : InlineGraphicElement
+							p.addChildAt(  index, pHolder  ) 
 						}
 					}					
 				}
 			}
+			*/
 			return flow			
 		}
-		
+	 
+		public function checkChildrenImport(flow:Object):void
+		{
+			if ( flow.hasOwnProperty('mxmlChildren' ) == false ) 
+				return; 			
+			for each ( var o : Object in flow.mxmlChildren ) 
+			{
+				 	this.checkChildrenImport( o ) 
+					if ( o  is SpanElement ) 
+					{
+						var span : SpanElement = o as SpanElement
+						//trace( span.text ) ; 
+						//trace( ' ' + cmd.replace( span.text,  'ooooo', '  •  ' )  )
+						span.text =  replace( span.text,  'ooooo', '  •  ' ) 
+					}
+					if ( o  is SpanElement ) 
+					{
+						span   = o as SpanElement
+						if ( span.text == RteHtmlParser_Import.entodo_marker )
+						{
+							var index :  int = span.parent.getChildIndex( span )
+							var p : Object = span.parent; 
+							span.parent.removeChildAt( index ) 
+							
+							// add an empty InlineGraphicElement as a placeholder
+							var pHolder:InlineGraphicElement = new InlineGraphicElement();
+							pHolder.width = 15;
+							pHolder.height = 15;
+						
+							pHolder.id = 'chkbox_'+this.holders.length.toString() ;
+							this.holders.push( pHolder ) 
+							//var ee  : InlineGraphicElement
+							p.addChildAt(  index, pHolder  ) 
+						}
+					}					
+				}
+		}
+	 
 		/**
 		 * Take string and exports text flow string
 		 * */
