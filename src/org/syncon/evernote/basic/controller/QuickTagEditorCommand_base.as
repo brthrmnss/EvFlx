@@ -8,6 +8,7 @@ package  org.syncon.evernote.basic.controller
 	import flash.utils.Timer;
 	
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.basic.vo.QuickTasksVO;
 	import org.syncon.evernote.model.Tag2;
 
  
@@ -323,9 +324,16 @@ package  org.syncon.evernote.basic.controller
 		public function onStepDone(e:Object) : void
 		{
 			this.indexProcessing++
+			if ( e is Tag )
+			{
 			this.old_SavedTagsByNameDict[e.name] = e; 
+			}
+			else
+			{
+				this.old_SavedTagsByNameDict[this.processingLastTag.name] = this.processingLastTag
+			}
 			//this.postOldTagNamesDict[e.name] = e; 
-			this.processOutput( true )
+			this.automate( null, true)
 			
 		}
 		public function onStepFault(e:Object) : void
@@ -340,8 +348,8 @@ package  org.syncon.evernote.basic.controller
 		
 		public var indexProcessing : int = -1; 
 		public var fxDone  : Function ; 
-		
-		public function processOutput( a :  Boolean )  : Array
+		public var processingLastTag : Tag2; 
+		public function processOutput( a_ :  Boolean )  : Array
 		{
 			var tag : Tag2; 
 			var tags : Array = this.postTags; 
@@ -356,28 +364,13 @@ package  org.syncon.evernote.basic.controller
 			var tasks : Array = []; 
 			var task :  String = ''; 
 			var processingCommands : Array = []
-			if ( indexProcessing != -1  )
-			{
-/*				if ( indexProcessing >= tags.length -1 ) 
-				{
-					
-					trace('complete')
-					this.fxDone()
-				}*/
-			}		
-			else
-			{
-				if ( a )
-				{
-					this.indexProcessing = 0
-					old_SavedTagsByNameDict  = new Dictionary(true)
-				}
-			}
 			
 			for  ( var i : int = 0; i <  tags.length; i++ ) 
 			{
 				tag  = tags[i] as Tag2
 				
+				var x : QuickTasksVO = new QuickTasksVO()
+				x.tag = tag	
 				//var saveableTag :  Tag  = this.old_SavedTagsByNameDict[tag.name] 
 				if ( indexProcessing != -1  )
 				{
@@ -395,7 +388,12 @@ package  org.syncon.evernote.basic.controller
 					task =  'creating ' + tag.name
 					trace(task) ; 
 					tasks.push(task)		
-					processingCommands.push( {type:'create', name:tag.name, p:1} )
+					/*processingCommands.push( {type:'create', name:tag.name, p:1} )*/
+					x.task_name = task
+					x.cmd = QuickTagEditorCommand_base.TASK_CREATE
+					x.step = 1
+					//x.newName = tag.name; 
+					processingCommands.push( x ) 
 				}
 				//old and link changed
 				if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
@@ -407,9 +405,16 @@ package  org.syncon.evernote.basic.controller
 					task = 'change link of ' + tag.name + ' to ' +parentName
 					trace(task) ; 
 					tasks.push(task)	
+					x.task_name = task
+					x.cmd = QuickTagEditorCommand_base.TASK_UPDATE
+					x.changeParentTo = tag.parentGuid; 
+					x.step = 4
+					processingCommands.push( x ) 
+						/*
 					processingCommands.push( {type:'link_guid_to', 
 						name:tag.name, guid:tag.guid, linkto:tag.parentGuid, 
-						linkto_parent_name:parentName, p:3} )
+						linkto_parent_name:parentName, p:4} )
+						*/
 				}		
 				//new and add link
 				if ( oldTag == null &&   tag.parentGuid != null )   
@@ -427,14 +432,26 @@ package  org.syncon.evernote.basic.controller
 					//check for created tags for name too
 					if ( tag.parentGuid.indexOf( 'new_' ) != -1 ) 
 					{
-						processingCommands.push( {type:'link_new_guid_to_new_tag', 
-						name:tag.name, linktoname:tag.guid, linkto_parent_name:parentName, p:5} )
+						x.task_name = task
+						x.cmd = QuickTagEditorCommand_base.TASK_UPDATE
+						x.changeParentTo_Name = parentName;
+						x.step = 6
+						processingCommands.push( x ) 						
+						/*processingCommands.push( {type:'link_new_guid_to_new_tag', 
+						name:tag.name, linktoname:tag.guid, linkto_parent_name:parentName, p:6} )*/
 					}
 					else
 					{
+						x.task_name = task
+						x.cmd = QuickTagEditorCommand_base.TASK_UPDATE
+						x.changeParentTo = tag.parentGuid;
+						x.step = 5			
+						processingCommands.push( x ) 
 						//this could probably be fixed into one step 
+						/*
 						processingCommands.push( {type:'link_new_guid_to_existing_tag', 
-							name:tag.name, linktoname:tag.guid, linkto:tag.parentGuid, p:4} )						
+							name:tag.name, linktoname:tag.guid, linkto:tag.parentGuid, p:5} )	
+						*/	
 					}
 				}
 				//destroy
@@ -444,9 +461,27 @@ package  org.syncon.evernote.basic.controller
 					task = 'delete ' + tag.name
 					trace(task) ; 
 					tasks.push(task)			
-					processingCommands.push( {type:'delete', guid:tag.guid , p:2} )	
-						
+					/*processingCommands.push( {type:'delete', guid:tag.guid , p:2} )	*/
+					x.task_name = task
+					x.cmd = QuickTagEditorCommand_base.TASK_DELETE
+					x.step = 2							
+					processingCommands.push( x ) 
 				}	
+				if ( renameDict[tag.name] != null ) 
+				{
+					var renameTo : String = renameDict[tag.name]
+					task =  'rename ' + tag.name + ' to ' + renameTo 
+					trace(task) ; 
+					/*
+					processingCommands.push( {type:'rename', newName:renameTo,
+						guid:tag.guid , p:3} )	
+						*/
+					x.task_name = task
+					x.step = 3
+					x.cmd = QuickTagEditorCommand_base.TASK_UPDATE
+					x.renameTo = renameTo
+					processingCommands.push( x )							
+				}
 				/*
 				//if renamed
 				var renamedTagsNameToOldName
@@ -467,10 +502,12 @@ package  org.syncon.evernote.basic.controller
 				}					
 				*/
 			}
-			
+			processingCommands.sortOn('step')
+			if ( a_ ) 
+				this.automate( processingCommands )
 			//sort commands 
 			//create, delete, linkA+B, rename
-			
+		/*	
 			if ( a ) 
 			{
 				tag.unsetGuid(); 
@@ -491,7 +528,7 @@ package  org.syncon.evernote.basic.controller
 				this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , 
 					this.onStepDone , this.onStepFault ))
 				return null; 
-			}				
+			}				*/
 			/*
 			for  ( tag  in createTags ) 
 			{
@@ -539,6 +576,67 @@ package  org.syncon.evernote.basic.controller
 			}
 			return [[], txt, tasks];
 		}
+		static public var TASK_CREATE : String = 'taskCreate'; 
+		static public var TASK_UPDATE : String = 'taskUpdate'; 
+		static public var TASK_DELETE : String = 'taskDelete'; 
+		
+		public function automate(asdf : Array, autoMation : Boolean = false ):void
+		{
+			if ( this.indexProcessing < 0 )
+			{
+				this.indexProcessing = 0
+				this.processingSteps =asdf
+				this.old_SavedTagsByNameDict = new Dictionary(true)
+			}
+			if ( this.indexProcessing > this.processingSteps.length )
+			{
+				this.indexProcessing = -1; 
+				if ( this.fxDone != null ) this.fxDone(); 
+			}
+			var task :   QuickTasksVO = this.processingSteps[this.indexProcessing]; 
+			var tag : Tag2 = task.tag; 
+			if ( task.cmd == QuickTagEditorCommand_base.TASK_CREATE ) 
+			{
+				tag.unsetGuid(); 
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , 
+					this.onStepDone , this.onStepFault ))
+			}
+			
+			if ( task.cmd == QuickTagEditorCommand_base.TASK_UPDATE ) 
+			{
+				this.processingLastTag = tag; 
+				if ( task.step == 3 )
+				{
+					tag.name = task.renameTo; 
+				}
+				if ( task.step == 4 ) 
+				{
+					//ok we knew who
+				}
+				if ( task.step == 5 ) 
+				{
+					trace('automate 5: ' + task.tag.parentGuid) ; 
+					//ok we knew who
+				}	
+				if ( task.step == 6 ) 
+				{
+					//dont' have to wrroy if it wasn't saved ...t he n we wold've used the id
+					var linkToTag : Tag = this.old_SavedTagsByNameDict[task.changeParentTo_Name]
+					trace('able to find parent?'); 
+					tag.parentGuid = linkToTag.guid
+				}					
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
+					this.onStepDone , this.onStepFault ))
+			}		
+			
+			if ( task.cmd == QuickTagEditorCommand_base.TASK_DELETE ) 
+			{
+				this.dispatchEvent( EvernoteAPICommandTriggerEvent.ExpungeTag( tag.guid , 
+					this.onStepDone , this.onStepFault ))
+			}	
+			
+		}
+		
 		/*
 		public var create : Array  = []
 		public function startEsecution() : void

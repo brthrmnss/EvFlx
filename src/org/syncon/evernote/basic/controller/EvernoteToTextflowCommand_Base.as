@@ -389,7 +389,7 @@ package  org.syncon.evernote.basic.controller
 							pHolder.width = 15;
 							pHolder.height = 15;
 						
-							pHolder.id = 'chkbox_'+this.holders.length.toString() ;
+							pHolder.id = 'en-todo-chk_'+this.holders.length.toString() ;
 							this.holders.push( pHolder ) 
 							//var ee  : InlineGraphicElement
 							p.addChildAt(  index, pHolder  ) 

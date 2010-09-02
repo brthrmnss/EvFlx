@@ -78,7 +78,7 @@ package org.syncon.evernote.basic.controller
 			
 			// format css
 			xml = add_css(xml);
-			
+			xml = remove_end_todos(xml);
 			// format new names
 			xml = set_new_name(xml);
 			
@@ -255,7 +255,7 @@ package org.syncon.evernote.basic.controller
 		
 		//________________________________________________________________________________________________________
 		//                                                                                              RTE PARSER
-		
+		/*
 		public function ParseToRTE(string:String):void
 		{
 			//"<BODY>"+string+"</BODY>"
@@ -269,7 +269,7 @@ package org.syncon.evernote.basic.controller
 			
 			// remove BR
 			xml = remove_br_tag(xml);
-			
+			xml = remove_end_todos(xml);
 			// format CSS
 			xml = remove_css(xml);
 			
@@ -281,7 +281,7 @@ package org.syncon.evernote.basic.controller
 			xml = add_ul( xml ) 
 			out_xml = xml;
 		}
-		
+		*/
 		private function remove_ul_tag(xml:XML):XML
 		{
 			var ul:XMLList = xml.elements(SET_UL);
@@ -292,6 +292,26 @@ package org.syncon.evernote.basic.controller
 			
 			return xml;
 		}
+		
+		private function remove_end_todos(xml:XML):XML
+		{
+			var img:XMLList = xml.descendants('img');
+			var p:XML;
+			var f:XML;
+			
+			for each (var i:XML in img) {
+				p = new XML(<en-todo />);
+				var id : String = i.@id
+				if ( id.toString().indexOf('en-todo-chk' ) != -1  )
+				{
+					i.parent().replace(i.childIndex(), p);
+				}
+				
+			}
+			
+			return xml;
+		}		
+		
 		
 		private function remove_br_tag(xml:XML):XML
 		{
