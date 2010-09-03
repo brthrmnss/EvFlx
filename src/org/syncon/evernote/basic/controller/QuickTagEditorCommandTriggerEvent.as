@@ -47,7 +47,9 @@ package   org.syncon.evernote.basic.controller
 		{
 			var e : QuickTagEditorCommandTriggerEvent = 
 				new QuickTagEditorCommandTriggerEvent( 
-					QuickTagEditorCommandTriggerEvent.PROCESS_TAGS	);
+					QuickTagEditorCommandTriggerEvent.PROCESS_TAGS	 
+					);
+			e.optionalParameters( fxSuccess, fxFault, alert, alertMessage );
 			e.tags = tags
 			e.instructions = instructions
 			return e; 

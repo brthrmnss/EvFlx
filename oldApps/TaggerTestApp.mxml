@@ -6,11 +6,14 @@
 			   minWidth="955" minHeight="600" xmlns:tag="org.syncon.evernote.basic.view.tag.*">
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
+			import mx.events.ScrollEvent;
 			
 			import org.syncon.evernote.basic.controller.QuickTagEditorCommand;
 			import org.syncon.evernote.basic.controller.QuickTagEditorCommandTriggerEvent;
 			import org.syncon.evernote.basic.controller.QuickTagEditorCommand_base;
+			import org.syncon.evernote.basic.vo.QuickTasksVO;
 			private var tags : Array = []; 
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -24,10 +27,11 @@
 				
 				*/	
 				setTimeout( this.startup , 1000 ) 
+				
 			}
 			public function startup()  : void
 			{
-				this.onRefresh(null)
+				this.onRefreshTags(null)
 			}
 			
 			protected function goTags(a: Array )  : void
@@ -35,26 +39,45 @@
 				this.tags = a; 
 				var ee :  QuickTagEditorCommand_base = new QuickTagEditorCommand_base()
 				this.txtCurrent.text = ee.onLoadTags( this.tags ); 
-				this.txtModifications.text = 'bbb:R:bbb2\nbtim\n\tggg\nggg22w\nShore'
+				//this.txtModifications.text = 'bbb:R:bbb2\nbtim\n\tggg\nggg22w\nShore';
+				this.txtModifications.text = 'bbb\nbtim\n\tggg\nggg22w\nShore'			
+				txtModifications_scrollHandler(null)					
 			}
 			
 			protected function onProcessInitial(event:MouseEvent):void
 			{
+				this.drawLines();
+				this.btnCommit.enabled = false; 
+				this.txtInstructions.text = ''; 
 				//cleanup lazy tabs
 				var pattern:RegExp = /\\t/gi;
 				this.txtModifications.text = this.txtModifications.text.replace( pattern, '\t' )
 				//...
 				var ee :  QuickTagEditorCommand_base = new QuickTagEditorCommand_base()
+				try {
 				var output : Array  = ee.onProcess(this.txtModifications.text, this.tags, false )
+				}
+				catch( e:Error)
+				{
+					Alert.show( e.message ) 
+					return;
+				}
 				var activities : Array = output[0]
 				txtConfirmed.text = output[1]
-				this.txtInstructions.text = output[2].join('\n')
+				this.txtInstructions.text = ''; 
+				for each (   var task : QuickTasksVO   in output[2] ) 
+				{	
+					this.txtInstructions.text += task.task_name  + '\n'
+				}					
+				this.btnCommit.enabled = true; 
+				
+				//this.txtInstructions.text = output[2].join('\n')
 				//txtStuff2.text = ee.onProcessStructure(this.txtStuff.text, this.tags )
 				return; 
 			}
 			
 			
-			protected function onRefresh(event:MouseEvent):void
+			protected function onRefreshTags(event:MouseEvent):void
 			{
 				this.context.dispatchEvent(QuickTagEditorCommandTriggerEvent.GetNotes( this.goTags )  ) 
 			}
@@ -69,15 +92,49 @@
 				//must pass first check
 				this.onProcessInitial(null)
 				this.context.dispatchEvent(
-					QuickTagEditorCommandTriggerEvent.Process(this.txtModifications.text, this.tags)  ) 
+					QuickTagEditorCommandTriggerEvent.Process(this.txtModifications.text, this.tags, this.onDone )  ) 
 			}		
 			
+			protected function onDone() : void
+			{
+				this.onRefreshTags(null)
+			}
 			
 			protected function button4_clickHandler(event:MouseEvent):void
 			{
-				this.context.dispatchEvent(QuickTagEditorCommandTriggerEvent.DeleteAllTags(this.tags) ) 
+				this.context.dispatchEvent(QuickTagEditorCommandTriggerEvent.DeleteAllTags(this.tags, this.onDeleted) ) 
+			}
+
+			private function onDeleted(e:Object):void
+			{
+				this.txtModifications_changeHandler( null )
+				this.onRefreshTags(null)
+			}
+
+			protected function txtModifications_scrollHandler(event:ScrollEvent):void
+			{
+				this.drawLines();
 			}
 			
+			public function drawLines()  : void
+			{
+				var i : int = this.txtModifications.verticalScrollPosition+1
+				 this.lineTxt.text = '';
+				 var max : int = i+30
+				for ( i; i < max; i++ )
+				{
+					this.lineTxt.text += ''+i.toString()+':'+ '\n'
+				}
+			}
+
+
+			protected function txtModifications_changeHandler(event:Event):void
+			{
+				this.btnCommit.enabled = false; 
+				this.txtConfirmed.text = ''; 
+				this.txtInstructions.text = ''; 
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -91,9 +148,20 @@
 	<s:HGroup>
 		<s:VGroup>
 			<s:Label text="Current Db"   />
+			 
 			<s:RichEditableText width="300" height="200"  id="txtCurrent" />
-		</s:VGroup>		
-		<s:RichEditableText  width="300" height="350"  id="txtModifications" />
+		</s:VGroup>	
+		<s:HGroup>
+			<s:TextArea width="50" height="100%"  selectable="false" 
+						verticalScrollPolicy="off"
+						 textAlign="right" editable="false" borderVisible="false"
+						id="lineTxt" />
+			<mx:TextArea  width="300" height="350"  id="txtModifications" 
+						   change="txtModifications_changeHandler(event)"
+						  scroll="txtModifications_scrollHandler(event)"/>
+			
+		</s:HGroup>
+		
 		<s:VGroup>
 			<s:RichEditableText width="300" height="350"  id="txtConfirmed" editable="false" />
 			<s:RichEditableText width="300" height="200"  id="txtInstructions" />
@@ -102,9 +170,9 @@
 	</s:HGroup>
 	
 	<s:HGroup>
-		<s:Button label="refresh" click="onRefresh(event)" />
-		<s:Button label="Done" click="onProcessInitial(event)" />
-		<s:Button label="Commit" click="onCommit(event)" />
+		<s:Button label="refresh" click="onRefreshTags(event)" />
+		<s:Button label="Verify" click="onProcessInitial(event)" />
+		<s:Button label="Commit"  id="btnCommit"  enabled="false" click="onCommit(event)" />
 		<s:Button label="Clear Tags" click="button4_clickHandler(event)" />
 	</s:HGroup>
 	

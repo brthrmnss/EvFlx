@@ -11,7 +11,14 @@ package  org.syncon.evernote.basic.controller
 	import org.syncon.evernote.basic.vo.QuickTasksVO;
 	import org.syncon.evernote.model.Tag2;
 
- 
+ 	/**
+	 * Wait what about if: 
+	 * the user tries to include the name twice?: see 'seenNames'
+	 * user triest to delete something that's not there
+	 * tab over twice
+	 * star first line tabbed in - seems to ignore that [descendent tree is null, which makes 
+	 * addToParent null]
+	 * */
 	public class QuickTagEditorCommand_base  
 	{
 		[Inject] public var event:QuickTagEditorCommandTriggerEvent;
@@ -61,6 +68,7 @@ package  org.syncon.evernote.basic.controller
 			 
 			 //all children in children array
 			 var txt : String = '';
+			 roots.sortOn('name', Array.CASEINSENSITIVE)
 			 for each (   tag   in roots ) 
 			 {			 
 				 txt = this.printMe( tag, txt ) 
@@ -73,7 +81,8 @@ package  org.syncon.evernote.basic.controller
 		{
 			var indentPlus : String = '\t'
 			txt += '\n' +indent+ t.name
-			for each ( var tag :   Tag2 in t.children ) 
+			t.children.sortOn('name', Array.CASEINSENSITIVE )
+			for each ( var tag :   Tag2 in t.children  ) 
 			{
 				txt = this.printMe(tag, txt, indent+indentPlus ) 
 			}
@@ -119,6 +128,7 @@ package  org.syncon.evernote.basic.controller
 			}
 			return t; 
 		}
+		static public var COMMAND_DELETE : String = '---'; 
 		static public var RENAME_COMMAND: String = ':R:'
 		public function onProcess( txt : String, oldTagList_  : Array, automate:Boolean=true ) :  Array
 		{
@@ -129,7 +139,12 @@ package  org.syncon.evernote.basic.controller
 				oldTagNamesDict[tag_.name] = tag_ ;
 				
 			}
+			
+			var newLines:RegExp = /\r/g;
+			txt = txt.replace( newLines, '\n'  ) 			
+			
 			var lines : Array = txt.split( '\n' ) ;
+
 			var parent : Object; null
 			var create : Array = []; var destroy : Array = []
 			var descentTree : Array = []; 
@@ -140,8 +155,10 @@ package  org.syncon.evernote.basic.controller
 			var guidsToTagDict : Dictionary = new Dictionary(true);
 			var roots : Array = []; 
 			//var parentToBeDeleted : Boolean = false; //it's embedded for chnage
+			var lineCount : int = 0 ; 
 			for each ( var line : String in lines ) 
 			{
+				lineCount++
 				addToParent = null
 				if ( line == '' || line == null ) continue; 
 				var indents : int = line.split('\t').length-1
@@ -154,7 +171,11 @@ package  org.syncon.evernote.basic.controller
 				if ( indents == lastIndents && indents != 0  )
 				{
 					  addToParent   = descentTree[indents-1] 
-				}				
+				}	
+				//if they go back to the the first line it dont' matter
+				if ( indents != 0 &&  Math.abs( indents - lastIndents ) > 1)
+					throw 'You are adjusting the indentation too much on line ' +
+						lineCount.toString()   ;
 				if ( indents < lastIndents )
 				{
 					indentIndex = indents
@@ -166,9 +187,10 @@ package  org.syncon.evernote.basic.controller
 					
 				}	
 
-				var pattern:RegExp = /\t/gi;
+				var pattern:RegExp = /\t/g;
+				//y does this remove --- ?
 				var name : String = line.replace( pattern, ''  ) 
-				if (name.indexOf( '---'  ) != -1 )
+				if (name.indexOf( COMMAND_DELETE ) != -1 )
 				{
 					if ( name.indexOf( RENAME_COMMAND ) != -1 ) 
 					{
@@ -186,14 +208,20 @@ package  org.syncon.evernote.basic.controller
 				else
 				{
 					//didactic
-					if (oldTagNamesDict[name] == null )
+					if (oldTagNamesDict[name] == null  )
 					{
 						//throw 'do you wish to create ' + name + ' as new? Please add +++ ' 
+						if (   name.indexOf( COMMAND_DELETE ) != -1 ) 
+						{
+							throw 'You are attempting to delete ' + name +
+								' but it does not exist. '
+						}
 						create.push( name ) 
 					}
 				}
-				if (name.indexOf( ':R:'  ) != -1 )
+				if (name.indexOf( RENAME_COMMAND  ) != -1 )
 				{
+					
 					//check that we have an id for theo ld one, 
 					//someone dumb might try to rename a new one and 
 					//that'll bork stuff
@@ -201,6 +229,8 @@ package  org.syncon.evernote.basic.controller
 					//i think a warning is in order, users do not understand
 					var renameString :   Array = name.split(':R:'  ) 
 					name = name.split(':R:'  )[0]
+					if ( oldTagNamesDict[name] == null ) 
+						throw 'you are attempting to rename a new item ' + i + ' Choose 1 Option Only'						
 					var rename : String = renameString[1]
 					renameDict[name] = rename 
 				}		
@@ -219,7 +249,9 @@ package  org.syncon.evernote.basic.controller
 				//we will recreate the children based on the movements later on
 				tag.children = []; 
 				if ( seenNames.indexOf( name ) != -1 ) 
-					throw 'no duplicates' 
+					throw 'You have included the tag ' + name +
+						' twice, please fix that. A tag can only be included once '
+						//lines? 
 
 				if ( addToParent != null ) 
 				{
@@ -330,7 +362,8 @@ package  org.syncon.evernote.basic.controller
 			}
 			else
 			{
-				this.old_SavedTagsByNameDict[this.processingLastTag.name] = this.processingLastTag
+				if ( this.processingLastTag != null ) //delete command doesn't  set processingLastTag
+					this.old_SavedTagsByNameDict[this.processingLastTag.name] = this.processingLastTag
 			}
 			//this.postOldTagNamesDict[e.name] = e; 
 			this.automate( null, true)
@@ -367,23 +400,22 @@ package  org.syncon.evernote.basic.controller
 			
 			for  ( var i : int = 0; i <  tags.length; i++ ) 
 			{
+				var x : QuickTasksVO = new QuickTasksVO()
 				tag  = tags[i] as Tag2
 				
-				var x : QuickTasksVO = new QuickTasksVO()
+				x = new QuickTasksVO()
 				x.tag = tag	
 				//var saveableTag :  Tag  = this.old_SavedTagsByNameDict[tag.name] 
-				if ( indexProcessing != -1  )
-				{
-					if ( i != this.indexProcessing ) 
-						continue; 
-				}
+ /*
 				if ( tag.name == 'fff' ) 
 				{
 					//trace('fff');
-				}
+				}*/
 				var oldTag : Tag2 = oldTagNamesDict[tag.name]
 				if ( oldTag == null ) 
 				{
+					x = new QuickTasksVO()
+					x.tag = tag						
 					createTags.push( tag ) 
 					task =  'creating ' + tag.name
 					trace(task) ; 
@@ -398,6 +430,8 @@ package  org.syncon.evernote.basic.controller
 				//old and link changed
 				if (  oldTag != null &&  tag.parentGuid != oldTag.parentGuid )   
 				{
+					x = new QuickTasksVO()
+					x.tag = tag						
 					relinkTags.push( oldTag ) 
 					var parentName : String = 'nothing'; 
 					if ( tag.parentGuid != null ) 
@@ -419,6 +453,8 @@ package  org.syncon.evernote.basic.controller
 				//new and add link
 				if ( oldTag == null &&   tag.parentGuid != null )   
 				{
+					x = new QuickTasksVO()
+					x.tag = tag						
 					relinkTags.push( oldTag ) 
 					if ( tag.parentGuid != null ) 
 						parentName = guidsToTagDict[tag.parentGuid].name
@@ -442,21 +478,22 @@ package  org.syncon.evernote.basic.controller
 					}
 					else
 					{
+						
 						x.task_name = task
 						x.cmd = QuickTagEditorCommand_base.TASK_UPDATE
 						x.changeParentTo = tag.parentGuid;
-						x.step = 5			
-						processingCommands.push( x ) 
-						//this could probably be fixed into one step 
-						/*
-						processingCommands.push( {type:'link_new_guid_to_existing_tag', 
-							name:tag.name, linktoname:tag.guid, linkto:tag.parentGuid, p:5} )	
-						*/	
+						x.step = 5		
+						//don't need a command for this 
+						//new tag, with existing parent would save fine
+						//processingCommands.push( x ) 
+					 
 					}
 				}
 				//destroy
 				if ( destroy.indexOf( tag.name ) != -1 )   
 				{
+					x = new QuickTasksVO()
+					x.tag = tag						
 					//relinkTags.push( oldTag ) 
 					task = 'delete ' + tag.name
 					trace(task) ; 
@@ -469,6 +506,8 @@ package  org.syncon.evernote.basic.controller
 				}	
 				if ( renameDict[tag.name] != null ) 
 				{
+					x = new QuickTasksVO()
+					x.tag = tag						
 					var renameTo : String = renameDict[tag.name]
 					task =  'rename ' + tag.name + ' to ' + renameTo 
 					trace(task) ; 
@@ -502,7 +541,18 @@ package  org.syncon.evernote.basic.controller
 				}					
 				*/
 			}
+			trace('');trace('');
+			for each (     var qtask : QuickTasksVO      in processingCommands) 
+			{	
+				trace( qtask.task_name )
+			}				
 			processingCommands.sortOn('step')
+				trace('post sort'); 
+				trace('');trace('');
+			for each (   qtask       in processingCommands) 
+			{	
+				trace( qtask.task_name )
+			}					
 			if ( a_ ) 
 				this.automate( processingCommands )
 			//sort commands 
@@ -558,11 +608,6 @@ package  org.syncon.evernote.basic.controller
 				}						
 			}	
 			*/
-			if ( indexProcessing >= tags.length -1 ) 
-			{
-				trace('complete')
-				this.fxDone()
-			}
 			
 			//export text based array ... use the roots on the NEW array 
 			//all children in children array
@@ -574,7 +619,7 @@ package  org.syncon.evernote.basic.controller
 					clonedTagForPrinting.name =  renameDict[tag.name]
 				txt = this.printMe( clonedTagForPrinting, txt ) 
 			}
-			return [[], txt, tasks];
+			return [[], txt, processingCommands ];
 		}
 		static public var TASK_CREATE : String = 'taskCreate'; 
 		static public var TASK_UPDATE : String = 'taskUpdate'; 
@@ -588,15 +633,21 @@ package  org.syncon.evernote.basic.controller
 				this.processingSteps =asdf
 				this.old_SavedTagsByNameDict = new Dictionary(true)
 			}
-			if ( this.indexProcessing > this.processingSteps.length )
+			if ( this.indexProcessing >= this.processingSteps.length )
 			{
 				this.indexProcessing = -1; 
 				if ( this.fxDone != null ) this.fxDone(); 
+				return;
 			}
 			var task :   QuickTasksVO = this.processingSteps[this.indexProcessing]; 
 			var tag : Tag2 = task.tag; 
 			if ( task.cmd == QuickTagEditorCommand_base.TASK_CREATE ) 
 			{
+				//we will link them up later, so if this si new and linking to another new item 
+				//do not allow it
+				tag = tag.clone(); 
+				if ( tag.parentGuid != null &&  tag.parentGuid.indexOf('new_') != -1 ) 
+					tag.unsetParentGuid()
 				tag.unsetGuid(); 
 				this.dispatchEvent( EvernoteAPICommandTriggerEvent.CreateTag( tag , 
 					this.onStepDone , this.onStepFault ))
@@ -618,12 +669,28 @@ package  org.syncon.evernote.basic.controller
 					trace('automate 5: ' + task.tag.parentGuid) ; 
 					//ok we knew who
 				}	
-				if ( task.step == 6 ) 
+				if ( task.step == 6 ) //link to newly created tag
 				{
+					/*	
+					//added new_ when creating new ones unset this
+					if ( tag.guid.indexOf('new_' ) != -1 ) 
+						tag.unsetGuid();*/
+					//replace tag with previously saved version 
+					if ( this.old_SavedTagsByNameDict[tag.name] != null ) 
+					{
+						//need id of existing one 
+						tag.guid = this.old_SavedTagsByNameDict[tag.name].guid;
+					}
+					else
+					{
+						if ( tag.guid.indexOf('new_' ) != -1 ) 
+							tag.unsetGuid();						
+					}
+					
 					//dont' have to wrroy if it wasn't saved ...t he n we wold've used the id
 					var linkToTag : Tag = this.old_SavedTagsByNameDict[task.changeParentTo_Name]
 					trace('able to find parent?'); 
-					tag.parentGuid = linkToTag.guid
+					tag.parentGuid = linkToTag.guid					
 				}					
 				this.dispatchEvent( EvernoteAPICommandTriggerEvent.UpdateTag( tag , 
 					this.onStepDone , this.onStepFault ))

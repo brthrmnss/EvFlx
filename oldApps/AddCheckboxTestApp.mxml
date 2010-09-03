@@ -50,7 +50,27 @@
 						this.txtEvernoteInput.text, this.onEvernoteConverted )
 				cmd.event = event
 				cmd.execute();
-			}  			
+			}
+			
+			protected function onExport(ev:MouseEvent):void  
+			{  
+				var xml : XML = TextConverter.export(  this.rtEvernoteToTfRendering.textFlow ,  
+					TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.XML_TYPE ) as XML//..toString()
+		 
+				var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
+				var event : EvernoteToTextflowCommandTriggerEvent = 
+					new EvernoteToTextflowCommandTriggerEvent(
+						EvernoteToTextflowCommandTriggerEvent.EXPORT,
+						xml.toXMLString(), this.onExported )
+				cmd.event = event
+				cmd.execute();
+			}  				
+			
+				public function onExported(onNoteContentConverted:String)  : void
+				{
+					return;
+				}
+			
 			public var holders : EntodoHolders = new EntodoHolders();
 			protected function onEvernoteConverted( tf : TextFlow, chkbox : Array ):void
 			{ 
@@ -60,6 +80,7 @@
 				tf.flowComposer.addController(
 					new ContainerController( this.rtEvernoteToTfRendering) );      
 				//_textFlow.flowComposer.updateAllControllers(); 
+				this.onExport(null)
 				return;
 			}
 			

@@ -46,6 +46,7 @@ package  org.syncon.evernote.basic.controller
 			if ( event.type == QuickTagEditorCommandTriggerEvent.PROCESS_TAGS ) 
 			{
 				this.base.dispatchEvent = this.dispatch; 
+				base.fxDone = event.fxSuccess
 				var output : Array  = this.base.onProcess(event.instructions, event.tags, true )
 			}		
 			if ( event.type == QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS ) 
