@@ -9,6 +9,7 @@
 	-->
 	<fx:Script>  
 		<![CDATA[  
+			import org.syncon.utils.EntodoHolders;
 			import flashx.textLayout.container.ContainerController;
 			import flashx.textLayout.conversion.ConversionType;
 			import flashx.textLayout.conversion.TextConverter;
