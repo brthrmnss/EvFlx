@@ -59,7 +59,7 @@
 	</s:states>
 	
 	
-	<view:control_menu  textDecoration="none" x="5" y="5" id="menuButtons" />
+	<view:control_menu visible="false"  textDecoration="none" x="5" y="5" id="menuButtons" />
 	
 	<s:HGroup right="5" y="5" verticalAlign="middle"  >
 		<view:bandwidth_usage id="usage" />

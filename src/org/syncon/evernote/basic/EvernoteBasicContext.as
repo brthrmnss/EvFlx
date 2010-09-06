@@ -48,6 +48,8 @@ package  org.syncon.evernote.basic
 			EvernoteAPIHelperCommand.mapCommands( commandMap )
 			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE,  SaveNoteCommand, null, false );
 			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,  SaveNoteCommand, null, false );			
+			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS,  SaveNoteCommand, null, false );			
+			
 			
 			// Services
 			//injector.mapSingletonOf( EvernoteService, IEvernoteService  )		

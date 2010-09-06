@@ -10,10 +10,12 @@ package org.syncon.evernote.basic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.model.Note2;
+	import org.syncon.evernote.model.Tag2;
 	
 	public class TagListAdjustableMediator extends Mediator
 	{
@@ -28,6 +30,7 @@ package org.syncon.evernote.basic.view
 		{
 			ui.addEventListener( 'removeTag', this.onRemoveTag )
 				ui.addEventListener( 'getGuidsForTags', this.onGetGuids )
+			ui.addEventListener(TagListAdjustable.TAGS_CHANGED, this.onTagsChanged )
 			/*
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.NOTEBOOK_RESULT, this.onNotebookResult);
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.SEARCH_RESULT, this.onSearchChanged);			
@@ -49,7 +52,7 @@ package org.syncon.evernote.basic.view
 				return
 			}
 			
-			
+			/*
 			var noteCopy :  Note2 = new Note2()
 			this.model.clone( noteCopy, this.ui.updateNote ) 
 			//noteCopy.guid = this.ui.updateNote.guid
@@ -67,7 +70,17 @@ package org.syncon.evernote.basic.view
 			this.dispatch( EvernoteAPICommandTriggerEvent.UpdateNote(noteCopy,
 				tagRemovedResult, tagRemovedFault ) )
 			//this.model.currentNotebook( e.data as Notebook ) 
+			*/	
+			
+			var evt : SaveNoteCommandTriggerEvent = new SaveNoteCommandTriggerEvent( 
+				SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS, this.ui.updateNote, null,
+				tagRemovedResult, tagRemovedFault, true, null, 
+				null, e.data as Tag2 ) 
+			this.dispatch( evt ) 
+				
 		}		
+		
+		
 		
 		private function tagRemovedResult(e: Note): void
 		{
@@ -110,5 +123,23 @@ package org.syncon.evernote.basic.view
 			this.ui.resultCount(  int( e.data.length )  )
 		}		
  */
+		
+		private function onTagsChanged(e:CustomEvent): void
+		{
+			if ( ui.liveManiuplation == false ) return; 
+			
+			if ( this.ui.updateNote == null ) 
+			{
+				trace( ' need a note ' ) ; 
+				return
+			}
+ 
+			var evt : SaveNoteCommandTriggerEvent = new SaveNoteCommandTriggerEvent( 
+				SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS, this.ui.updateNote, null,
+				null, null, true, null, 
+				null, null ) 
+			this.dispatch( evt ) 
+			
+		}				
 	}
 }

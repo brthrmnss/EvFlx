@@ -2,7 +2,7 @@
 <s:MXDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"   creationComplete="mxdatagriditemrenderer1_creationCompleteHandler(event)"
-						  focusEnabled="true" height="50" xmlns:controls="qs.controls.*">
+						  focusEnabled="true" height="50" xmlns:controls="qs.controls.*" xmlns:view="org.syncon.evernote.basic.view.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -37,6 +37,10 @@
 				/* this.adjustable.tags = note.tags; 
 				this.adjustable.updateNote = note;  */
 				//trace( this.note.thumb ); 
+				
+				this.adjustable.tags = note.tags; 
+				this.adjustable.updateNote = note; 				
+				
 				if ( this.note.guid != '' &&  this.note.guid != null ) 
 				{
 		 
@@ -185,6 +189,10 @@ header( 'Content-Length: '.$response_headers['download_content_length']);
 				   toolTip="Click to view this entry, Ctrl+Click to open for later"
 				   useHandCursor="true" buttonMode="true"
 				  paddingBottom="0"  />
+		
+		
 	 </s:HGroup>
-	
+	<view:TagListAdjustable id="adjustable"  y="5"  width="40%" right="5" >
+		 
+	</view:TagListAdjustable>
 </s:MXDataGridItemRenderer>

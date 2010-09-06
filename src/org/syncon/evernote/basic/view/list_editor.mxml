@@ -5,7 +5,9 @@
 					  width="100%" height="100%"  creationComplete="skinnablecontainer1_creationCompleteHandler(event)"
 					  xmlns:view="org.syncon.evernote.basic.view.*"
 					  xmlns:components="brust.components.*" xmlns:tlf="net.asciiworks.tlf.*">
-	
+	<fx:Metadata>
+		[Event(name="tagAdded", type="org.syncon.evernote.basic.model.CustomEvent")]		
+	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
 			import brust.components.SearchInput;
@@ -48,7 +50,8 @@
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
 			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
 			
-			static public var NOTE_NOTEBOOK_CHANGED : String = 'noteNotebookChanged'
+			static public var NOTE_NOTEBOOK_CHANGED : String = 'noteNotebookChanged';
+			static public var TAG_ADDED : String = 'tagAdded'			
 			
 			override protected function partAdded(partName:String, instance:Object):void {
 				super.partAdded(partName, instance);
@@ -61,7 +64,7 @@
 						this.dropdownNotebook_changeHandler ) 
 				}	
 				if (instance == this.listTags) {
-					this.listTags.addEventListener( TagListAdjustable.TAGS_CHAGNED,
+					this.listTags.addEventListener( TagListAdjustable.TAGS_CHANGED,
 						this.listTags_tagsChangedHandler ) 
 					this.listTags.tags=this.selectedTags
 				}		
@@ -84,7 +87,7 @@
 						this.dropdownNotebook_changeHandler ) 
 				}	
 				if (instance == this.listTags) {
-					this.listTags.removeEventListener( TagListAdjustable.TAGS_CHAGNED,
+					this.listTags.removeEventListener( TagListAdjustable.TAGS_CHANGED,
 						this.listTags_tagsChangedHandler )
 					this.listTags.tags=null;
 				}	
@@ -120,7 +123,8 @@
 				var xTags : Array = this.note.tags.toArray()
 				//this.selectedTags
 				this.listTags.tags = this.note.tags; 
-					
+				this.listTags.updateNote=this.note; 
+				
 				//this.dropdownNotebook.fselectedItem = this._note.notebookGuid; 
 				for each ( var notebook_  :  Notebook in this.dropdownNotebook.dataProvider ) 
 				{
@@ -196,6 +200,9 @@
 				//this.selectedTags.addItem( event.item ) 
 				this.listTags.tags.addItem( event.item )
 				this.txtTags.showPopUp()
+				
+				this.dispatchEvent( new CustomEvent( TAG_ADDED,
+					event.item  ) )
 					
 			}
 
@@ -232,10 +239,32 @@
 
 			protected function listTags_tagsChangedHandler(event: org.syncon.evernote.basic.model.CustomEvent):void
 			{
-				this.dirty = true; 
-				// TODO Auto-generated method stub
+				//chang etags instantly ...
+				//this.dirty = true; 
 			}
 
+			/***
+			 * Returns temporary copy of note, and new settings
+			 * */
+			public function getTemp()  : Object
+			{/* 
+				var args : Object = {}
+				this._note.tempTitle = this.editor.txtTitle.text
+				args.tf = this.editor.txtContents.textFlow
+				this._note.tags = this.editor.listTags.tags;
+				var xTags : Array = this.editor.listTags.tags.toArray(); 
+				this._note.notebookGuid = this.editor.dropdownNotebook.selectedItem.guid; 
+				args.note = this._note; 
+				 */
+				var args : Object = {}
+				this._note.tempTitle = this.txtTitle.text
+				args.tf = this.txtContents.textFlow
+				this._note.tags = this.listTags.tags;
+				var xTags : Array = this.listTags.tags.toArray(); 
+				this._note.notebookGuid = this.dropdownNotebook.selectedItem.guid; 
+				args.note = this._note; 
+				return args; 
+			}
 		]]>
 	</fx:Script>
 </s:SkinnableContainer>

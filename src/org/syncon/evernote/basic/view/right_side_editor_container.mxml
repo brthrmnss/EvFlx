@@ -33,14 +33,9 @@
  
 			public function getTemp()  : Object
 			{
-				var args : Object = {}
-				this._note.tempTitle = this.editor.txtTitle.text
-				args.tf = this.editor.txtContents.textFlow
-				this._note.tags = this.editor.listTags.tags;
-				var xTags : Array = this.editor.listTags.tags.toArray(); 
-				this._note.notebookGuid = this.editor.dropdownNotebook.selectedItem.guid; 
-				args.note = this._note; 
-				return args
+				
+				
+				return this.editor.getTemp()
 			}
 			 
 		]]>

@@ -57,7 +57,7 @@
 										labelField="name" promptText="Search"
 										skinClass="brust.skins.SearchInputSkin" id="txtTags" />
 				<view:TagListAdjustable id="listTags"   width="{this.width-250}"
-										liveManiuplation="false"   minHeight="25"
+										liveManiuplation="true"   minHeight="25"
 										draggableInto="true" 
 									  />
 			</s:HGroup>		

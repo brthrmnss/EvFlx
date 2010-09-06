@@ -131,15 +131,8 @@ package  org.syncon.evernote.basic.controller
 			this.apiModel.loadNotebooks( this.apiModel.notebooks.toArray() );//
 			if ( e.tagCounts != null ) 
 			{
-				for each ( var t : Tag2 in this.apiModel.tags ) 
-				{
-					if ( e.tagCounts[t.guid] != null ) 
-					{
-						t.noteCount = e.tagCounts[t.guid] ;
-						t.tagUpdated();
-						//nb.noteCount = e.notebookCounts[nb.guid]
-					}
-				}			
+				this.apiModel.tagCounts = e.tagCounts; 
+				this.apiModel.updateTagCounts();
 			}
 			
 			if ( this.event.fxSuccess != null ) this.event.fxSuccess(e);

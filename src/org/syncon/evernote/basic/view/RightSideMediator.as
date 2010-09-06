@@ -162,7 +162,8 @@ package org.syncon.evernote.basic.view
 				//if ( this.alt, go to edit );
 				ui.currentState = StateView
 				ui.view.note = this.note
-			
+				
+				
 				if ( note_.content == null )
 				{
 					this.dispatch(   EvernoteAPICommandTriggerEvent.GetNote( note.guid,
@@ -215,7 +216,7 @@ package org.syncon.evernote.basic.view
 		/**
 		 * Only occurs after note has been viewed ... 
 		 * */
-		public function noteTextConvertToTf( e  : TextFlow )  : void
+		public function noteTextConvertToTf( e  : TextFlow, chks : Array )  : void
 		{
 			//this.note.content = e; 
 			updateContentText(e)

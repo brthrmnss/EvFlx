@@ -6,13 +6,19 @@
 				useHandCursor="true"  buttonMode="true"
 				>
 	
+	<fx:Metadata>
+		[Event(name="removeTag", type="org.syncon.evernote.basic.model.CustomEvent")]
+	</fx:Metadata>			
 	<fx:Script> 
 		<![CDATA[ 
-			import com.evernote.edam.type.Tag;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
-			[Bindable] public var tag :  Tag = new Tag();
+			import org.syncon.evernote.model.Tag2;
+			
+			static public var REMOVE_TAG : String = 'removeTag'		;		
+			
+			[Bindable] public var tag :   Tag2 = new Tag2();
 			public var tagName : String = '';
 			override public function set data(value:Object):void { 
 				super.data = value; 
@@ -20,7 +26,7 @@
 				if (value== null) 
 					return; 
 				// If the data property is not null,
-				tag = value as Tag
+				tag = value as Tag2
 				if ( tag == null )
 				{
 					tagName = value as String
@@ -37,7 +43,7 @@
 
 			protected function skinnablecomponent1_clickHandler(event:MouseEvent):void
 			{
-				var e : CustomEvent = new CustomEvent( 'removeTag', this.tag ) 
+				var e : CustomEvent = new CustomEvent( REMOVE_TAG, this.tag ) 
 				this.dispatchEvent( e )
 			}
 

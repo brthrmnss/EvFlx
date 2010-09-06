@@ -19,7 +19,8 @@
 		<view:right_side_list_container id="list" 
 										skinClass="org.syncon.evernote.basic.view.skins.RightSideListContainerDCSkin" 
 										width="300"   height="100%" />
-			<view:right_side_editor_container id="edit" 
+			<view:right_side_editor_container id="edit"  enabled="false" enabled.edit="true"
+											   alpha="0.1" alpha.edit="1"
 				skinClass="org.syncon.evernote.basic.view.skins.RightSideEditorContainerDCSkin"  
 				width="100%" />			
 	</mx:HDividedBox>

@@ -67,6 +67,7 @@ package org.syncon.evernote.basic.model
 			_searchResult = new ArrayCollection();
 			_notebooks =  new ArrayCollection();
 			_tags = new ArrayCollection();
+			_tagsFlatList = new ArrayCollection();				
 			_savedSearches = new ArrayCollection();			
 			this.allNotebooks = new Notebook2()
 			this.allNotebooks.name = 'All Notebooks'
@@ -80,10 +81,17 @@ package org.syncon.evernote.basic.model
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }
 		private var _searchResult: ArrayCollection 
 		private var _notebooks :  ArrayCollection ; public function get notebooks () : ArrayCollection { return this._notebooks }
+		private var _tagsFlatList :  ArrayCollection ; public function get tagsFlatList () : ArrayCollection { return this._tagsFlatList }
 		private var _tags :  ArrayCollection ; public function get tags () : ArrayCollection { return this._tags }
 		private var tagDict : Dictionary = new Dictionary(false)
-		private var tagGuidDict : Dictionary = new Dictionary(false)			
-		
+		private var tagGuidDict : Dictionary = new Dictionary(false)	
+			/**
+			 * When set, will automatically update the counts; 
+			 * */
+		public var _tagCounts : Dictionary ; public function get tagCounts () : Dictionary { return this._tagCounts }
+		public function set  tagCounts (d:Dictionary)  :void { 
+			this._tagCounts = d; this.updateTagCounts() }
+		public var nbCounts : Dictionary = new Dictionary(true)			
 		private var _savedSearches :  ArrayCollection ; public function get savedSearches () : ArrayCollection { return this._savedSearches }				
 		
 		/**
@@ -251,16 +259,55 @@ package org.syncon.evernote.basic.model
 		public function loadTags(e:Array)  : void
 		{
 			var e : Array = convert( e, Tag2 ) 
-			this.addAllTo( this._tags,  e  ) 
+			this.addAllTo( this._tagsFlatList,  e  ) 
 			this.tagDict = new Dictionary(true) 
-			tagGuidDict = new Dictionary(false)
-			for each ( var tag : Tag in this.tags ) 
+			tagGuidDict = new Dictionary(true)
+			var rootDictByGuid : Dictionary = new Dictionary(true)
+			var roots : Array = []; 
+				
+			for each ( var tag : Tag in this._tagsFlatList ) 
 			{
 				this.tagDict[tag.name] = tag
-				this.tagGuidDict[tag.guid] = tag; 
+				this.tagGuidDict[tag.guid] = tag;
+				if ( tag.parentGuid== '' ||  tag.parentGuid == null  ) 
+				{
+					roots.push( tag ) 
+					rootDictByGuid[tag.guid] = tag; 
+				}
+			}	
+			
+			this.addAllTo( this._tags, roots ) 
+			//add children to roots
+			for each (   tag in this._tagsFlatList ) 
+			{
+				if ( tag.parentGuid== '' ||  tag.parentGuid == null  ) 
+					continue; 
+				var rootTag :  Tag2 = rootDictByGuid[tag.parentGuid] 
+				rootTag.children.push( tag ) 
 			}				
+			
+			
+			this.updateTagCounts()
+			
 			this.dispatch( new  EvernoteAPIModelEvent( EvernoteAPIModelEvent.RECIEVED_TAGS, e ) ) 
 		}			
+		
+		public function updateTagCounts() : void
+		{
+			if ( this._tagsFlatList == null || this.tagCounts == null)
+					return; 
+			for each ( var t : Tag2 in this._tagsFlatList ) 
+			{
+				if ( this.tagCounts[t.guid] != null ) 
+				{
+					t.noteCount = this.tagCounts[t.guid] ;
+					t.tagUpdated();
+				}
+			}		
+		}
+		
+		
+		
 		
 		public function loadSavedSearches(e:Array)  : void
 		{

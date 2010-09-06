@@ -1,11 +1,14 @@
 package  org.syncon.evernote.basic.controller
 {
 	import com.evernote.edam.error.EDAMUserException;
+	import com.evernote.edam.type.Note;
 	
 	import flash.events.Event;
 	
 	import flashx.textLayout.conversion.ConversionType;
 	import flashx.textLayout.conversion.TextConverter;
+	
+	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
@@ -27,6 +30,18 @@ package  org.syncon.evernote.basic.controller
 		private var createdNew : Boolean = false; 
 		override public function execute():void
 		{
+			if ( event.type == SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS ) 
+			{
+				this.note = event.note; 
+				//this.note.title = e.data.tempTitle; 
+				if ( this.note.tags == null ) 
+				{
+					throw ( ' need tags to be set first' ) 
+				}
+				 
+				this.onRemoveTag()
+				 		
+			}			
 	 		if ( event.type == SaveNoteCommandTriggerEvent.SAVE_NOTE ) 
 			{
 				this.note = event.note; 
@@ -80,6 +95,58 @@ package  org.syncon.evernote.basic.controller
 		}
 		
 		
+		private function onRemoveTag(): void
+		{
+			var noteCopy :  Note2 = new Note2()
+			this.apiModel.clone( noteCopy,  this.note  ) 
+			//noteCopy.guid = this.ui.updateNote.guid
+			//noteCopy.title = this.ui.updateNote.title;
+			noteCopy.tagGuids = []; 	
+			noteCopy.unsetContent()
+			noteCopy.unsetTagNames()
+			
+			if ( event.tagRemove != null ) 
+			{
+				for each ( var tag :   Tag2 in  this.note.tags )
+				{
+					if ( event.tagRemove != null && event.tagRemove.guid != tag.guid ) 
+						noteCopy.tagGuids.push(  tag.guid ) 
+				}
+			}
+			else if ( event.tagAdd != null ) 
+			{
+				for each (   tag  in  this.note.tags )
+				{
+						noteCopy.tagGuids.push( tag.guid ) 
+				}				
+				noteCopy.tagGuids.push( event.tagAdd.guid )
+			}
+			else
+			{
+				for each (   tag  in  this.note.tags )
+				{
+					noteCopy.tagGuids.push( tag.guid ) 
+				}				
+			}
+			var dbg :  Array = [noteCopy.tagGuids]
+			this.dispatch( EvernoteAPICommandTriggerEvent.UpdateNote(noteCopy,
+				tagRemovedResult, tagRemovedFault ) )
+		}				
+			
+			private function tagRemovedResult(e:  Note): void
+			{
+				var savedTag : Array = this.apiModel.convertTagGuidsToTags( e.tagGuids )  
+				this.note.tags =  new ArrayCollection( savedTag )
+				this.note.tagsUpdated();
+				//this.note.noteUpdated();
+				return;
+			}
+			private function tagRemovedFault(e:Event): void
+			{
+				return; 
+			}		
+		
+		
 		private function onNoteContentConverted(str: String):void
 		{
 			str = str.replace(new RegExp("[\n\r]","g"),"");
@@ -124,7 +191,7 @@ package  org.syncon.evernote.basic.controller
 			{
 				this.note.title = this.note.titleOrTempTitle()
 			}
-			
+			var t :   Array = this.note.tags.toArray();
 			trace( 'note content ' + o.content )
 			if ( this.event.type== SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK ) 
 			{

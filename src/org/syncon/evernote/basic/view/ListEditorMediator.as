@@ -7,11 +7,14 @@ package org.syncon.evernote.basic.view
 	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.model.Notebook2;
+	import org.syncon.evernote.model.Tag2;
+	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 	
 	public class ListEditorMediator extends Mediator
 	{
@@ -27,6 +30,9 @@ package org.syncon.evernote.basic.view
 			this.ui.addEventListener( list_editor.NOTE_NOTEBOOK_CHANGED, this.onNotebookChanged ) 
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_NOTEBOOK_LIST, this.onNotebookResult);
+			
+			this.ui.addEventListener( list_editor.TAG_ADDED, this.onTagAdded ) 
+			
 			this.ui.dropdownNotebook.dataProvider = this.model.notebooks 
 			this.ui.updateDropdownSize() 
 			eventMap.mapListener(eventDispatcher, 
@@ -43,6 +49,7 @@ package org.syncon.evernote.basic.view
 		private function onTagsRecieved(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.tags = new ArrayCollection( e.data as Array )
+			this.ui.txtTags.dataProvider = this.ui.tags; 
 			//this.ui
 		}
 				
@@ -60,6 +67,24 @@ package org.syncon.evernote.basic.view
 				null, false, this.oldNotebook )			
 				)
 		}
+		
+		public function onTagAdded(e:CustomEvent):void
+		{
+			var args : Object = this.ui.getTemp()
+			this.dispatch( 
+				new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS, args.note, 
+					args.tf, callbackFx, 
+					this.saveEditorSwitchedOutNoteFault, true, null, e.data as Tag2 )	
+			)					
+
+		}
+		private function saveEditorSwitchedOutNoteFault( o:Object):void
+		{
+			//var ee : ShowAlertMessageTriggerEvent
+			this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 'Could not save note...') )  
+			return;
+		}					
+				
 		
 		public function callbackFx(e:Object):void
 		{

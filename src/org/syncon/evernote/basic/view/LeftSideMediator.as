@@ -25,8 +25,6 @@ package org.syncon.evernote.basic.view
 		override public function onRegister():void
 		{
 			//ui.addEventListener( 'changedNotebook', this.onChangeSearchBar ) 
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.RECIEVED_TAGS,
-				this.onRecievedTags);	
 			eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.RECIEVED_SAVED_SEARCHES, this.onRecievedSearches);		
 			eventMap.mapListener(eventDispatcher, 
@@ -38,8 +36,7 @@ package org.syncon.evernote.basic.view
 		/*	eventMap.mapListener(eventDispatcher, 
 				EvernoteAPIModelEvent.NOTE_COUNT_CHANGED, this.onNoteCountChanged);		*/		
 			//ui.list.notes = this.model.notes; 
-			if ( this.ui.tags != null )
-			this.ui.tags.tags = this.model.tags;
+
 			if ( this.ui.listSavedSearches != null )			
 			this.ui.listSavedSearches.notebooks = this.model.savedSearches; 
 
@@ -52,12 +49,7 @@ package org.syncon.evernote.basic.view
 			if ( this.ui.listNotebooks != null ) 
 				this.ui.listNotebooks.selectedNotebook = e.data as Notebook2
 		}		
-	 
-		private function onRecievedTags(e:EvernoteAPIModelEvent) : void
-		{
-			this.ui.tags.tags = this.model.tags;
-		}		
- 
+
 		private function onRecievedSearches(e:EvernoteAPIModelEvent) : void
 		{
 			this.ui.listSavedSearches.notebooks = e.data as ArrayCollection

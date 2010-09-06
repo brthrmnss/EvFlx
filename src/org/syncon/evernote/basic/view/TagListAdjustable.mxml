@@ -23,7 +23,7 @@
 			import org.syncon.evernote.model.Tag2;
 			private var _tags : ArrayCollection = new ArrayCollection()
 				
-			static public var TAGS_CHAGNED : String = 'tagsChanged'				
+			static public var TAGS_CHANGED : String = 'tagsChanged'				
 				
 			/**
 			 * Flag indiates whether tags should be removed instantly 
@@ -196,22 +196,27 @@
 				if(event.dragSource.hasFormat("items"))
 					items = items.concat(event.dragSource.dataForFormat("items") as Array);
 				
-				var guids : Array = [] 
+				var existingTagGuids : Array = [] 
 				for each ( var tag :  Tag2 in this.tags ) 
 				{
-					guids.push( tag.guid ) 
+					existingTagGuids.push( tag.guid ) 
 				}
+				var changed : Boolean = false; 
 				for each(var item:Object in items)
 				{
 					
 				/* 	var obj:Object = new Object()
 					obj.label = item.label as String; */
-					if ( guids.indexOf( item.guid )  == -1 ) 
+					if ( existingTagGuids.indexOf( item.guid )  == -1 ) 
 					{
 						(list.dataProvider as ArrayCollection).addItemAt(item, index);
-						this.dispatchEvent( new CustomEvent( TAGS_CHAGNED ) ) 
+						changed = true
+						if ( this.liveManiuplation && this._updateNote != null ) 
+							this._updateNote.tags.addItemAt(item, index);
 					}
 				}
+				if ( changed ) 
+					this.dispatchEvent( new CustomEvent( TAGS_CHANGED ) ) 
 				
 			}
 			
@@ -256,13 +261,19 @@
 		   verticalCenter="0" width="100%" minHeight="20"
 		   dragEnter="onListDragEnter(event)"
 		   dragOver="onListDragOver(event)"
-		   dragExit="onListDragExit(event)"
+		   dragExit="onListDragExit(event)" 
 		   dragDrop="onListDragDrop(event)"
 		   dragComplete="onListDragComplete(event)"
 			itemRenderer="org.syncon.evernote.basic.view.tag_itemrenderer">
 		<s:layout>
-			<s:HorizontalLayout />
+			
+			<s:HorizontalLayout   />
 		</s:layout>
+		
+		<s:scroller  >
+			<s:Scroller  alpha="0.1" horizontalScrollPolicy="off" verticalScrollPolicy="off" />
+		</s:scroller>
 	</s:List>
+	<s:Scroller  horizontalScrollPolicy="off" verticalScrollPolicy="off" />
 	
 </s:Group>

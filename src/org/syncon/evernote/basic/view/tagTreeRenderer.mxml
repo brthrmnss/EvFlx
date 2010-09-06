@@ -24,9 +24,14 @@
 			
 			public function updateItemRenderer(e:Event=null)  : void
 			{
-				labelField.text = '.'+this.tag.name.toString()
+				labelField.text = this.tag.name.toString()
 				//text="{treeListData.label}"
 				this.lblCount.text = this.tag.noteCount.toString();
+				
+				if ( this.tag.children.length == 0 ) 
+					treeIcon.visible = false
+				else
+					treeIcon.visible = true ;
 			/* 	if ( this.tag.name.toLowerCase() == 'all notebooks' ) 
 					this.txtLbl.setStyle('fontStye', 'italic' ) 
 				else
@@ -61,7 +66,7 @@
 		<s:Group id="disclosureGroup">
 			<s:BitmapImage source="{treeListData.disclosureIcon}" visible="{treeListData.hasChildren}" />
 		</s:Group>
-		<s:BitmapImage source="{treeListData.icon}" />
+		<s:BitmapImage id="treeIcon" source="{treeListData.icon}" />
 		<s:Label id="labelField" paddingTop="2"
 				 color.hovered="0xFFFFFFF" color.selected="0xFFFFFFF" 
 				 useHandCursor.hovered="true"  

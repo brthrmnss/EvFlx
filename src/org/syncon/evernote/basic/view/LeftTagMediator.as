@@ -30,9 +30,20 @@ package org.syncon.evernote.basic.view
 			ui.addEventListener( left_tag.TAGS_SELECTED, this.onSelectedTag )	
 			ui.addEventListener( left_tag.DELETE_TAG, this.onDeleteTag )	
 			ui.addEventListener( left_tag.REMOVE_TAG_FROM_ALL_NOTES, this.onDeTag )	
-			ui.addEventListener( left_tag.RENAME_TAG, this.onRenameTag )					
-		}
+			ui.addEventListener( left_tag.RENAME_TAG, this.onRenameTag )		
+				
+			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.RECIEVED_TAGS,
+				this.onRecievedTags);	
+			
+			this.onRecievedTags( null ) 	
+		} 
 	 
+		private function onRecievedTags(e:EvernoteAPIModelEvent) : void
+		{
+			this.ui.tags = this.model.tags;
+		}		
+		
+		
 		private function onNewTag(e:Event):void
 		{
 			this.dispatch( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP, 'popup_tag_form'  ) )  			

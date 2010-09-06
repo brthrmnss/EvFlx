@@ -35,8 +35,9 @@
 
 			[SkinPart(required="true")]
 			public var list:Object;	//listbase not gooe neough 
-			protected function list_itemClickHandler2(event:IndexChangeEvent):void
+			protected function list_itemClickHandler2(event:IndexChangeEvent, wait : Boolean = true):void
 			{
+				if ( wait ) { setTimeout(   list_itemClickHandler2,50,   event, false   )  ; return }
 				if ( event.newIndex == this.skipIndex ) 
 				{
 					this.skipIndex = -1
@@ -155,7 +156,7 @@
 				{
 					
 					
-					this.list.selectedItems = this.selectedItemsVector
+					this.list.selectedItems = this.selectedItemsVector()
 				}
 				else //mx component 
 				{
