@@ -304,6 +304,8 @@ package org.syncon.evernote.basic.controller
 				var id : String = i.@id
 				if ( id.toString().indexOf('en-todo-chk' ) != -1  )
 				{
+					if ( id.indexOf('|true') ) 
+						p.@checked = true; 
 					i.parent().replace(i.childIndex(), p);
 				}
 				

@@ -103,7 +103,7 @@
 				-->
 				
 				
-				<s:VGroup  width="100%"    >
+				<s:Group  width="100%"    >
 					<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
 									   height="{this.height-this.headerBar.height+10}"  
 									   >
@@ -115,7 +115,8 @@
 					paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
 					</s:RichEditableText>		
 					-->
-				</s:VGroup>				
+					<s:Group id="inlineElementsPane" height="100%" width="100%" />
+				</s:Group>				
 			</s:Scroller>
 			
 		</s:Group>

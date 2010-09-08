@@ -219,17 +219,17 @@ package org.syncon.evernote.basic.view
 		public function noteTextConvertToTf( e  : TextFlow, chks : Array )  : void
 		{
 			//this.note.content = e; 
-			updateContentText(e)
+			updateContentText(e, chks )
 		}
-		public function updateContentText(tf:TextFlow)  : void
+		public function updateContentText(tf:TextFlow, chks : Array )  : void
 		{
 			if ( ui.view != null && ui.view.viewer != null ) 
 			{
-				ui.view.viewer.conversionTFResult( tf) 
+				ui.view.viewer.conversionTFResult( tf, chks )
 			}
 			if ( ui.edit != null && ui.edit.editor != null ) 
 			{
-				ui.edit.editor.conversionTFResult( tf ) 				
+				ui.edit.editor.conversionTFResult( tf , chks )		
 			}
 		}
 

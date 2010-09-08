@@ -93,13 +93,14 @@ package org.syncon.utils
 					chk.move(pt2.x  , pt2.y);    
 				}
 			}
-			
+			public static var CheckedIndicator : String = '|true'
 			private function onChanged(e:Event):void
 			{
 				var id : String = this.checkBoxToInlineElementDic[e.currentTarget].id
 				var split : Array = id.split('|'); 
 				this.checkBoxToInlineElementDic[e.currentTarget].id =split[0] + '|' + e.currentTarget.selected
 				//e.currentTarget.id 
+				
 				tf.flowComposer.updateAllControllers(); 
 			}
 	}

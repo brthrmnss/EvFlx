@@ -28,8 +28,10 @@
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			import org.syncon.evernote.model.Notebook2;
+			import org.syncon.utils.EntodoHolders;
 			
 			import spark.components.DropDownList;
+			import spark.components.Group;
 			import spark.components.TextInput;
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
@@ -46,6 +48,9 @@
 			public var listTags:TagListAdjustable;		
 			[SkinPart(required="true")]
 			public var controlp:richtext_control_panel;				
+			
+			[SkinPart(required="true")]
+			public var inlineElementsPane:Group;							
 			
 			[Bindable] public var tags : ArrayCollection = new  ArrayCollection();
 			[Bindable] public var selectedTags : ArrayCollection = new  ArrayCollection();
@@ -180,9 +185,10 @@
 					this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}
 			
-			
-			public function conversionTFResult(tf: TextFlow):void
+			public var holders : EntodoHolders = new EntodoHolders();
+			public function conversionTFResult(tf: TextFlow, chks : Array ) :void
 			{
+				holders.loadUp( chks, tf, this.inlineElementsPane ) 
 				//this.txtContents.textFlow  = new TextFlow	
 				//this.txtContents.textFlow  = tf	
 				//this.txtContents.textFlow  = new TextFlow	

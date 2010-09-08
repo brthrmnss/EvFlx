@@ -28,7 +28,7 @@
 				this.txtContents.content  = TextConverter.importToFlow( str, 
 					TextConverter.TEXT_LAYOUT_FORMAT ) 
 			} */
-			public function conversionTFResult(tf:  TextFlow):void
+			public function conversionTFResult(tf:  TextFlow , chks  : Array):void
 			{
 				this.txtContents.textFlow  = tf	
 				//this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 

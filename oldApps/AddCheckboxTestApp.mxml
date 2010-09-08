@@ -144,8 +144,11 @@
 		<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
 	</s:layout>
 	<s:VGroup>
-		
-		<s:Button label="Convert Evernote" click="onConvertEvernote(event)"/>  		
+		<s:HGroup>
+			<s:Button label="Convert Evernote" click="onConvertEvernote(event)"/>  	
+			<s:Button label="onExport" click="this.onExport(event)"/>  		
+		</s:HGroup>
+			
 		<s:HGroup>
 			<s:VGroup>
 				<s:Label text="Input:" />
