@@ -1,0 +1,21 @@
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
+			   xmlns:s="library://ns.adobe.com/flex/spark"  
+			   xmlns:mx="library://ns.adobe.com/flex/mx"  
+			   
+			   creationComplete="onInit()"
+			   width="955" height="600" xmlns:editor="org.syncon.evernote.editor.*">  
+	<!--
+	<fx:Style source="Main.css"/>  
+	-->
+	<fx:Script>  
+		<![CDATA[  
+ 				public function onInit() : void
+				{
+					
+				}
+		]]>  
+	</fx:Script>
+ 
+		<editor:EditorTestContext id="context" contextView="{this}" />
+	
+</s:Application> 

@@ -165,5 +165,15 @@ package org.syncon.evernote.model
 		
 		public var thumb :  String = ''; 
 		public var auth : String = ''; 
+		
+		static public function convertNote( n: Note )  : Note2
+		{
+			var note2 : Note2 = new Note2()
+			note2.guid = n.guid; 
+			note2.content = n.content; 
+			note2.active = n.active; 
+			return note2; 
+		}
+	
 	}
 }
