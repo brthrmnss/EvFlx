@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:view="org.syncon.evernote.editor.view.*" xmlns:tlf="net.asciiworks.tlf.*">
+	
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.editor.utils.EditorUtils;
+			import org.syncon.evernote.editor.vo.EditorTestCaseVO;
+			
+			public var case_ : EditorTestCaseVO = new EditorTestCaseVO();
+			public function set data(value:EditorTestCaseVO):void { 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				case_ = value as EditorTestCaseVO
+				// set the Label controls appropriately. 
+				//txtLbl.text = case_.name.toString(); 
+				this.currentState = 'import'
+				if ( this.case_.exporting ) 
+					this.currentState = 'export'
+						
+				this.txtEvernoteXML.text = this.case_.evernoteXML; 
+				this.tlfEditor.textFlow = this.case_.tlf; 
+				this.txtImportedEvernoteXML.htmlText = this.case_.evernoteXML; 
+				this.txtImportedEvernoteXML.text = this.case_.tlf_toString;
+				this.txtExportEvernoteTxt.text = this.case_.exportedBackToEvernoteXML;
+				
+				this.txtSame.text = 'Same: '+
+					(this.case_.evernoteXML == this.case_.exportedBackToEvernoteXML).toString()
+			} 
+			
+			protected function onPreview(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 
+					EditorTestList.EXPORT_NOTE, this.case_ ) )
+			}
+			
+			
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var ee : EditorUtils; 
+				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()
+			}
+
+		]]> 
+	</fx:Script> 
+	<!--
+	<s:transitions>
+	<s:Transition toState="*" >
+	<s:AnimateColor targets="{[this.txtLbl]}"  
+	duration="250" />
+	</s:Transition>
+	</s:transitions>
+	-->
+	<s:layout>
+		<s:HorizontalLayout gap="3" verticalAlign="middle"/>
+	</s:layout>
+	<s:states> 
+		<s:State name="import"/> 
+		<s:State name="export"/> 
+	</s:states> 
+	
+	<mx:Image id="thumb" />
+	<mx:TextArea id="txtEvernoteXML" width="250"  height="250"/>
+	<mx:TextArea id="txtImportedEvernoteXML" width="250"  height="250" />
+	<tlf:TLFTextEditor id="tlfEditor" width="250"   automaticallyExpand="false" height="250" />
+	<mx:TextArea id="txtExportEvernoteTxt" width="250"  height="250" />
+	
+	<s:Label text="Same" id="txtSame" />
+	<s:Button label="Preview"  click="onPreview(event)"/>
+	
+	
+</s:Group>

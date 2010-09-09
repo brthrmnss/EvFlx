@@ -3,7 +3,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"  
 			   
 			   creationComplete="onInit()"
-			   width="955" height="600" xmlns:editor="org.syncon.evernote.editor.*">  
+			   width="955" height="600" xmlns:editor="org.syncon.evernote.editor.*" xmlns:view="org.syncon.evernote.editor.view.*">  
 	<!--
 	<fx:Style source="Main.css"/>  
 	-->
@@ -16,6 +16,10 @@
 		]]>  
 	</fx:Script>
  
+	<fx:Declarations>
 		<editor:EditorTestContext id="context" contextView="{this}" />
+	</fx:Declarations>
+		
+	<view:EditorTestList />
 	
 </s:Application> 

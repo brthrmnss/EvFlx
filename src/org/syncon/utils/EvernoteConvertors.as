@@ -40,7 +40,6 @@ package org.syncon.utils
 			cmd.execute();			
 		}
 		
-		
 		static public function convertEvernoteXMLtoTLF( input : String, fxResult : Function )  : void
 		{
 			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
@@ -51,6 +50,18 @@ package org.syncon.utils
 			cmd.event = event
 			cmd.execute();			
 		}		
+		
+		
+		
+		static public function exportTLF( tlf : TextFlow )  :  String
+		{
+			return TextConverter.export(  tlf,  
+				TextConverter.TEXT_LAYOUT_FORMAT, ConversionType.STRING_TYPE ).toString()
+				
+		}		
+				
+		
+		
 		
 	}
 }

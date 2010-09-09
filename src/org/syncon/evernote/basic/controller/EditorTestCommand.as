@@ -13,6 +13,7 @@ package  org.syncon.evernote.basic.controller
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
+	import org.syncon.evernote.editor.utils.EditorUtils;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
@@ -55,7 +56,7 @@ package  org.syncon.evernote.basic.controller
 				 * return link 
 				 * */
 				var nf : NoteFilter = new NoteFilter()
-				nf.words = 'export_editor_'+event.index.toString()
+				nf.words = this.noteName()
 				this.dispatch(  EvernoteAPICommandTriggerEvent.FindNotes(
 					nf , 0, 0, step2, step1_Fault ) ) 
 			}
@@ -135,6 +136,10 @@ package  org.syncon.evernote.basic.controller
 			event.fxSuccess( tags ) 
 		}
 		
+		public function noteName() :  String
+		{
+			return 'export_editor_'+event.index.toString()
+		}
 			
 		
 		/**

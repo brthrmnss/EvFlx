@@ -17,8 +17,8 @@ package   org.syncon.evernote.editor
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.QuickTagEditorCommand;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
-	import org.syncon.evernote.basic.view.QuickTagEditor;
-	import org.syncon.evernote.basic.view.QuickTagEditorMediator;
+	import org.syncon.evernote.editor.view.EditorTestList;
+	import org.syncon.evernote.editor.view.EditorTestListMediator;
 	import org.syncon.evernote.services.*;
  
 	public class EditorTestContext extends Context
@@ -45,7 +45,7 @@ package   org.syncon.evernote.editor
 			//injector.mapSingletonOf( EvernoteService, IEvernoteService  )		
 			injector.mapSingleton( EvernoteService )
 			// View
-			mediatorMap.mapView(  QuickTagEditor, QuickTagEditorMediator );		
+			mediatorMap.mapView(  EditorTestList, EditorTestListMediator );		
 			super.startup();
 			var wait : Boolean = false;
 			if ( wait ) 

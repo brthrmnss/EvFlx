@@ -79,6 +79,7 @@ package org.syncon.evernote.basic.view
 		//private var clickedNote : Note2 = new Note2()
 		public var control : Boolean = false; 
 		public var shift : Boolean = false; 
+		public var numpad0 : Boolean = false; 
 		public var allowSimpleLoading : Boolean = false; 
 		public function RightSideMediator()
 		{
@@ -131,6 +132,11 @@ package org.syncon.evernote.basic.view
 				this.shift = true; 		
 				this.ui.lblShift.visible = true; 				
 			}			
+			if ( e.keyCode == Keyboard.NUMPAD_0 )
+			{
+				this.numpad0 = true; 		
+				//this.ui.lblShift.visible = false; 				
+			}				
 		}
 		public function onKeyUp(e:KeyboardEvent):void
 		{
@@ -143,7 +149,12 @@ package org.syncon.evernote.basic.view
 			{
 				this.shift = false; 		
 				this.ui.lblShift.visible = false; 				
-			}			
+			}	
+			if ( e.keyCode == Keyboard.NUMPAD_0 )
+			{
+				this.numpad0 = false; 		
+				//this.ui.lblShift.visible = false; 				
+			}				
 		}
 		
 		private function onNewNote()  : Note2
@@ -184,6 +195,7 @@ package org.syncon.evernote.basic.view
 				this.updatedNote()
 				//this.note = note__; 			
 				ui.view.note = this.note; 
+
 				this.convertNoteContents();
 		
 				//ui.view.loading = false; 
@@ -208,7 +220,15 @@ package org.syncon.evernote.basic.view
 		}
 						
 		public function convertNoteContents() : void
-		{
+		{ 
+			if ( this.numpad0 ) 
+			{
+				var msg : String =  this.note.content
+				this.dispatch( new   ShowAlertMessageTriggerEvent(
+					ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP,  msg) )  
+			}			
+			
+			
 			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
 				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
 				noteTextConvertToTf ) )			
@@ -483,7 +503,7 @@ package org.syncon.evernote.basic.view
 			}					
 			private function onNoteSavedFault( o:Object):void
 			{
-				var msg : String = 'Could not save note: ' + 
+				var msg : String = 'Could not save note: ' //+ 
 				this.dispatch( new   ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP,  msg) )  
 				//ui.currentState = StateView;
 				return;

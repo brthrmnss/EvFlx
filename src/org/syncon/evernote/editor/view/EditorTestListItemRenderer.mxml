@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="itemrenderer1_creationCompleteHandler(event)"
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.editor.view.*">
+	
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.editor.vo.EditorTestCaseVO;
+			
+			[Bindable] public var case_ : EditorTestCaseVO = new EditorTestCaseVO();
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				case_ = value as EditorTestCaseVO
+				// set the Label controls appropriately. 
+				txtLbl.text = case_.name.toString(); 
+				
+				this.modifyF()
+			} 
+			
+			// Override the itemIndex set function to draw a 
+			// white background behind even number items, 
+			// and a green background behind odd numbered items.
+			override public function set itemIndex(value:int):void { 
+				super.itemIndex = value
+				this.case_.index = value;
+				/* var parent_ : Object = (this.parent as Object)
+				var l : int = parent_.dataProvider.length
+				this.last = false
+				this.first = false; 
+				this.middle = false; 						
+				if ( value == l-1 ) 
+				{
+				this.last = true
+				}
+				else if ( value == 0 ) 
+				this.first = true
+				else
+				this.middle = true
+				
+				if (first )
+				this.seperator.visible = false
+				else
+				this.seperator.visible = true; 
+				return; */
+			}
+			
+			public var creationComplete : Boolean = true
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.creationComplete = true;
+				this.modifyF()
+			}
+			
+			public function modifyF() : void
+			{
+				if ( this.creationComplete == false ) 
+					return; 
+				this.datad.data = this.case_; 
+			}
+
+		]]> 
+	</fx:Script> 
+	<!--
+	<s:transitions>
+	<s:Transition toState="*" >
+	<s:AnimateColor targets="{[this.txtLbl]}"  
+	duration="250" />
+	</s:Transition>
+	</s:transitions>
+	-->
+	<s:layout>
+		<s:HorizontalLayout gap="3"/>
+	</s:layout>
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 
+	<s:Label id="txtLbl" color="0x6E6E6E"   
+			 color.hovered="0" useHandCursor.hovered="true" buttonMode.hovered="true"
+			 fontSize="12"  textDecoration="underline"/>
+	<view:EditorTestListItemRendererContent id="datad" />
+</s:ItemRenderer>

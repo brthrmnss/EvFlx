@@ -62,7 +62,9 @@ package org.syncon.evernote.basic.view
 			this.newNotebook = e.data.newNb; 
 			//this.ui.note;
 			this.dispatch( 
-				new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,this.ui.note , 
+				new SaveNoteCommandTriggerEvent( 
+					SaveNoteCommandTriggerEvent.SAVE_NOTE_CHANGE_NOTEBOOK,
+					this.ui.note , 
 					null, callbackFx, 
 				null, false, this.oldNotebook )			
 				)
@@ -72,7 +74,8 @@ package org.syncon.evernote.basic.view
 		{
 			var args : Object = this.ui.getTemp()
 			this.dispatch( 
-				new SaveNoteCommandTriggerEvent( SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS, args.note, 
+				new SaveNoteCommandTriggerEvent( 
+					SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS, args.note, 
 					args.tf, callbackFx, 
 					this.saveEditorSwitchedOutNoteFault, true, null, e.data as Tag2 )	
 			)					
