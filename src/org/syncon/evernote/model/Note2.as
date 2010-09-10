@@ -172,6 +172,7 @@ package org.syncon.evernote.model
 			note2.guid = n.guid; 
 			note2.content = n.content; 
 			note2.active = n.active; 
+			note2.title = n.title; 
 			return note2; 
 		}
 	

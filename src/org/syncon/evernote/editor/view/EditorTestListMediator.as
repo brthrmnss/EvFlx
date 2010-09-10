@@ -70,8 +70,10 @@ package  org.syncon.evernote.editor.view
 		 
 		private function onExportNote(e:CustomEvent) : void
 		{
+				var testCase : EditorTestCaseVO = new EditorTestCaseVO()
+				testCase = e.data as EditorTestCaseVO;
 				this.dispatch( EditorTestCommandTriggerEvent.ExportNote( 
-					e.data.contents, e.data.index,  exported ) )
+					testCase.exportedBackToEvernoteXML, testCase.index,  exported ) )
 		}
 		
 		private function exported(s : String ) : void

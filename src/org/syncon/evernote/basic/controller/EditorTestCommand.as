@@ -1,6 +1,7 @@
 package  org.syncon.evernote.basic.controller
 {
 	import com.evernote.edam.notestore.NoteFilter;
+	import com.evernote.edam.notestore.NoteList;
 	import com.evernote.edam.type.Note;
 	
 	import flash.events.Event;
@@ -70,15 +71,16 @@ package  org.syncon.evernote.basic.controller
 		 
 	 }
 		
-	 public function step2(e:Object):void
+	 public function step2(e: NoteList):void
 	 {
-		 if ( e.length == 0 ) 
+		 if ( e.notes.length == 0 ) 
 		 {
 			 this.step3()
 		 }
 		 else
 		 {
-			 this.note = e.objs.notes[0]
+			 this.note = e.notes[0]
+			 this.step4(null)
 		 }
 	 }
 	 
@@ -118,14 +120,15 @@ package  org.syncon.evernote.basic.controller
 	 
 	 public function step4_Fault(e:Object):void
 	 {
-		 
+		 Alert.show( e.parameter )
 	 }	 
 	 
 	 public function step5(e:Object):void
 	 {
 		 //http://sandbox.evernote.com/Home.action?login=true#v=t&n=9ff9e5f6-1a91-471a-8672-57ca707c3be7&b=fc8447d1-17af-45e7-a12b-90b6bc7e3429
 		 event.url = 'http://'+this.note.guid;
-			event.fxSuccess( event ) 
+		 event.url = 'http://sandbox.evernote.com/Home.action?login=true#v=t&n='+this.note.guid;
+		event.fxSuccess( event ) 
 	 }	 
  
 	 
@@ -147,12 +150,9 @@ package  org.syncon.evernote.basic.controller
 		 * */
 		static public function mapCommands(commandMap :  Object) : void
 		{
-			commandMap.mapEvent(QuickTagEditorCommandTriggerEvent.GET_TAGS, 
-				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );			
-			commandMap.mapEvent(QuickTagEditorCommandTriggerEvent.PROCESS_TAGS, 
-				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );		
-			commandMap.mapEvent(QuickTagEditorCommandTriggerEvent.DELETE_ALL_TAGS, 
-				QuickTagEditorCommand, QuickTagEditorCommandTriggerEvent, false );					
+			commandMap.mapEvent(EditorTestCommandTriggerEvent.EXPORT_NOTE, 
+				EditorTestCommand, EditorTestCommandTriggerEvent, false );			
+		 				
 		}
 		 
 			
