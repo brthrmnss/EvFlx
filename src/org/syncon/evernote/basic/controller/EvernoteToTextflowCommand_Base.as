@@ -70,7 +70,7 @@ package  org.syncon.evernote.basic.controller
 			private function removeSoftLinks()  : void
 			{
 				var ee :   RteHtmlParser_Export = new RteHtmlParser_Export()
-				ee.ignoreParagraphSpace = true; 
+				ee.ignoreParagraphSpace = false; 
 				//ee.ParseToRTE(this.txt)
 				ee.ParseToHTML(this.txt)
 				var bim : Object = ee.XMLObject
@@ -106,45 +106,12 @@ package  org.syncon.evernote.basic.controller
 		
 		public function postProcessStr() : void
 		{
+			
 		var ee : RteHtmlParser_Import = new RteHtmlParser_Import()
-		ee.ignoreParagraphSpace = true; 
+		ee.ignoreParagraphSpace = false; 
 		 
 		ee.ParseToRTE(this.txt)
-	 
-		/*
-		ee.ParseToHTML( "<div>"+ee.StringFormat+"</div>" ) ; 
-		//var ee : TextConverter
-		//this.rtEvernoteToTfRendering.textFlow = TextFlowUtil.importFromString(e );
-		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"> </TextFlow>" )
-		var x :  XMLList = ee.XMLObject.elements('ol')
-		x  = ee.XMLObject.f.child("ol")
-		
-		// tf.appendChild(new XML("<div id=\"thing2\">sdf"+"</div>" ))
-		var xl : Object = tf.children()[0]
-		var xl2 : Object = tf.div[0]
-		var children :   XMLList = ee.XMLObject.div.children()
-		//tf.children().
-		//tf.appendChild( ee.XMLObject.div )
-		var tfRoot : XML = tf; //.children()[0]
-		for ( var i : int = 0; i < children.length(); i++ )
-		{
-			var xml_ : XML = children[i]
-			if (  xml_.name() == 'ol' )
-			{
-				var list : XML = new XML('<div/>')
-				appendList( xml_, list , false );
-				tfRoot.appendChild(  list )
-				//x.insertChildAfter(
-			}
-			else
-			{
-				//convert tag
-				///<span style="color: #008000;">s the</span>
-				//if syle set ... convert it ...
-				tfRoot.appendChild( xml_ )
-			}
-
-		}*/
+ 
 		 var xx : Object = ee.XMLObject
 		var tf :  XML = new XML("<TextFlow  xmlns=\"http://ns.adobe.com/textLayout/2008\"> </TextFlow>" )
 		/*var tf :  XML = new XML(

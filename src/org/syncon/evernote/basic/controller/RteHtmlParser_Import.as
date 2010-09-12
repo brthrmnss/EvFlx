@@ -12,6 +12,8 @@ package org.syncon.evernote.basic.controller
 		public var SET_FONT:String = 'span';
 		
 		public var SET_UL:String = 'ul';
+		public var SET_OL:String = 'ol';		
+		static public var OL_Implementation : String = 'orderer'
 		public var SET_BR:String = 'br';
 		public var SET_STRONG:String = 'strong';
 		public var SET_EM:String = 'em';				
@@ -61,12 +63,20 @@ package org.syncon.evernote.basic.controller
 		
 		public function ParseToRTE(string:String):void
 		{
-			//"<BODY>"+string+"</BODY>"
-			var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
-			var nxml:XMLNode = (ignoreParagraphSpace) ? xml_doc.firstChild : manage_space(xml_doc.firstChild);
-			
-			var xml:XML = new XML(nxml.toString());
-			
+		 
+			if ( this.ignoreParagraphSpace )
+			{
+				var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
+				var nxml:XMLNode = (ignoreParagraphSpace) ? xml_doc.firstChild : manage_space(xml_doc.firstChild);
+				var xml:XML = new XML(nxml.toString());
+			}
+			else
+			{
+				//maintains node spacing ...
+					//this is essential, as nodes need theier seperation
+				XML.ignoreWhitespace= false 
+				xml = new XML( "<BODY>"+string+"</BODY>" )
+			}
 			// remove UL
 			
 			//xml = convertUlToSoftBullets( xml ) 
@@ -89,6 +99,94 @@ package org.syncon.evernote.basic.controller
 			out_xml = xml;
 		}
 		
+		
+		private function remove_ul_tag(xml:XML):XML
+		{
+			
+			var ul:XMLList = xml.elements(SET_UL);
+			
+			for each (var i:XML in ul) {
+				var spanned :  XMLList = spanElements(  i.children() ) 
+				i.parent().replace(i.childIndex(), spanned );
+			}
+			
+			var ol:XMLList = xml.elements(SET_OL);
+			
+			for each ( i in ol) {
+				spanned = spanElements(  i.children(), true ) 
+				i.parent().replace(i.childIndex(), spanned );
+			}			
+			 
+			/*
+			for each (var i:XML in xml.children() ) {
+				if ( i.name().localName == SET_OL ||  i.name().localName == SET_UL )
+				{
+					var spanned :  XMLList = spanElements(  i.children() ) 
+					i.parent().replace(i.childIndex(), spanned );
+				}
+			}		*/	
+			return xml;
+		}
+		private function spanElements(xml:XMLList, ordererList : Boolean = false, textIndent : int = 0 ):XMLList
+		{
+			var list : XMLList = new XMLList(<div/>)
+			//	id="'+id+'" 
+		//	var s  : Array = [xml.children() ]
+			for each (var i:XML in xml) 
+			{
+				var dbg : Array = [ i.name(), i]
+				
+				if (i.name() != null && ( [SET_UL, SET_OL].indexOf( i.name().localName  ) != -1  ) )
+				{
+				//	if ( i.parent() != xml ) 
+				//	{
+						var sss : Array = [i.children(),   i.name().localName]
+						list.appendChild(  spanElements( i.children(),  i.name().localName == SET_OL, textIndent +30) )
+					continue; 
+				//	}
+				}
+				
+				var children : XMLList = i.children()
+				//var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008" lineHeight="180%" fontSize="15"  ><span >  •  </span> </p> )
+				id = ''; 
+				
+				if ( ordererList )
+					var id : String = 'id="'+OL_Implementation+'"'
+				 var indent : String = 'textIndent="'+textIndent+'"'
+				var xmlString : String = '<p xmlns="http://ns.adobe.com/textLayout/2008"' +
+					' ' + indent +
+					'><span fontSize="15"'+id+
+					'>ooooo</span></p>'
+				//ordererList
+				var wrapper : XML = new XML( xmlString  )
+				var dbg4 : Array = [i, i.toString(), i.children()]
+				//var dbg : Array = [ wrapper[0], wrapper.@span, wrapper.descendants('span' ) , wrapper.descendants() ] 
+				var dbg5 : Array = [ i.toString(), i.valueOf(), i.toXMLString(), i.hasComplexContent(), i.hasSimpleContent()  ] 
+				//can't use to stirng if it contains xml, will get gt, lt crap
+				if ( i.hasSimpleContent() )
+					wrapper.appendChild(   i.toString()  );	
+				else
+				{
+					//add all children, not first one
+					var xml_ : XML =  i.valueOf()
+					//fixed, parse to xml first, or children() does not work 
+					//var dbdg : Array = [  i.valueOf.children().length(),i.valueOf(), i.valueOf().children() , xml_ , xml_.children().length() ] 
+					//wrapper.appendChild(     i.valueOf().children()[0]   );	
+					for ( var jj : int = 0; jj <  xml_.children().length(); jj++ )
+					{
+						wrapper.appendChild( xml_.children()[jj]);
+					}					
+					
+				}
+				list.appendChild( wrapper );
+			}
+			
+			return list.children()
+		}	
+		
+				
+/*		
+		//old version worked great, but does nto support nested lists ... 
 		private function remove_ul_tag(xml:XML):XML
 		{
 			var ul:XMLList = xml.elements(SET_UL);
@@ -98,23 +196,39 @@ package org.syncon.evernote.basic.controller
 				i.parent().replace(i.childIndex(), spanned );
 			}
 			
+			var ol:XMLList = xml.elements(SET_OL);
+			
+			for each ( i in ol) {
+				 spanned = spanElements(  i.children(), true ) 
+				i.parent().replace(i.childIndex(), spanned );
+			}			
+			
 			return xml;
 		}
-		private function spanElements(xml:XMLList):XMLList
+		private function spanElements(xml:XMLList, ordererList : Boolean = false):XMLList
 		{
 			var list : XMLList = new XMLList(<div/>)
-			 
+		//	id="'+id+'" 
 			for each (var i:XML in xml.children()) {
 				var children : XMLList = i.children()
 				 //var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008" lineHeight="180%" fontSize="15"  ><span >  •  </span> </p> )
-				 var wrapper : XML = new XML(<p xmlns="http://ns.adobe.com/textLayout/2008" lineHeight="180%"><span fontSize="15">ooooo</span></p> )
+				id = ''; 
+				
+				if ( ordererList )
+					var id : String = 'id="'+OL_Implementation+'"'
+			//	var indent : String = 'textIndent='+
+				var xmlString : String = '<p xmlns="http://ns.adobe.com/textLayout/2008"><span fontSize="15"'+id+' ' + indent'>ooooo</span></p>'
+					//ordererList
+				var wrapper : XML = new XML( xmlString  )
 				//var dbg : Array = [ wrapper[0], wrapper.@span, wrapper.descendants('span' ) , wrapper.descendants() ] 
 				wrapper.appendChild(i);	
 				 list.appendChild( wrapper );
 			}
 			
 			return list.children()
-		}		
+		}	
+		
+		*/
 			private function convertUlToSoftBullets(xml:XML):XML
 			{
 				var m:XML = new XML(<BODY />);
@@ -289,7 +403,27 @@ package org.syncon.evernote.basic.controller
 						break;
 						
 						case 'font-size':
-						el.@fontSize = ta[1].split('px').join('');
+						//web produces wierd font size names
+						if ( taTrimmed  == 'xx-small' )
+						{
+							el.@fontSize = '8.01px'
+						}
+						else if ( taTrimmed  == 'xx-small' )
+						{
+							el.@fontSize = '8.01px'
+						}
+						else if ( taTrimmed  == 'x-large' )
+						{
+							el.@fontSize = '24.01px'
+						}
+						else if ( taTrimmed  == 'xx-large' )
+						{
+							el.@fontSize = '36.01px'
+						}
+						else
+						{
+							el.@fontSize = ta[1].split('px').join('');
+						}
 						break;
 						
 						case 'font-weight':
@@ -459,13 +593,49 @@ package org.syncon.evernote.basic.controller
 				else
 				{
 					//if parent tags can be shortened, .. shorten them , will copy the children 
-					trace('' + i.name().localName +  ' ' +  i.parent().name().localName + ': ' + childrenXMLString  )
-					if ( i.name().localName == i.parent().name().localName )
+					//trace('' + i.name().localName +  ' ' +  i.parent().name().localName + ': ' + childrenXMLString  )
+					//i have to catch parent when it's removed strange things happen 
+					if ( i.parent() != null &&  i.name().localName == i.parent().name().localName )
 					{
-						//copy attributes to parent then move
-						copy_attributesX( i, i.parent() ) 
-						i.parent().replace( i.childIndex(), i.children() )
-						//trace('same parent type');
+						//attributes must be the same 
+						var dbgAttr : Array = [ i.attributes(), i.parent().attributes(),  i.attributes() === i.parent().attributes(), 
+							i.attributes() === i.attributes() ] 
+						var myAttributesAndParentAttributesSame : Boolean = (  i.attributes() === i.parent().attributes() )
+						if ( myAttributesAndParentAttributesSame ) 
+						{
+							//copy attributes to parent then move
+							copy_attributesX( i, i.parent() ) 
+							i.parent().replace( i.childIndex(), i.children() )
+							//trace('same parent type');
+						}
+						else
+						{
+							//spans can't nest. 
+							//copy parent spans attributes, and attach this to the parent's parent
+							var l : Object = i.attributes()
+							if ( i.parent().parent() != null ) 
+							{
+								var dbgWhoParent : Array = [ i.childIndex(), i.parent() , i.parent().parent(), 
+									i.attributes() === i.attributes() ] 								
+								copy_attributesX( i.parent(), i )
+								var oldP : XML = i.parent()
+								
+								delete i.parent().children()[i.childIndex()]
+								
+								var iRep : XML = oldP.parent().insertChildAfter( oldP, i )
+								//<span fontSize 10>g<span bold >m </span></span>
+								//(i.parent().parent() as XML)
+								//	.replace( i.childIndex(), i.children() )
+								//
+									//http://www.kirupa.com/forum/showthread.php?t=266128
+								
+								var dbgWhoParentAfter : Array = [ i.childIndex(), i.parent() , i.parent(), 
+									i.attributes() === i.attributes() ]		
+								l.valueOf();
+								i = iRep
+							}
+						//	l.valueOf();
+						}
 					}			
 					//if it has no attributes == useless tag
 					/*

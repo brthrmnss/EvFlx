@@ -6,16 +6,48 @@ package   org.syncon.evernote.editor.vo
 
 	public class EditorTestCaseVO  
 	{
+		public function EditorTestCaseVO ( name : String = '' ) 
+		{
+			this.name = name; 
+		}
 		public var name :  String = ''
 	 
-		public var importing   : Boolean = true
-		public var exporting : Boolean = false; 
+		private var _importing   : Boolean = true
+		private var _exporting : Boolean = false; 
+		
+		
+		public function set  importing  ( b  : Boolean ) : void
+		{
+			this._importing = b; 
+			this._exporting = ! b 
+		}
+		public function get   importing  ()  : Boolean  
+		{
+			 return this._importing
+		}		
+		public function set  exporting  ( b  : Boolean ) : void
+		{
+			this._importing = ! b; 
+			this._exporting =  b 
+		}
+		public function get   exporting  ()  : Boolean  
+		{
+			return this._exporting
+		}				
+				
 		
 		public var evernoteXML : String = ''; 
 		public var convertedTLFString : String = ''; 
 		public var tlf : TextFlow ; 
 		public var tlf_toString : String = ''; 
 		public var chk : Array = []; 
+		
+		public var description : String = ''; 
+		
+		/**
+		 * If set goes no where 
+		 * */
+		public var result : String = null; 
 		
 		public var exportedBackToEvernoteXML : String = '';  
 		
@@ -47,6 +79,10 @@ package   org.syncon.evernote.editor.vo
 				this.onImport()		
 				this.onExport( this.tlf ) ; 
 			}
+			if ( this.exporting ) 
+			{
+				this.onExport( this.tlf ) ; 
+			}			
 				
 		}
 		
@@ -76,14 +112,33 @@ package   org.syncon.evernote.editor.vo
 			return;
 		}
 
-		public function importXML( body : String )  : void
+		public function importXML( body : String, result_ : String = null )  : void
 		{
+			if ( body.indexOf( '</en-note>' ) != -1   ) 
+				throw 'do not include end tags' 
+			if ( body.indexOf( '<en-note>' ) != -1   ) 
+				throw 'do not include end tags' 				
+			if ( result_.indexOf( '</en-note>' ) != -1   ) 
+				throw 'result_ do not include end tags' 
+			if ( result_.indexOf( '<en-note>' ) != -1   ) 
+				throw 'result_ do not include end tags' 							
 			this.importing = true
 			var head : String = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note>'
 			var foot : String ='</en-note>';  
 			this.evernoteXML = head + body  + foot
+				
+			if ( result_ != null ) 
+				this.result = head + result_  + foot
 			this.process()
 		}
+		
+		public function exportTLF( body :  TextFlow )  : void
+		{
+			this.exporting = true
+			this.tlf = body; 
+			this.process()
+			tlf_toString 	=EvernoteConvertors.exportTLF( body  )
+		}		
 		
 	}
 }

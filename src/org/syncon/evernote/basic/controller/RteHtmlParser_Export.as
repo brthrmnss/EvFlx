@@ -1,7 +1,12 @@
 package org.syncon.evernote.basic.controller
 {
+	import flash.utils.Dictionary;
 	import flash.xml.XMLDocument;
 	import flash.xml.XMLNode;
+	
+	import mx.utils.StringUtil;
+	
+	import org.syncon.evernote.basic.vo.StylingVO;
 	
 	public class RteHtmlParser_Export
 	{
@@ -85,7 +90,105 @@ package org.syncon.evernote.basic.controller
 			xml = set_new_name(xml);
 			var bb :  XML = xml.child(0)[0]
 			RteHtmlParser_Import.promoteEmptyNotes( bb,[ 'span'], true ) 
+			xml = clear_extra_styling(xml)
+			RteHtmlParser_Import.promoteEmptyNotes( bb,[ 'span'], true ) 
 			out_xml = xml;
+		}
+		
+		private function clear_extra_styling(xml:XML):XML
+		{
+			var x : StylingVO = new StylingVO()
+			x.fontSize = 12
+			x.color = '#000000'
+			 x.fontWeight = 'normal' 
+			for each (var i:XML in xml.children() ) 
+			{
+				clearStyles( i , x.clone()  ) 
+			}
+			
+			return xml;
+		}		
+		
+		private function clearStyles(xml : XML, style :  StylingVO )  : void
+		{
+			
+			for each (var i:XML in xml.children() ) 
+			{
+				var dbg : Array = [i.@style] 
+	 			if ( i.@style == null || i.@style.toString() == '' ) 
+				{
+					trace();
+					clearStyles( i , style.clone()  ) 
+					continue; 
+				}
+				i.@style = i.@style.toString().replace(';;', ';' ) 
+				var style_ : String =  String(i.@style)
+				var ar : Array  = style_.split(';');				
+				
+			 var styles  : Array = []; 
+				for (var j:uint = 0; j < ar.length; j++) {
+					var ta :  Array = ar[j].split(':');
+					var name : String = ta[0].toLocaleLowerCase().split(' ').join('');
+					var taTrimmed : String = StringUtil.trim(ta[1] );
+					ta[1] = taTrimmed
+					
+					switch (name) 
+					{
+						/*
+						case 'text-align':
+							el.@textAlign = taTrimmed;
+							break;
+						
+						case 'font-family':
+							el.@fontFamily = ta[1].split("'").join('').split('"').join('');
+							break;
+						*/
+						case 'font-size':
+							taTrimmed = taTrimmed.replace('px' , '' ) 
+							if ( int( taTrimmed ) == style.fontSize ) 
+							{
+								trace( 'font redundant ' );
+							}
+							else
+							{
+								style.fontSize = int( taTrimmed )
+								styles.push( ar )
+							}
+							break;
+				 
+						case 'font-weight':
+							if (  taTrimmed  == style.fontWeight ) 
+							{
+								trace( 'font weight redundant ' );
+							}
+							else
+							{
+								style.fontWeight =  taTrimmed 
+								styles.push( ar )
+							}
+							break;						
+						case 'color':
+							//taTrimmed = taTrimmed.replace('px' , '' ) 
+							if (  taTrimmed  == style.color ) 
+							{
+								trace( 'font color redundant ' );
+							}
+							else
+							{
+								style.color =  taTrimmed 
+								styles.push( ar )
+							}
+							break; 
+					} 
+					
+					if ( ar.length != styles.length ) 
+						trace('dropped ' +( ar.length - styles.length)  + ' styles ' )
+					i.@style = styles.join(';');		
+					if ( styles.length == 0 ) 
+						delete i.@style;
+				clearStyles( i , style.clone()  ) 
+			}			
+		}
 		}
 		
 		private function add_ul_tag(xml:XML):XML
@@ -96,16 +199,91 @@ package org.syncon.evernote.basic.controller
 			var ul:XML;
 			var li:XML; 
 			var inList : Boolean = false; 
+			var listByTextIndex :  Dictionary = new Dictionary(true)
+			var textIndentByTextIndex :  Dictionary = new Dictionary(true)
+			var lastTextIndent : int = 0; 
 			for each (t1 in el) {
 				
-				
+				var dbg : Array = [t1.children()[0].toString()]
+					var indicator : Array = ['%20%20•%20%20', '  •  ', '•' ] 
 				if (t1.name().localName == 'p' && t1.children()[0] != null
-					&& t1.children()[0].toString() == '•' )
+					&& indicator.indexOf( t1.children()[0].toString() ) != -1  )
+				{
+					var textIndent : int = t1.@textIndent
+					//set to default at 0 if attribute not found
+					inList = textIndentByTextIndex[textIndent]
+					if ( textIndentByTextIndex[textIndent]  == null ) 
+						textIndentByTextIndex[textIndent] = false; 
+					if ( inList == false ) 
+					{
+						var x : Object =  t1.children()[0].attribute('id')
+						textIndentByTextIndex[textIndent] = true
+						ul = new XML( <ul /> );
+						if ( t1.children()[0].attribute('id') == RteHtmlParser_Import.OL_Implementation  ) 
+						{
+							ul = new XML( <ol /> );
+						}
+						
+						if ( textIndent == 0 ) 
+							t2.appendChild( ul )
+						else
+						{
+							listByTextIndex[lastTextIndent].appendChild( ul )
+						}
+						listByTextIndex[textIndent] = ul
+					}
+					ul = listByTextIndex[textIndent] 
+					li = new XML( <li /> )
+					var bb :Array = [ t1.children()[0],  t1.children()[1],  t1.toXMLString()]
+					if (  t1.children()[1] == null ) 
+						li.appendChild( '' );
+					else
+					{
+						//li.appendChild( t1.children()[1]);
+						//append all children
+						for ( var jj : int = 1; jj <   t1.children().length(); jj++ )
+						{
+							li.appendChild( t1.children()[jj]);
+						}
+					}
+					ul.appendChild( li )
+					lastTextIndent = textIndent
+				} 				
+				else {
+					t2.appendChild(t1.copy());
+				}
+			}
+			
+			return t2;
+		}
+		
+	/*	
+		private function add_ul_tag_old(xml:XML):XML
+		{
+			var t1:XML;
+			var t2:XML = new XML(<BODY />);
+			var el:XMLList = xml.children();
+			var ul:XML;
+			var li:XML; 
+			var inList : Boolean = false; 
+			var listByTextIndex :  Dictionary = new Dictionary(true)
+			var lastIndex : int = 0; 
+			for each (t1 in el) {
+				
+				var dbg : Array = [t1.children()[0].toString()]
+				var indicator : Array = ['%20%20•%20%20', '  •  ', '•' ] 
+				if (t1.name().localName == 'p' && t1.children()[0] != null
+					&& indicator.indexOf( t1.children()[0].toString() ) != -1  )
 				{
 					if ( inList == false ) 
 					{
+						var x : Object =  t1.children()[0].attribute('id')
 						inList = true
 						ul = new XML( <ul /> );
+						if ( t1.children()[0].attribute('id') == RteHtmlParser_Import.OL_Implementation  ) 
+						{
+							ul = new XML( <ol /> );
+						}
 						t2.appendChild( ul )
 						
 					}
@@ -120,6 +298,9 @@ package org.syncon.evernote.basic.controller
 			
 			return t2;
 		}
+		
+		
+		*/
 		
 		private function add_br_tag(xml:XML):XML
 		{
@@ -223,13 +404,31 @@ package org.syncon.evernote.basic.controller
 			//fontFamily
 			for each ( t1 in xml..@fontFamily ) {
 				t2 = t1.parent();
-				t2.@style = "font-family:'" + t1 + "';" + t2.@style;
+				t2.@style = "font-family: " + t1 + ";" + t2.@style;
 				delete t2.@fontFamily;
 			}
 			// Find all SIZE 
 			for each ( t1 in xml..@fontSize ) {
 				t2 = t1.parent();
-				t2.@style = "font-size:" + t1 + "px;" + t2.@style;
+				var fontSize : String =t1.toString() + "px;"
+				if ( t1  =='8.01' )
+				{
+					fontSize =  'xx-small' 
+				}
+				if ( t1  ==  '8.01'  )
+				{
+					fontSize ='xx-small'
+				}
+				if ( t1  == '24.01'  )
+				{
+					fontSize = 'x-large'
+				}
+				if ( t1  ==  '36.01')
+				{
+					fontSize =  'xx-large' 
+				}
+				 
+				t2.@style = "font-size: " + fontSize+ ";"   + t2.@style;
 				delete t2.@fontSize;
 			}
 			// Find all COLOR 
@@ -279,17 +478,6 @@ package org.syncon.evernote.basic.controller
 		//________________________________________________________________________________________________________
 		
  
-		private function remove_ul_tag(xml:XML):XML
-		{
-			var ul:XMLList = xml.elements(SET_UL);
-			
-			for each (var i:XML in ul) {
-				i.parent().replace(i.childIndex(), i.children());
-			}
-			
-			return xml;
-		}
-		
 		private function remove_end_todos(xml:XML):XML
 		{
 			var img:XMLList = xml.descendants('img');
