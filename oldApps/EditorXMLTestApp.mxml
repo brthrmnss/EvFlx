@@ -3,7 +3,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"  
 			   
 			   creationComplete="onInit()"
-			   width="955" height="600" xmlns:editor="org.syncon.evernote.editor.*" xmlns:view="org.syncon.evernote.editor.view.*">  
+			   width="1200" height="600" xmlns:editor="org.syncon.evernote.editor.*" xmlns:view="org.syncon.evernote.editor.view.*">  
 	<!--
 	<fx:Style source="Main.css"/>  
 	-->

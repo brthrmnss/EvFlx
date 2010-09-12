@@ -8,8 +8,8 @@
 			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
 
-			static public var EXPORT_NOTE : String = 'exportNote_ETL'
-			
+			static public var EXPORT_NOTE : String = 'exportNote_ETL';
+			[Bindable]  public var columnWidth : int = 250;
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				
@@ -25,10 +25,17 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	
-	
-	<s:List id="list"
-			 width="100%" height="800"
+	<s:layout>
+		<s:VerticalLayout  paddingTop="10" paddingLeft="10" />
+	</s:layout>
+	<s:HGroup paddingLeft="5">
+		<s:Label text="Evernote XML" width="{this.columnWidth}" />
+		<s:Label text="TLF Textflow" width="{this.columnWidth}" />
+		<s:Label text="TLF Editor" width="{this.columnWidth}" />
+		<s:Label text="Evernote XML" width="{this.columnWidth}" />
+	</s:HGroup>
+	<s:List id="list" borderVisible="false"  
+			 width="100%" height="600"
 			itemRenderer="org.syncon.evernote.editor.view.EditorTestListItemRenderer">
 		<s:layout>
 			<s:VerticalLayout />

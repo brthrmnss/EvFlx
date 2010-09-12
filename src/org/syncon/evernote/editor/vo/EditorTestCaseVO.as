@@ -53,7 +53,7 @@ package   org.syncon.evernote.editor.vo
 		protected function onImport( ):void  
 		{  
 			EvernoteConvertors.convertEvernoteXMLtoTLF(
-				this.evernoteXML, this.onEvernoteConverted )
+				this.evernoteXML, this.onEvernoteConverted, true )
 		}
 		protected function onEvernoteConverted( tf : TextFlow, chkbox : Array ):void
 		{ 
@@ -67,7 +67,7 @@ package   org.syncon.evernote.editor.vo
 		protected function onExport( tf :  TextFlow):void  
 		{  
 			EvernoteConvertors.convertTLFtoEvernoteXML( 
-				tf ,  this.onExported )
+				tf ,  this.onExported, true )
 		}  				
 		
 		public function onExported(exportresult:String)  : void
@@ -76,7 +76,14 @@ package   org.syncon.evernote.editor.vo
 			return;
 		}
 
-		
+		public function importXML( body : String )  : void
+		{
+			this.importing = true
+			var head : String = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note>'
+			var foot : String ='</en-note>';  
+			this.evernoteXML = head + body  + foot
+			this.process()
+		}
 		
 	}
 }

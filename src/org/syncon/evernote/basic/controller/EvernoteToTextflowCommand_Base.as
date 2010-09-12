@@ -240,9 +240,10 @@ package  org.syncon.evernote.basic.controller
 				this.txt = this.replace( this.txt,  find[i], replace[i] )
 			}
 			
+			//wtf sometimes it complains sometimes not ...
 			//replace spans without colors
 			//use the setp through parse to remove unneded spans 
-			this.txt = this.replace( this.txt, '<span>', '<span color="#000000" >' ) ; 
+			//this.txt = this.replace( this.txt, '<span>', '<span color="#000000" >' ) ; 
 		}
 				
 		private function export_PackageForSending() : void
@@ -320,44 +321,6 @@ package  org.syncon.evernote.basic.controller
 			//this function needs to co deep 
 			this.checkChildrenImport( flow ) 
 			
-			/*
-			for each ( var oo : Object in flow.mxmlChildren ) 
-			{
-				if ( oo.hasOwnProperty('mxmlChildren' ) == false ) 
-					continue; 
-				for each ( var o : Object in oo.mxmlChildren ) 
-				{
-					if ( o  is SpanElement ) 
-					{
-						var span : SpanElement = o as SpanElement
-						//trace( span.text ) ; 
-						//trace( ' ' + cmd.replace( span.text,  'ooooo', '  •  ' )  )
-						span.text =  replace( span.text,  'ooooo', '  •  ' ) 
-					}
-					if ( o  is SpanElement ) 
-					{
-						span   = o as SpanElement
-						var dbg : Array = [span.text , RteHtmlParser_Import.entodo_marker,
-							span.text == RteHtmlParser_Import.entodo_marker]
-						if ( span.text == RteHtmlParser_Import.entodo_marker )
-						{
-							var index :  int = span.parent.getChildIndex( span )
-							var p : Object = span.parent; 
-							span.parent.removeChildAt( index ) 
-							
-							// add an empty InlineGraphicElement as a placeholder
-							var pHolder:InlineGraphicElement = new InlineGraphicElement();
-							pHolder.width = 30;
-							pHolder.height = 30;
-							
-							
-							//var ee  : InlineGraphicElement
-							p.addChildAt(  index, pHolder  ) 
-						}
-					}					
-				}
-			}
-			*/
 			return flow			
 		}
 	 
@@ -389,7 +352,7 @@ package  org.syncon.evernote.basic.controller
 							pHolder.width = 15;
 							pHolder.height = 15;
 						
-							pHolder.id = 'en-todo-chk_'+this.holders.length.toString() ;
+							pHolder.id = 'en-todo-chk_'+this.holders.length.toString() + '|'+ span.id ;
 							this.holders.push( pHolder ) 
 							//var ee  : InlineGraphicElement
 							p.addChildAt(  index, pHolder  ) 

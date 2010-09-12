@@ -36,19 +36,26 @@ package org.syncon.utils
 						var chk : CheckBox = new  CheckBox()
 						chkBoxes.push( chk ) 
 						chk.addEventListener( 'change', this.onChanged ) 
-						addTo.addElement( chk ) 
+				 		addTo.addElement( chk ) 
 					}
 				}
 					for (  i = 0; i < chkBoxes.length ; i++ )
 					{
 						chk = chkBoxes[i]
-						chk.visible = false; 			
+						chk.visible = false; 		
+					 	chk.selected = false; 
 					}					
 				
 				for ( i = 0; i < arr.length; i++ )
 				{
 					var inlineGraphicElement_  : Object = arr[i]
 					 chk = chkBoxes[i]
+					var a : Array =  inlineGraphicElement_.id.split('|')
+				//	 inlineGraphicElement_.id = a[0]
+						var selected : Boolean = false
+						if  ( a[1] == 'true' ) 
+							selected = true;  
+					chk.selected =  selected
 					inlineElementToCheckBoxDic[inlineGraphicElement_]= chk
 					checkBoxToInlineElementDic[chk]= inlineGraphicElement_
 					
@@ -82,8 +89,10 @@ package org.syncon.utils
 				//tf.flowComposer.updateAllControllers(); 
 				for each ( var pHolder :  InlineGraphicElement in this.inlineElements )
 				{
+					
 					var chk : CheckBox = inlineElementToCheckBoxDic[pHolder]
-						chk.visible = true; 
+					var xx : Boolean = chk.selected ; 
+					chk.visible = true; 
 						var x : Point = pHolder.graphic.localToGlobal( new  Point() ) 
 					var aaa : Array =  [pHolder.graphic.localToGlobal(new Point(0,0)).x + 10, pHolder.graphic.localToGlobal(new Point(0,0)).y]	
 					aaa.push( x ) 
@@ -91,6 +100,16 @@ package org.syncon.utils
 					  pt2   = this.addTo.globalToLocal( x   )
 					trace( 'moved to ' + pt2.x+ ' ' +  pt2.y ) 
 					chk.move(pt2.x  , pt2.y);    
+					//this.addTo.implicitHeight; 
+					var ddbg : Array = [this.addTo.parent.height] 
+					if ( pt2.y > this.addTo.height ) 
+					{
+						trace('hide me');
+					}
+					if ( pt2.x < 0  ) 
+					{
+						chk.visible = false; 
+					}					
 				}
 			}
 			public static var CheckedIndicator : String = '|true'

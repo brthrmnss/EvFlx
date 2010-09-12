@@ -13,6 +13,8 @@ package org.syncon.evernote.basic.controller
 		
 		public var SET_UL:String = 'ul';
 		public var SET_BR:String = 'br';
+		public var SET_STRONG:String = 'strong';
+		public var SET_EM:String = 'em';				
 		public var SET_EN_TODO:String = 'en-todo';		
 		public static var entodo_marker : String = '~!*entodomarker*!~@'
 		public var ignoreParagraphSpace:Boolean = false;
@@ -74,6 +76,8 @@ package org.syncon.evernote.basic.controller
 			xml = remove_enTodo_tag(xml);
 			// format CSS
 			xml = remove_css(xml);
+			
+			xml = remove_strong_tag(xml);
 			/*
 			// format names
 			xml = rename_tags(xml);
@@ -193,6 +197,51 @@ package org.syncon.evernote.basic.controller
 			return xml;
 		}
 		
+		
+		private function remove_strong_tag(xml:XML):XML
+		{
+			var strong:XMLList = xml.descendants(SET_STRONG);
+			var r:XML;
+			//var f:XML;
+			
+			for each (var i:XML in strong) {
+				r = new XML(<span  fontWeight="bold" />);
+				r.setChildren( i.children() ) 
+				i.parent().replace(i.childIndex(),r);
+			}
+			 
+			var em:XMLList = xml.descendants(SET_EM);
+			var p:XML;
+			
+			for each ( i in em ) {
+				p = new XML(<span fontStyle="italic" />);
+				p.setChildren( i.children() ) 
+				i.parent().replace(i.childIndex(), p);
+			}			
+			
+			//<sub> to baselineShift="subscript"
+			var sub:XMLList = xml.descendants('sub');
+			for each ( i in sub ) {
+				p = new XML(<span baselineShift="subscript" />);
+				p.setChildren( i.children() ) 
+				i.parent().replace(i.childIndex(), p);
+			}				
+			
+			//<sup> to baselineShift="superscript"
+			var sup:XMLList = xml.descendants('sup');
+			for each ( i in sup ) {
+				p = new XML(<span baselineShift="superscript" />);
+				p.setChildren( i.children() ) 
+				i.parent().replace(i.childIndex(), p);
+			}		
+			
+			return xml;
+		}		
+		
+		/**
+		 * Convert enTodos into spans, they will contain the 
+		 * entodo_marker
+		 * */
 		private function remove_enTodo_tag(xml:XML):XML
 		{
 			var todos:XMLList = xml.descendants(SET_EN_TODO);
@@ -200,7 +249,10 @@ package org.syncon.evernote.basic.controller
 			//var f:XML;
 			
 			for each (var i:XML in todos) {
-				p = new XML('<span id="gggg">'+entodo_marker+'</span>');
+				var selected : String = i.attribute('checked')
+					if ( selected == '' ) 
+						selected = 'false' 
+				p = new XML('<span id="'+selected+'">'+entodo_marker+'</span>');
 				i.parent().replace(i.childIndex(), p);
 			}
 			
@@ -225,14 +277,15 @@ package org.syncon.evernote.basic.controller
 				for (var j:uint = 0; j < ar.length; j++) {
 					ta = ar[j].split(':');
 					name = ta[0].toLocaleLowerCase().split(' ').join('');
-					
+					var taTrimmed : String = StringUtil.trim(ta[1] );
+					ta[1] = taTrimmed
 					switch (name) {
 						case 'text-align':
-						el.@ALIGN = ta[1];
+						el.@textAlign = taTrimmed;
 						break;
 						
 						case 'font-family':
-						el.@FACE = ta[1].split("'").join('').split('"').join('');
+						el.@fontFamily = ta[1].split("'").join('').split('"').join('');
 						break;
 						
 						case 'font-size':
@@ -240,12 +293,23 @@ package org.syncon.evernote.basic.controller
 						break;
 						
 						case 'font-weight':
-							el.@fontWeight = ta[1];
+							el.@fontWeight = taTrimmed
 							break;						
 						case 'color':
-						el.@color = StringUtil.trim(ta[1] );
+						el.@color = taTrimmed;
 						break;
-						
+						case 'text-decoration':
+							if ( taTrimmed == 'line-through' ) 
+								el.@lineThrough = true
+							else
+								el.@textDecoration = taTrimmed
+							break;					
+						case 'padding-left':
+							if ( taTrimmed.indexOf( 'px' ) ) 
+								taTrimmed  = taTrimmed.split('px')[0]
+							var indentation:int = int( taTrimmed ) 
+							el.@textIndent = indentation;		
+							break;		
 						case 'letter-spacing':
 						el.@letterspacing = ta[1].split('px').join('');
 						break;
@@ -291,38 +355,99 @@ package org.syncon.evernote.basic.controller
 				
 			}*/
 			//some do while loop uptile xml strings are equal
-			 this.promoteEmptyNotes( xml, ['span'] )
-			 this.promoteEmptyNotes( xml, ['span'] )
-			 this.promoteEmptyNotes( xml, ['span'] )
+			 promoteEmptyNotes( xml, ['span'] )
+			 promoteEmptyNotes( xml, ['span'] )
+			 promoteEmptyNotes( xml, ['span'] )
 			return xml;
 		}
-		
-		private function promoteEmptyNotes(xml:XML, onlyTags : Array = null):void
+		/**
+		 * 
+		 * if node has no attributes, promot it's children
+		 * if node has attributes, but is same as parent tag, which has no unique content prmoti it's children
+		 * if addParnt tag is true, promot children 
+		 * 
+		 * ... simplify: 
+		 * if has no attributes, promot children period ... y wrap in a useless tag?
+		 * 
+		 * If xml contains no content and no attributes, promote its children
+		 * 
+			<span>
+			  <span fontWeight="bold">
+			    bold, underline, italic
+			  </span>
+			</span>
+			  ...the span is unnecesarry 
+			  <span fontWeight="bold">
+			    bold, underline, italic
+			  </span> 
+		* IF xml contains no content, but has soe attributes, try to merge attributes if parent 
+		 * is of the same type 
+			<span fontStyle="italic">
+			  <span fontWeight="bold">
+			    bold, underline, italic
+			  </span>
+			</span>
+			 to:
+			<span fontStyle="italic" fontWeight="bold">
+			    bold, underline, italic
+			  </span>
+		 * * 
+		 * */
+		static public function promoteEmptyNotes(xml:XML, onlyTags : Array = null, pushToPTag : Boolean = false):void
 		{		
 			for each (var i:XML in xml.children()) {
 				//var dbg : Array = [i.toString(), i.valueOf() ] 
-				var vl :  String = i.toString()
-				if ( vl == '' ) 
-					continue; 
+				//convert xml to string 
+				var childrenXMLString :  String = i.children().toXMLString()
 				
-				if ( vl.charAt(0) == '<' && vl.charAt(vl.length-1) == '>' ) 
+				if ( childrenXMLString == '' ) 
+					continue; 
+				var dbg : Array = [i.children(),  i.attributes(),  i.attributes().length(), i.parent() ]
+				//empty would be dropped by tlf anyway  
+				var hasNoChildren : Boolean = false 
+				hasNoChildren = i.children().length() == 0
+				//if has no children, and no content ... remove it 
+				/////////////////////////////////////////////////////////////////////////
+				var hasAttributes : Boolean = false 
+				hasAttributes =  i.attributes().length() != 0			
+				var removeableTag : Boolean = false 
+				if ( onlyTags != null ) 
+					removeableTag = onlyTags.indexOf( i.name().localName ) != -1 			
+				//doesn' contain content other than tags
+				var noContentOtherThanChildren : Boolean = false; 
+				if (childrenXMLString.charAt(0) == '<' && childrenXMLString.charAt(childrenXMLString.length-1) == '>' ) 
+					noContentOtherThanChildren = true; 
+				if ( noContentOtherThanChildren )
 				{
-					if (  (onlyTags == null )||
-						
-						(onlyTags != null && 
-										onlyTags.indexOf( i.name().localName ) != -1 )  )
+					
+					//remove if ? and has no attributes
+					if (  removeableTag   )
 					{	//continue; 
-					i.parent().replace( i.childIndex(), i.children() )
+						if (  i.attributes().length() == 0 ) 
+							i.parent().replace( i.childIndex(), i.children() )
+						if (   i.attributes().length() != 0 )
+						{
+							//trace('' + i.name().localName +  ' ' +  i.parent().name().localName + ': ' + childrenXMLString  )
+							if ( i.name().localName == i.parent().name().localName )
+							{
+								//copy attributes to parent then move
+								copy_attributesX( i, i.parent() ) 
+								i.parent().replace( i.childIndex(), i.children() )
+								//trace('same parent type');
+							}
+						}
 					}
-					if ( i.children().length() > 0 ) 
+
+					//if it has children 
+					if ( i.children().length() > 0  ) 
 					{
 						var p : XML = i.children()[0].parent()
 					}
 					if ( p != null )
-						{
-							var pp : Object = p.toString();
-						}
-					this.promoteEmptyNotes( i ) 
+					{
+						var pp : Object = p.toString();
+					}
+					
 					/*	
 					for each (var i2:XML in i.children()) 
 					{	
@@ -331,7 +456,32 @@ package org.syncon.evernote.basic.controller
 					}
 					*/	
 				}
+				else
+				{
+					//if parent tags can be shortened, .. shorten them , will copy the children 
+					trace('' + i.name().localName +  ' ' +  i.parent().name().localName + ': ' + childrenXMLString  )
+					if ( i.name().localName == i.parent().name().localName )
+					{
+						//copy attributes to parent then move
+						copy_attributesX( i, i.parent() ) 
+						i.parent().replace( i.childIndex(), i.children() )
+						//trace('same parent type');
+					}			
+					//if it has no attributes == useless tag
+					/*
+					if ( pushToPTag && hasAttributes == false  &&
+						removeableTag &&  i.parent().name().localName == 'p' )
+					{
+						i.parent().replace( i.childIndex(), i.children() )
+					}		*/	
+					//u lose nothing here
+					if (  hasAttributes == false  && removeableTag  )
+					{
+						i.parent().replace( i.childIndex(), i.children() )
+					}							
+				}				
 
+				promoteEmptyNotes( i, onlyTags ) 
 			}
 			
 			//return xml
@@ -371,6 +521,13 @@ package org.syncon.evernote.basic.controller
 			return false;
 		}
 		
+		static private function copy_attributesX(x1:XML, x2:XML):XML
+		{
+			for each (var i:XML in x1.attributes()) {
+				x2.@[i.name().localName] = i;
+			}
+			return x2;
+		}		
 		private function copy_attributes(x1:XML, x2:XML):XML
 		{
 			for each (var i:XML in x1.attributes()) {

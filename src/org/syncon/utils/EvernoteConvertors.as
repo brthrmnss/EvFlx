@@ -25,7 +25,7 @@ package org.syncon.utils
 			
 		}
 		 
-		static public function convertTLFtoEvernoteXML( tf : TextFlow, fxResult : Function )  : void
+		static public function convertTLFtoEvernoteXML( tf : TextFlow, fxResult : Function, debug : Boolean = false )  : void
 		{
 			var ee  : EvernoteToTextflowCommandTriggerEvent;
 			var xml : XML = TextConverter.export(  tf,  
@@ -35,18 +35,18 @@ package org.syncon.utils
 			var event : EvernoteToTextflowCommandTriggerEvent = 
 				new EvernoteToTextflowCommandTriggerEvent(
 					EvernoteToTextflowCommandTriggerEvent.EXPORT,
-					xml.toXMLString(), fxResult )
+					xml.toXMLString(), fxResult, debug )
 			cmd.event = event
 			cmd.execute();			
 		}
 		
-		static public function convertEvernoteXMLtoTLF( input : String, fxResult : Function )  : void
+		static public function convertEvernoteXMLtoTLF( input : String, fxResult : Function, debug : Boolean = false )  : void
 		{
 			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
 			var event : EvernoteToTextflowCommandTriggerEvent = 
 				new EvernoteToTextflowCommandTriggerEvent(
 					EvernoteToTextflowCommandTriggerEvent.IMPORT,
-					input, fxResult  )
+					input, fxResult, debug  )
 			cmd.event = event
 			cmd.execute();			
 		}		

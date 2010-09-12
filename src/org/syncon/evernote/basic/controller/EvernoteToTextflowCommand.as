@@ -19,7 +19,7 @@ package  org.syncon.evernote.basic.controller
 		{
 			var drg : EvernoteToTextflowCommand_Base = new EvernoteToTextflowCommand_Base();
 			drg.event = event
-				if ( this.dispatch == null ) 
+				if ( this.dispatch == null || this.event.debug ) 
 				{
 					drg.execute();
 					return;

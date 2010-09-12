@@ -12,6 +12,7 @@ package org.syncon.evernote.basic.controller
 		public var SET_UL:String = 'UL';
 		public var SET_BR:String = 'BR';
 		
+		public var SET_SPAN : String = 'span'
 		public var ignoreParagraphSpace:Boolean = false;
 		
 		private var out_xml:XML;
@@ -79,9 +80,11 @@ package org.syncon.evernote.basic.controller
 			// format css
 			xml = add_css(xml);
 			xml = remove_end_todos(xml);
+			xml = remove_strong_and_em( xml ) 
 			// format new names
 			xml = set_new_name(xml);
-			
+			var bb :  XML = xml.child(0)[0]
+			RteHtmlParser_Import.promoteEmptyNotes( bb,[ 'span'], true ) 
 			out_xml = xml;
 		}
 		
@@ -211,17 +214,17 @@ package org.syncon.evernote.basic.controller
 			var t1:XML;
 			var t2:XML;
 			// Find all ALIGN
-			for each ( t1 in xml..@align ) {
+			for each ( t1 in xml..@textAlign ) {
 				t2 = t1.parent();
 				t2.@style = "text-align:" + t1 + ";" + t2.@style;
-				delete t2.@align;
+				delete t2.@textAlign;
 			}
 			// Find all FACE
 			//fontFamily
-			for each ( t1 in xml..@face ) {
+			for each ( t1 in xml..@fontFamily ) {
 				t2 = t1.parent();
 				t2.@style = "font-family:'" + t1 + "';" + t2.@style;
-				delete t2.@face;
+				delete t2.@fontFamily;
 			}
 			// Find all SIZE 
 			for each ( t1 in xml..@fontSize ) {
@@ -235,12 +238,35 @@ package org.syncon.evernote.basic.controller
 				t2.@style = "color: " + t1 + ";" + t2.@style;
 				delete t2.@color;
 			}
+			
+			// Find all textDecoration 
+			for each ( t1 in xml..@textDecoration ) {
+				t2 = t1.parent();
+				t2.@style = "text-decoration: " + t1 + ";" + t2.@style;
+				delete t2.@textDecoration;
+			}
+			
+			// Find all lineThrough 
+			for each ( t1 in xml..@lineThrough ) {
+				t2 = t1.parent();
+				t2.@style = "text-decoration: " + 'line-through' + ";" + t2.@style;
+				delete t2.@lineThrough;
+			}
+			
 			// Find all LETTERSPACING 
 			for each ( t1 in xml..@letterspacing ) {
 				t2 = t1.parent();
 				t2.@style = "letter-spacing:" + t1 + "px;" + t2.@style;
 				delete t2.@letterspacing;
+			}			
+			
+			// Find all textIndent 
+			for each ( t1 in xml..@textIndent ) {
+				t2 = t1.parent();
+				t2.@style = "padding-left: " + t1 + "px;" + t2.@style;
+				delete t2.@textIndent;
 			}
+			
 			// Find all KERNING
 			for each ( t1 in xml..@kerning ) {
 				t2 = t1.parent();
@@ -252,36 +278,7 @@ package org.syncon.evernote.basic.controller
 		
 		//________________________________________________________________________________________________________
 		
-		
-		//________________________________________________________________________________________________________
-		//                                                                                              RTE PARSER
-		/*
-		public function ParseToRTE(string:String):void
-		{
-			//"<BODY>"+string+"</BODY>"
-			var xml_doc:XMLDocument = new XMLDocument("<BODY>"+string+"</BODY>");
-			var nxml:XMLNode = (ignoreParagraphSpace) ? xml_doc.firstChild : manage_space(xml_doc.firstChild);
-			
-			var xml:XML = new XML(nxml.toString());
-			
-			// remove UL
-			xml = remove_ul_tag(xml);
-			
-			// remove BR
-			xml = remove_br_tag(xml);
-			xml = remove_end_todos(xml);
-			// format CSS
-			xml = remove_css(xml);
-			
-			// format names
-			xml = rename_tags(xml);
-			
-			//add TEXTFORMAT
-			//xml = add_textformat(xml);
-			xml = add_ul( xml ) 
-			out_xml = xml;
-		}
-		*/
+ 
 		private function remove_ul_tag(xml:XML):XML
 		{
 			var ul:XMLList = xml.elements(SET_UL);
@@ -315,6 +312,124 @@ package org.syncon.evernote.basic.controller
 		}		
 		
 		
+		private function remove_strong_and_em(xml:XML):XML
+		{
+			var span:XMLList = xml.descendants(SET_SPAN);
+			var p:XML;
+			var f:XML;
+			
+			//if a span with only the fontweight set, ...
+			//....not only ... crap 
+			
+			//only issue .. place these inside the tag by preference
+			for each (var i:XML in span) {
+				p = new XML(<strong />);
+				var dbg : Array = [ i.attributes().toXMLString(), i.attributes().toString(),  i.attribute('bold') ]
+				if ( i.attributes().toString().indexOf( 'bold' ) != -1  )
+				{
+					if (  i.attributes().toString() == 'bold' ) 
+					{
+						p.setChildren( i.children() )
+						i.parent().replace(i.childIndex(), p);						
+					}
+					else
+					{
+						/*
+						var oldParent :  Object = i.parent()
+						delete i.@fontWeight;
+						p.setChildren(  i  ) //this cannot be aftwards, setChildren makes a cop y
+						oldParent.replace(i.childIndex(), p);		
+						*/
+						//var oldParent :  Object = i.parent()
+						var oldParent :  Object 
+						delete i.@fontWeight;						
+						p.setChildren(  i.children()  ) 
+						i.setChildren( p);								
+						
+					}
+
+				}
+						
+			}
+			
+			span = xml.descendants(SET_SPAN);
+			for each ( i in span) {
+				p = new XML(<em />);
+				if ( i.attributes().toString().indexOf( 'italic' ) != -1  )
+				{
+					if (  i.attributes().toString() == 'italic' ) 
+					{
+						p.setChildren( i.children() )
+						i.parent().replace(i.childIndex(), p);						
+					}
+					else
+					{
+						/*
+						oldParent = i.parent()
+						delete i.@fontStyle;
+						p.setChildren(  i  )
+						oldParent.replace(i.childIndex(), p);		
+						*/
+						delete i.@fontStyle;						
+						p.setChildren(  i.children()  ) 
+						i.setChildren( p);								
+					}
+				}
+			}			
+			
+			this.replaceTagHolderWithTag(xml,  'span', 'baselineShift', 'subscript', 'sub' ) 
+			this.replaceTagHolderWithTag(xml,  'span', 'baselineShift', 'superscript', 'sup' ) 			
+			/*
+			span = xml.descendants(SET_SPAN);
+			for each ( i in span) {
+				p = new XML(<span />);
+				if ( i.attributes().toString().indexOf( 'underline' ) != -1  )
+				{
+					if (  i.attributes().toString() == 'underline' ) 
+					{
+						
+						p.setChildren( i.children() )
+						i.parent().replace(i.childIndex(), p);						
+					}
+					else
+					{
+						oldParent = i.parent()
+						delete i.@textDecoration;
+						p.setChildren(  i  )
+						oldParent.replace(i.childIndex(), p);			
+					}
+				}
+			}		
+			*/
+			return xml;
+		}		
+				
+		private function replaceTagHolderWithTag(xml:XML, findTagType : String, attribute : String, value : String, replaceWithTag :  String) : void
+		{
+			var span:XMLList = xml.descendants(findTagType);
+			var p:XML;
+			var f:XML;
+			for each (var i:XML in span) {
+				p = new XML('<'+replaceWithTag+ '/>');
+				var dbg : Array = [ i.attributes().toXMLString(), i.attributes().toString(),  i.attribute('bold') ]
+				if ( i.attributes().toString().indexOf( value  ) != -1  )
+				{
+					if (  i.attributes().toString() ==value ) 
+					{
+						p.setChildren( i.children() )
+						i.parent().replace(i.childIndex(), p);						
+					}
+				/*	else
+					{
+						var oldParent :  Object 
+						delete i.@fontWeight;						
+						p.setChildren(  i.children()  ) 
+						i.setChildren( p);								
+						
+					}*/
+				}
+			}			
+		}
 		private function remove_br_tag(xml:XML):XML
 		{
 			var br:XMLList = xml.descendants(SET_BR);
@@ -332,49 +447,7 @@ package org.syncon.evernote.basic.controller
 			return xml;
 		}
 		
-		private function remove_css(xml:XML):XML
-		{
-			var ar:Array;
-			var ta:Array;
-			var el:XML;
-			var name:String;
-			
-			for each ( var i:XML in xml..@STYLE ) {
-				el = i.parent();
-				ar = String(el.@STYLE).split(';');
-				
-				for (var j:uint = 0; j < ar.length; j++) {
-					ta = ar[j].split(':');
-					name = ta[0].toLocaleLowerCase().split(' ').join('');
-					
-					switch (name) {
-						case 'text-align':
-						el.@ALIGN = ta[1];
-						break;
-						
-						case 'font-family':
-						el.@FACE = ta[1].split("'").join('').split('"').join('');
-						break;
-						
-						case 'font-size':
-						el.@SIZE = ta[1].split('px').join('');
-						break;
-						
-						case 'color':
-						el.@COLOR = ta[1];
-						break;
-						
-						case 'letter-spacing':
-						el.@LETTERSPACING = ta[1].split('px').join('');
-						break;
-					}
-				}
-				
-				delete el.@STYLE;
-			}
-			
-			return xml;
-		}
+		 
 		
 		private function rename_tags(xml:XML):XML
 		{
