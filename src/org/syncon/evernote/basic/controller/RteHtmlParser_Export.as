@@ -195,7 +195,8 @@ package org.syncon.evernote.basic.controller
 		{
 			var t1:XML;
 			var t2:XML = new XML(<BODY />);
-			var el:XMLList = xml.children();
+			//var el:XMLList = xml.children();
+			var el:XMLList = xml.descendants( 'p' )
 			var ul:XML;
 			var li:XML; 
 			var inList : Boolean = false; 
@@ -203,10 +204,15 @@ package org.syncon.evernote.basic.controller
 			var textIndentByTextIndex :  Dictionary = new Dictionary(true)
 			var lastTextIndent : int = 0; 
 			for each (t1 in el) {
-				
-				var dbg : Array = [t1.children()[0].toString()]
-					var indicator : Array = ['%20%20•%20%20', '  •  ', '•' ] 
-				if (t1.name().localName == 'p' && t1.children()[0] != null
+				var indicator : Array = ['%20%20•%20%20', '  •  ', '•' ] 
+				var dbgNames : Array = [t1.name(), t1, t1.children()]
+				if ( t1.children() != null )
+					var dbgChild0 : Array = [t1.children()[0], indicator.indexOf( t1.children()[0].toString() ) != -1]
+				//var dbg : Array = [t1.children()[0].toString()]
+					
+				if (t1.name() != null && t1.children() != null && 
+					t1.name().localName == 'p' && 
+					t1.children()[0] != null
 					&& indicator.indexOf( t1.children()[0].toString() ) != -1  )
 				{
 					var textIndent : int = t1.@textIndent

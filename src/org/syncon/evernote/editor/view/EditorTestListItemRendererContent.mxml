@@ -130,7 +130,7 @@
 	<mx:TextArea id="txtEvernoteXML" width="250"  height="250"/>
 	<mx:TextArea id="txtImportedEvernoteXML" width="250"  height="250" />
 	<s:Group>
-		<tlf:TLFTextEditor id="tlfEditor" textFlowChanged="changedTlf()" width="250"   automaticallyExpand="false" height="250" />
+		<tlf:TLFTextEditor id="tlfEditor" textFlowChanged="changedTlf()" width="600"   automaticallyExpand="false" height="250" />
 		<s:Group id="checkBoxHolder" />
 	</s:Group>
 	

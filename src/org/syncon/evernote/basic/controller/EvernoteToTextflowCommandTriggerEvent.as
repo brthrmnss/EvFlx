@@ -2,6 +2,9 @@ package   org.syncon.evernote.basic.controller
 {
 	import flash.events.Event;
 	import flash.utils.ByteArray;
+	
+	import flashx.textLayout.elements.TextFlow;
+
 	/**
 	 * */
 	public class EvernoteToTextflowCommandTriggerEvent extends Event
@@ -10,7 +13,12 @@ package   org.syncon.evernote.basic.controller
 		public static const EXPORT:String = 'exportTextFlow'
 		public var fxResult : Function; 
 		public var txt :  String
-		public var debug : Boolean = false; 
+		public var debug : Boolean = false;
+		
+		public var tf : TextFlow = new TextFlow()
+		public var images : Array = []; 
+		public var checkboxes : Array = []; 
+		
 		public function EvernoteToTextflowCommandTriggerEvent(type:String, 
 															  txt_: String, fxResult_ :  Function, debug_ : Boolean = false )  
 		{	

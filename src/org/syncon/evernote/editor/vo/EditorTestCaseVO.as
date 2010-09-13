@@ -1,7 +1,10 @@
 package   org.syncon.evernote.editor.vo
 {
+	import com.evernote.edam.type.Note;
+	
 	import flashx.textLayout.elements.TextFlow;
 	
+	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.utils.EvernoteConvertors;
 
 	public class EditorTestCaseVO  
@@ -15,6 +18,8 @@ package   org.syncon.evernote.editor.vo
 		private var _importing   : Boolean = true
 		private var _exporting : Boolean = false; 
 		
+		
+		public var associatedNote : Note = new Note(); //
 		
 		public function set  importing  ( b  : Boolean ) : void
 		{
@@ -41,6 +46,7 @@ package   org.syncon.evernote.editor.vo
 		public var tlf : TextFlow ; 
 		public var tlf_toString : String = ''; 
 		public var chk : Array = []; 
+		public var images : Array = []; 
 		
 		public var description : String = ''; 
 		
@@ -91,11 +97,13 @@ package   org.syncon.evernote.editor.vo
 			EvernoteConvertors.convertEvernoteXMLtoTLF(
 				this.evernoteXML, this.onEvernoteConverted, true )
 		}
-		protected function onEvernoteConverted( tf : TextFlow, chkbox : Array ):void
+		protected function onEvernoteConverted( e : EvernoteToTextflowCommandTriggerEvent ):void
 		{ 
-			this.tlf  = tf
-			this.chk = chkbox
-			tlf_toString 	=EvernoteConvertors.exportTLF( tf  )
+			
+			this.tlf  = e.tf
+			this.chk = e.checkboxes
+			this.images = e.images
+			tlf_toString = EvernoteConvertors.exportTLF( e.tf  )
 			return;
 		}
 		
@@ -117,11 +125,14 @@ package   org.syncon.evernote.editor.vo
 			if ( body.indexOf( '</en-note>' ) != -1   ) 
 				throw 'do not include end tags' 
 			if ( body.indexOf( '<en-note>' ) != -1   ) 
-				throw 'do not include end tags' 				
-			if ( result_.indexOf( '</en-note>' ) != -1   ) 
-				throw 'result_ do not include end tags' 
-			if ( result_.indexOf( '<en-note>' ) != -1   ) 
-				throw 'result_ do not include end tags' 							
+				throw 'do not include end tags' 	
+			if ( result_ != null ) 
+			{
+				if ( result_.indexOf( '</en-note>' ) != -1   ) 
+					throw 'result_ do not include end tags' 
+				if ( result_.indexOf( '<en-note>' ) != -1   ) 
+					throw 'result_ do not include end tags' 							
+			}
 			this.importing = true
 			var head : String = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note>'
 			var foot : String ='</en-note>';  

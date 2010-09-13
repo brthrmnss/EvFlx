@@ -17,8 +17,10 @@ package  org.syncon.evernote.basic.controller
 		 public var txt :  String = '' 
 		override public function execute():void
 		{
+			var txt_  : String = this.event.txt
 			var drg : EvernoteToTextflowCommand_Base = new EvernoteToTextflowCommand_Base();
 			drg.event = event
+			//	drg.dispatchX = this.dispatch; 
 				if ( this.dispatch == null || this.event.debug ) 
 				{
 					drg.execute();

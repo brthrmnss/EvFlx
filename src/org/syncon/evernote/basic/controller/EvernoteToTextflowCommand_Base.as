@@ -7,11 +7,14 @@ package  org.syncon.evernote.basic.controller
 	import flashx.textLayout.elements.InlineGraphicElement;
 	import flashx.textLayout.elements.SpanElement;
 	import flashx.textLayout.elements.TextFlow;
+	
+	import org.osmf.image.ImageElement;
 
 	/**
 	 * */
 	public class EvernoteToTextflowCommand_Base 
 	{
+		 static  public var dispatchX : Function;
 		//[Inject] public var apiModel:EvernoteAPIModel;
 		[Inject] public var event:EvernoteToTextflowCommandTriggerEvent;
 		 public var txt :  String = '' 
@@ -19,6 +22,7 @@ package  org.syncon.evernote.basic.controller
 		public var tf : TextFlow ;//
 		
 		public var holders : Array = []; 
+		public var images : Array = []; 
 		  public function execute():void
 		{
 			if ( event.type == EvernoteToTextflowCommandTriggerEvent.IMPORT ) 
@@ -43,7 +47,10 @@ package  org.syncon.evernote.basic.controller
 			this.postProcessStr()
 			var result : String = this.txt;
 			this.tf = importPt2( this.txt ) 
-			if ( event.fxResult != null ) event.fxResult( this.tf, this.holders ) 
+			event.tf = this.tf
+			event.checkboxes = this.holders
+			event.images = this.images; 
+			if ( event.fxResult != null ) event.fxResult(  event ) 
 				
 			return result 
 		}
@@ -298,6 +305,13 @@ package  org.syncon.evernote.basic.controller
 			for each ( var o : Object in flow.mxmlChildren ) 
 			{
 				 	this.checkChildrenImport( o ) 
+					if ( o  is  InlineGraphicElement ) 
+					{
+						var e  : LoadImageCommandTriggerEvent = new LoadImageCommandTriggerEvent( 
+							LoadImageCommandTriggerEvent.LOAD_IMAGE, '', o.id, o  ) 
+						LoadImageCommandTriggerEvent.dispatch(  e )  
+						this.images.push( o ) 
+					}						
 					if ( o  is SpanElement ) 
 					{
 						var span : SpanElement = o as SpanElement

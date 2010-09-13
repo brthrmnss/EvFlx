@@ -15,6 +15,8 @@ package org.syncon.evernote.basic.controller
 		public var SET_OL:String = 'ol';		
 		static public var OL_Implementation : String = 'orderer'
 		public var SET_BR:String = 'br';
+		public var SET_BLOCKQUOTE:String = 'blockquote';		
+		
 		public var SET_STRONG:String = 'strong';
 		public var SET_EM:String = 'em';				
 		public var SET_EN_TODO:String = 'en-todo';		
@@ -83,6 +85,8 @@ package org.syncon.evernote.basic.controller
 				
 			// remove BR
 			xml = remove_br_tag(xml);
+			xml = replace_en_media_tag( xml ) ; 
+			xml = remove_blockquote_tag(xml);
 			xml = remove_enTodo_tag(xml);
 			// format CSS
 			xml = remove_css(xml);
@@ -103,14 +107,15 @@ package org.syncon.evernote.basic.controller
 		private function remove_ul_tag(xml:XML):XML
 		{
 			
-			var ul:XMLList = xml.elements(SET_UL);
-			
+			var ul_:XMLList = xml.elements(SET_UL);
+			var ul:XMLList = xml.descendants(SET_UL);
 			for each (var i:XML in ul) {
 				var spanned :  XMLList = spanElements(  i.children() ) 
 				i.parent().replace(i.childIndex(), spanned );
 			}
 			
-			var ol:XMLList = xml.elements(SET_OL);
+			//var ol:XMLList = xml.elements(SET_OL);
+			var ol:XMLList = xml.descendants(SET_OL);
 			
 			for each ( i in ol) {
 				spanned = spanElements(  i.children(), true ) 
@@ -127,6 +132,27 @@ package org.syncon.evernote.basic.controller
 			}		*/	
 			return xml;
 		}
+	/*	
+		private function remove_ul_tag(xml:XML):XML
+		{
+			
+			var ul:XMLList = xml.elements(SET_UL);
+			for each (var i:XML in ul) {
+				var spanned :  XMLList = spanElements(  i.children() ) 
+				i.parent().replace(i.childIndex(), spanned );
+			}
+			
+			var ol:XMLList = xml.elements(SET_OL);
+			
+			for each ( i in ol) {
+				spanned = spanElements(  i.children(), true ) 
+				i.parent().replace(i.childIndex(), spanned );
+			}			
+ 
+			return xml;
+		}		
+		*/
+		
 		private function spanElements(xml:XMLList, ordererList : Boolean = false, textIndent : int = 0 ):XMLList
 		{
 			var list : XMLList = new XMLList(<div/>)
@@ -292,7 +318,9 @@ package org.syncon.evernote.basic.controller
 				return m;
 			}		
 					
-			
+		/**
+		 * Replace bracket ... should have no children 
+		 * */
 		private function remove_br_tag(xml:XML):XML
 		{
 			var br:XMLList = xml.descendants(SET_BR);
@@ -300,7 +328,7 @@ package org.syncon.evernote.basic.controller
 			//var f:XML;
 			
 			for each (var i:XML in br) {
-				p = new XML(<span />);
+				p = new XML(<p />);
 				//p = new XML(<span color="#99cc00">????</span>);
 				/*f = copy_attributes(i, new XML(<FONT />));
 				f.setChildren('');*/
@@ -310,6 +338,42 @@ package org.syncon.evernote.basic.controller
 			
 			return xml;
 		}
+		
+		private function replace_en_media_tag(xml:XML):XML
+		{
+			var br:XMLList = xml.descendants('en-media');
+			var p:XML;
+			//var f:XML;
+			
+			for each (var i:XML in br) {
+				if ( i.@type == 'image/gif' )
+				{
+					p = new XML(<img />);
+				}
+				p.@id = i.@hash; 
+				i.parent().replace(i.childIndex(), p);
+			}
+			
+			return xml;
+		}
+				
+		
+		private function remove_blockquote_tag(xml:XML):XML
+		{
+			var br:XMLList = xml.descendants(SET_BLOCKQUOTE);
+			var p:XML;
+			//var f:XML;
+			
+			for each (var i:XML in br) {
+				p//= new XML(<div paddingLeft="30" textIndent="30" />);
+				p = new XML(<div />);
+				copy_attributes(i, p);
+				p.setChildren( i.children() )
+				i.parent().replace(i.childIndex(), p);
+			}
+			
+			return xml;
+		}		
 		
 		
 		private function remove_strong_tag(xml:XML):XML
@@ -492,6 +556,9 @@ package org.syncon.evernote.basic.controller
 			 promoteEmptyNotes( xml, ['span'] )
 			 promoteEmptyNotes( xml, ['span'] )
 			 promoteEmptyNotes( xml, ['span'] )
+			/* promoteEmptyNotes( xml, ['p'] )			
+			 promoteEmptyNotes( xml, ['p'] )		
+			 promoteEmptyNotes( xml, ['p'] )		*/
 			return xml;
 		}
 		/**

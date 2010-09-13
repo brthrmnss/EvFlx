@@ -1,5 +1,8 @@
 package  org.syncon.evernote.editor.view
 {
+	import com.evernote.edam.type.Note;
+	import com.evernote.edam.type.Resource;
+	
 	import flash.events.Event;
 	
 	import mx.collections.ArrayCollection;
@@ -93,11 +96,12 @@ package  org.syncon.evernote.editor.view
 			test.importXML('<p>fonts: <span style="font-family: arial,helvetica,sans-serif;">arial</span>, <span style="font-family: georgia,palatino;">georiga </span></p>' )
 			tests.push( test ) 						
 			*/
-			/*
+			/* 
 			test = new  EditorTestCaseVO()
+			test.name = 'font size test' 
 			test.importXML('<p><span style="font-size: xx-large;">big </span><span style="font-size: x-large;">bigmed</span>, med, <span style="font-size: xx-small;">small</span></p>' )
 			tests.push( test ) 
-			*/	
+			 */
 			 /*
 			test = new  EditorTestCaseVO()
 			test.importXML('<ul><li>unorderer</li><li>list</li><li>list</li><li>list</li></ul>' )
@@ -121,13 +125,14 @@ package  org.syncon.evernote.editor.view
 			test.importXML('<ol><li><span style="font-size: 12px;">a<span style="font-weight: bold;">sd</span></span></li><li>list</li></ol>', 
 				 )
 			tests.push( test ) 	
-			*/	
+			*/	/*
 			test = new  EditorTestCaseVO('simplify weight into strong tags that breaks a li element in half')
 			test.description = 'If you have a nested span, it must be removed, and attributes have to be copied consistently'
 			test.description += '... fix: when you append content from li to spans, you must copy all xml children, not just the first one'
 			test.importXML('<ol><li>list</li><li><span style="font-size: 12px;">a<span style="font-weight: bold;">sd</span></span></li><li>list</li></ol>', 
 				'<ol><li>list</li><li>a<strong>sd</strong></li><li>list</li></ol>' )
-			tests.push( test ) 					
+			tests.push( test ) 		
+				*/
  /*
 			test = new  EditorTestCaseVO('nested list')
 			test.importXML('<ol><li>order</li><li>list</li><ol><li>lisgt</li></ol><li>list</li></ol>' )
@@ -138,12 +143,45 @@ package  org.syncon.evernote.editor.view
 			tests.push( test ) 
 				*/
 			/*	
+			test = new  EditorTestCaseVO('bizarre spacing')
+			test.description = 'These types of things can cause errors'; 
+			test.importXML('  <p><span>       </span>   </p>' )
+			tests.push( test ) 	
+				*/
+			/*
+			test = new  EditorTestCaseVO('bizarre spacing attempt 2')
+			test.description = 'trying to recreate error '; 
+			test.importXML('  <p><span> <ul>asdf<li>asdf2</li></ul>      </span>   </p>' )
+			tests.push( test ) 	
+				 
+			test = new  EditorTestCaseVO('nested lists not top level drops them')
+			test.description = 'trying to recreate error '; 
+			test.importXML('  <p><ul>asdfb<li>asdfa</li></ul>   </p><ul>asdf<li>asdf2</li></ul>' )
+			tests.push( test ) 						
+			 *//*
 			test = new  EditorTestCaseVO()
 			test.importing = true
 			test.evernoteXML = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note><p><strong>bolded text</strong></p><p><span style="text-decoration: underline;">underlined text</span></p><p><em>italic </em></p><p><span style="text-decoration: underline;"><em><strong>bold, underline, italic</strong></em></span></p><p>sub<sub>script</sub></p><p>super<sup>sprint</sup></p><p>left</p><p style="text-align: right;">right</p><p><span style="text-decoration: line-through;">strike through </span></p><p>indented</p><p style="padding-left: 30px;">once</p><p>br<br clear="none"/>br</p><ol><li>order</li><li>list</li><li>list</li><li>list</li></ol><p> </p><ul><li>unorderer</li><li>list</li><li>list</li><li>list</li></ul><p> </p><p><en-todo/>checkbox<en-todo checked="true"/></p><p> </p><p><span style="color: #ff9900;">colors</span></p><p>fonts: <span style="font-family: arial,helvetica,sans-serif;">arial</span>, <span style="font-family: georgia,palatino;">georiga </span></p><p><span style="font-size: xx-large;">big </span><span style="font-size: x-large;">bigmed</span>, med, <span style="font-size: xx-small;">small</span></p></en-note>'; 
 			test.process()
 			tests.push( test ) 				
-		 	*/
+		 */
+			/*
+			test = new  EditorTestCaseVO('indented list')
+			test.importXML( '<p>asdfasdf</p><blockquote><ul><li>sdf</li><li>sd<br clear="none"/><ul><li>fsd</li></ul></li><li>fs</li><li>df</li></ul></blockquote>' )
+			tests.push( test ) 	
+			*/
+			test = new  EditorTestCaseVO('image')
+			test.importXML( '<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
+			test.associatedNote = new Note()
+			var note : Note  = new Note()
+			note.guid = '1a1981bb-e1de-4d42-bf5a-ca2249e120f7'
+			var res :  Array = []; 
+			note.resources = res
+			var resource : Resource = new Resource()
+			resource.guid = 'f6d005e3-4ee3-49aa-a9a0-1225ebd1c70f'; 
+			res.push( resource ) 
+			tests.push( test ) 					
+				
 			this.ui.tests = tests
 		}
 		

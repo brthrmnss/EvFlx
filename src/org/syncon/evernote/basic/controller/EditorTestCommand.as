@@ -128,7 +128,8 @@ package  org.syncon.evernote.basic.controller
 		 //http://sandbox.evernote.com/Home.action?login=true#v=t&n=9ff9e5f6-1a91-471a-8672-57ca707c3be7&b=fc8447d1-17af-45e7-a12b-90b6bc7e3429
 		 event.url = 'http://'+this.note.guid;
 		 event.url = 'http://sandbox.evernote.com/Home.action?login=true#v=t&n='+this.note.guid;
-		event.fxSuccess( event ) 
+		var url : String = event.url; 
+		 event.fxSuccess( event ) 
 	 }	 
  
 	 

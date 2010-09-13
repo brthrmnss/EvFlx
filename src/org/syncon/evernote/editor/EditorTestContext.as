@@ -15,6 +15,8 @@ package   org.syncon.evernote.editor
 	import org.syncon.evernote.basic.controller.EvernoteAPICommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
+	import org.syncon.evernote.basic.controller.LoadImageCommand;
+	import org.syncon.evernote.basic.controller.LoadImageCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.QuickTagEditorCommand;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.editor.view.EditorTestList;
@@ -36,6 +38,9 @@ package   org.syncon.evernote.editor
 			commandMap.mapEvent(CreateDefaultDataCommand.START,  CreateDefaultDataCommand, null, false );
 			commandMap.mapEvent(CreateDefaultDataCommand.LIVE_DATA,  CreateDefaultDataCommand, null, false );
 			commandMap.mapEvent(EvernoteAPICommandTriggerEvent.SHOW_POPUP,   EvernoteAPICommand, EvernoteAPICommandTriggerEvent, false );				
+			commandMap.mapEvent(LoadImageCommandTriggerEvent.LOAD_IMAGE,
+				LoadImageCommand, LoadImageCommandTriggerEvent, false );				
+			LoadImageCommandTriggerEvent.dispatch = this.dispatchEvent; 			
 			
 			EvernoteAPICommand.mapCommands( commandMap )
 			EvernoteAPIHelperCommand.mapCommands( commandMap )
