@@ -69,7 +69,7 @@
 			{  
 				EvernoteConvertors.convertTLFtoEvernoteXML( 
 					this.txtEditor.textFlow , 
-					this.onExported )
+					this.onExported , true)
 			}  				
 			
 				public function onExported(exportresult:String)  : void
