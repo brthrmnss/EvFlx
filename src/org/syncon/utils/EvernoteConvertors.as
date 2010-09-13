@@ -1,5 +1,7 @@
 package org.syncon.utils
 {
+	import com.evernote.edam.type.Note;
+	
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
@@ -40,13 +42,15 @@ package org.syncon.utils
 			cmd.execute();			
 		}
 		
-		static public function convertEvernoteXMLtoTLF( input : String, fxResult : Function, debug : Boolean = false )  : void
+		static public function convertEvernoteXMLtoTLF( input : String, 
+														fxResult : Function, debug : Boolean = false, 
+														associatedNote : Note = null)  : void
 		{
 			var cmd : EvernoteToTextflowCommand = new EvernoteToTextflowCommand()
 			var event : EvernoteToTextflowCommandTriggerEvent = 
 				new EvernoteToTextflowCommandTriggerEvent(
 					EvernoteToTextflowCommandTriggerEvent.IMPORT,
-					input, fxResult, debug  )
+					input, fxResult, debug, associatedNote  )
 			cmd.event = event
 			cmd.execute();			
 		}		

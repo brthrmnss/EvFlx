@@ -1,5 +1,7 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.type.Resource;
+	
 	import flash.events.Event;
 	
 	import flashx.textLayout.conversion.ConversionType;
@@ -300,6 +302,8 @@ package  org.syncon.evernote.basic.controller
 	 
 		public function checkChildrenImport(flow:Object):void
 		{
+			//keep track of images so associated not can do thing ....
+			var imgCount : int = 0; 
 			if ( flow.hasOwnProperty('mxmlChildren' ) == false ) 
 				return; 			
 			for each ( var o : Object in flow.mxmlChildren ) 
@@ -307,8 +311,10 @@ package  org.syncon.evernote.basic.controller
 				 	this.checkChildrenImport( o ) 
 					if ( o  is  InlineGraphicElement ) 
 					{
+						var r : Resource = this.event.associatedNote.resources[imgCount] 
+						//so many problems if this is wrong 
 						var e  : LoadImageCommandTriggerEvent = new LoadImageCommandTriggerEvent( 
-							LoadImageCommandTriggerEvent.LOAD_IMAGE, '', o.id, o  ) 
+							LoadImageCommandTriggerEvent.LOAD_IMAGE, '', o.id, o, imgCount , r ) 
 						LoadImageCommandTriggerEvent.dispatch(  e )  
 						this.images.push( o ) 
 					}						

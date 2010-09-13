@@ -95,7 +95,7 @@ package   org.syncon.evernote.editor.vo
 		protected function onImport( ):void  
 		{  
 			EvernoteConvertors.convertEvernoteXMLtoTLF(
-				this.evernoteXML, this.onEvernoteConverted, true )
+				this.evernoteXML, this.onEvernoteConverted, true , this.associatedNote)
 		}
 		protected function onEvernoteConverted( e : EvernoteToTextflowCommandTriggerEvent ):void
 		{ 

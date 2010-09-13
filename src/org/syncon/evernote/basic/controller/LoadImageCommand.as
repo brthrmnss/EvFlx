@@ -16,20 +16,19 @@ package  org.syncon.evernote.basic.controller
 		{
 		 	var ee :   EvernoteAPICommandTriggerEvent
 			this.dispatch( 
-				EvernoteAPICommandTriggerEvent.GetResource( event.resoureGuid, true, false, true, true,
+				EvernoteAPICommandTriggerEvent.GetResource( event.resource.guid, true, false, true, true,
 					this.onResourceLoaded, this.onResourceLoaded_Fault)
 			)
 				
 			this.dispatch( 
-				EvernoteAPICommandTriggerEvent.GetResourceData( event.resoureGuid,  
+				EvernoteAPICommandTriggerEvent.GetResourceData( event.resource.guid,  
 					this.onResourceLoaded2, onResourceLoaded_Fault2 )
 			)	
 				var b : ByteArray = new ByteArray()
 					b.writeObject( event.resoureGuid ) 
 			this.dispatch( 
-				EvernoteAPICommandTriggerEvent.GetResourceByHash( event.guidNote, 
-				 b,  
-					null, false, false, this.onResourceLoaded2, onResourceLoaded_Fault2 )
+				EvernoteAPICommandTriggerEvent.GetResourceByHash( event.resource.guid, 
+				 b,   false, false, false, this.onResourceLoaded2, onResourceLoaded_Fault2 )
 			)						
 				
 		}

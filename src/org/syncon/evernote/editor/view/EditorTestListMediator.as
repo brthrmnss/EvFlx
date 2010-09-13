@@ -171,15 +171,17 @@ package  org.syncon.evernote.editor.view
 			tests.push( test ) 	
 			*/
 			test = new  EditorTestCaseVO('image')
-			test.importXML( '<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
-			test.associatedNote = new Note()
+			
 			var note : Note  = new Note()
 			note.guid = '1a1981bb-e1de-4d42-bf5a-ca2249e120f7'
 			var res :  Array = []; 
 			note.resources = res
 			var resource : Resource = new Resource()
 			resource.guid = 'f6d005e3-4ee3-49aa-a9a0-1225ebd1c70f'; 
-			res.push( resource ) 
+			res.push( resource ) 	
+			test.associatedNote = note
+			test.importXML( '<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
+
 			tests.push( test ) 					
 				
 			this.ui.tests = tests
