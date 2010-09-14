@@ -1,11 +1,22 @@
 package  org.syncon.evernote.basic.controller
 {
+	import com.evernote.edam.type.Resource;
+	
+	import flash.display.Loader;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.ByteArray;
+	
+	import mx.controls.CheckBox;
+	import mx.controls.Image;
+	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	
 	import org.robotlegs.mvcs.Command;
 
 	/**
+	 * 
+	 * http://stackoverflow.com/questions/906791/how-to-convert-bytearray-to-image-or-image-to-bytearray
 	 * */
 	public class LoadImageCommand extends Command
 	{
@@ -32,11 +43,58 @@ package  org.syncon.evernote.basic.controller
 			)						
 				
 		}
-		
-		private function onResourceLoaded (e:  Object):void
+		public static var IMAGE : Image;   
+		private function onResourceLoaded (e:   Resource):void
 		{
+			event.loadInto.source = e.data.body;
+			var img : Image = new Image()
+			img.source =  e.data.body;
+			event.loadInto.source = img; 
+			FlexGlobals.topLevelApplication.addElement( img ) ;
+			var chk : CheckBox = new CheckBox()
+			event.loadInto.source = chk; 
+			FlexGlobals.topLevelApplication.addElement( chk ) ;			
+			
+			var s : Object = event.loadInto; 
+			/*
+			works nneds to be added to the stage
+			IMAGE.source = e.data.body
+			event.loadInto.source = imageLoader
+			event.loadInto.source = IMAGE; 
+			*/
+			//event.loadInto
+			var ee : FlexGlobals
+			/*
+			event.loadInto.width = e.width; 
+			event.loadInto.height = e.height; 
+			*/
 			trace();
 		}
+		
+		public function drawRect(by : ByteArray = null): Sprite
+		{
+			var redRect:Sprite = new Sprite();
+			redRect.graphics.beginFill(0xff0000);    // red
+			redRect.graphics.drawRect(0,0,30, 30);
+			redRect.graphics.endFill();
+			
+			if ( by != null ) 
+			{
+				/*
+				imageLoader = new Loader();
+				imageLoader.loadBytes(imageArray);
+				
+				var imageToLoad = mainMC;
+				imageToLoad.x = xPosition;
+				imageToLoad.y = yPosition;
+				imageToLoad.width = imageWidth;
+				imageToLoad.scaleY < imageToLoad.scaleX ? imageToLoad.scaleX = imageToLoad.scaleY : imageToLoad.scaleY = imageToLoad.scaleX;
+				imageToLoad.addChild(imageLoader);
+				*/
+			}
+			return redRect;
+		}
+
 		
 		private function onResourceLoaded2 (e:Object):void
 		{
