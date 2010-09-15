@@ -53,6 +53,7 @@ package  org.syncon.evernote.basic.controller
 			FlexGlobals.topLevelApplication.addElement( img ) ;
 			var chk : CheckBox = new CheckBox()
 			event.loadInto.source = chk; 
+			chk.id = 'boom'
 			FlexGlobals.topLevelApplication.addElement( chk ) ;			
 			
 			var s : Object = event.loadInto; 
