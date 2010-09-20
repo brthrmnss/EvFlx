@@ -525,7 +525,8 @@
                     return;
 
                 var format:ITextLayoutFormat = editManager.getCommonCharacterFormat();
-
+				if ( format == null ) 
+					return; 
                 // bold, italic, underline
                 var boldFormat:* = format.fontWeight;
                 bold.selected = boldFormat == "bold";

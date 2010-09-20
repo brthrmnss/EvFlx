@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	creationComplete="onInit(event)" 		
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:view="org.syncon.evernote.basic.view.*" >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuAutomationVO;
+			
+			public var menuDp : MenuAutomationVO = new MenuAutomationVO()
+			
+			protected function onInit(event:FlexEvent):void
+			{ 
+				this.menuButtons.createOptions(  ['Save and Close'] ,
+					null, this.doAction, 
+					null, ['Save and Close']  )
+				this.menuOrderOrder.createOptions(  ['Pic', 'List'], null, this.doAction )
+			}
+			
+			public function doAction(str:String, data:Object, save:Boolean=true,  goBackToListState:Boolean=true):void
+			{
+				if ( str ==  'Save and Close' )
+				{
+					var note :   Object = {}; //new  Note()
+					note.tempTitle = this.editor.txtTitle.text
+					note.tempContent = this.editor.txtContents.textFlow
+					note.save = save; 
+					note.goBackToListState = goBackToListState; 
+					this.dispatchEvent( new CustomEvent( 'clicked'+str, note ) ) 
+					return; 
+				}
+				this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
+				//this.dispatchEvent( new CustomEvent( 'clicked'+str, data ) ) 
+			}
+			
+			public function saveTemp(save:Boolean=false, goBackToListState:Boolean=true)  : void
+			{
+				this.doAction('Save and Close' , null , save, goBackToListState) ;
+				//this._note.tempContent = this.editor.txtContents.textFlow
+				//this._note.tempTitle = this.editor.txtTitle.text
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.right_side_editor_container")]
+	</fx:Metadata>
+	
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />		
+	</s:states>
+	
+	
+	<view:control_menu visible="false"  textDecoration="none" x="5" y="5" id="menuButtons" />
+	
+	<s:HGroup right="5" y="5" verticalAlign="middle"  >
+		<view:bandwidth_usage id="usage" />
+		<view:control_menu right="0" id="menuOrderOrder" />		
+	</s:HGroup>
+	
+	<view:list_editor id="editor" y="45" width="{this.width-10}" 
+					  skinClass="org.syncon.evernote.basic.view.skins.RightSideEditorDCSkin"
+					  height="{this.height-50-10}"  x="5" />
+</s:Skin>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:view="org.syncon.evernote.basic.view.*" >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+		]]>
+	</fx:Script>
+
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.footer_bar")]
+	</fx:Metadata>
+
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />		
+	</s:states>
+	
+	<!-- bg -->
+	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8">
+		<s:fill>
+			<s:SolidColor color="#CCCCCC" />
+		</s:fill>
+	</s:Rect>
+ 
+	<view:footer_links />
+	<s:Label text="© 2010, Evernote Corporation. " right="10"   verticalCenter="0" />
+	
+</s:Skin>
