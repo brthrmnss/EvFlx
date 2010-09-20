@@ -16,6 +16,7 @@ package  org.syncon.evernote.basic
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.LoadImageCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
@@ -81,7 +82,7 @@ package  org.syncon.evernote.basic
 				this.onInit()	
 			//this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 			//this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
-				
+			LoadImageCommandTriggerEvent.dispatch = this.dispatchEvent;
 			
 		}
 		

@@ -36,11 +36,11 @@ package  org.syncon.evernote.editor.view
 		{
 			var tests : Array = [];
 			var test : EditorTestCaseVO = new  EditorTestCaseVO();
-		 /*
+	 		/*
 			test = new  EditorTestCaseVO()
 			test.importXML('<p><span style="text-decoration: underline;"><em><strong>bold, underline, italic</strong></em></span></p>' )
 			tests.push( test ) 					
-			 
+			  
 			test = new  EditorTestCaseVO()
 			test.importing = true
 			test.evernoteXML = '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd"><en-note><p><strong>bolded text</strong></p>' +'</en-note>'; 
@@ -165,11 +165,13 @@ package  org.syncon.evernote.editor.view
 			test.process()
 			tests.push( test ) 				
 		 */
-			/*
+	 /*
 			test = new  EditorTestCaseVO('indented list')
 			test.importXML( '<p>asdfasdf</p><blockquote><ul><li>sdf</li><li>sd<br clear="none"/><ul><li>fsd</li></ul></li><li>fs</li><li>df</li></ul></blockquote>' )
 			tests.push( test ) 	
-			*/
+		 */
+			 for ( var i : int = 0; i < 1; i++ )
+			 {
 			test = new  EditorTestCaseVO('image')
 			
 			var note : Note  = new Note()
@@ -180,10 +182,33 @@ package  org.syncon.evernote.editor.view
 			resource.guid = 'f6d005e3-4ee3-49aa-a9a0-1225ebd1c70f'; 
 			res.push( resource ) 	
 			test.associatedNote = note
-			test.importXML( '<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
-
-			tests.push( test ) 					
+			test.importXML( 'img<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>'+''+
+			'' )
+			tests.push( test ) 	
+			 }
 				
+		//	test.importXML( 'img<en-media hash="d" type="image/gif"/>')
+			//test.importXML( 'img')
+				//'<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
+			tests.push( test ) 		
+			/*	
+			test = new  EditorTestCaseVO('image-wrong place')
+			var note : Note  = new Note()
+			note.guid = '1a1981bb-e1de-4d42-bf5a-ca2249e120f7'
+			var res :  Array = []; 
+			note.resources = res
+			var resource : Resource = new Resource()
+			resource.guid = 'f6d005e3-4ee3-49aa-a9a0-1225ebd1c70f'; 
+			res.push( resource ) 	
+			test.associatedNote = note
+			test.importXML( '<en-media hash="e43ff460e7645dc9748bdd936d3389763" type="image/gif"/>' )
+			//tests.push( test ) 			
+			*/	
+			/* 
+			test = new  EditorTestCaseVO('table ')
+			test.importXML( '<p>asdfasdf</p><table>what is a table?</table>' )
+			tests.push( test ) 					
+			*/	
 			this.ui.tests = tests
 		}
 		

@@ -13,16 +13,28 @@
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.editor.utils.EditorUtils;
 			import org.syncon.evernote.editor.vo.EditorTestCaseVO;
+			import org.syncon.utils.EnMediaHolders;
 			import org.syncon.utils.EntodoHolders;
 			
 			public var case_ : EditorTestCaseVO = new EditorTestCaseVO();
 			private var enTodos : EntodoHolders = new EntodoHolders()
+			private var enMedias : EnMediaHolders = new  EnMediaHolders(); 
 			public function set data(value:EditorTestCaseVO):void { 
 				// Check to see if the data property is null. 
 				if (value== null) 
 					return; 
 				// If the data property is not null,
+				
+				if ( case_ == value ) 
+						return; 
+				
 				case_ = value as EditorTestCaseVO
+				this.onModifyF()
+			}
+			public function onModifyF() : void
+			{
+				if ( this.creationComplete == false ) 
+					return; 
 				// set the Label controls appropriately. 
 				//txtLbl.text = case_.name.toString(); 
 				this.currentState = 'import'
@@ -34,7 +46,8 @@
 				this.txtImportedEvernoteXML.htmlText = this.case_.evernoteXML; 
 				this.txtImportedEvernoteXML.text = this.case_.tlf_toString;
 				this.txtExportEvernoteTxt.text = this.case_.exportedBackToEvernoteXML;
-				this.enTodos.loadUp( this.case_.chk, this.case_.tlf, this.checkBoxHolder ) 
+				this.enTodos.loadUp( this.case_.entodos, this.case_.tlf, this.checkBoxHolder ) 
+				this.enMedias.loadUp( this.case_.enmedias, this.case_.tlf, this.checkBoxHolder ) 					
 					var dbg : Array = [(this.case_.evernoteXML.toLowerCase() == this.case_.exportedBackToEvernoteXML.toLowerCase())]
 				var diff : Array = ['', '']; 
 				var missed : Boolean = false; 
@@ -78,11 +91,13 @@
 			}
 			
 			
-
+			private var creationComplete : Boolean = false; 
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
+				this.creationComplete = true
 				var ee : EditorUtils; 
 				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()
+				this.onModifyF()
 			}
 
 			

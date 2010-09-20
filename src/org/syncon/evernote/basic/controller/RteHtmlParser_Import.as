@@ -12,6 +12,7 @@ package org.syncon.evernote.basic.controller
 		public var SET_FONT:String = 'span';
 		
 		public var SET_UL:String = 'ul';
+		public var SET_TABLE:String = 'table';		
 		public var SET_OL:String = 'ol';		
 		static public var OL_Implementation : String = 'orderer'
 		public var SET_BR:String = 'br';
@@ -24,6 +25,9 @@ package org.syncon.evernote.basic.controller
 		public var ignoreParagraphSpace:Boolean = false;
 		
 		private var out_xml:XML;
+		
+		static public var CommentStart : String = '<!---- '; 
+		static public var CommentEnd : String = ' ---->'; 
 		
 		public function RteHtmlParser_Import()
 		{
@@ -100,6 +104,7 @@ package org.syncon.evernote.basic.controller
 			//add TEXTFORMAT
 			//xml = add_textformat(xml);
 			xml = remove_ul_tag(xml);
+			xml = remove_unsupported_tags( xml )
 			out_xml = xml;
 		}
 		
@@ -132,6 +137,26 @@ package org.syncon.evernote.basic.controller
 			}		*/	
 			return xml;
 		}
+		
+		
+		private function remove_unsupported_tags (xml:XML):XML
+		{
+			
+			var ul:XMLList = xml.descendants(SET_TABLE);
+			for each (var i:XML in ul) {
+				var list : XMLList = new XMLList(<div/>)
+				//list.@fontSize = 10
+				list.@fontStyle = 'italic'
+				list.@color = '#d2d2d2'
+				list.appendChild(CommentStart+ i.toXMLString()+CommentEnd)
+					escape( '' )
+					unescape( '' )
+				i.parent().replace(i.childIndex(), list );
+			}
+			return xml;
+		}		
+		
+		
 	/*	
 		private function remove_ul_tag(xml:XML):XML
 		{

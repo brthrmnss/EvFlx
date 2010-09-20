@@ -16,6 +16,7 @@ package  org.syncon.evernote.basic
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.LoadImageCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
@@ -72,6 +73,8 @@ package  org.syncon.evernote.basic
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();
 			
+			var ee : LoadImageCommandTriggerEvent
+			LoadImageCommandTriggerEvent.dispatch = this.dispatchEvent;
 			
 			var wait : Boolean = false;
 			if ( wait ) 

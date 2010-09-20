@@ -25,6 +25,7 @@
 			
 			import net.asciiworks.tlf.TLFTextEditor;
 			
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			import org.syncon.evernote.model.Notebook2;
@@ -186,13 +187,13 @@
 			}
 			
 			public var holders : EntodoHolders = new EntodoHolders();
-			public function conversionTFResult(tf: TextFlow, chks : Array ) :void
+			public function conversionTFResult( ev : EvernoteToTextflowCommandTriggerEvent  ) :void
 			{
-				holders.loadUp( chks, tf, this.inlineElementsPane ) 
+				holders.loadUp( ev.checkboxes, ev.tf , this.inlineElementsPane ) 
 				//this.txtContents.textFlow  = new TextFlow	
 				//this.txtContents.textFlow  = tf	
 				//this.txtContents.textFlow  = new TextFlow	
-				this.txtContents.textFlow  = tf			
+				this.txtContents.textFlow  =  ev.tf			
 					if ( this._note.oldCursor == -1 ) 
 						this._note.oldCursor = 0; 
 				this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 

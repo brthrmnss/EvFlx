@@ -86,6 +86,7 @@ package org.syncon.evernote.basic.controller
 			xml = add_css(xml);
 			xml = remove_end_todos(xml);
 			xml = remove_strong_and_em( xml ) 
+				xml = remove_unssuported_tags ( xml )
 			// format new names
 			xml = set_new_name(xml);
 			var bb :  XML = xml.child(0)[0]
@@ -504,6 +505,32 @@ package org.syncon.evernote.basic.controller
 			
 			return xml;
 		}		
+		
+		private function remove_unssuported_tags(xml:XML):XML
+		{
+			//match all that start with '<!--'
+			var matches:XMLList = xml.descendants('span');
+			var p:XML;
+			var f:XML;
+			var ee : RteHtmlParser_Import
+			for each (var i:XML in matches) {
+				var contents : String = i.toString()
+				contents = unescape( contents ) 
+				if ( contents.indexOf(RteHtmlParser_Import.CommentStart) ==  -1  || 
+						contents.indexOf(RteHtmlParser_Import.CommentEnd) == -1 ) 
+					continue; 
+			
+				var stripped :  String = contents.replace(RteHtmlParser_Import.CommentStart, '' ) 
+				stripped = stripped.replace(RteHtmlParser_Import.CommentEnd, '' ); 
+				var ue : String = unescape( stripped ) 
+				p = new  XML( ue  ) 
+				//i.parent().replace(i.childIndex(), p);		
+				i.parent().parent().replace(i.parent().childIndex(), p);						
+			}
+			
+			return xml;
+		}		
+				
 		
 		
 		private function remove_strong_and_em(xml:XML):XML

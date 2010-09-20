@@ -46,16 +46,50 @@ package  org.syncon.evernote.basic.controller
 		public static var IMAGE : Image;   
 		private function onResourceLoaded (e:   Resource):void
 		{
-			event.loadInto.source = e.data.body;
+			
+			
+			//load image 
+			//load Image into loadInto 
+			
+			if ( event.image == null ) 
+			{
+				var img : Image = new Image()
+				img.source =  e.data.body;
+				event.loadInto.source = img; 
+				event.loadInto.width = e.width; 
+				event.loadInto.height = e.height; 				
+				FlexGlobals.topLevelApplication.addElement( img ) ;						
+			}
+			else
+			{
+				 
+				event.image.source = e.data.body;
+				event.loadInto.source =  event.image; 
+				event.loadInto.width = e.width; 
+				event.loadInto.height = e.height; 							
+				//FlexGlobals.topLevelApplication.addElement( event.image ) ;	
+				//create a new image ... 
+				
+				
+		
+			}
+			/*
+			//create a new image ... 
 			var img : Image = new Image()
 			img.source =  e.data.body;
 			event.loadInto.source = img; 
 			FlexGlobals.topLevelApplication.addElement( img ) ;
+			
+			event.loadInto.source = imageLoader
+			event.loadInto.source = IMAGE; 	
+			*/
+			/*
+			//does checkboxes work? yes they do 
 			var chk : CheckBox = new CheckBox()
 			event.loadInto.source = chk; 
 			chk.id = 'boom'
 			FlexGlobals.topLevelApplication.addElement( chk ) ;			
-			
+			*/
 			var s : Object = event.loadInto; 
 			/*
 			works nneds to be added to the stage

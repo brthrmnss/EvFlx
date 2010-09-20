@@ -313,10 +313,12 @@ package  org.syncon.evernote.basic.controller
 					{
 						var r : Resource = this.event.associatedNote.resources[imgCount] 
 						//so many problems if this is wrong 
+				 /*
 						var e  : LoadImageCommandTriggerEvent = new LoadImageCommandTriggerEvent( 
 							LoadImageCommandTriggerEvent.LOAD_IMAGE, '', o.id, o, imgCount , r ) 
 						LoadImageCommandTriggerEvent.dispatch(  e )  
-						this.images.push( o ) 
+						 */
+						this.images.push( {img:o, resource:   r}  )
 					}						
 					if ( o  is SpanElement ) 
 					{

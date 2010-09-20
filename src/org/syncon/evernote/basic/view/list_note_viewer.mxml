@@ -10,6 +10,7 @@
 			import flashx.textLayout.conversion.TextConverter;
 			import flashx.textLayout.elements.TextFlow;
 			
+			import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.model.Note2;
 			private var _note : Note2 = new Note2()
@@ -28,9 +29,9 @@
 				this.txtContents.content  = TextConverter.importToFlow( str, 
 					TextConverter.TEXT_LAYOUT_FORMAT ) 
 			} */
-			public function conversionTFResult(tf:  TextFlow , chks  : Array):void
+			public function conversionTFResult(ev :   EvernoteToTextflowCommandTriggerEvent ):void
 			{
-				this.txtContents.textFlow  = tf	
+				this.txtContents.textFlow  = ev.tf	
 				//this.txtContents.display.selectRange( this._note.oldCursor, this._note.oldCursor ) 
 			}			
 		

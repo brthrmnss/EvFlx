@@ -231,25 +231,25 @@ package org.syncon.evernote.basic.view
 			
 			this.dispatch( new EvernoteToTextflowCommandTriggerEvent( 
 				EvernoteToTextflowCommandTriggerEvent.IMPORT, this.note.content, 
-				noteTextConvertToTf ) )			
+				noteTextConvertToTf, false, this.note ) )			
 		}
 		/**
 		 * Only occurs after note has been viewed ... 
 		 * */
-		public function noteTextConvertToTf( e  : TextFlow, chks : Array )  : void
+		public function noteTextConvertToTf(ev : EvernoteToTextflowCommandTriggerEvent)  : void
 		{
 			//this.note.content = e; 
-			updateContentText(e, chks )
+			updateContentText(ev )
 		}
-		public function updateContentText(tf:TextFlow, chks : Array )  : void
+		public function updateContentText( ev : EvernoteToTextflowCommandTriggerEvent )  : void
 		{
 			if ( ui.view != null && ui.view.viewer != null ) 
 			{
-				ui.view.viewer.conversionTFResult( tf, chks )
+				ui.view.viewer.conversionTFResult( ev )
 			}
 			if ( ui.edit != null && ui.edit.editor != null ) 
 			{
-				ui.edit.editor.conversionTFResult( tf , chks )		
+				ui.edit.editor.conversionTFResult( ev )		
 			}
 		}
 

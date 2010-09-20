@@ -84,8 +84,7 @@
 		<s:State name="hovered"/> 
 		<s:State name="disabled"/> 
 	</s:states> 
-	<s:Label id="txtLbl" color="0x6E6E6E"   
-			 color.hovered="0" useHandCursor.hovered="true" buttonMode.hovered="true"
+	<s:Label id="txtLbl" color="0x6E6E6E"    paddingLeft="5"
 			 fontSize="12"  textDecoration="underline"/>
 	<view:EditorTestListItemRendererContent id="datad" />
 </s:ItemRenderer>

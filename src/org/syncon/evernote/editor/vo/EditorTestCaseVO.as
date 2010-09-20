@@ -45,8 +45,8 @@ package   org.syncon.evernote.editor.vo
 		public var convertedTLFString : String = ''; 
 		public var tlf : TextFlow ; 
 		public var tlf_toString : String = ''; 
-		public var chk : Array = []; 
-		public var images : Array = []; 
+		public var entodos : Array = []; 
+		public var enmedias : Array = []; 
 		
 		public var description : String = ''; 
 		
@@ -101,8 +101,8 @@ package   org.syncon.evernote.editor.vo
 		{ 
 			
 			this.tlf  = e.tf
-			this.chk = e.checkboxes
-			this.images = e.images
+			this.entodos = e.checkboxes
+			this.enmedias = e.images
 			tlf_toString = EvernoteConvertors.exportTLF( e.tf  )
 			return;
 		}
