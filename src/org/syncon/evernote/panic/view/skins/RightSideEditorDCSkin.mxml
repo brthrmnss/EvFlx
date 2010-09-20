@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	width="100%" height="100%"   creationComplete="skin1_creationCompleteHandler(event)"
+	xmlns:view="org.syncon.evernote.basic.view.*"
+	xmlns:components="brust.components.*"
+	xmlns:tlf="net.asciiworks.tlf.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			
+			import sss.Shelpers.Shelpers.FilterHelpers;
+	 
+			
+
+			protected function skin1_creationCompleteHandler(event:FlexEvent):void
+			{
+				FilterHelpers.addDropShadow( this.holderControlPanel, 0xd2d2d2, 90, 3, 0.7, 2 )
+			}
+
+		]]>
+	</fx:Script>
+	
+	<fx:Metadata>
+		[HostComponent("org.syncon.evernote.basic.view.list_editor")]
+	</fx:Metadata>
+	
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />		
+	</s:states>
+	
+ 
+	<!--
+	<view:open_note_in_new_window id="openNoteInNew" right="0" />
+	-->
+	<s:VGroup width="100%" gap="0">
+		
+		<s:VGroup id="headerBar" width="100%">
+			
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Title:" /> <s:TextInput id="txtTitle"  /> 
+				<s:Label text="Notebook:" /> 
+				<s:DropDownList id="dropdownNotebook"  labelField="name"/>
+				<mx:LinkButton label="Attach File" textDecoration="underline" color="0x36722E" />
+			</s:HGroup>
+			<s:HGroup id="tagsRow"  verticalAlign="middle" width="100%">
+				<s:Label  id="lblTags" text="Tags: " /><!-- <s:TextInput id="txtTags" />-->
+				<components:SearchInput width="150"
+										
+										labelField="name" promptText="Search"
+										skinClass="brust.skins.SearchInputSkin" id="txtTags" />
+				<view:TagListAdjustable id="listTags"   width="{this.width-250}"
+										liveManiuplation="true"   minHeight="25"
+										draggableInto="true" 
+									  />
+			</s:HGroup>		
+			<s:Group   id="holderControlPanel" width="100%" >
+				<s:Rect width="100%" height="100%" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x404040" />
+					</s:stroke>
+					<s:fill>
+						<s:LinearGradient rotation="90">
+							<!--<s:GradientEntry color="0xffffff" ratio="0" />
+							<s:GradientEntry color="0xf2f2f2" ratio="0.5" />	-->	
+							<s:GradientEntry color="0xf2f2f2" ratio="0.0" />
+							<s:GradientEntry color="0xcdcdcd" ratio="1" />							
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+				
+				<view:richtext_control_panel id="controlp"    horizontalCenter="0" />
+			</s:Group>
+			
+			
+		</s:VGroup>
+		<s:Group width="100%">
+			<s:Rect width="100%" height="100%"
+					bottomLeftRadiusX="8" bottomLeftRadiusY="8"
+					bottomRightRadiusX="8" bottomRightRadiusY="8"  >
+				<s:stroke>
+					<s:SolidColorStroke color="0xBFBFBF" pixelHinting="true"  />
+				</s:stroke>
+			</s:Rect>	
+			 
+			<s:Scroller  id="scrolling"  width="100%"   height="{this.height-this.headerBar.height+10}" >
+				<!--
+				<s:Group  width="100%" >
+				
+				<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
+				minHeight="{this.height-this.headerBar.height+10}"
+				paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
+				</s:RichEditableText>		
+				
+				</s:Group>
+				-->
+				
+				
+				<s:Group  width="100%"    >
+					<tlf:TLFTextEditor id="txtContents"  width="100%"    automaticallyExpand="false"
+									   height="{this.height-this.headerBar.height+10}"  
+									   >
+						
+					</tlf:TLFTextEditor>
+					<!--
+					<s:RichEditableText id="txtContents"  width="100%"  change="txtContents_changeHandler(event)"
+					minHeight="{this.height-this.headerBar.height+10}"
+					paddingTop="8" paddingRight="5" paddingBottom="5" paddingLeft="5">
+					</s:RichEditableText>		
+					-->
+					<s:Group id="inlineElementsPane" height="100%" width="100%" />
+				</s:Group>				
+			</s:Scroller>
+			
+		</s:Group>
+	</s:VGroup>
+	
+	
+</s:Skin>
