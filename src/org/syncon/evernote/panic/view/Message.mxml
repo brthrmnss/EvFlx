@@ -1,279 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-						  xmlns:s="library://ns.adobe.com/flex/spark" 
-						  xmlns:mx="library://ns.adobe.com/flex/mx"  
-						   creationComplete="group1_creationCompleteHandler(event)"
-						  focusEnabled="true">
-
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()"
+		 color="0xFFFFFF" fontSize="34"
+		 >
+	
 	<fx:Metadata>
 		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
 	</fx:Metadata>		
 	
 	<fx:Script>
 		<![CDATA[
-			import com.evernote.edam.type.Note;
-			
-			import mx.collections.ArrayCollection;
-			import mx.events.DragEvent;
-			import mx.events.FlexEvent;
-			import mx.managers.DragManager;
-			
-			import org.syncon.evernote.basic.model.CustomEvent;
-			import org.syncon.evernote.model.Note2;
-			import org.syncon.evernote.model.Tag2;
-			private var _tags : ArrayCollection = new ArrayCollection()
-				
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
-				
+			
 			/**
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
-			public var liveManiuplation : Boolean = true; 
+			public var creationComplete : Boolean = false; 
 			
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			protected function onInit():void
 			{
-				this.list.dataProvider = this._tags
-				if ( this._draggable ) 
-				{
-					this.list.dragEnabled = true
-					this.list.dragMoveEnabled = true; 
-				}
-				if ( this._draggableInto ) 
-				{
-					this.list.dropEnabled = true; 
-					//this.list.dro
-				}
-				//this.list.dropEnabled = true; 
+				this.creationComplete = true
 			}				
-				
-			public function set tags ( n :  ArrayCollection )  : void
-			{
-				this._tags.source = n.source; 
-				this._tags.source = n.toArray(); 
-				this._tags.refresh()				
-			} 	
-			public function get  tags ( ):  ArrayCollection  
-			{
-				return this._tags			
-			} 				
-			
-			public var _tagNames : Array;
-			/**
-			 * Tag names are set, replace them with the guids 
-			 * */
-/* 			public function set tagNamesArray ( n :  Array )  : void
-			{
-				if ( n == null ||  n.length == 0 ) 
-				{	this._tags.removeAll();
-					return
-				} 
-				_tagNames = n; 
-	
-				this.dispatchEvent( new CustomEvent( 'getGuidsForTags', n, false  ) )
-		 
-			} 			
-			 */
-			private var  _updateNote : Note2 ;
-			public function set updateNote ( n : Note2 )  : void
-			{
-				if ( this._updateNote != null ) 
-				{
-					this._updateNote.removeEventListener(  Note2.NOTE_TAGS_UPDATED , this.reload ) 
-				}
-				this._updateNote = n; 
-				this._updateNote.addEventListener( Note2.NOTE_TAGS_UPDATED , this.reload ) 
-				if ( this._updateNote.gettingTags ) 
-				{
-					var t : Boolean = true; 
-				}
-				if ( this._updateNote.tagNames == null && this._updateNote.gettingTags == false ) 
-				{
-					this._updateNote.gettingTags = true; 
-					this.dispatchEvent( new CustomEvent('getNoteTagNames', _updateNote ) ) 
-					//this._updateNote.tagNames = []; // if user is quikcly scrolling do not redispatch 
-					this.tags = this.updateNote.tags
-				}
-				else
-				{
-					this.tags = this.updateNote.tags; 
-				}
-			}
-			
-			public function get updateNote () : Note2 
-			{
-				return this._updateNote; 
-			}
-						
-	 
-			public function onAdd() : void
-			{
-				if ( this.updateNote != null ) this.updateNote;				
-			}
-			public function onRemove() : void
-			{
-				if ( this.updateNote != null ) this.updateNote;
-			}			
-			
-			private var _draggable : Boolean = false;  
-			public function set draggable ( b : Boolean )  : void{
-				this._draggable = b
-			}
-			
-			public function set draggableInto ( b : Boolean )  : void{
-				this._draggableInto = b
-			}
-						
-			private var _draggableInto : Boolean = false
-			
-			public function reload(e:  Event):void
-			{
-				//dispatcher is on the event now ... 
-			/* 	if ( e.data != this._updateNote ) 
-				return; */
-			/* 	
-				if ( this._updateNote.tagNames.length > 0 ) 
-						trace('more than 1' ); 
-				if ( e.currentTarget.tagNames.length > 0 ) 
-					trace('more than 1x' ); 	 */			
-				this.tags = this._updateNote.tags
-			}
-
-			import mx.collections.ICollectionView;
-			import mx.controls.listClasses.IListItemRenderer;
-			import mx.core.UIComponent;
-			import mx.events.DragEvent;
-			import mx.managers.DragManager;
-			
-			import spark.layouts.supportClasses.DropLocation;
-			import spark.layouts.supportClasses.LayoutBase;			
-			
-			public function onListDragEnter(event:DragEvent):void
-			{
-				event.preventDefault();
-				if ( this._draggableInto == false ) 
-					return; 
-				DragManager.acceptDragDrop(event.target as UIComponent);
-				//list.showDropFeedback(event);
-				//list.showDropIndicator();
-				var dropLocal: DropLocation = 
-					event.currentTarget.layout.calculateDropLocation(event);				
-				this.list.layout.showDropIndicator( dropLocal )
-			}
-			
-			public function onListDragOver(event:DragEvent):void
-			{
-				event.preventDefault();
-				//list.showDropFeedback(event);
-				var dropLocal: DropLocation = 
-					event.currentTarget.layout.calculateDropLocation(event);
-				this.list.layout.showDropIndicator( dropLocal ); //createDropIndicator()
-			}
-			
-			public function onListDragExit(event:DragEvent):void
-			{
-				event.preventDefault();
-				//list.hideDropFeedback(event);
-				this.list.destroyDropIndicator()
-			}
-			
-			public function onListDragDrop(event:DragEvent):void
-			{
-				event.preventDefault();
-				list.destroyDropIndicator(); //(event);
-				//var index:int = list.layout.calculateDropLocation( event ) 
-				
-				var dropLocal: DropLocation = 
-					event.currentTarget.layout.calculateDropLocation(event);
-				//this.list.layout.c( dropLocal );					
-				//	var ee :  LayoutBase
-				var index : int = dropLocal.dropIndex
-				//support drag from tree and other listbase components
-				var items:Array = new Array();
-				
-				if(event.dragSource.hasFormat("treeItems"))
-					items = items.concat(event.dragSource.dataForFormat("treeItems") as Array);
-				
-				if(event.dragSource.hasFormat("items"))
-					items = items.concat(event.dragSource.dataForFormat("items") as Array);
-				
-				var existingTagGuids : Array = [] 
-				for each ( var tag :  Tag2 in this.tags ) 
-				{
-					existingTagGuids.push( tag.guid ) 
-				}
-				var changed : Boolean = false; 
-				for each(var item:Object in items)
-				{
-					
-				/* 	var obj:Object = new Object()
-					obj.label = item.label as String; */
-					if ( existingTagGuids.indexOf( item.guid )  == -1 ) 
-					{
-						(list.dataProvider as ArrayCollection).addItemAt(item, index);
-						changed = true
-						if ( this.liveManiuplation && this._updateNote != null ) 
-							this._updateNote.tags.addItemAt(item, index);
-					}
-				}
-				if ( changed ) 
-					this.dispatchEvent( new CustomEvent( TAGS_CHANGED ) ) 
-				
-			}
-			
-			public function onListDragComplete(event:DragEvent):void
-			{
-				event.preventDefault();
-				return
-				if(event.action == DragManager.MOVE && list.dragMoveEnabled)
-				{
-					//remove moved elements
-					var items:Array = event.dragSource.dataForFormat("items") as Array;
-					var coll:ArrayCollection = list.dataProvider as ArrayCollection;
-					for each(var item:Object in items)
-					{
-						if(coll.contains(item))
-						{
-							coll.removeItemAt(coll.getItemIndex(item));
-						}
-					}
-					
-				}
-			}
-			
+ 
 		]]>
 	</fx:Script>
-
-	<!--
-	<s:Rect id="bgStart"  
-			topRightRadiusX="5"  topRightRadiusY="5" 	topLeftRadiusX="5"  topLeftRadiusY="5"
-			left="0" right="0" top="0" bottom="0" 
-			>
-		<s:fill>
-			<s:SolidColor id="bgColor" color="#E8E8E8" />
-		</s:fill>
-	</s:Rect>	
--->
-	<!--
-	dragOver="doDragOver(event)"
-	-->
-	<s:List id="list" x="0"
-			borderVisible="false"   contentBackgroundAlpha="0.0"
-		   verticalCenter="0" width="100%" minHeight="20"
-		   dragEnter="onListDragEnter(event)"
-		   dragOver="onListDragOver(event)"
-		   dragExit="onListDragExit(event)" 
-		   dragDrop="onListDragDrop(event)"
-		   dragComplete="onListDragComplete(event)"
-			itemRenderer="org.syncon.evernote.basic.view.tag_itemrenderer">
-		<s:layout>
-			
-			<s:HorizontalLayout   />
-		</s:layout>
-		
-		<s:scroller  >
-			<s:Scroller  alpha="0.1" horizontalScrollPolicy="off" verticalScrollPolicy="off" />
-		</s:scroller>
-	</s:List>
-	<s:Scroller  horizontalScrollPolicy="off" verticalScrollPolicy="off" />
+ 
+	<s:VGroup horizontalCenter="0" verticalCenter="0">
+		<s:Label text="25 DAYS UNTIL IPAD LAUNCH"   />
+	</s:VGroup>
+	
+	
 	
 </s:Group>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  fontSize="20"
+				autoDrawBackground="false">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.vo.ProjectVO;
+			[Bindable] public var menu :  ProjectVO = new ProjectVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				menu = value as ProjectVO
+				txtLbl.text = menu.name.toString().toUpperCase(); 
+				//txtLbl.toolTip = menu.toolTip.toString();
+				//lblVariable.text = menu.name2.toString();
+			} 
+ 
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl]}"   duration="250" />
+		</s:Transition>
+	</s:transitions>	
+	
+	<s:layout>
+		<s:HorizontalLayout gap="3" />
+	</s:layout>
+	
+	<s:SkinnableContainer  height="36" width="35"
+		skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" />
+	
+	<s:SkinnableContainer  height="36"  
+		skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
+		<s:Label   id="txtLbl"
+			   color.hovered="0x696969" 
+			   useHandCursor="true"  buttonMode="true"
+			   color="0xFFFFFF"  />
+	</s:SkinnableContainer>
+ 
+	
+
+</s:ItemRenderer>

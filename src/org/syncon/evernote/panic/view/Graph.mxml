@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
-						   creationComplete="onInit()"
+						   creationComplete="onInit()" fontSize="24"
 						   color="0xFFFFFF"
 						 >
 
@@ -19,21 +19,150 @@
 			 * */
 			public var creationComplete : Boolean = false; 
 			
+			import mx.collections.ArrayCollection;
+			[Bindable]
+/* 			public var expenses:ArrayCollection = new ArrayCollection([
+				{Month:"Jan", Profit:2000, Expenses:1500},
+				{Month:"Feb", Profit:1000, Expenses:200},
+				{Month:"Mar", Profit:1500, Expenses:500}
+			]);
+			 */
+			public var expenses:ArrayCollection = new ArrayCollection([
+				{Month:"Jan", Expenses:1500},
+				{Month:"Feb", Expenses:200},
+				{Month:"Mar", Expenses:500}
+			]);
+			
 			protected function onInit():void
 			{
 				 this.creationComplete = true
 			}				
 				
+			
+			override public function set  width ( w : Number )  : void
+			{
+				super.width = w; 
+				this.height = w*(115/99) 
+			}
+			
+			public function set textBottom( s : String )  : void
+			{
+				this.txtBottom.text = s.toUpperCase()
+			}
+			
+			public function set fillC( s : uint )  : void
+			{
+				this.fillColor.color = s; 
+			}
+						
  
 		]]>
 	</fx:Script>
 
- 	<s:layout>
-		<s:VerticalLayout />
-	</s:layout>
+	<fx:Style>
+		.myAxisStyle {
+			placement:bottom;
+			minorTickPlacement:none;
+			tickLength:12;
+			tickPlacement:none;
+		}
+		.myStyle {
+			direction:"none";
+			horizontalShowOrigin:true;
+			horizontalTickAligned:false;
+			horizontalChangeCount:0; 
+			verticalShowOrigin:false;
+			verticalTickAligned:false; 
+			verticalChangeCount:0;
+			horizontalFill:#990033;
+			horizontalAlternateFill:#00CCFF;      
+		}  		
+	</fx:Style>
 	
-	<s:Label text="89/3" />
-	<mx:LineChart height="80%" />
-	<s:Label text="Transcode"  />
+	<fx:Declarations>
+		<s:SolidColor id="fillColor" color="0xFFDDFF" />
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout  horizontalAlign="center"/>
+	</s:layout>
+	<s:Label text="89/3" fontSize="36" />
+	<mx:BarChart height="80"  width="100%"  
+				  dataProvider="{expenses}"  >
+		<mx:backgroundElements>
+		</mx:backgroundElements>
+		
+		<mx:horizontalAxisRenderers>
+			<mx:AxisRenderer  
+				axis="{a1}" styleName="myAxisStyle"
+				showLine="false"/>
+		</mx:horizontalAxisRenderers>
+		<mx:verticalAxisRenderers>
+			<mx:AxisRenderer  
+				axis="{a1}" styleName="myAxisStyle"
+				showLine="false"
+				/>
+		</mx:verticalAxisRenderers>		
+		
+		<mx:horizontalAxis>
+			<mx:CategoryAxis  id="a1" 
+				dataProvider="{expenses}" 
+				categoryField="Month"
+				/>
+		</mx:horizontalAxis>
+		<mx:verticalAxis>
+			<mx:LinearAxis  id="a2" 
+							 
+							   baseAtZero="true"
+							  />
+		</mx:verticalAxis>		
+		<mx:series>
+			<mx:ColumnSeries 
+				xField="Month"  
+				yField="Expenses" 
+				displayName="Expenses" fill="{this.fillColor}"
+				/>
+		</mx:series>
+
+	</mx:BarChart>
+<!--	<mx:LineChart height="80%"  width="100%" 
+				  dataProvider="{expenses}"  >
+			<mx:backgroundElements>
+					<mx:GridLines styleName="myStyle">
+						<mx:horizontalStroke>
+							<mx:SolidColorStroke weight="3"/>
+						</mx:horizontalStroke>
+						<mx:verticalStroke>
+							<mx:SolidColorStroke weight="3"/>
+						</mx:verticalStroke>
+					</mx:GridLines>
+			</mx:backgroundElements>
+			<mx:horizontalAxis>
+				<mx:CategoryAxis 
+					id="a1"   
+					dataProvider="{expenses}" 
+					categoryField="Month"
+					/>
+			</mx:horizontalAxis>
+			<mx:horizontalAxisRenderers>
+				<mx:AxisRenderer 
+					axis="{a1}" styleName="myAxisStyle"
+					showLine="false"/>
+			</mx:horizontalAxisRenderers>
+			<mx:verticalAxisRenderers>
+				<mx:AxisRenderer 
+					axis="{a1}" styleName="myAxisStyle"
+					showLine="false"
+					/>
+			</mx:verticalAxisRenderers>
+			<mx:series>
+				<mx:LineSeries 
+					yField="Profit" 
+					displayName="Profit"
+					/>
+				 
+			</mx:series>
+		</mx:LineChart>-->
+
+	<s:Label  id="txtBottom" text="Transcode"  />
 	
 </s:Group>
