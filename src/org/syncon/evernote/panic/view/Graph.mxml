@@ -29,8 +29,6 @@
 			 */
 			public var expenses:ArrayCollection = new ArrayCollection([
 				{Month:"Jan", Expenses:1500},
-				{Month:"Feb", Expenses:200},
-				{Month:"Mar", Expenses:500}
 			]);
 			
 			protected function onInit():void
