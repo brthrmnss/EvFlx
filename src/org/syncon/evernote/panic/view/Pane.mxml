@@ -45,8 +45,8 @@
 	<s:Rect  radiusX="12" radiusY="12"  top="0" right="0" bottom="0" left="0">
 		<s:fill>
 			<s:LinearGradient  rotation="-90">
-				<s:GradientEntry  id="color1" color="0x3E4B5C" ratio="0"/>
-				<s:GradientEntry   id="color2" color="0x051931" ratio="0.8"/>
+				<s:GradientEntry  id="color1" color="0x3E4B5C" ratio="0.2"/>
+				<s:GradientEntry   id="color2" color="0x051931" ratio="1"/>
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>

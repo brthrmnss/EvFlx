@@ -1,79 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Skin  
 		 xmlns:fx="http://ns.adobe.com/mxml/2009"   
-		 xmlns:mx="library://ns.adobe.com/flex/mx"  height="-4" height.active="34"
-		 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:view="org.syncon.evernote.basic.view.*" >
-	<fx:Script>
-		<![CDATA[
-			import mx.collections.ArrayList;
-			import mx.events.StateChangeEvent;
-			
-		]]>
-	</fx:Script>
+		 xmlns:mx="library://ns.adobe.com/flex/mx"   
+		 xmlns:s="library://ns.adobe.com/flex/spark" >
 	
-	<fx:Metadata>
-		[HostComponent("org.syncon.evernote.basic.view.tab_bar")]
-	</fx:Metadata>
-	
-	<fx:Declarations>
-		<s:Sine id="sineIn" easeInFraction="0.1" />
-		<s:Sine id="sineOut" easeInFraction="0.9" />
-	</fx:Declarations>
-
 	<s:states>
-		<s:State name="disabled" />
-		<s:State name="active"  />		
+		<s:State name="disabled" />		
 		<s:State name="normal" />
-	</s:states>
-	
-	<s:transitions>
-		<s:Transition fromState="normal" toState="active">
-			<s:Parallel>
-				<s:Resize target="{this}" duration="300" easer="{sineOut}" />
-				<s:Resize target="{this.mainHGroup}" duration="300" easer="{sineOut}" />
-				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
-			</s:Parallel>
-		</s:Transition>
-		<s:Transition fromState="active" toState="normal">
-			<s:Parallel>
-				<s:Sequence>
-					<s:Resize target="{this}" duration="300" easer="{sineIn}" />
-					<!--<s:RemoveAction target="{mainHGroup}" />-->
-				</s:Sequence>				
-				<s:Resize target="{this.mainHGroup}" duration="300" easer="{sineOut}" />
-				<!--<s:Resize target="{this.clipper}" duration="600" easer="{sineOut}" />-->
-			</s:Parallel>
-			
-		</s:Transition>
-		
- 
-	</s:transitions>
-	
-	<!-- bg -->
+	</s:states>	
+<!-- 
 	<s:Rect left="0" right="0" top="0" bottom="0" radiusX="8" radiusY="8">
 		<s:fill>
 			<s:SolidColor color="#B4CDD2" />
 		</s:fill>
 	</s:Rect>
-	<s:Group width="100%"  includeIn="active">
+		-->
+	<s:Rect  radiusX="3" radiusY="3"   top="1" right="1" bottom="1" left="1">
+		<s:fill>
+			<s:LinearGradient  rotation="90">
+				<s:GradientEntry  id="color1" color="0x443F39" ratio="0" alpha="0.8"/>
+				<s:GradientEntry   id="color2" color="0x191919" ratio=".5"/>
+				<s:GradientEntry   id="color3" color="0x202020" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>	
+	
+	<s:Rect  id="bgBack" radiusX="3" alpha="0.6" radiusY="3"  top="1" right="1" bottom="1" left="1">
+		<s:fill>
+			<s:LinearGradient  rotation="90">
+				<s:GradientEntry color="0" ratio="0" alpha="1"/>
+				<s:GradientEntry color="0" ratio=".3"  alpha="0" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>		
+	
+	
+	<s:Rect  id="bgBackBottom" alpha="0.3" radiusX="3" radiusY="3"  top="1" right="1" bottom="1" left="1">
+		<s:fill>
+			<s:LinearGradient  rotation="-90">
+				<s:GradientEntry color="0" ratio="0" alpha="1"/>
+				<s:GradientEntry color="0" ratio=".3"  alpha="0" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>		
 		
 	
-	<s:HGroup id="mainHGroup" x="10"  y="10" verticalAlign="middle">
-		<s:HGroup>
-			<s:Label id="lblShowing" text="Notes "  fontWeight="bold" color="0x437B86"/>
-			<s:List id="listNotes"   borderVisible="false"   contentBackgroundAlpha="0.0"
-					minWidth="0"    focusEnabled="false"   
-					itemRenderer="org.syncon.evernote.basic.view.tab_bar_itemrenderers" >
-				<s:layout>
-					<s:HorizontalLayout gap="1"   />			
-				</s:layout>
-			</s:List>
-		</s:HGroup>
-	</s:HGroup>
-	<s:HGroup  id="controlBar" y="5" right="10" >
-		<s:Button right="10"  label="Clear"  id="btnClear" y="11" />
-		<s:Button right="10"  label="Save"  id="btnSearch" y="11"    />
-	</s:HGroup>
+	<s:Line right="0" left="0"  verticalCenter="-1">
+		<s:stroke>
+			<mx:SolidColorStroke color="0x0F0F0F" />
+		</s:stroke>
+	</s:Line>
+	<s:Line right="0" left="0"  verticalCenter="0">
+		<s:stroke>
+			<mx:SolidColorStroke color="0x2B2B2B" />
+		</s:stroke>
+	</s:Line>
+	<s:Line right="0" left="0"  verticalCenter="-1">
+		<s:stroke>
+			<mx:SolidColorStroke color="0x131313" />
+		</s:stroke>
+	</s:Line>	
 	
+	<s:Group  right="0" left="0"  bottom="7" height="6" alpha="0.6">
+		<s:Line right="0" left="0"  y="2">
+			<s:stroke>
+				<mx:SolidColorStroke weight="2" color="0x0F0F0F" />
+			</s:stroke>
+		</s:Line>
+		<s:Line right="0" left="0"    y="0">
+			<s:stroke>
+				<mx:SolidColorStroke  weight="2"  color="0x2B2B2B" />
+			</s:stroke>
+		</s:Line>
+		<s:Line right="0" left="0"  y="-2">
+			<s:stroke>
+				<mx:SolidColorStroke  weight="2"  color="0x131313" />
+			</s:stroke>
+		</s:Line>	
 	</s:Group>
+	
+	
+	<s:Rect id="strokeX"  radiusX="3" radiusY="3"  top="0" right="0" bottom="0" left="0">
+		<s:stroke>
+			<s:LinearGradientStroke  rotation="90" weight="1">
+				<s:GradientEntry   color="0x141414" ratio="0" alpha="0"/>
+				<s:GradientEntry    color="0x191919" ratio="0.6" alpha="0"/>
+				<s:GradientEntry     color="0x4F5152" ratio="1"/>
+			</s:LinearGradientStroke>
+		</s:stroke>
+	</s:Rect>	
+	
+	
+	<s:Rect id="strokeTop"  alpha="0.3" radiusX="3" radiusY="3"  top="0" right="0" bottom="0" left="0">
+		<s:stroke>
+			<s:LinearGradientStroke  rotation="-90" weight="1">
+				<s:GradientEntry   color="0x141414" ratio="0" alpha="0"/>
+				<s:GradientEntry    color="0x191919" ratio="0.7" alpha="0"/>
+				<s:GradientEntry     color="0x4F5152" ratio="1"/>
+			</s:LinearGradientStroke>
+		</s:stroke>
+	</s:Rect>	
+	
 </s:Skin>

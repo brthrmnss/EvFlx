@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			    width="720" height="720" scaleX=".5" scaleY=".5"
+			    width="720" height="720"
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" 
 			    backgroundColor="0"
 			   minHeight="600" xmlns:panic="org.syncon.evernote.panic.*"
 			   xmlns:view="org.syncon.evernote.panic.view.*">
-	<!--width="720" height="1280"-->
+	<!--width="720" height="1280"
+	scaleX=".5" scaleY=".5"
+	-->
 	
 	<fx:Style source="org/syncon/evernote/panic/view/assets/styles.css" />
 	<fx:Declarations>
@@ -28,7 +30,7 @@
 	</s:HGroup>
 	
 	
-	<view:ProjectList />
+	<view:ProjectList  />
 	
 	<view:Message  width="100%"/>
 	

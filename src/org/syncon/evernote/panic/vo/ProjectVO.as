@@ -30,7 +30,7 @@ package org.syncon.evernote.panic.vo
 			this.col2 = col2
 			this.col3 = col3
 				if ( kids != null ) 
-			this.ppl = kids		
+			this.ppl = PeopleVO.importPeople( kids ) 		
 			this.img = img; 
 			super();
 		}

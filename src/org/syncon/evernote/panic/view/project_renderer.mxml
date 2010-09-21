@@ -2,11 +2,13 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-		  fontSize="20"
-				autoDrawBackground="false">
+		  fontSize="20" height="40"
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
+			import mx.collections.ArrayList;
+			
 			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var menu :  ProjectVO = new ProjectVO()
@@ -15,8 +17,11 @@
 				if (value== null)  return; 
 				menu = value as ProjectVO
 				txtLbl.text = menu.name.toString().toUpperCase(); 
+				this.txtCol2.text = this.menu.col2.toString().toUpperCase()
+				this.txtCol3.text = this.menu.col3.toString().toUpperCase()					
 				//txtLbl.toolTip = menu.toolTip.toString();
 				//lblVariable.text = menu.name2.toString();
+				this.memberLIst.list1.dataProvider = new ArrayList( this.menu.ppl ) 
 			} 
  
 		]]> 
@@ -35,20 +40,54 @@
 	</s:transitions>	
 	
 	<s:layout>
-		<s:HorizontalLayout gap="3" />
+		<s:HorizontalLayout gap="10" />
 	</s:layout>
 	
-	<s:SkinnableContainer  height="36" width="35"
+	<s:SkinnableContainer  height="42" width="35"
 		skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" />
 	
-	<s:SkinnableContainer  height="36"  
-		skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
-		<s:Label   id="txtLbl"
-			   color.hovered="0x696969" 
-			   useHandCursor="true"  buttonMode="true"
-			   color="0xFFFFFF"  />
-	</s:SkinnableContainer>
- 
+	<s:Group width="250" height="42">
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
+		</s:SkinnableContainer>
+		<s:Label   id="txtLbl" verticalCenter="0"
+				   color.hovered="0x696969"  x="5"
+				   useHandCursor="true"  buttonMode="true"
+				   color="0xFFFFFF"  />		
+	</s:Group>
+
 	
+	<s:Group width="250" height="42">
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+				skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
+		</s:SkinnableContainer>
+		<s:Label   id="txtCol2" verticalCenter="0"
+				   color.hovered="0x696969"  
+				   paddingLeft="5" paddingRight="5"
+				   useHandCursor="true"  buttonMode="true"
+				   color="0xFFFFFF"  />		
+	</s:Group>
+
+	
+	<s:Group   height="42" >
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+					skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
+		</s:SkinnableContainer>
+		<s:Label   id="txtCol3" verticalCenter="0"
+				   color.hovered="0x696969"  
+				    paddingLeft="5" paddingRight="5"
+				   useHandCursor="true"  buttonMode="true"
+				   color="0xFFFFFF"  />		
+	</s:Group>
+
+	
+	<s:Group   height="42" >
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
+		</s:SkinnableContainer>
+		 <view:ProjectMembersList id="memberLIst" />
+	</s:Group>
+	
+		
 
 </s:ItemRenderer>
