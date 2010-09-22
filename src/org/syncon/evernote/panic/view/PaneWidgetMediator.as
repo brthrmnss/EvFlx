@@ -17,24 +17,20 @@ package  org.syncon.evernote.panic.view
 			
 		public function PaneWidgetMediator()
 		{
+			
 		} 
 		
 		override public function onRegister():void
 		{
+			ui.addEventListener( 'importConfig', onImportConfig ) 				
 			/*ui.addEventListener( top_links.HELP, onHelpClickedHandler ) 						
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
 				this.onAuthenticated);	*/		
 		}
 		 
-		private function onTrunkClickedHandler(e:CustomEvent): void
-		{
-			/*var link : String = 'http://www.evernote.com/about/trunk/?lang=en'
-			Js.goToUrl(link)		*/		
-		}
-		private function onSignoutClickedHandler(e:CustomEvent): void
+		public function onImportConfig(e:CustomEvent): void
 		{
 			/*this.model.logOut();*/
-		}
-		 
+		}		
 	}
 }

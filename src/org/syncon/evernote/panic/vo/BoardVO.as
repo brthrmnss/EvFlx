@@ -1,6 +1,6 @@
 package org.syncon.evernote.panic.vo
 {
-	public class TwitterVO  
+	public class BoardVO  
 	{
 		public var name :  String = ''
 		/**
@@ -19,7 +19,7 @@ package org.syncon.evernote.panic.vo
 		public var ppl :  Array = []; 
 	/*	public var name2 : String = ''; 		*/
 		public var src :  String = ''; 
-		public function PeopleVO( name_ : String='', desc : String = '', 
+		public function BoardVO( name_ : String='', desc : String = '', 
 								   col2 : String='', col3 : String = '', 		
 								   kids : Array = null, img : String = '' ) 
 								 
@@ -39,7 +39,6 @@ package org.syncon.evernote.panic.vo
 					index -= 1
 			this.img = 	'GIF'+'/'+items[index]
 			this.src = 	'GIF'+'/'+items[index].toString()
-			super();
 		}
 		
 		static public function importPeople(arr: Array)  :  Array

@@ -15,7 +15,8 @@ package  org.syncon.evernote.panic.model
 		public static const RECIEVED_NOTEBOOK_LIST : String = 'recievedNotebookList';				
 		
 		public static const TRASH_SIZE_CHANGED : String = 'trashSizeChanged';
-		public static const PREFERENCES_CHANGED : String = ' preferencesChanged'
+		public static const BOARD_CHANGED : String = 'boardChanged'
+		public static const REFRESH_BOARD : String = 'refreshBoard'			
 		public static const USER_CHANGED : String = ' userChanged'
 			
 		public static const SYNC_STATE_CHANGED : String = ' syncStateChanged'			

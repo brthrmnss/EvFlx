@@ -15,9 +15,9 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.services.*;
@@ -54,6 +54,7 @@ package   org.syncon.evernote.panic
 			mediatorMap.mapView(  GraphWidget,  GraphWidgetMediator );	
 			mediatorMap.mapView(  PaneWidget,  PaneWidgetMediator );	
 			mediatorMap.mapView(  MessageWidget,  MessageWidgetMediator );	
+			mediatorMap.mapView(  PanicBoard,  PanicBoardMediator );	
 			//mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
@@ -77,7 +78,7 @@ package   org.syncon.evernote.panic
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
 		public function onInit()  : void
 		{
-			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
+			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			this.subContext.onInit(); 
 		}

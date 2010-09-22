@@ -23,47 +23,30 @@ package org.syncon.evernote.panic.model
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
-	import org.syncon.evernote.basic.vo.PreferencesVO;
+	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.popups.controller.ShowPopupEvent;
-
-	/**
-	 * Dispatched when ...
-	 */
-	[Event(name="notesRecieved", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
-	
-	/**
-	 * Dispatched when ...
-	 */
-	[Event(name="searchResult", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
-	
-	/**
-	 * Dispatched when ...
-	 */
-	[Event(name="notebookResult", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
-	
-	/**
-	 * Dispatched when ...
-	 */
-	[Event(name="currentNotebookChanged", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
-	
-	/**
-	 * Dispatched when ...
-	 */
-	[Event(name="preferencesChanged", type="org.syncon.evernote.basic.model.EvernoteAPIModelEvent")]
-		
-	/**
-	* keeps track of all popups cleans up
-	 * ensures stacking order respected
-	*/
+ 
 	public class   PanicModel   extends Actor 
 	{
  		public function PanicModel()
 		{
 		}
 		
-		
+		private var _board :  BoardVO = new BoardVO();
+		public function set board ( p : BoardVO )  : void
+		{
+			this._board = p; 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.BOARD_CHANGED, this._board ) )
+		}
+		public function get  board ( ) : BoardVO  { return this._board   }		
+				
+		public function refreshBoard()  : void
+		{
+			this.dispatch( new PanicModelEvent( PanicModelEvent.REFRESH_BOARD, this._board ) )
+		}
+			
 	}
 }

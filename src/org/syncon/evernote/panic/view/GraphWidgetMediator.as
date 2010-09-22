@@ -22,8 +22,9 @@ package  org.syncon.evernote.panic.view
 		
 		override public function onRegister():void
 		{
-			/*ui.addEventListener( top_links.HELP, onHelpClickedHandler ) 						
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
+			 ui.addEventListener( 'importConfig', onImportConfig ) 						
+			/*
+			 eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
 				this.onAuthenticated);	*/		
 		}
 		 
@@ -37,5 +38,9 @@ package  org.syncon.evernote.panic.view
 			/*this.model.logOut();*/
 		}
 		 
+		public function onImportConfig(e:CustomEvent): void
+		{
+			/*this.model.logOut();*/
+		}		
 	}
 }

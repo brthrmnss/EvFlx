@@ -12,6 +12,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 				
 			/**
@@ -56,7 +58,11 @@
 				this.fillColor.color = s; 
 			}
 						
- 
+ 			public function importConfig(j :  WidgetVO )  : void
+			{
+				this.dispatchEvent( new CustomEvent( 'importConfig',  j ) )
+			}
+										  
 		]]>
 	</fx:Script>
 
