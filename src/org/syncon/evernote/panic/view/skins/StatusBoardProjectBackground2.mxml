@@ -18,14 +18,14 @@
 	<s:Rect  radiusX="3" radiusY="3"   top="1" right="1" bottom="1" left="1">
 		<s:fill>
 			<s:LinearGradient  rotation="90">
-				<s:GradientEntry  id="color1" color="0x1A1A1A" ratio="0" alpha="0.8"/>
-				<s:GradientEntry   id="color2" color="0x1F1F1F" ratio=".5"/>
-				<s:GradientEntry   id="color3" color="0x282725" ratio="1"/>
+				<s:GradientEntry  id="color1" color="0x443F39" ratio="0" alpha="0.8"/>
+				<s:GradientEntry   id="color2" color="0x191919" ratio=".5"/>
+				<s:GradientEntry   id="color3" color="0x202020" ratio="1"/>
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>	
 	
-	<s:Rect  id="bgBack" radiusX="3" alpha="0.3" radiusY="3"  top="1" right="1" bottom="1" left="1">
+	<s:Rect  id="bgBack" radiusX="3" alpha="0.6" radiusY="3"  top="1" right="1" bottom="1" left="1">
 		<s:fill>
 			<s:LinearGradient  rotation="90">
 				<s:GradientEntry color="0" ratio="0" alpha="1"/>
@@ -44,7 +44,7 @@
 		</s:fill>
 	</s:Rect>		
 		
- 
+	
 	<s:Line right="0" left="0"  verticalCenter="-1">
 		<s:stroke>
 			<mx:SolidColorStroke color="0x0F0F0F" />
@@ -60,26 +60,25 @@
 			<mx:SolidColorStroke color="0x131313" />
 		</s:stroke>
 	</s:Line>	
- 
-	 
-	<s:VGroup  gap="0" right="0" left="0"  verticalCenter="0" height="6" alpha="1">
-		<s:Line right="0" left="0"  >
+	<!--
+	<s:Group  right="0" left="0"  bottom="7" height="6" alpha="0.6">
+		<s:Line right="0" left="0"  y="2">
 			<s:stroke>
-				<mx:SolidColorStroke weight="1" color="0x2C2B29" />
+				<mx:SolidColorStroke weight="2" color="0x0F0F0F" />
 			</s:stroke>
 		</s:Line>
-		<s:Line right="0" left="0"   >
+		<s:Line right="0" left="0"    y="0">
 			<s:stroke>
-				<mx:SolidColorStroke  weight="1"  color="0x232321" />
+				<mx:SolidColorStroke  weight="2"  color="0x2B2B2B" />
 			</s:stroke>
 		</s:Line>
-		<s:Line right="0" left="0"   >
+		<s:Line right="0" left="0"  y="-2">
 			<s:stroke>
-				<mx:SolidColorStroke  weight="1"  color="0x2C2B29" />
+				<mx:SolidColorStroke  weight="2"  color="0x131313" />
 			</s:stroke>
 		</s:Line>	
-	</s:VGroup>
- 
+	</s:Group>
+	-->
 	
 	<s:Rect id="strokeX"  radiusX="3" radiusY="3"  top="0" right="0" bottom="0" left="0">
 		<s:stroke>

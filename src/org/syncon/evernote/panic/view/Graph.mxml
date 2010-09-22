@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
-						   creationComplete="onInit()" fontSize="24"
+						   creationComplete="onInit()" fontSize="24" clipAndEnableScrolling="false"
 						   color="0xFFFFFF"
 						 >
 
@@ -41,6 +41,8 @@
 			{
 				super.width = w; 
 				this.height = w*(115/99) 
+				this.chart.height = this.height - 100
+				this.chart.width = w*1.5
 			}
 			
 			public function set textBottom( s : String )  : void
@@ -81,10 +83,10 @@
 		<s:SolidColor id="fillColor" color="0xFFDDFF" />
 	</fx:Declarations>
 	<s:layout>
-		<s:VerticalLayout  horizontalAlign="center"/>
+		<s:VerticalLayout  horizontalAlign="center" clipAndEnableScrolling="false"/>
 	</s:layout>
 	<s:Label text="89/3" fontSize="36" />
-	<mx:BarChart height="80"  width="100%"  
+	<mx:BarChart height="80"  width="180%"   id="chart"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
 		</mx:backgroundElements>

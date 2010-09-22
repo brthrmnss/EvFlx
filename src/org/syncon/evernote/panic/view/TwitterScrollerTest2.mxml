@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()"
+		 color="0xFFFFFF" fontSize="34"
+		 >
+	
+	<fx:Metadata>
+		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
+	</fx:Metadata>		
+	
+	<fx:Declarations>
+		<s:Move id="moveIn" duration="10000"  
+				effectEnd="moveInEnd(event)"/>
+		<s:Move id="moveOut" duration="1000" xFrom="90" xTo="-500" 
+				effectEnd="moveOutEnd(event)"/>
+		<s:NumberInterpolator id="b" />
+		<s:Linear id="line" />
+			<s:Animate id="anim" duration="5000"  easer="{line}" interpolator="{b}"  effectEnd="anim_effectEndHandler(event)">
+				<s:motionPaths>
+					<s:SimpleMotionPath  id="pth"  property="horizontalScrollPosition"  />
+				</s:motionPaths>
+			</s:Animate>
+		
+		<s:Linear id="line2" />
+		<s:Animate id="anim2" duration="5000"  easer="{line2}"   effectEnd="anim_effectEndHandler2(event)">
+			<s:motionPaths>
+				<s:SimpleMotionPath  id="pth2"  property="horizontalScrollPosition"  />
+			</s:motionPaths>
+		</s:Animate>		
+		
+	</fx:Declarations>	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			
+			import org.syncon.evernote.basic.vo.MenuVO;
+			
+			import spark.effects.interpolation.NumberInterpolator;
+			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			/**
+			 * Flag indiates whether tags should be removed instantly 
+			 * */
+			public var creationComplete : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+				var arr :  Array = [
+					'1. Img_1566_normal pinkrapture I love traveling, but it is a real pain to see from the status board that your flight is delayed by more than an hour. about 13 hours ago via TweetDeck',
+					'2. Twitter_pic_normal AishaAlFlasi RT @LochalTrend: #AfterOctober11 boys will exchange their PIN bumper stickers for a portable status board: "Driving Time." about 20 hours ago via web',
+					'3. Underwater-blue_dreamstime_4751518_normal ScubaDivingGuy FlightBoard by Mobiata brings an airport flight status board to your iPhone (Gadling) http://bit.ly/alepF0 about 22 hours ago via Visibli',
+					'4. Underwater-blue_dreamstime_4751518_normal ScubaDivingGuy FlightBoard by Mobiata brings an airport flight status board to your iPhone (Gadling) http://bit.ly/c3Ck2O about 22 hours ago via Visibli',
+					'5. Fcotwitlogo_normal FrancescaTravel FlightBoard by Mobiata brings an airport flight status board to your iPhone | http://ow.ly/2GQKp This looks so cool! via Gadling.com about 23 hours ago via HootSuite',
+					'6. Andy_100_normal andyabramson Simple, elegant RT @itsmescotty: FlightBoard by Mobiata brings an airport flight status board to your iPhone http://bit.ly/9stBlY @Gadling about 24 hours ago via TweetDeck', 
+					"7. Avatar_normal itsmescotty FlightBoard by Mobiata brings an airport flight status board to your iPhone http://bit.ly/9stBlY @Gadling about 24 hours ago via twitterfeed",
+					'8. Dsc02734_normal TEDx_Kigali RT @AfricaTourGeek: FlightBoard by Mobiata brings an airport flight status board to your iPhone: Tomorrow, Mobiata will release their... http://bit.ly/9q1o2x '
+				]
+				var dp : ArrayList = new ArrayList( )
+				var pics : Array = [
+					"http://a0.twimg.com/profile_images/840087808/tb_rectangular_normal.jpg",
+					"http://a3.twimg.com/profile_images/80590399/icons-for-export128128Curve_normal.png","http://a0.twimg.com/profile_images/347862904/IMG_0594_edited-1_normal.jpg","http://s.twimg.com/a/1284676327/images/default_profile_2_normal.png","http://a2.twimg.com/profile_images/564433122/willnable_normal.jpg","http://a1.twimg.com/profile_images/1054082997/sanjeev_insan_normal.jpg","http://a0.twimg.com/profile_images/126654624/1160569_techeye_2_normal.jpg","http://a3.twimg.com/profile_images/825643895/Girl_Next_Door_normal.jpg","http://a0.twimg.com/profile_images/823878848/Hulu128_normal.jpg","http://a1.twimg.com/profile_images/632402601/man_reading_newspaper_3_normal.gif","http://a0.twimg.com/profile_images/1119781240/jobs1_bigger_normal.jpg"
+					]
+				for each ( var str : String in arr ) 
+				{
+					var m : MenuVO = new  MenuVO()
+					m.name = str
+						var index : int = Math.round(Math.random()*pics.length)
+							if ( index  == pics.length ) index = 0; 
+					m.data = pics[index]
+					dp.addItem( m )
+				}
+				this.list1.dataProvider = dp; 
+				this.list2.dataProvider = dp; 
+				
+				this.list2.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+				
+				this.init2()
+			}				
+			
+			
+			import mx.events.EffectEvent;
+			
+			// Timer variable
+			private var timer:Timer;
+			// Time to show the text
+			private var showingTime:Number = 2000;
+			// Time to wait until the text is shown again
+			private var notShowingTime:Number = 10;
+			
+			/**
+			 * Initialize app.
+			 * 
+			 */
+			private function init2():void
+			{
+				// Set message visible
+				list1.visible = true;
+			/* 	// Create first timer
+				timer = new Timer(showingTime);
+				// Add event listener
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start timer
+				timer.start();
+				 */
+				//this.resetMovement()
+					setTimeout( this.resetMovement, 3000 )
+			}
+			
+			/**
+			 * Triggered when the timer ticks
+			 * 
+			 */ 
+			private function handleTimerTick(event:TimerEvent):void
+			{
+				// Remove event listener, will be added again
+				// (we don't need more than one, will cause strange behaviour)
+				timer.removeEventListener(TimerEvent.TIMER, handleTimerTick);
+				
+				// Toggle message visibilty based on current visibility
+				// (visible == true becomes visible is false and
+				// visible = false becomes visible is true)
+				list1.visible = !list1.visible;
+			}
+			
+			/**
+			 * Triggered when moveIn effect finishes
+			 * 
+			 */
+			private function moveInEnd(event:EffectEvent):void
+			{
+				this.resetMovement()
+			}
+			
+			private function resetMovement()  : void
+			{
+				this.anim_effectEndHandler(null)
+				this.anim_effectEndHandler2(null)
+				/* this.moveIn.xFrom = this.list1.width; 
+				this.moveIn.xTo = -this.list1.width
+					this.moveIn.play( [this.list1 ]);  */
+			}
+			
+			/**
+			 * Triggered when moveOut effect finished
+			 * 
+			 */
+			private function moveOutEnd(event:EffectEvent):void{
+				/**
+				// Create new timer with notShowingTime duration (10ms)
+				timer = new Timer(notShowingTime);
+				// Add event listener to the TimerEvent.TIMER event
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start the timer
+				timer.start();
+				*/
+				return;
+			}
+
+			protected function anim_effectEndHandler(event:EffectEvent):void
+			{
+				
+				this.pth.valueFrom = 0 
+				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum+this.width;
+				this.anim.duration = this.list1.dataProvider.length*25*1000;
+				anim.play([this.list1.layout]);
+			}
+
+			private var  odd : Boolean = false; 
+			protected function anim_effectEndHandler2(event:EffectEvent):void
+			{
+				odd = ! odd
+				if ( odd ) 
+				{
+					this.pth2.valueFrom = this.list2.scroller.horizontalScrollBar.maximum/2
+					this.pth2.valueTo = this.list2.scroller.horizontalScrollBar.maximum ;
+				}
+				else
+				{
+					this.pth2.valueFrom = 0
+					this.pth2.valueTo = this.list2.scroller.horizontalScrollBar.maximum/2 
+				}
+				this.pth2.valueBy = .1
+				this.anim2.duration = this.list2.dataProvider.length*25*1000/2;
+				anim2.play([this.list2.layout]);
+			}			
+		]]>
+	</fx:Script>
+	
+	<!--<s:VGroup>-->
+		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.twitter_renderer" 
+				 width="100%"
+				contentBackgroundAlpha="0"  borderVisible="false">
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+		</s:List>
+		
+		<s:List id="list2" itemRenderer="org.syncon.evernote.panic.view.twitter_renderer" 
+				 y="{this.list1.height}" width="100%"
+				contentBackgroundAlpha="0"   borderVisible="false">
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+		
+		</s:List>
+	
+	<s:Rect   top="0" right="0" bottom="0" left="0">
+		<s:fill>
+			<s:LinearGradient  rotation="0">
+				<s:GradientEntry  color="0" ratio="0"/>
+				<s:GradientEntry   color="0" ratio="0.2" alpha="0"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect   top="0" right="0" bottom="0" left="0">
+		<s:fill>
+			<s:LinearGradient  rotation="180">
+				<s:GradientEntry  color="0" ratio="0"/>
+				<s:GradientEntry   color="0" ratio="0.2" alpha="0"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>	
+	<!--</s:VGroup>-->
+</s:Group>

@@ -37,6 +37,12 @@
 					this.color1.color = 0x4D4844
 					this.color2.color = 0x0E0E0E
 				}
+				if ( i == 2 ) 
+				{
+					this.color1.color = 0x3D3F3C
+					this.color2.color = 0x3D3F3C				
+					
+				}
 			}
 			
 		]]>
@@ -44,7 +50,7 @@
 	
 	<s:Rect  radiusX="12" radiusY="12"  top="0" right="0" bottom="0" left="0">
 		<s:fill>
-			<s:LinearGradient  rotation="-90">
+			<s:LinearGradient  rotation="86">
 				<s:GradientEntry  id="color1" color="0x3E4B5C" ratio="0.2"/>
 				<s:GradientEntry   id="color2" color="0x051931" ratio="1"/>
 			</s:LinearGradient>

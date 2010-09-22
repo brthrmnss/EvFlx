@@ -2,8 +2,8 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-		  fontSize="20"
-				autoDrawBackground="false">
+		  fontSize="16"
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
@@ -16,6 +16,7 @@
 				txtLbl.text = menu.name.toString().toUpperCase(); 
 				txtLbl.toolTip = menu.toolTip.toString();
 				lblVariable.text = menu.name2.toString();
+				this.asd.source = menu.data.toString();
 			} 
  
 		]]> 
@@ -29,15 +30,24 @@
 	
 	<s:transitions>
 		<s:Transition toState="*" >
-			<s:AnimateColor targets="{[this.txtLbl]}"   duration="250" />
+			<s:Parallel>
+				<s:AnimateColor targets="{[this.txtLbl]}"   duration="250" />
+				<mx:AnimateProperty targets="{[asd]}" property="alpha" duration="250" />
+			</s:Parallel>
+			
 		</s:Transition>
 	</s:transitions>	
 	
 	<s:layout>
-		<s:HorizontalLayout gap="3" />
+		<s:HorizontalLayout gap="8"  verticalAlign="middle" />
 	</s:layout>
+	<!--<view:ResampledImage id="asd" width="20" height="20" />-->
+	<mx:Image id="asd" 
+			  alpha.hovered="0.6"   alpha="0.8" 
+			  useHandCursor="true"  buttonMode="true"
+			  width="20" height="20"  />
 	<s:Label   id="txtLbl"
-			 color.hovered="0x696969" 
+			 color.hovered="0x696969"  paddingRight="90"
 			   useHandCursor="true"  buttonMode="true"
 			 color="0xFFFFFF"  />
 	<s:Label id="lblVariable"  color="0xfefefe"   />

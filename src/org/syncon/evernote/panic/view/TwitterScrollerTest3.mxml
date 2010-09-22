@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   width="450" height="50" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   >
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.IVisualElement;
+			import spark.layouts.VerticalLayout;
+			
+			protected function textinput_focusInHandler(evt:FocusEvent):void {
+				var idx:int = vg.getElementIndex(evt.currentTarget as IVisualElement);
+				var lay:VerticalLayout = vg.layout as VerticalLayout;
+				if (lay.fractionOfElementInView(idx) < 1) {
+					pth.valueBy = lay.getScrollPositionDeltaToElement(idx).y;
+					anim.play([lay]);
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Animate id="anim" duration="500">
+			<s:motionPaths>
+				<s:SimpleMotionPath id="pth" property="verticalScrollPosition" />
+			</s:motionPaths>
+		</s:Animate>
+	</fx:Declarations>
+	
+	<s:Scroller id="scrllr"
+				focusEnabled="false"
+				hasFocusableChildren="true"
+				height="100"
+				horizontalCenter="0" verticalCenter="0">
+		<s:VGroup id="vg"
+				  paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+			<s:TextInput text="One" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Two" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Three" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Four" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Five" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Six" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Seven" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Eight" focusIn="textinput_focusInHandler(event);" />
+			<s:TextInput text="Nine" focusIn="textinput_focusInHandler(event);" />
+		</s:VGroup>
+	</s:Scroller>
+
+</s:Group>

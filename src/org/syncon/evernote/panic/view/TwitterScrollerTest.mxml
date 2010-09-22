@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   initialize="init()" width="450" height="50" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   >
+	
+	<fx:Declarations>
+		<s:Move id="moveIn" duration="1000" xFrom="500" xTo="90" 
+				effectEnd="moveInEnd(event)"/>
+		<s:Move id="moveOut" duration="1000" xFrom="90" xTo="-500" 
+				effectEnd="moveOutEnd(event)"/>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout paddingLeft="0" paddingTop="5" paddingBottom="5"/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.EffectEvent;
+			
+			// Timer variable
+			private var timer:Timer;
+			// Time to show the text
+			private var showingTime:Number = 2000;
+			// Time to wait until the text is shown again
+			private var notShowingTime:Number = 10;
+			
+			/**
+			 * Initialize app.
+			 * 
+			 */
+			private function init():void
+			{
+				// Set message visible
+				myMessage.visible = true;
+				// Create first timer
+				timer = new Timer(showingTime);
+				// Add event listener
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start timer
+				timer.start();
+			}
+			
+			/**
+			 * Triggered when the timer ticks
+			 * 
+			 */ 
+			private function handleTimerTick(event:TimerEvent):void
+			{
+				// Remove event listener, will be added again
+				// (we don't need more than one, will cause strange behaviour)
+				timer.removeEventListener(TimerEvent.TIMER, handleTimerTick);
+				
+				// Toggle message visibilty based on current visibility
+				// (visible == true becomes visible is false and
+				// visible = false becomes visible is true)
+				myMessage.visible = !myMessage.visible;
+			}
+			
+			/**
+			 * Triggered when moveIn effect finishes
+			 * 
+			 */
+			private function moveInEnd(event:EffectEvent):void
+			{
+				// Create new timer with showingTime duration (2000ms / 2sec)
+				timer = new Timer(showingTime);
+				// Add event listener to the TimerEvent.TIMER event
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start the timer
+				timer.start();
+			}
+			
+			/**
+			 * Triggered when moveOut effect finished
+			 * 
+			 */
+			private function moveOutEnd(event:EffectEvent):void{
+				// Create new timer with notShowingTime duration (10ms)
+				timer = new Timer(notShowingTime);
+				// Add event listener to the TimerEvent.TIMER event
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start the timer
+				timer.start();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:BorderContainer cornerRadius="5" width="450" height="30">
+		
+		<s:Label x="90" id="myMessage" text="Hello from www.Flex-Blog.com! I'm Clickable!" 
+				 fontWeight="bold" width="100%" height="100%" verticalAlign="middle" 
+				 buttonMode="true" useHandCursor="true" visible="false" maxDisplayedLines="1" 
+				 click="navigateToURL(new URLRequest('http://www.flex-blog.com'), '_blank')"
+				 showEffect="{moveIn}" hideEffect="{moveOut}"/>
+	</s:BorderContainer>
+	
+</s:Group>

@@ -4,7 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"
 				
-				minHeight="40" minWidth="40" 
+				minHeight="35" minWidth="35" xmlns:view="org.syncon.evernote.panic.view.*" 
 				>
 	
 	<fx:Script> 
@@ -20,6 +20,8 @@
 				menu = value as PeopleVO
 				this.img.source = menu.src; 
 				this.img.toolTip = menu.name;
+				//this.img2.source = menu.src; 
+				
 			} 
  
 		]]> 
@@ -44,5 +46,9 @@
 	</s:transitions>		
 	 <mx:Image id="img" 
 			    useHandCursor="true" buttonMode="true"
-			   maxHeight="40" maxWidth="40"  alpha.hovered=".6" />
+			   maxHeight="35" maxWidth="35"  alpha.hovered=".6" />
+	<!--
+	<view:ResampledImage id="img2"    useHandCursor="true" buttonMode="true"
+						 
+						 maxHeight="35" maxWidth="35"  alpha.hovered=".6" />-->
 </s:ItemRenderer>

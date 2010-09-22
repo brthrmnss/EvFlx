@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   width="100" height="100"
+		   initialize="init();" creationComplete="created();" dataChange="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.graphics.ImageSnapshot;
+			
+			private var _created:Boolean = false;
+			
+			private function created():void
+			{
+				_created = true;
+				init();
+			}
+			public function set source ( s : String ) : void
+			{
+				var sf : Object = new Object()
+					sf.url = s; 
+				this.data = sf
+				this.init()
+			}
+			private var contentLoader:Loader;
+			private function init():void
+			{
+				if(!_created)
+					return;
+				removeAllChildren();
+				contentLoader = new Loader();
+				contentLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, LoadComplete);
+				contentLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, IOErrorHandler);
+				
+				var request:URLRequest = new URLRequest(data.url);
+				contentLoader.load(request);
+			}
+			
+			//When image loaded, create scaled bitmap
+			private function LoadComplete(evt:Event):void
+			{
+				evt.stopImmediatePropagation();
+				var loader:Loader = Loader(evt.target.loader);
+				var image:Bitmap = Bitmap(loader.content);
+				
+				var sxy:Number = (image.width > image.height)?(95/image.width):(95/image.height);
+				var scaleMatrix:Matrix = new Matrix();
+				scaleMatrix.scale(sxy,sxy);
+				
+				var container:UIComponent = new UIComponent();
+				addChild(container);
+				
+				var scaledImage:Bitmap = new Bitmap(new BitmapData(95,95,true,0));
+				scaledImage.bitmapData.draw(image,scaleMatrix);
+				
+				container.addChild(scaledImage);
+				contentLoader = null;
+				image.bitmapData.dispose();
+			}
+			private function IOErrorHandler(evt:IOErrorEvent):void
+			{
+				trace("Error loading",data.url);
+			}
+		]]>
+	</mx:Script>
+</mx:Canvas>

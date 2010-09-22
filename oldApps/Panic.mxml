@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			    width="720" height="720"
+			   width="720" height="1280" 	 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" 
 			    backgroundColor="0"
 			   minHeight="600" xmlns:panic="org.syncon.evernote.panic.*"
@@ -21,26 +21,28 @@
 	</s:layout>
  
 	
-	<s:HGroup>
-		<view:Graph width="{(this.width-12)/5}"  textBottom="transmit"  fillC="0xFCBF17" />
-		<view:Graph width="{(this.width-12)/5}"   textBottom="coda"    fillC="0x47C816" />
-		<view:Graph width="{(this.width-12)/5}"   textBottom="unison"   fillC="0xFF3D19" />
-		<view:Graph width="{(this.width-12)/5}"   textBottom="unison"   fillC="0x7652C0" /> 
-		<view:Graph width="{(this.width-12)/5}"   textBottom="unison"    fillC="0x1279FA" />	
+	<s:HGroup paddingRight="10" paddingLeft="10">
+		<view:Graph width="{(this.width-20)/5}"  textBottom="transmit"  fillC="0xFCBF17" />
+		<view:Graph width="{(this.width-20)/5}"   textBottom="coda"    fillC="0x47C816" />
+		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"   fillC="0xFF3D19" />
+		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"   fillC="0x7652C0" /> 
+		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"    fillC="0x1279FA" />	
 	</s:HGroup>
 	
-	
-	<view:ProjectList  />
-	
+	<mx:Spacer height="15" />
+	<view:ProjectList  width="100%" />
+	<mx:Spacer height="15" />
 	<view:Message  width="100%"/>
-	
-	<s:HGroup id="holderPane">
-		<view:Pane  width="{(this.width-12)/3}"  colorScheme="0" />
-		<view:Pane width="{(this.width-12)/3}"   colorScheme="1" />
-		<view:Pane  width="{(this.width-12)/3}"/>
+	<mx:Spacer height="15" />
+	<s:HGroup id="holderPane" paddingRight="10" paddingLeft="10" width="100%">
+		<view:Pane  width="{(this.width-20-15)/3}"  colorScheme="0" />
+		<view:Pane width="{(this.width-20-15)/3}"   colorScheme="1" />
+		<view:Pane  width="{(this.width-20-15)/3}" colorScheme="2"/>
 	</s:HGroup>
-
- <view:TwitterScroller />
+	<mx:Spacer height="15" /><mx:Spacer height="15" />
+ 	<!--<view:TwitterScrollerTest />-->
+	<view:TwitterScrollerTest2  width="100%"/>
+	<!--<view:TwitterScroller />-->
 	
 	
 </s:Application>

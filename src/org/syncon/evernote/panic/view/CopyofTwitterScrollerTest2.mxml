@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()"
+		 color="0xFFFFFF" fontSize="34"
+		 >
+	
+	<fx:Metadata>
+		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
+	</fx:Metadata>		
+	
+	<fx:Declarations>
+		<s:Move id="moveIn" duration="10000"  
+				effectEnd="moveInEnd(event)"/>
+		<s:Move id="moveOut" duration="1000" xFrom="90" xTo="-500" 
+				effectEnd="moveOutEnd(event)"/>
+	</fx:Declarations>	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			
+			import org.syncon.evernote.basic.vo.MenuVO;
+			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			/**
+			 * Flag indiates whether tags should be removed instantly 
+			 * */
+			public var creationComplete : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+				var arr :  Array = [
+					'1. Img_1566_normal pinkrapture I love traveling, but it is a real pain to see from the status board that your flight is delayed by more than an hour. about 13 hours ago via TweetDeck',
+					'2. Twitter_pic_normal AishaAlFlasi RT @LochalTrend: #AfterOctober11 boys will exchange their PIN bumper stickers for a portable status board: "Driving Time." about 20 hours ago via web',
+					'3. Underwater-blue_dreamstime_4751518_normal ScubaDivingGuy FlightBoard by Mobiata brings an airport flight status board to your iPhone (Gadling) http://bit.ly/alepF0 about 22 hours ago via Visibli',
+					'4. Underwater-blue_dreamstime_4751518_normal ScubaDivingGuy FlightBoard by Mobiata brings an airport flight status board to your iPhone (Gadling) http://bit.ly/c3Ck2O about 22 hours ago via Visibli',
+					'5. Fcotwitlogo_normal FrancescaTravel FlightBoard by Mobiata brings an airport flight status board to your iPhone | http://ow.ly/2GQKp This looks so cool! via Gadling.com about 23 hours ago via HootSuite',
+					'6. Andy_100_normal andyabramson Simple, elegant RT @itsmescotty: FlightBoard by Mobiata brings an airport flight status board to your iPhone http://bit.ly/9stBlY @Gadling about 24 hours ago via TweetDeck', 
+					"7. Avatar_normal itsmescotty FlightBoard by Mobiata brings an airport flight status board to your iPhone http://bit.ly/9stBlY @Gadling about 24 hours ago via twitterfeed",
+					'8. Dsc02734_normal TEDx_Kigali RT @AfricaTourGeek: FlightBoard by Mobiata brings an airport flight status board to your iPhone: Tomorrow, Mobiata will release their... http://bit.ly/9q1o2x '
+				]
+				var dp : ArrayList = new ArrayList( )
+				
+				for each ( var str : String in arr ) 
+				{
+					var m : MenuVO = new  MenuVO()
+					m.name = str
+					dp.addItem( m )
+				}
+				this.list1.dataProvider = dp; 
+				this.list2.dataProvider = dp; 
+				
+				this.list2.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+				
+				this.init2()
+			}				
+			
+			
+			import mx.events.EffectEvent;
+			
+			// Timer variable
+			private var timer:Timer;
+			// Time to show the text
+			private var showingTime:Number = 2000;
+			// Time to wait until the text is shown again
+			private var notShowingTime:Number = 10;
+			
+			/**
+			 * Initialize app.
+			 * 
+			 */
+			private function init2():void
+			{
+				// Set message visible
+				list1.visible = true;
+			/* 	// Create first timer
+				timer = new Timer(showingTime);
+				// Add event listener
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start timer
+				timer.start();
+				 */
+				this.resetMovement()
+			}
+			
+			/**
+			 * Triggered when the timer ticks
+			 * 
+			 */ 
+			private function handleTimerTick(event:TimerEvent):void
+			{
+				// Remove event listener, will be added again
+				// (we don't need more than one, will cause strange behaviour)
+				timer.removeEventListener(TimerEvent.TIMER, handleTimerTick);
+				
+				// Toggle message visibilty based on current visibility
+				// (visible == true becomes visible is false and
+				// visible = false becomes visible is true)
+				list1.visible = !list1.visible;
+			}
+			
+			/**
+			 * Triggered when moveIn effect finishes
+			 * 
+			 */
+			private function moveInEnd(event:EffectEvent):void
+			{
+				this.resetMovement()
+			}
+			
+			private function resetMovement()  : void
+			{
+				this.moveIn.xFrom = this.list1.width; 
+				this.moveIn.xTo = -this.list1.width
+					this.moveIn.play( [this.list1 ]); 
+			}
+			
+			/**
+			 * Triggered when moveOut effect finished
+			 * 
+			 */
+			private function moveOutEnd(event:EffectEvent):void{
+				/**
+				// Create new timer with notShowingTime duration (10ms)
+				timer = new Timer(notShowingTime);
+				// Add event listener to the TimerEvent.TIMER event
+				timer.addEventListener(TimerEvent.TIMER, handleTimerTick);
+				// Start the timer
+				timer.start();
+				*/
+				return;
+			}
+		]]>
+	</fx:Script>
+	
+	<!--<s:VGroup>-->
+		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.twitter_renderer" 
+				contentBackgroundAlpha="0"  borderVisible="false">
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+		</s:List>
+		
+		<s:List id="list2" itemRenderer="org.syncon.evernote.panic.view.twitter_renderer" 
+				 y="{this.list1.height}"
+				contentBackgroundAlpha="0"   borderVisible="false">
+			<s:layout>
+				<s:HorizontalLayout />
+			</s:layout>
+			<s:scroller>
+				<s:Scroller  horizontalScrollPolicy="off" />
+			</s:scroller>
+		</s:List>
+	<!--</s:VGroup>-->
+</s:Group>
