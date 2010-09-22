@@ -5,7 +5,8 @@
 					  xmlns:mx="library://ns.adobe.com/flex/mx"
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
-					  implements="org.syncon.popups.view.IPopup" xmlns:popup="org.syncon.evernote.basic.view.popup.*"					  
+					  implements="org.syncon.popups.view.IPopup" 
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*"					  
 					  >
 
 	<fx:Script>

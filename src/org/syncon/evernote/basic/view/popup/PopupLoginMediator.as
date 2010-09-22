@@ -26,7 +26,8 @@ package  org.syncon.evernote.basic.view.popup
 		
 		override public function onRegister():void
 		{
-			 this.model.eventDispatcher.addEventListener( EvernoteAPIModelEvent.PREFERENCES_CHANGED, onPreferencesChanged ); 
+			 this.model.eventDispatcher.addEventListener( 
+				 EvernoteAPIModelEvent.PREFERENCES_CHANGED, onPreferencesChanged ); 
 			 this.ui.addEventListener( PopupLogin.LOGIN, this.onLogin ) 
 			 this.ui.addEventListener( PopupLogin.REGISTER, this.onRegisterClickedHandler ) 
 			 this.ui.addEventListener( PopupLogin.FORGOT_PASSWORD, this.onForgotPassword ) 				

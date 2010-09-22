@@ -100,12 +100,15 @@ package  org.syncon.evernote.panic
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup', false ) );
 			mediatorMap.mapView( PopupLogin , PopupLoginMediator, null, false, false );	
+			/*
+			//commented out b/c it requiers evernote model 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 
 				true, false, true) );						
-			
+			*/
+			/*
 			mediatorMap.mapView( PopupLoading , PopupLoadingMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLoading, 'popup_loading' ) );				
-			
+			*/
 			/*
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, popup_loading, 'loading_popup', false ) );
 			mediatorMap.mapView( popup_ticker_settings, PopupTickerSettingsMediator, null, false, false );	

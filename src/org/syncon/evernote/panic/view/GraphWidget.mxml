@@ -40,7 +40,8 @@
 			override public function set  width ( w : Number )  : void
 			{
 				super.width = w; 
-				this.height = w*(115/99) 
+				//this.height = w*(115/99) 
+				this.height = 300
 				this.chart.height = this.height - 100
 				this.chart.width = w*1.5
 			}

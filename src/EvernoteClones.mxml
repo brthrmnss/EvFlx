@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				paddingTop="0" 
 				minWidth="960" minHeight="600" 
-				width="1200" height="600" 
+				width="1200" height="600"  
 				verticalScrollPolicy="off"
 				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 				creationComplete="onCreationComplete()" 

@@ -12,7 +12,7 @@
 	
 	<fx:Style source="org/syncon/evernote/panic/view/assets/styles.css" />
 	<fx:Declarations>
-	 	<!--<panic:PanicContext id="context" contextView="{this}" />-->
+	 	 <panic:PanicContext id="context" contextView="{this}" /> 
 		
 	</fx:Declarations>
  
@@ -22,22 +22,22 @@
  
 	
 	<s:HGroup paddingRight="10" paddingLeft="10">
-		<view:Graph width="{(this.width-20)/5}"  textBottom="transmit"  fillC="0xFCBF17" />
-		<view:Graph width="{(this.width-20)/5}"   textBottom="coda"    fillC="0x47C816" />
-		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"   fillC="0xFF3D19" />
-		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"   fillC="0x7652C0" /> 
-		<view:Graph width="{(this.width-20)/5}"   textBottom="unison"    fillC="0x1279FA" />	
+		<view:GraphWidget width="{(this.width-20)/5}"  textBottom="transmit"  fillC="0xFCBF17" />
+		<view:GraphWidget width="{(this.width-20)/5}"   textBottom="coda"    fillC="0x47C816" />
+		<view:GraphWidget width="{(this.width-20)/5}"   textBottom="unison"   fillC="0xFF3D19" />
+		<view:GraphWidget width="{(this.width-20)/5}"   textBottom="unison"   fillC="0x7652C0" /> 
+		<view:GraphWidget width="{(this.width-20)/5}"   textBottom="unison"    fillC="0x1279FA" />	
 	</s:HGroup>
 	
 	<mx:Spacer height="15" />
 	<view:ProjectList  width="100%" />
 	<mx:Spacer height="15" />
-	<view:Message  width="100%"/>
+	<view:MessageWidget  width="100%"/>
 	<mx:Spacer height="15" />
 	<s:HGroup id="holderPane" paddingRight="10" paddingLeft="10" width="100%">
-		<view:Pane  width="{(this.width-20-15)/3}"  colorScheme="0" />
-		<view:Pane width="{(this.width-20-15)/3}"   colorScheme="1" />
-		<view:Pane  width="{(this.width-20-15)/3}" colorScheme="2"/>
+		<view:PaneWidget  width="{(this.width-20-15)/3}"  colorScheme="0" />
+		<view:PaneWidget width="{(this.width-20-15)/3}"   colorScheme="1" />
+		<view:PaneWidget  width="{(this.width-20-15)/3}" colorScheme="2"/>
 	</s:HGroup>
 	<mx:Spacer height="15" /><mx:Spacer height="15" />
  	<!--<view:TwitterScrollerTest />-->

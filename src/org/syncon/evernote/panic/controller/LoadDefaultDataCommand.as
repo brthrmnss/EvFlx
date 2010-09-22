@@ -1,4 +1,4 @@
-package  org.syncon.evernote.basic.controller
+package   org.syncon.evernote.panic.controller
 {
 	import com.evernote.edam.notestore.NoteFilter;
 	import com.evernote.edam.type.Note;
@@ -13,13 +13,15 @@ package  org.syncon.evernote.basic.controller
 	import mx.core.ClassFactory;
 	
 	import org.robotlegs.mvcs.Command;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.services.EvernoteService;
 	
-	public class CreateDefaultDataCommand extends Command
+	public class LoadDefaultDataCommand extends Command
 	{
 		[Inject] public var apiModel:EvernoteAPIModel;
 		[Inject] public var serivce:EvernoteService;
@@ -40,6 +42,7 @@ package  org.syncon.evernote.basic.controller
 		
 		public function liveData() : void
 		{
+			var eee : EvernoteAPIHelperCommandTriggerEvent
 			EvernoteAPIModel.EvernoteUrl = 'sandbox.evernote.com';
 			EvernoteService.edamBaseUrl = "https://sandbox.evernote.com";
 			//this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '234d' , null, null, true) ) 

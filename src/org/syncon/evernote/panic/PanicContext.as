@@ -10,16 +10,16 @@ package   org.syncon.evernote.panic
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
-	import org.syncon.evernote.basic.controller.CreateDefaultDataCommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommand;
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.EvernoteAPIHelperCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommand;
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
-	import org.syncon.evernote.basic.model.EvernoteAPIModel;
-	import org.syncon.evernote.basic.view.*;
+	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.services.*;
  
 	public class PanicContext extends Context
@@ -31,14 +31,12 @@ package   org.syncon.evernote.panic
 		}
 		override public function startup():void
 		{
-			
 			// Model
-			injector.mapSingleton( EvernoteAPIModel  )		
+			injector.mapSingleton( PanicModel  )		
 			// Controller
-			//commandMap.mapEvent(AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS, AddPopupsKeyboardShortcutsCommand);				
-			commandMap.mapEvent(CreateDefaultDataCommand.START,  CreateDefaultDataCommand, null, false );
-			commandMap.mapEvent(CreateDefaultDataCommand.LIVE_DATA,  CreateDefaultDataCommand, null, false );
-
+			commandMap.mapEvent(LoadDefaultDataCommand.START,  LoadDefaultDataCommand, null, false );
+			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
+			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
 			
@@ -51,14 +49,17 @@ package   org.syncon.evernote.panic
 			commandMap.mapEvent(SaveNoteCommandTriggerEvent.SAVE_NOTE_TAGS,  SaveNoteCommand, null, false );			
 			
 			injector.mapSingleton( EvernoteService )
+			*/
 			// View
-			mediatorMap.mapView(  header,  HeaderMediator );	
-			mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
+			mediatorMap.mapView(  GraphWidget,  GraphWidgetMediator );	
+			mediatorMap.mapView(  PaneWidget,  PaneWidgetMediator );	
+			mediatorMap.mapView(  MessageWidget,  MessageWidgetMediator );	
+			//mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();
 			
-			
+			/*
 			var wait : Boolean = false;
 			if ( wait ) 
 			{
@@ -70,14 +71,14 @@ package   org.syncon.evernote.panic
 			//this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 			//this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
 				
-			
+			*/
 		}
 		
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
 		public function onInit()  : void
 		{
-			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
-			this.dispatchEvent( new Event( CreateDefaultDataCommand.LIVE_DATA ))
+			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
+			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			this.subContext.onInit(); 
 		}
 	 

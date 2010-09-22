@@ -1,8 +1,8 @@
-package org.syncon.evernote.basic.model
+package  org.syncon.evernote.panic.model
 {
 	import flash.events.Event;
 	
-	public class EvernoteAPIModelEvent extends Event
+	public class PanicModelEvent extends Event
 	{
 		public static const NOTES_RESULT:String = 'notesRecieved';
 		public static const NOTES_CHANGED:String = 'notesChanged';		
@@ -33,7 +33,7 @@ package org.syncon.evernote.basic.model
 		public static const LOGOUT : String = 'logout'			
 		public var data: Object;
 		
-		public function EvernoteAPIModelEvent(type:String, _data:Object = null)
+		public function PanicModelEvent(type:String, _data:Object = null)
 		{
 			super(type);
 			data = _data;
