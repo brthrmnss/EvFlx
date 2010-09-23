@@ -60,7 +60,7 @@ package   org.syncon.evernote.panic
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
 			super.startup();
 			
-			/*
+			 
 			var wait : Boolean = false;
 			if ( wait ) 
 			{
@@ -69,10 +69,6 @@ package   org.syncon.evernote.panic
 			}
 			else
 				this.onInit()	
-			//this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
-			//this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
-				
-			*/
 		}
 		
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
@@ -80,7 +76,7 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
-			this.subContext.onInit(); 
+			//this.subContext.onInit(); 
 		}
 	 
 

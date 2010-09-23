@@ -3,6 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"
 		 color="0xFFFFFF" fontSize="34"
 		 >
 	
@@ -14,9 +15,15 @@
 		<![CDATA[
 			import mx.collections.ArrayList;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
+			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			
 			/**
 			 * Flag indiates whether tags should be removed instantly 
@@ -45,6 +52,35 @@
 				this.list1.dataProvider = dp; 
 				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
 			}				
+			
+			public function importConfig(j :  WidgetVO )  : void
+			{
+				//make custom widget event? 
+				this.dispatchEvent( new CustomEvent( WidgetVO.IMPORT_CONFIG,  j ) )
+			}			
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String, labelTop : String, 
+					labelBottom : String, value : Number, max : Number=NaN, sourceTop : String='', 
+					sourceBottom : String='', refreshTime :  Number=15000)  :  ProjectList
+			{
+				var o : Object = {}
+				o.name = name
+				o.description = desc
+				o.labelTop = labelTop
+				o.labelBottom = labelBottom
+				
+				var g :  ProjectList = new ProjectList()
+				g.widgetData = new WidgetVO(WidgetVO.PROJECT_LIST, o); 	
+				
+				return g ; 
+			}					
+			
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}							
 			
 		]]>
 	</fx:Script>

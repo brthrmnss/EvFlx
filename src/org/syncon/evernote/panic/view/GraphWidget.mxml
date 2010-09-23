@@ -2,7 +2,9 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
-						   creationComplete="onInit()" fontSize="24" clipAndEnableScrolling="false"
+						   implements="org.syncon.evernote.panic.view.IUIWidget"
+						   creationComplete="onInit()" resize="group1_resizeHandler(event)"
+						   fontSize="24" clipAndEnableScrolling="false"
 						   color="0xFFFFFF"
 						 >
 
@@ -12,6 +14,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.ResizeEvent;
+			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
@@ -20,7 +24,9 @@
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
 			public var creationComplete : Boolean = false; 
-			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			import mx.collections.ArrayCollection;
 			[Bindable]
 /* 			public var expenses:ArrayCollection = new ArrayCollection([
@@ -48,6 +54,22 @@
 				this.chart.width = w*1.5
 			}
 			
+			protected function group1_resizeHandler(event:ResizeEvent):void
+			{
+				if ( this.percentWidth != 0 &&  isNaN( this.percentWidth ) == false ) 
+				{
+					
+					var w : Number = this.parentDocument.width*this.percentWidth/100//*(115/99)
+					//if ( this.data.vo.height == NaN ) 
+					
+					///this.width = w; 
+					this.height = 300
+					this.chart.height = this.height - 100
+					/*this.chart.width = w*1.5				 */	
+					
+				}
+			}			
+			
 			public function set textBottom( s : String )  : void
 			{
 				this.txtBottom.text = s.toUpperCase()
@@ -60,9 +82,32 @@
 						
  			public function importConfig(j :  WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent( 'importConfig',  j ) )
+				this.dispatchEvent( new CustomEvent( WidgetVO.IMPORT_CONFIG,  j ) )
+				this.fillC = uint( j.data.fillColor ) 
 			}
-										  
+						
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String, labelTop : String, 
+			labelBottom : String, value : Number, max : Number=NaN, fillColor : String='', 
+			 refreshTime :  Number=15000)  :  GraphWidget
+			{
+				var o : Object = {}
+				o.name = name
+				o.description = desc
+				o.labelTop = labelTop
+				o.labelBottom = labelBottom
+				o.fillColor = fillColor
+				var g : GraphWidget = new GraphWidget()
+				g.widgetData = new WidgetVO(WidgetVO.GRAPH, o); 	
+				
+				return g ; 
+			}			
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}						
 		]]>
 	</fx:Script>
 

@@ -12,6 +12,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
+	import spark.components.Group;
 	import spark.components.HGroup;
  
 	public class PanicBoardMediator extends Mediator  
@@ -30,41 +31,68 @@ package  org.syncon.evernote.panic.view
 			/*ui.addEventListener( top_links.HELP, onHelpClickedHandler ) 						
 			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
 				this.onAuthenticated);	*/		
+				
+				this.onBoardRefreshed(null)
 		}
 		 
-		private function onBoardRefreshed(e:CustomEvent): void
+		private function onBoardRefreshed(e:PanicModelEvent): void
 		{
 			/*var link : String = 'http://www.evernote.com/about/trunk/?lang=en'
 			Js.goToUrl(link)		*/		
 			//put is command? 
-			ui.removeAllElements();
+			var target : Group = ui.parentApplication.boardGroup
+			target.removeAllElements()
 			for each ( var row : Array in this.model.board.ppl ) 
 			{
 				var hgroup : HGroup = new HGroup()
 				hgroup.percentWidth = 100; 
-				ui.addElement( hgroup ) 
+				target.addElement( hgroup ) 
+				var percentWidth : Number = 100* 1/row.length
 				for each ( var j :   WidgetVO in row ) 
 				{
-					if ( j.type == WidgetVO.ALERT ) 
+					if ( j.type == WidgetVO.MESSAGE ) 
 					{
 						var messageWidget : MessageWidget = new MessageWidget()
 						messageWidget.importConfig( j ) 
-						messageWidget.percentWidth = 100* 1/row.length
+						messageWidget.percentWidth = percentWidth
 						hgroup.addElement( messageWidget ) 
 					}
 					if ( j.type == WidgetVO.GRAPH ) 
 					{
 						var  graphWidget :  GraphWidget = new GraphWidget()
 						graphWidget.importConfig( j ) 
-						graphWidget.percentWidth = 100* 1/row.length
+						//graphWidget.height = 250
+						graphWidget.percentWidth = percentWidth
 						hgroup.addElement( graphWidget ) 
 					}					
+					if ( j.type == WidgetVO.PANE ) 
+					{
+						var pane : PaneWidget = new PaneWidget()
+						pane.importConfig( j ) 
+						pane.percentWidth = percentWidth
+						hgroup.addElement( pane ) 
+					}							
+					if ( j.type == WidgetVO.PROJECT_LIST ) 
+					{
+						var  projectList : ProjectList = new ProjectList()
+						projectList.importConfig( j ) 
+						projectList.percentWidth = percentWidth
+						hgroup.addElement( projectList ) 
+					}	
 					if ( j.type == WidgetVO.SPACER ) 
 					{
 						var  spacer :   Spacer = new Spacer()
 						spacer.height = 15
 						hgroup.addElement( spacer ) 
-					}					
+					}						
+					if ( j.type == WidgetVO.TWITTER_SCROLLER ) 
+					{
+						var  twitterScroller :  TwitterScrollerTest2 = new TwitterScrollerTest2()
+						twitterScroller.importConfig( j ) 
+						twitterScroller.percentWidth = percentWidth
+						hgroup.addElement( twitterScroller ) 
+					}							
+					
 										
 				}
 			}

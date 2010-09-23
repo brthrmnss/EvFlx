@@ -16,6 +16,11 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.view.GraphWidget;
+	import org.syncon.evernote.panic.view.MessageWidget;
+	import org.syncon.evernote.panic.view.PaneWidget;
+	import org.syncon.evernote.panic.view.ProjectList;
+	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.evernote.services.EvernoteService;
@@ -42,22 +47,34 @@ package   org.syncon.evernote.panic.controller
 		{
 			var arr : Array = []; 
 			var board : BoardVO = new BoardVO()
-			
 			arr.push( [
-				new WidgetVO( WidgetVO.GRAPH, '3/5', 'Eccl', 35/10 )
-				
+				new WidgetVO( WidgetVO.GRAPH, GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl', 4, 100, '0xFCBF17',15000).widgetData.data ),
+				new WidgetVO( WidgetVO.GRAPH, GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl2', 4, 100, '0x47C816',15000).widgetData.data ),
+				new WidgetVO( WidgetVO.GRAPH, GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl3', 4, 100, '0xFF3D19', 15000).widgetData.data ),
+				new WidgetVO( WidgetVO.GRAPH, GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl4', 4, 100, '0x7652C0' , 15000).widgetData.data )
 				])
-			
-			
-			
-			
-			
-			
-			
-			
+			arr.push( [
+				new WidgetVO( WidgetVO.PROJECT_LIST, ProjectList.importData('Eccles lister', '', '89/6', 'Eccl', 4, 100, '', '', 15000).widgetData.data ),
+			])			
+			arr.push( [
+				new WidgetVO( WidgetVO.SPACER )
+			])						
+			arr.push( [
+				new WidgetVO( WidgetVO.MESSAGE, MessageWidget.importData('Global Alert', '', '25 Days until twitter launch', '', 15000).widgetData.data ),
+			])	
+			arr.push( [
+				new WidgetVO( WidgetVO.SPACER )
+			])					
+			arr.push( [
+				new WidgetVO( WidgetVO.PANE, PaneWidget.importData('Global Alert', '', 'Something1', '', 15000).widgetData.data ),
+				new WidgetVO( WidgetVO.PANE, PaneWidget.importData('Global Alert', '', '2Something1', '', 15000).widgetData.data ),
+				new WidgetVO( WidgetVO.PANE, PaneWidget.importData('Global Alert', '', '3Something1', '', 15000).widgetData.data ),				
+			])	
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				new WidgetVO( WidgetVO.TWITTER_SCROLLER, TwitterScrollerTest2.importData('Global Alert', '', '25 Days until twitter launch', '', 15000).widgetData.data ),
+			])					
 			board.ppl = arr
-			 
-				
 			this.model.board = board; 
 			this.model.refreshBoard()
 		}

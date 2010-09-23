@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 creationComplete="onInit()"
+		 creationComplete="onInit()" resize="group1_resizeHandler(event)"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"
 		 color="0xFFFFFF"
 		 >
 	
@@ -12,17 +13,34 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.ResizeEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
 			
 			/**
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
 			public var creationComplete : Boolean = false; 
 			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }		
+			
 			protected function onInit():void
 			{
 				this.creationComplete = true
+				//this.addEventListener(ResizeEvent.RESIZE, this.onResize ) 
 			}				
+			
+			public function onResize(e : Event) : void
+			{
+				//if ( this.data.vo.height == NaN ) 
+				this.height = this.width*(115/99) 				
+			}
 			
 			override public function set  width ( w : Number )  : void
 			{
@@ -30,6 +48,11 @@
 				this.height = w*(115/99) 
 			}
 			
+			override public function set  percentWidth ( w : Number )  : void
+			{
+				super.percentWidth =  w;
+				//this.height = this.width*(115/99) 
+			}			
 			public function set colorScheme( i : int )  : void
 			{
 				if ( i == 0 ) 
@@ -45,6 +68,46 @@
 				}
 			}
 			
+			
+			
+			public function importConfig(j :   WidgetVO )  : void
+			{
+				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
+				this.height = j.height
+			}
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String, label : String, 
+											   source : String='',   refreshTime :  Number=15000, 
+												height : Number = NaN)  :   MessageWidget
+			{
+				var o : Object = {}
+				o.name = name
+				o.description = desc
+				o.label = label
+				o.source = source
+				o.refreshTime = refreshTime				
+				var g : MessageWidget = new MessageWidget()
+				g.widgetData = new WidgetVO(WidgetVO.MESSAGE, o); 	
+				return g ; 
+			}						
+				
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}			
+			
+
+			protected function group1_resizeHandler(event:ResizeEvent):void
+			{
+				if ( this.width == 0 && this.percentWidth != 0 ) 
+				{
+				//if ( this.data.vo.height == NaN ) 
+				this.height = this.parentDocument.width*this.percentWidth/100*(115/99)
+				}
+			}
+
 		]]>
 	</fx:Script>
 	

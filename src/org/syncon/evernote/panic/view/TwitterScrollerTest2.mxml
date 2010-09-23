@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 creationComplete="onInit()"
+		 creationComplete="onInit()" alpha="0"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"		 
 		 color="0xFFFFFF" fontSize="34"
 		 >
 	
@@ -30,16 +31,23 @@
 			</s:motionPaths>
 		</s:Animate>		
 		
+		<s:Fade id="fxFade" alphaTo="1" target="{this}" duration="5000" />
 	</fx:Declarations>	
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.vo.WidgetVO;
 			
 			import spark.effects.interpolation.NumberInterpolator;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			
 			/**
 			 * Flag indiates whether tags should be removed instantly 
@@ -80,6 +88,8 @@
 				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
 				
 				this.init2()
+				
+				
 			}				
 			
 			
@@ -109,6 +119,7 @@
 				 */
 				//this.resetMovement()
 					setTimeout( this.resetMovement, 3000 )
+					setTimeout( this.fxFade.play, 3000 )
 			}
 			
 			/**
@@ -188,6 +199,34 @@
 				this.anim2.duration = this.list2.dataProvider.length*25*1000/2;
 				anim2.play([this.list2.layout]);
 			}			
+			
+			
+			public function importConfig(j : WidgetVO )  : void
+			{
+				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
+			}
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String, label : String, 
+											   source : String='',   refreshTime :  Number=15000)  :   MessageWidget
+			{
+				var o : Object = {}
+				o.name = name
+				o.description = desc
+				o.label = label
+				o.source = source
+				o.refreshTime = refreshTime				
+				var g : MessageWidget = new MessageWidget()
+				g.widgetData = new WidgetVO(WidgetVO.TWITTER_SCROLLER, o);
+				return g ; 
+			}						
+						
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}						
+			
 		]]>
 	</fx:Script>
 	

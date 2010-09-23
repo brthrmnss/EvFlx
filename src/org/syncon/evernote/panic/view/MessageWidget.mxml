@@ -3,6 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"
 		 color="0xFFFFFF" fontSize="34"
 		 >
 	
@@ -21,6 +22,10 @@
 			 * */
 			public var creationComplete : Boolean = false; 
 			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
+			
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -28,10 +33,29 @@
  
 			public function importConfig(j :  WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent( 'importConfig',  j ) )
+				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
 			}
-						
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String, label : String, 
+											  source : String='',   refreshTime :  Number=15000)  :   MessageWidget
+			{
+				var o : Object = {}
+				o.name = name
+				o.description = desc
+				o.label = label
+				o.source = source
+				o.refreshTime = refreshTime				
+				var g : MessageWidget = new MessageWidget()
+				g.widgetData = new WidgetVO(WidgetVO.MESSAGE, o); 	
+				return g ; 
+			}						
 			
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}						
 		]]>
 	</fx:Script>
  
