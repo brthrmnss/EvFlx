@@ -13,7 +13,7 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
-			import org.syncon.evernote.panic.vo.PeopleVO;
+			import org.syncon.evernote.panic.vo.PersonVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 			
 			/**

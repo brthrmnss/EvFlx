@@ -33,7 +33,7 @@
 	</s:HGroup>
 	
 	<mx:Spacer height="15" />
-	<view:ProjectList  width="100%" />
+	<view:ProjectList  width="100%"  createDefault="true"/>
 	<mx:Spacer height="15" />
 	<view:MessageWidget  width="100%"/>
 	<mx:Spacer height="15" />

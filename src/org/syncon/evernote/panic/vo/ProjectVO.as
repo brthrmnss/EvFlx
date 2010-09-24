@@ -1,27 +1,21 @@
 package org.syncon.evernote.panic.vo
 {
+	import flash.utils.Dictionary;
+
 	public class ProjectVO  
 	{
 		public var name :  String = ''
-		/**
-		 * Allows for flexibility
-		 * */
-		public var name2 : String = ''; 
-		public var toolTip : String = ''; 
-		public var data : Object = null; 
-		public var fx :  Function;
-		public var enabled : Boolean = true; 
-		
 		public var desc : String = ''; 
 		public var col2 : String = ''; 
 		public var col3 : String = ''; 
 		public var img : String = ''; 		
 		public var ppl :  Array = []; 
 	/*	public var name2 : String = ''; 		*/
-		
+		public var people_names : Array = []; 
 		public function ProjectVO( name_ : String='', desc : String = '', 
 								   col2 : String='', col3 : String = '', 		
-								   kids : Array = null, img : String = '' ) 
+								   kids : Array = null, img : String = '', 
+									people_names : Array = null)  
 								 
 		{
 			this.name = name_
@@ -29,14 +23,28 @@ package org.syncon.evernote.panic.vo
 			this.desc = desc
 			this.col2 = col2
 			this.col3 = col3
-				if ( kids != null ) 
-			this.ppl = PeopleVO.importPeople( kids ) 		
+			if ( kids != null ) 
+			this.ppl = PersonVO.importPeople( kids ) 	
+			this.people_names = people_names
 			this.img = img; 
 			super();
 		}
 		
-		public function onInit()  : void
+		public function findPeople( allPeople : Array )  : void
 		{
+			var pplDict :  Dictionary = new Dictionary(true)
+			for each ( var p : PersonVO in allPeople ) 
+			{
+				pplDict[p.name]=p
+			}
+			this.ppl = []; 
+			for each ( var name : String in this.people_names ) 
+			{
+				if ( pplDict[name] != null ) 
+					this.ppl.push( pplDict[name] )
+				else
+					trace( ' did not find ' + name ) 
+			}
 		}
  
 	}

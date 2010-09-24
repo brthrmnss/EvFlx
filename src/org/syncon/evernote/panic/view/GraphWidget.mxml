@@ -98,6 +98,7 @@
 						 * */
  			public function importConfig(j :  WidgetVO )  : void
 			{
+				this.widgetData = j
 				this.fillC = uint( j.data.fillColor ) 
 				this.labelBottom = j.data.labelBottom; 
 				this.labelTop = j.data.labelTop; 

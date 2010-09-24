@@ -204,6 +204,7 @@
 			
 			public function importConfig(j : WidgetVO )  : void
 			{
+				this.widgetData = j
 				this.dispatchEvent( new  WidgetEvent (WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
 			public function importData_( o:   Object )  : void

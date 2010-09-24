@@ -16,6 +16,7 @@
 			import mx.events.ResizeEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
@@ -71,7 +72,8 @@
 			
 			public function importConfig(j :   WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
+				this.widgetData = j
+				this.dispatchEvent( new WidgetEvent(WidgetVO.IMPORT_CONFIG,  j ) )
 				this.height = j.height
 				if ( j.data.hasOwnProperty( 'color1' ) )
 					this.color1.color = j.data.color1; 

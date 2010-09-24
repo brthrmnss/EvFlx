@@ -42,7 +42,7 @@ package  org.syncon.evernote.panic.view
 			//put is command? 
 			var target : Group = ui.parentApplication.boardGroup
 			target.removeAllElements()
-			for each ( var row : Array in this.model.board.ppl ) 
+			for each ( var row : Array in this.model.board.layout ) 
 			{
 				var hgroup : HGroup = new HGroup()
 				hgroup.percentWidth = 100; 

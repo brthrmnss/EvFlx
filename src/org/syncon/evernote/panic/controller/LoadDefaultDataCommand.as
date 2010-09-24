@@ -22,6 +22,8 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.view.ProjectList;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 	import org.syncon.evernote.panic.vo.BoardVO;
+	import org.syncon.evernote.panic.vo.PersonVO;
+	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.evernote.services.EvernoteService;
 	
@@ -54,7 +56,7 @@ package   org.syncon.evernote.panic.controller
 				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl4', 4, 100, '0x7652C0' , 15000).widgetData
 				])
 			arr.push( [
-				ProjectList.importData('Eccles lister', '', '89/6', 'Eccl', 4, 100, '', '', 15000).widgetData,
+				ProjectList.importData('Project Lister', '', 350, 15000).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
@@ -74,10 +76,73 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
 			])					
-			board.ppl = arr
+			board.layout = arr
+				
+			var people : Array = [] ; 
+			board.people = people
+			people.push( 	new PersonVO( 'A b', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'A c', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'A d', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'd Y', '', '', '', PersonVO.getRandomPic() )  ) 
+				
+			people.push( 	new PersonVO( 'bA b', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'bA c', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'bA d', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'bd Y', '', '', '', PersonVO.getRandomPic() )  ) 
+				
+			people.push( 	new PersonVO( 'cA b', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'cA c', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'cA d', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'cd Y', '', '', '', PersonVO.getRandomPic() )  ) 				
+			
+			var projects : Array = []; 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 				
+			board.projects = projects
+				
 			this.model.board = board; 
 			this.model.refreshBoard()
 		}
+		
+		private function rand( items :  Array ) : Object
+		{
+			var index : int = Math.round( Math.random()*items.length)
+			if ( index == items.length ) 
+				index -= 1
+					
+			return items[index]; 
+		}
+		
+		private function randSet(  max :  int , min : int , items :  Array, returnProp : String = '' ) :  Array
+		{
+			var ret : Array = []; 
+			for ( var i : int = 0 ; ret.length < max; i++ )
+			{
+				var item : Object = rand( items ) 
+				if ( returnProp != '' ) 
+					item = item[returnProp] 
+				if ( ret.indexOf( item ) != -1 ) 
+					continue; 
+				ret.push( item ) 
+			}
+			/*if ( min != 0 ) 
+			{*/
+				var endIndex : int = Math.max( min, Math.round( Math.random()*max ) ) 
+				ret = ret.slice( 0,	endIndex ) 
+			/*}*/
+			return ret;
+		}
+				
+		
+		
 		
 		private function createSets( ofClass_  : Class, props : Array, values : Array )  :  Array
 		{

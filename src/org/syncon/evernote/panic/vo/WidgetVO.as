@@ -33,29 +33,38 @@ package org.syncon.evernote.panic.vo
 			this.data = settings; 
 		}
 		
-		static public function importPeople(arr: Array)  :  Array
+		static public function importX( o:   Object)  :   WidgetVO
 		{
-			var  people :  Array = []; 
-			for each ( var name : String in arr ) 
+			if ( o.hasOwnProperty( 'type' ) == false ) 
+				throw 'cannot import invalid widget'; 
+			var x : WidgetVO = new WidgetVO( o.type, {} ) 
+			for ( var prop : Object in o ) 
 			{
-				var p : PeopleVO = new PeopleVO()
-				p.name = name ; 
-				people.push( p ) 
+				if ( x.hasOwnProperty( prop ) )
+					x[prop] = o[prop]
+				else
+					x.data[prop] = o[prop]	
 			}
-			return people; 
+			return x; 
 		}
 		
 		public var height : Number
-		public var weight : Number
+		public var width : Number
  
 		public function export() : Object
 		{
 			var o :  Object = {}
-			o.name = this.name; 
-			o.description = this.description
-			o.source = this.source
-			o.refreshTime = this.refreshTime; 
-			for each ( var prop :  Object in this.data ) 
+			if ( this.name != '' ) o.name = this.name; 
+			if ( this.description != '' ) o.description = this.description
+			if ( !  isNaN( this.height )  ) o.height = this.height; 
+			if ( !  isNaN( this.width  ) ) o.width = this.width				
+			if ( this.type != SPACER ) 
+			{
+				o.source = this.source
+				o.refreshTime = this.refreshTime; 
+			}
+			o.type = this.type; 
+			for   ( var prop :  Object in this.data ) 
 			{
 				o[prop] = this.data[prop]
 			}

@@ -11,13 +11,13 @@
 		<![CDATA[ 
 			import mx.collections.ArrayList;
 			
-			import org.syncon.evernote.panic.vo.PeopleVO;
+			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
-			[Bindable] public var menu :   PeopleVO = new PeopleVO()
+			[Bindable] public var menu :   PersonVO = new PersonVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				menu = value as PeopleVO
+				menu = value as PersonVO
 				this.img.source = menu.src; 
 				this.img.toolTip = menu.name;
 				//this.img2.source = menu.src; 

@@ -17,6 +17,7 @@
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
@@ -29,7 +30,7 @@
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
 			public var creationComplete : Boolean = false; 
-			
+			public var createDefault : Boolean = false; 
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -49,32 +50,35 @@
 					 
 					dp.addItem( m )
 				}
-				this.list1.dataProvider = dp; 
+				if ( this.createDefault ) 
+					this.list1.dataProvider = dp; 
 				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
 			}				
 			
 			public function importConfig(j :  WidgetVO )  : void
 			{
-				//make custom widget event? 
-				this.dispatchEvent( new CustomEvent( WidgetVO.IMPORT_CONFIG,  j ) )
+				this.widgetData = j
+				this.dispatchEvent( new WidgetEvent( WidgetVO.IMPORT_CONFIG,  j ) )
+				this.list1.height = j.height
 			}			
 			public function importData_( o:   Object )  : void
 			{
 			}		
-			static public function importData( name : String, desc:String, labelTop : String, 
-					labelBottom : String, value : Number, max : Number=NaN, sourceTop : String='', 
-					sourceBottom : String='', refreshTime :  Number=15000)  :  ProjectList
+			static public function importData( name : String, desc:String,
+															  height : Number = NaN, 
+											 refreshTime :  Number=15000)  :  ProjectList
 			{
 				var o : Object = {}
-				o.name = name
-				o.description = desc
-				o.labelTop = labelTop
-				o.labelBottom = labelBottom
+				var vo : WidgetVO = new WidgetVO(WidgetVO.PROJECT_LIST, o); 	
+				var g : ProjectList = new ProjectList()
+				g.widgetData = vo
 				
-				var g :  ProjectList = new ProjectList()
-				g.widgetData = new WidgetVO(WidgetVO.PROJECT_LIST, o); 	
+				vo.name = name; 
+				vo.description = desc
+				vo.height = height; 
+				vo.refreshTime = refreshTime; 
 				
-				return g ; 
+				return g ; 	
 			}					
 			
 			public function exportConfig( ) : WidgetVO    

@@ -47,7 +47,7 @@ package org.syncon.evernote.panic.vo
 			var  people :  Array = []; 
 			for each ( var name : String in arr ) 
 			{
-				var p : PeopleVO = new PeopleVO()
+				var p : PersonVO = new PersonVO()
 				p.name = name ; 
 				people.push( p ) 
 			}

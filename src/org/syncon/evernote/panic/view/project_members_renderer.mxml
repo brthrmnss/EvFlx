@@ -9,7 +9,7 @@
 		<![CDATA[ 
 			import mx.collections.ArrayList;
 			
-			import org.syncon.evernote.panic.vo.PeopleVO;
+			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var menu :   ProjectVO = new ProjectVO()
 			override public function set data(value:Object):void { 

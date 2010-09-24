@@ -8,9 +8,9 @@ package   org.syncon.evernote.panic.controller
 	{
 		static public var EXPORT_BOARD : String = 'exportBoard'
 		public var board : BoardVO; 
-		public function ExportBoardCommandTriggerEvent(type:String, board_ : BoardVO)  
+		public function ExportBoardCommandTriggerEvent(type:String )//, board_ : BoardVO)  
 		{	
-			this.board = board_
+			//this.board = board_
 			super(type, true);
 		}
 		
