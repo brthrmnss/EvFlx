@@ -17,6 +17,9 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.ImportBoardCommand;
+	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.*;
@@ -36,6 +39,9 @@ package   org.syncon.evernote.panic
 			// Controller
 			commandMap.mapEvent(LoadDefaultDataCommand.START,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
+			var ee :    ImportBoardCommandTriggerEvent
+			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_BOARD,  ImportBoardCommand, null, false );
+			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  LoadDefaultDataCommand, null, false );			
 			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
@@ -52,9 +58,10 @@ package   org.syncon.evernote.panic
 			*/
 			// View
 			mediatorMap.mapView(  GraphWidget,  GraphWidgetMediator );	
-			mediatorMap.mapView(  PaneWidget,  PaneWidgetMediator );	
 			mediatorMap.mapView(  MessageWidget,  MessageWidgetMediator );	
+			mediatorMap.mapView(  PaneWidget,  PaneWidgetMediator );				
 			mediatorMap.mapView(  PanicBoard,  PanicBoardMediator );	
+			mediatorMap.mapView(  TwitterScrollerTest2,  TwitterScrollerWidgetMediator );	
 			//mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				

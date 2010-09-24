@@ -8,16 +8,16 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.vo.WidgetVO;
  
-	public class PaneWidgetMediator extends Mediator implements IWidget
+	public class TwitterScrollerWidgetMediator extends Mediator implements IWidget
 	{
-		[Inject] public var ui: PaneWidget;
+		[Inject] public var ui: TwitterScrollerTest2;
 		[Inject] public var model : PanicModel;
 		
 		private var _widgetData : WidgetVO = new  WidgetVO
 		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
 		
-		public function PaneWidgetMediator()
+		public function TwitterScrollerWidgetMediator()
 		{
 			
 		} 

@@ -14,6 +14,7 @@
 	<fx:Script>
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 			
@@ -22,9 +23,11 @@
 			 * */
 			public var creationComplete : Boolean = false; 
 			
-			public var _widgetData : WidgetVO = new WidgetVO
+			private var _widgetData : WidgetVO = new WidgetVO
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
+			
+			public var message :  String = ''; 
 			
 			protected function onInit():void
 			{
@@ -33,22 +36,26 @@
  
 			public function importConfig(j :  WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
+				this.message = j.source;  
+				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
+				
 			}
 			public function importData_( o:   Object )  : void
 			{
 			}		
-			static public function importData( name : String, desc:String, label : String, 
+			static public function importData( name : String, desc:String,  
 											  source : String='',   refreshTime :  Number=15000)  :   MessageWidget
 			{
 				var o : Object = {}
-				o.name = name
-				o.description = desc
-				o.label = label
-				o.source = source
-				o.refreshTime = refreshTime				
+				var vo : WidgetVO = new WidgetVO(WidgetVO.MESSAGE, o); 	
 				var g : MessageWidget = new MessageWidget()
-				g.widgetData = new WidgetVO(WidgetVO.MESSAGE, o); 	
+				g.widgetData = vo
+					
+				vo.name = name; 
+				vo.description = desc
+				vo.source = source; 
+				vo.refreshTime = refreshTime; 
+				
 				return g ; 
 			}						
 			
@@ -60,7 +67,7 @@
 	</fx:Script>
  
 	<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Label text="25 DAYS UNTIL IPAD LAUNCH"   />
+		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
 	
 	

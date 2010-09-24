@@ -23,10 +23,10 @@ package org.syncon.evernote.panic.model
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
-	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
+	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
 	public class   PanicModel   extends Actor 
@@ -48,5 +48,28 @@ package org.syncon.evernote.panic.model
 			this.dispatch( new PanicModelEvent( PanicModelEvent.REFRESH_BOARD, this._board ) )
 		}
 			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * Tells us if binding is used
+		 * */
+		public function sourced( s : String )  :  Boolean
+		{
+			var sourced :  Boolean = false
+			if ( s.indexOf('{') != -1 ) //that is non espaced?  
+				sourced = true
+			return sourced
+		}
+		
+		
 	}
 }

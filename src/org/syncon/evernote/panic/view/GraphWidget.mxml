@@ -17,6 +17,7 @@
 			import mx.events.ResizeEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 				
@@ -25,6 +26,10 @@
 			 * */
 			public var creationComplete : Boolean = false; 
 			public var _widgetData : WidgetVO = new WidgetVO
+				
+			public var labelBottom : String = ''; 
+			public var labelTop : String = ''; 
+				
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			import mx.collections.ArrayCollection;
@@ -70,20 +75,33 @@
 				}
 			}			
 			
+			public function set textTop( s : String )  : void
+			{
+				this.lblTop.text = s.toUpperCase()
+			}			
+			
 			public function set textBottom( s : String )  : void
 			{
-				this.txtBottom.text = s.toUpperCase()
+				this.lblBottom.text = s.toUpperCase()
 			}
 			
 			public function set fillC( s : uint )  : void
 			{
 				this.fillColor.color = s; 
 			}
-						
+						/**
+						 * how tomake sure changes are propgated to vo? 
+						 * when ou change them ... call a update vo function 
+						 * make in interface, desigend to take props from component and 
+						 * copy back to vo the intervew of import config ... 
+						 * oh we alreay hae that it's called export great. 
+						 * */
  			public function importConfig(j :  WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent( WidgetVO.IMPORT_CONFIG,  j ) )
 				this.fillC = uint( j.data.fillColor ) 
+				this.labelBottom = j.data.labelBottom; 
+				this.labelTop = j.data.labelTop; 
+				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
 						
 			public function importData_( o:   Object )  : void
@@ -94,14 +112,18 @@
 			 refreshTime :  Number=15000)  :  GraphWidget
 			{
 				var o : Object = {}
-				o.name = name
-				o.description = desc
+				var vo : WidgetVO = new WidgetVO(WidgetVO.GRAPH, o); 	
+				var g : GraphWidget = new GraphWidget()
+				g.widgetData = vo
+				
+				vo.name = name; 
+				vo.description = desc
+				//vo.source = source; 
+				vo.refreshTime = refreshTime; 
+				
+				o.fillColor = fillColor
 				o.labelTop = labelTop
 				o.labelBottom = labelBottom
-				o.fillColor = fillColor
-				var g : GraphWidget = new GraphWidget()
-				g.widgetData = new WidgetVO(WidgetVO.GRAPH, o); 	
-				
 				return g ; 
 			}			
 			public function exportConfig( ) : WidgetVO    
@@ -137,7 +159,7 @@
 	<s:layout>
 		<s:VerticalLayout  horizontalAlign="center" clipAndEnableScrolling="false"/>
 	</s:layout>
-	<s:Label text="89/3" fontSize="36" />
+	<s:Label text="89/3" fontSize="36" id="lblTop" />
 	<mx:BarChart height="80"  width="180%"   id="chart"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
@@ -215,6 +237,6 @@
 			</mx:series>
 		</mx:LineChart>-->
 
-	<s:Label  id="txtBottom" text="Transcode"  />
+	<s:Label  id="lblBottom" text="Transcode"  />
 	
 </s:Group>

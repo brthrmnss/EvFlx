@@ -20,10 +20,10 @@ package org.syncon.evernote.panic.vo
 		public var fx :  Function;
 		public var enabled : Boolean = true; 
 		
-		public var desc : String = ''; 
-		public var col2 : String = ''; 
+		public var description : String = ''; 
+		public var source : String = ''; 
 		public var col3 : String = ''; 
-		public var img : String = ''; 		
+		public var refreshTime : Number = -1
 		public var ppl :  Array = []; 
 	/*	public var name2 : String = ''; 		*/
 		public var src :  String = ''; 
@@ -48,5 +48,19 @@ package org.syncon.evernote.panic.vo
 		public var height : Number
 		public var weight : Number
  
+		public function export() : Object
+		{
+			var o :  Object = {}
+			o.name = this.name; 
+			o.description = this.description
+			o.source = this.source
+			o.refreshTime = this.refreshTime; 
+			for each ( var prop :  Object in this.data ) 
+			{
+				o[prop] = this.data[prop]
+			}
+			
+			return o
+		}
 	}
 }

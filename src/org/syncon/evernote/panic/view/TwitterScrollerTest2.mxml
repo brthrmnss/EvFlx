@@ -40,6 +40,7 @@
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			
 			import spark.effects.interpolation.NumberInterpolator;
@@ -203,22 +204,23 @@
 			
 			public function importConfig(j : WidgetVO )  : void
 			{
-				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
+				this.dispatchEvent( new  WidgetEvent (WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
 			public function importData_( o:   Object )  : void
 			{
 			}		
-			static public function importData( name : String, desc:String, label : String, 
+			static public function importData( name : String, desc:String,  
 											   source : String='',   refreshTime :  Number=15000)  :   MessageWidget
 			{
 				var o : Object = {}
-				o.name = name
-				o.description = desc
-				o.label = label
-				o.source = source
-				o.refreshTime = refreshTime				
+				var vo : WidgetVO = new WidgetVO(WidgetVO.TWITTER_SCROLLER, o); 	
 				var g : MessageWidget = new MessageWidget()
-				g.widgetData = new WidgetVO(WidgetVO.TWITTER_SCROLLER, o);
+				g.widgetData = vo
+				
+				vo.name = name; 
+				vo.description = desc
+				vo.source = source; 
+				vo.refreshTime = refreshTime; 
 				return g ; 
 			}						
 						

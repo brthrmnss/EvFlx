@@ -64,7 +64,6 @@
 				{
 					this.color1.color = 0x3D3F3C
 					this.color2.color = 0x3D3F3C				
-					
 				}
 			}
 			
@@ -74,23 +73,33 @@
 			{
 				this.dispatchEvent( new CustomEvent(WidgetVO.IMPORT_CONFIG,  j ) )
 				this.height = j.height
+				if ( j.data.hasOwnProperty( 'color1' ) )
+					this.color1.color = j.data.color1; 
+				if ( j.data.hasOwnProperty( 'color2' ) )
+					this.color2.color = j.data.color2; 					
 			}
+			
 			public function importData_( o:   Object )  : void
 			{
 			}		
-			static public function importData( name : String, desc:String, label : String, 
+			static public function importData( name : String, desc:String, 
 											   source : String='',   refreshTime :  Number=15000, 
-												height : Number = NaN)  :   MessageWidget
+												color1 : String = '', color2 : String = '', 
+											   height : Number = NaN)  :   MessageWidget
 			{
 				var o : Object = {}
-				o.name = name
-				o.description = desc
-				o.label = label
-				o.source = source
-				o.refreshTime = refreshTime				
+				var vo : WidgetVO = new WidgetVO(WidgetVO.PANE, o); 	
 				var g : MessageWidget = new MessageWidget()
-				g.widgetData = new WidgetVO(WidgetVO.MESSAGE, o); 	
-				return g ; 
+				g.widgetData = vo
+				
+				vo.name = name; 
+				vo.description = desc
+				vo.source = source; 
+				vo.refreshTime = refreshTime; 
+				
+				o.color1 = uint( color1 ) 
+				o.color2 = uint( color2 ) 
+				return g ; 				
 			}						
 				
 			public function exportConfig( ) : WidgetVO    
