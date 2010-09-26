@@ -36,7 +36,6 @@
 				this.dp.addAll( new ArrayList( options  ) ) 
 				this.list.dataProvider = this.dp
 					
-				this.btnCancel.visible = false; 
 				this.show()
 			}
 
@@ -60,12 +59,6 @@
 			{
 				this.lblMessage.text = s; 
 			}
-
-			protected function btnCancel_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new CustomEvent( 'cancelSelect' ) ) 
-			}
-
 		]]>
 	</fx:Script>
 	
@@ -85,7 +78,6 @@
 			
 		</s:List>
 		<s:Label  id="lblMessage" color="0xFF0000"  width="100"/>
-		<s:Button  label="Cancel" id="btnCancel" click="btnCancel_clickHandler(event)" />
 	</s:VGroup>
 
 </s:Group>

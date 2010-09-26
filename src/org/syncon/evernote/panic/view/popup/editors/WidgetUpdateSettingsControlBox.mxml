@@ -6,7 +6,11 @@
 					  >
 	<fx:Script>
 		<![CDATA[
+			import org.syncon.evernote.panic.vo.WidgetVO;
 			public var creationComplete : Boolean = false; 
+			
+			private var config : WidgetVO = new WidgetVO(); 
+			
 			public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -18,6 +22,11 @@
 				// TODO Auto-generated method stub
 			}
 
+			
+			public function set dataX ( a :  WidgetVO )  : void
+			{
+				this.config = a; 	
+			}
 		]]>
 	</fx:Script>
 

@@ -23,7 +23,9 @@ package  org.syncon.evernote.panic.view
 		{
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);	
-			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 						
+			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
+			
+			ui.addEventListener('cancelSelect', onCancelHandler ) 		
 			this.onEditModeChanged(null)
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
@@ -43,14 +45,25 @@ package  org.syncon.evernote.panic.view
 			if ( e.data == WidgetVO.GRAPH ) 
 			{
 				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.GRAPH, WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.GRAPH; 
 			}
 		}
 		
+		public function onCancelHandler(e:CustomEvent)  : void
+		{
+			this.ui.message = ''
+			this.ui.list.selectedIndex = -1	
+			this.ui.btnCancel.visible = false; 
+			this.addingA = null 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED ) ) 
+			
+		}
 		
 		private function onElementSelected(e:PanicModelEvent): void
 		{
+			
 			var ui : Object = e.data; 
 			var row : BoardRow; 
 			if ( addingA == WidgetVO.GRAPH ) 

@@ -5,11 +5,14 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.vo.WidgetVO;
 	
 	public class GraphWidgetEditorPopupMediator extends Mediator
 	{
 		[Inject] public var ui:GraphWidgetEditorPopup;
 		[Inject] public var model :  PanicModel;
+		
+		private var data : WidgetVO; 
 		
 		public function GraphWidgetEditorPopupMediator()
 		{
@@ -22,9 +25,12 @@ package  org.syncon.evernote.panic.view.popup.editors
 		
 		private function onEditWidget(e:CustomEvent) : void
 		{
-		 
+		 	this.data = e.data as WidgetVO
+			//this.ui.txtTop = this.data
+			
 		}		
  
+		
 		 
 		
 	}

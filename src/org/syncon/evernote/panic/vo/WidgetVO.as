@@ -28,6 +28,9 @@ package org.syncon.evernote.panic.vo
 		public var ppl :  Array = []; 
 	/*	public var name2 : String = ''; 		*/
 		public var src :  String = ''; 
+		
+		public var ui : Object; 
+		
 		public function WidgetVO( type : String='', settings : Object=null  ) 
 		{
 			this.type = type

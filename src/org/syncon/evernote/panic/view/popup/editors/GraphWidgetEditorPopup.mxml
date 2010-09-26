@@ -5,18 +5,21 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
 					  implements="org.syncon.popups.view.IPopup"
-					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*"					  
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
 					  >
 
 	<fx:Script>
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			static public var EDIT_WIDGET : String = 'editWidget'; 
+			
+			public var ui : GraphWidget; 
 			
 			override public function onInit() : void 
 			{
@@ -41,6 +44,12 @@
 			{
 				this.popupCode.open( false, false ) 
 				this.dispatchEvent( new CustomEvent( EDIT_WIDGET, a ) ) 
+				this.ui = a.ui as GraphWidget; 
+				this.txtTop.text = this.ui.labelTop; 
+				this.txtBottom.text = this.ui.labelBottom; 
+				this.timer.dataX = a ; 
+				this.txtValue.text = a.source; 
+				this.txtMaximum.text = this.ui.maximum.toString()
 			}			
 		 
 			override public function hide( ) : void
@@ -54,6 +63,20 @@
 			{
 				this.hide()
 			}
+
+
+			protected function btnOk_clickHandler(event:MouseEvent):void
+			{
+				this.btnTest_clickHandler(null); 
+				this.hide()
+			}
+			
+			protected function btnTest_clickHandler(event:MouseEvent):void
+			{
+				this.ui.textTop = this.txtTop.text; 
+				this.ui.textBottom = this.txtBottom.text; 
+				
+			}			
 
 		]]>
 	</fx:Script>
@@ -90,11 +113,18 @@
 		<mx:FormItem label="Maximum Value Text Source" >
 			<s:TextInput id="txtMaximum" />
 		</mx:FormItem>	
+		<mx:FormItem>
+			<s:HGroup>
+				<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
+				<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
+			</s:HGroup>
+		</mx:FormItem>
 		<editors:WidgetUpdateSettingsControlBox id="timer" />
+
 	</mx:Form>
 		
 
  </s:VGroup>
-
-	<s:Button label="X" click="button1_clickHandler(event)" right="0" top="0" />
+<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+	<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="0" top="0" />
 </popup:PopupBase>

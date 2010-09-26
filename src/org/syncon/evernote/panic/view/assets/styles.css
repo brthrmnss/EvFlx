@@ -1,6 +1,6 @@
  
 @namespace s "library://ns.adobe.com/flex/spark";
-@namespace mx "library://ns.adobe.com/flex/halo";
+@namespace mx "library://ns.adobe.com/flex/mx";
 
 @font-face {
 	src: url("fonts/REZB____.TTF");
@@ -11,13 +11,50 @@
 	embedAsCFF: true;
 }
 
+@font-face {
+	src: url("fonts/REZB____.TTF");
+	src: url("fonts/AlteHaasGroteskBold.ttf");	
+	
+	fontFamily: "ACaslonProRegularEmbedded2";
+	
+	embedAsCFF: false;
+}
+ 
 s|global {
-	fontFamily: ACaslonProRegularEmbedded;
-	fontLookup: embeddedCFF;
-	/*fontSize: 34;*/
+	font-family: ACaslonProRegularEmbedded;
+ fontLookup: embeddedCFF; 
+} 
+ 
+/*
+mx|mx.controls.Label {
+	fontFamily: ACaslonProRegularEmbedded2;
+	fontSize: 16;
+	textFieldClass: ClassReference("mx.core.UIFTETextField");
+}
+*/
+
+mx|AxisRenderer,
+mx|Label,
+mx|ToolTip,
+mx|ColumnSeries{
+	font-family: ACaslonProRegularEmbedded2;
+}
+/*
+mx|mx.charts.AxisRenderer,
+mx|mx.controls.Label,
+mx|Tooltip{
+	font-family: ACaslonProRegularEmbedded2;
+}*/
+
+/*
+ mx|UITextField,mx|mx.charts.AxisRenderer, mx|mx.controls.Label{
+	font-family: ACaslonProRegularEmbedded2;
 }
 
- 
+	mx|mx.controls.Label {
+	font-family: ACaslonProRegularEmbedded2;
+}*/
+
 .iconTrash
 {
 	content:     Embed( source="icons/24/trash.png" );
@@ -26,5 +63,10 @@ s|global {
 .iconSettings
 {
 	content:     Embed( source="icons/24/tools.png" );
+}
+
+.closeBtn
+{
+	content:     Embed( source="icons/16/delete.png" );
 }
 

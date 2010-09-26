@@ -6,13 +6,20 @@
 		 >
 	<fx:Script>
 		<![CDATA[
+			import mx.charts.AxisRenderer;
+			import mx.controls.ToolTip;
+			import mx.core.UITextField;
 			public var creationComplete : Boolean = false; 
 			
 			protected function onInit():void
 			{
 				this.creationComplete = true
+				var ee : UITextField
+				var eee  : ToolTip
 			}
 		]]>
 	</fx:Script>
+	<mx:AxisRenderer />
+	<mx:Label />
 	
 </s:Group>

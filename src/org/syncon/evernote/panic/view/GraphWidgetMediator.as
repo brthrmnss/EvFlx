@@ -60,6 +60,7 @@ package  org.syncon.evernote.panic.view
 		
 		public function onEditClicked(e:CustomEvent) : void
 		{
+			this.widgetData.ui = this.ui; 
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 'GraphWidgetEditorPopup', [this.widgetData] )  )  
 		}
 	}

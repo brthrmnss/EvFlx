@@ -29,7 +29,9 @@
 				
 			public var labelBottom : String = ''; 
 			public var labelTop : String = ''; 
-				
+			public var maximum : Number = NaN; 	
+			
+			
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			import mx.collections.ArrayCollection;
@@ -104,9 +106,12 @@
 				if ( j.data == null ) 
 					return;
 				this.widgetData = j
+				this.widgetData.ui = this; 
 				this.fillC = uint( j.data.fillColor ) 
 				this.labelBottom = j.data.labelBottom; 
 				this.labelTop = j.data.labelTop; 
+				this.maximum = j.data.max
+				
 				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
 						
@@ -121,6 +126,7 @@
 				var vo : WidgetVO = new WidgetVO(WidgetVO.GRAPH, o); 	
 				var g : GraphWidget = new GraphWidget()
 				g.widgetData = vo
+				vo.ui = g;
 				
 				vo.name = name; 
 				vo.description = desc
@@ -130,10 +136,17 @@
 				o.fillColor = fillColor
 				o.labelTop = labelTop
 				o.labelBottom = labelBottom
+				o.max = max; 
+				
 				return g ; 
 			}			
 			public function exportConfig( ) : WidgetVO    
 			{
+				_widgetData.data.fillColor = this.fillColor.color; 
+				_widgetData.data.labelTop = labelTop
+				_widgetData.data.labelBottom = labelBottom
+				_widgetData.data.max = this.maximum; 
+								
 				return this._widgetData; 
 			}			
 			
