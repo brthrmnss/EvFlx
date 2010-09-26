@@ -48,4 +48,8 @@
 	<!--<view:TwitterScroller />-->
 	
 	</s:Group>
+	
+	
+	<view:EditSwitch top="0" right="50" />
+	<view:AddWidget left="0" top="100" />
 </s:Application>

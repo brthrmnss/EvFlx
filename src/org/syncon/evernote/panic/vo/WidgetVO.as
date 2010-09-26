@@ -14,6 +14,7 @@ package org.syncon.evernote.panic.vo
 		static public var PROJECT : String = 'project'			
 		static public var PROJECT_LIST : String = 'projectList';		
 		static public var SPACER : String = 'spacer'	
+		static public var ROW : String = 'row'					
 		static public var TWITTER_SCROLLER : String = 'twitterScroller'				
 		
 		public var data : Object = null; 

@@ -6,8 +6,10 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
 	public class GraphWidgetMediator extends Mediator implements IWidget
 	{
@@ -25,17 +27,23 @@ package  org.syncon.evernote.panic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 					
+			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 		
+			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
+			this.onImportConfig( null ) 
 			/*
 			 eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/		
-			this.onImportConfig( null ) 
+				this.onAuthenticated);	*/
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
+				this.onEditModeChanged);						
+			this.onEditModeChanged(null)
 		}
 		 
-		private function onTrunkClickedHandler(e:CustomEvent): void
+		public function onEditModeChanged(e:PanicModelEvent): void
 		{
-			/*var link : String = 'http://www.evernote.com/about/trunk/?lang=en'
-			Js.goToUrl(link)		*/		
+		 	if ( this.model.editMode ) 
+				this.ui.showEdit()
+			else
+				this.ui.hideEdit(); 
 		}
 		private function onSignoutClickedHandler(e:CustomEvent): void
 		{
@@ -49,5 +57,10 @@ package  org.syncon.evernote.panic.view
 			if ( this.model.sourced( this.ui.labelTop ) == false ) 
 				this.ui.lblTop.text = this.ui.labelTop.toUpperCase()					
 		}		
+		
+		public function onEditClicked(e:CustomEvent) : void
+		{
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 'GraphWidgetEditorPopup', [this.widgetData] )  )  
+		}
 	}
 }

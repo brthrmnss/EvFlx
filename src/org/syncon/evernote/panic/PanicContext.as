@@ -17,6 +17,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.ImportBoardCommand;
@@ -38,10 +39,12 @@ package   org.syncon.evernote.panic
 			// Model
 			injector.mapSingleton( PanicModel  )		
 			// Controller
+			commandMap.mapEvent(LoadDefaultDataCommand.SETUP,  LoadDefaultDataCommand, null, false );				
 			commandMap.mapEvent(LoadDefaultDataCommand.START,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_BOARD,  ImportBoardCommand, null, false );
-			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );			
+			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );		
+			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );					
 			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
@@ -63,6 +66,14 @@ package   org.syncon.evernote.panic
 			mediatorMap.mapView(  PanicBoard,  PanicBoardMediator );	
 			mediatorMap.mapView(  TwitterScrollerTest2,  TwitterScrollerWidgetMediator );	
 			mediatorMap.mapView(  ProjectList,  ProjectListWidgetMediator );	
+			
+			mediatorMap.mapView(  BoardRow,  BoardRowWidgetMediator );	
+			
+			mediatorMap.mapView(  EditSwitch,  EditSwitchMediator );	
+			mediatorMap.mapView(  AddWidget,  AddWidgetMediator );		
+			
+			mediatorMap.mapView(  EditBorder2,  EditBorder2Mediator );		
+			mediatorMap.mapView(  EditBorder,  EditBorderMediator );				
 			//mediatorMap.mapView(  bandwidth_usage,  BandwidthUsageMediator );				
 			
 			subContext.subLoad( this, this.injector, this.commandMap, this.mediatorMap ) 				
@@ -72,17 +83,18 @@ package   org.syncon.evernote.panic
 			var wait : Boolean = false;
 			if ( wait ) 
 			{
-			
 				setTimeout( this.onInit, 1500 )
 			}
 			else
 				this.onInit()	
+					
+			
 		}
 		import flash.utils.setTimeout;
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
 		public function onInit()  : void
 		{
-			 
+			this.dispatchEvent( new Event( LoadDefaultDataCommand.SETUP ))
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
 			 

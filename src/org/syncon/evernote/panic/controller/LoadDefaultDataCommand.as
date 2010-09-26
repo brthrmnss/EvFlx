@@ -11,6 +11,7 @@ package   org.syncon.evernote.panic.controller
 	
 	import mx.controls.DateField;
 	import mx.core.ClassFactory;
+	import mx.core.FlexGlobals;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.basic.vo.PreferencesVO;
@@ -32,6 +33,7 @@ package   org.syncon.evernote.panic.controller
 		[Inject] public var model:PanicModel;
 		[Inject] public var event: Event;
 		static public var START : String = 'LoadDefaultDataCommand.START'
+		static public var SETUP : String = 'LoadDefaultDataCommand.SETUP'			
 		static public var LIVE_DATA : String = 'LoadDefaultDataCommand.LIVE_DATA'
 		override public function execute():void
 		{
@@ -43,10 +45,25 @@ package   org.syncon.evernote.panic.controller
 			{
 				//this.liveData()
 			}
+			if ( event.type == SETUP ) 
+			{
+				this.model.boardHolder = FlexGlobals.topLevelApplication.boardGroup;
+				this.model.editMode = true; 
+				this.model.adminMode = true; 
+				setTimeout(  this.onGoToEditMode, 1000 ) 
+			}			
 		}
+		
+		import flash.utils.setTimeout
+		
+			public function onGoToEditMode()  : void
+			{
+				this.model.editMode = true; 
+			}
 		
 		public function createStartData() : void
 		{
+			
 			var arr : Array = []; 
 			var board : BoardVO = new BoardVO()
 			arr.push( [
@@ -56,7 +73,7 @@ package   org.syncon.evernote.panic.controller
 				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl4', 4, 100, '0x7652C0' , 15000).widgetData
 				])
 			arr.push( [
-				ProjectList.importData('Project Lister', '', 350, 15000).widgetData,
+				ProjectList.importData('Project Lister', '', 355, 15000).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
@@ -110,6 +127,8 @@ package   org.syncon.evernote.panic.controller
 				
 			this.model.board = board; 
 			this.model.refreshBoard()
+				
+			
 		}
 		
 		private function rand( items :  Array ) : Object

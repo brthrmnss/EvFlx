@@ -31,7 +31,15 @@ package  org.syncon.evernote.panic.model
 		public static const AUTHENTICATED : String = 'authenticated' 
 		public static const AUTHENTICATION_REFRESHED : String = 'AUTHENTICATION_REFRESHED' 			
 		
-		public static const LOGOUT : String = 'logout'			
+		public static const LOGOUT : String = 'logout'		
+			
+		public static const EDIT_MODE_CHANGED : String = 'editModeChanged' ; 
+		public static const ADMIN_MODE_CHANGED : String = 'adminModeChanged' ; 
+		
+		public static const HIGHLIGHT_ROWS : String = 'highlightRows' ; 
+		public static const HIGHLIGHT_CERTAIN_ITEMS : String = 'highlightCertainItems' ; 		
+		public static const HIGHLIGHT_CERTAIN_ITEMS_SELECTED : String = 'highlightItemSelected' ; 
+		
 		public var data: Object;
 		
 		public function PanicModelEvent(type:String, _data:Object = null)

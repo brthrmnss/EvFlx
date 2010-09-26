@@ -46,6 +46,32 @@ package org.syncon.evernote.panic.vo
 					trace( ' did not find ' + name ) 
 			}
 		}
+		
+		public function export()  : Object
+		{
+			return this; 
+		}
+		
+		 
+		public function importX( x : Object)  : void
+		{
+			/*
+			this.name = x.name; 
+			var layout : Array = x.layout; 
+			var ipmortedLayout : Array = []; 
+			for each ( var row : Array in layout ) 
+			{
+			var hgroup :  Array = new Array()
+			ipmortedLayout.push( hgroup ); 
+			for each ( var j :    Object in row )
+			{
+			hgroup.push ( WidgetVO.importX( j )  )
+			}
+			}
+			this.layout = ipmortedLayout
+			*/
+		}	
+	 
  
 	}
 }

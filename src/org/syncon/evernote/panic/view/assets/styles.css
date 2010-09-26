@@ -3,8 +3,8 @@
 @namespace mx "library://ns.adobe.com/flex/halo";
 
 @font-face {
-	src: url("REZB____.TTF");
-	src: url("AlteHaasGroteskBold.ttf");	
+	src: url("fonts/REZB____.TTF");
+	src: url("fonts/AlteHaasGroteskBold.ttf");	
 	
 	fontFamily: "ACaslonProRegularEmbedded";
 	
@@ -16,16 +16,15 @@ s|global {
 	fontLookup: embeddedCFF;
 	/*fontSize: 34;*/
 }
-/* 
-@font-face {
-	src: url("REZB____.TTF");
-	src: url("AlteHaasGroteskBold.ttf");	
-	fontFamily: "ACaslonProRegularEmbedded2";
-	embedAsCFF: false;
-}
 
-mx|global {
-	fontFamily: ACaslonProRegularEmbedded2;
-	fontLookup: embeddedCFF;
-}*/
+ 
+.iconTrash
+{
+	content:     Embed( source="icons/24/trash.png" );
+}
+ 
+.iconSettings
+{
+	content:     Embed( source="icons/24/tools.png" );
+}
 

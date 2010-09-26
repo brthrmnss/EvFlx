@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
-		 color="0xFFFFFF" fontSize="34"
+		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -63,7 +63,17 @@
 			public function exportConfig( ) : WidgetVO    
 			{
 				return this._widgetData; 
-			}						
+			}			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}					
 		]]>
 	</fx:Script>
  
@@ -71,6 +81,6 @@
 		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
 	
-	
+	<view:EditBorder id="editBorder" edit="{this}" />
 	
 </s:Group>

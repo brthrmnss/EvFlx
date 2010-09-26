@@ -9,14 +9,14 @@ package  org.syncon.evernote.panic
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Context;
-	import org.syncon.evernote.basic.view.popup.*;
-	import org.syncon.evernote.basic.view.popup.default_popups.popup_confirm;
-	import org.syncon.evernote.basic.view.popup.default_popups.popup_message;
+	import org.syncon.evernote.panic.view.popup.*;
+	import org.syncon.evernote.panic.view.popup.default_popups.*;
+	import org.syncon.evernote.panic.view.popup.editors.*;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
 	import org.syncon.popups.view.popups.default_popups.*;
-	
+
 	public class PanicPopupContext extends Context
 	{
 		
@@ -78,20 +78,21 @@ package  org.syncon.evernote.panic
 			mediatorMap.mapView( popup_modal_bg , PopupModalMediator , null, true, true );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP,  popup_modal_bg, 'popup_modal_bg', true ) );
 			this._this.dispatchEvent( new CreatePopupEvent( 
-				CreatePopupEvent.REGISTER_POPUP, 
-				org.syncon.evernote.basic.view.popup.default_popups.popup_message, 'popup_alert' ) );
-			
+				CreatePopupEvent.REGISTER_POPUP,  org.syncon.evernote.panic.view.popup.default_popups.popup_message, 'popup_alert' ) );
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
-				org.syncon.evernote.basic.view.popup.default_popups.popup_confirm, 'popup_confirm' ) );			
+				org.syncon.evernote.panic.view.popup.default_popups.popup_confirm, 'popup_confirm' ) );			
 
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ENABLE_KEYBOARD_SHORTCUTS  ) );
 			this._this.dispatchEvent( new AddKeyboardShortcutToOpenPopupEvent( AddKeyboardShortcutToOpenPopupEvent.ADD_KEYBOARD_SHORTCUTS, 
 				'popup3', 89 ) ); //ctrl+Y			
 			//this.dispatchEvent( new ShowPopupEvent( ShowPopupEvent.SHOW_POPUP,  'popup_modal_bg' ) );	
+			
+			
 		}
 		
 		public function customContext() : void
 		{
+			/*
 			mediatorMap.mapView( PopupTagForm , PopupTagMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupTagForm, 'popup_tag_form'  ) );
 			
@@ -100,6 +101,11 @@ package  org.syncon.evernote.panic
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupExtraOptions, 'utilsExtraOptionsPopup', false ) );
 			mediatorMap.mapView( PopupLogin , PopupLoginMediator, null, false, false );	
+			*/
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, GraphWidgetEditorPopup, 'GraphWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( GraphWidgetEditorPopup , GraphWidgetEditorPopupMediator, null, false, false );				
+			
 			/*
 			//commented out b/c it requiers evernote model 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 

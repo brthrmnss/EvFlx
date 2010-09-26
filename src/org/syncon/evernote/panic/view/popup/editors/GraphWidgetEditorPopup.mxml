@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*"					  
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var EDIT_WIDGET : String = 'editWidget'; 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+ 
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup :  GraphWidgetEditorPopup = new  GraphWidgetEditorPopup ()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open( false,true ) 
+			}
+ 
+			public function open( a :  WidgetVO  )  : void
+			{
+				this.popupCode.open( false, false ) 
+				this.dispatchEvent( new CustomEvent( EDIT_WIDGET, a ) ) 
+			}			
+		 
+			override public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+ 
+ 
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+
+		]]>
+	</fx:Script>
+
+	<!--	
+	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
+		<s:fill>
+			<s:SolidColor color="0xEDF6F7" />
+		</s:fill>	
+	</s:Rect>	 	
+	
+	-->
+	
+	<s:Rect width="100%" height="100%"  >
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>	
+	</s:Rect>		
+	
+ <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader label="Loading..."  padding="0"  width="100%"/>
+	 
+	 
+	<mx:Form>
+		<mx:FormItem label="Top Text Source" >
+			<s:TextInput id="txtTop" />
+		</mx:FormItem>
+		<mx:FormItem label="Bottom Text Source" >
+			<s:TextInput id="txtBottom" />
+		</mx:FormItem>
+		<mx:FormItem label="Value Source" >
+			<s:TextInput id="txtValue" />
+		</mx:FormItem>
+		<mx:FormItem label="Maximum Value Text Source" >
+			<s:TextInput id="txtMaximum" />
+		</mx:FormItem>	
+		<editors:WidgetUpdateSettingsControlBox id="timer" />
+	</mx:Form>
+		
+
+ </s:VGroup>
+
+	<s:Button label="X" click="button1_clickHandler(event)" right="0" top="0" />
+</popup:PopupBase>

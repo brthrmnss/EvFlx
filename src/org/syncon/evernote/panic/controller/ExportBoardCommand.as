@@ -9,8 +9,11 @@ package   org.syncon.evernote.panic.controller
 	
 	import org.robotlegs.mvcs.Command;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.view.BoardRow;
 	import org.syncon.evernote.panic.view.IUIWidget;
 	import org.syncon.evernote.panic.vo.BoardVO;
+	import org.syncon.evernote.panic.vo.PersonVO;
+	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
 	import spark.components.Group;
@@ -24,21 +27,19 @@ package   org.syncon.evernote.panic.controller
 		override public function execute():void
 		{
 			this.board = this.model.board; 
-			var output : Array = []; 
-			var ee : FlexGlobals
-			var target :  Group = FlexGlobals.topLevelApplication.boardGroup
+			var outputX : Array = []; 
+			var target :  Group = this.model.boardHolder
 			for ( var i : int =0 ; i < target.numElements; i++ )
 			{
 				var xxx : Object = target.getElementAt( i ) 
-				var   row :    HGroup  = target.getElementAt( i ) as HGroup
+				var   row :     BoardRow  = target.getElementAt( i ) as BoardRow
 				var rowExport : Array = []; 
-				output.push( rowExport ) 
+				outputX.push( rowExport ) 
 				
-					
-					
-				for ( var z : int =0 ; z < row.numElements; z++ )
+				var hgroup : HGroup = row.content
+				for ( var z : int =0 ; z < hgroup.numElements; z++ )
 				{
-					var   j :     UIComponent  = row.getElementAt(z)  as UIComponent
+					var   j :     UIComponent  = hgroup.getElementAt(z)  as UIComponent
 					if ( j is IUIWidget ) 
 					{
 						rowExport.push( ( j as IUIWidget ).exportConfig().export() ) 
@@ -52,7 +53,28 @@ package   org.syncon.evernote.panic.controller
 			}	
 			var board_ : Object = this.board.export()
 			board_.layout = output
-			var result : String = JSON.encode( board_ ) 
+			
+			var output : Object = {}
+			var people : Array = [];
+			
+			
+			for each ( var p : PersonVO in this.model.board.people )
+			{
+				people.push( p.export() )
+			}
+			var projects : Array = []; 
+			for each ( var project :  ProjectVO  in this.model.board.projects )
+			{
+				projects.push( project.export() )
+			}	
+			
+			output.board = board_
+			output.people = people
+			output.projects = projects
+				
+			var result : String = JSON.encode( output  ) 
+				
+				
 			//export to json 
 			//event.type = ExportBoardCommandTriggerEvent.EXPORT_BOARD_RESULT
 			//this.dispatch( event ) 

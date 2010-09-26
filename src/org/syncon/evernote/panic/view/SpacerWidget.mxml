@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Spacer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"
+		 xmlns:view="org.syncon.evernote.panic.view.*"
+		 >
+	
+	<fx:Metadata>
+		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
+	</fx:Metadata>		
+	
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			/**
+			 * Flag indiates whether tags should be removed instantly 
+			 * */
+			public var creationComplete : Boolean = false; 
+			
+			private var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
+			
+			public var message :  String = ''; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+			}				
+ 
+			public function importConfig(j :  WidgetVO )  : void
+			{
+				this.widgetData = j
+				this.message = j.source;  
+				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
+				
+			}
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String,     height :  Number =  NaN )  :   MessageWidget
+			{
+				var o : Object = {}
+				var vo : WidgetVO = new WidgetVO(WidgetVO.MESSAGE, o); 	
+				var g : MessageWidget = new MessageWidget()
+				g.widgetData = vo
+					
+				vo.name = name; 
+				vo.description = desc
+				vo.source = source; 
+				vo.refreshTime = refreshTime; 
+				
+				return g ; 
+			}						
+			
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}					
+		]]>
+	</fx:Script>
+ 
+	<s:VGroup horizontalCenter="0" verticalCenter="0">
+		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
+	</s:VGroup>
+	
+	<view:EditBorder id="editBorder" edit="{this}" />
+	
+</mx:Spacer>

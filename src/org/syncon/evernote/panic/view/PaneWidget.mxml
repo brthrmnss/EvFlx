@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()" resize="group1_resizeHandler(event)"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
-		 color="0xFFFFFF"
+		 color="0xFFFFFF" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -112,12 +112,22 @@
 
 			protected function group1_resizeHandler(event:ResizeEvent):void
 			{
-				if ( this.width == 0 && this.percentWidth != 0 ) 
+				if ( this.percentWidth != 0 && ! isNaN( this.percentWidth  ) ) 
 				{
 				//if ( this.data.vo.height == NaN ) 
 				this.height = this.parentDocument.width*this.percentWidth/100*(115/99)
 				}
 			}
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}					
 
 		]]>
 	</fx:Script>
@@ -143,6 +153,5 @@
 		<s:Label text="Transcode"  />
 	</s:VGroup>
 	
-	
-	
+	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

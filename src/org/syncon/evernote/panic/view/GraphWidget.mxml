@@ -4,8 +4,8 @@
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
 						   implements="org.syncon.evernote.panic.view.IUIWidget"
 						   creationComplete="onInit()" resize="group1_resizeHandler(event)"
-						   fontSize="24" clipAndEnableScrolling="false"
-						   color="0xFFFFFF"
+						   fontSize="24" clipAndEnableScrolling="true"
+						   color="0xFFFFFF" xmlns:view="org.syncon.evernote.panic.view.*"
 						 >
 
 	<fx:Metadata>
@@ -47,6 +47,8 @@
 			protected function onInit():void
 			{
 				 this.creationComplete = true
+			//	this.importConfig( this._widgetData );
+				 group1_resizeHandler(null)
 			}				
 				
 			
@@ -89,6 +91,7 @@
 			{
 				this.fillColor.color = s; 
 			}
+			
 						/**
 						 * how tomake sure changes are propgated to vo? 
 						 * when ou change them ... call a update vo function 
@@ -98,6 +101,8 @@
 						 * */
  			public function importConfig(j :  WidgetVO )  : void
 			{
+				if ( j.data == null ) 
+					return;
 				this.widgetData = j
 				this.fillC = uint( j.data.fillColor ) 
 				this.labelBottom = j.data.labelBottom; 
@@ -130,6 +135,17 @@
 			public function exportConfig( ) : WidgetVO    
 			{
 				return this._widgetData; 
+			}			
+			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
 			}						
 		]]>
 	</fx:Script>
@@ -157,9 +173,14 @@
 	<fx:Declarations>
 		<s:SolidColor id="fillColor" color="0xFFDDFF" />
 	</fx:Declarations>
-	<s:layout>
-		<s:VerticalLayout  horizontalAlign="center" clipAndEnableScrolling="false"/>
-	</s:layout>
+	
+
+
+	
+	<s:VGroup  horizontalAlign="center" clipAndEnableScrolling="false"  width="100%">
+		
+	
+	 
 	<s:Label text="89/3" fontSize="36" id="lblTop" />
 	<mx:BarChart height="80"  width="180%"   id="chart"
 				  dataProvider="{expenses}"  >
@@ -239,5 +260,8 @@
 		</mx:LineChart>-->
 
 	<s:Label  id="lblBottom" text="Transcode"  />
+	</s:VGroup>
 	
+	
+	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

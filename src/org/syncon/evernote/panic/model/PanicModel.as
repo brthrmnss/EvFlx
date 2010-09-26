@@ -26,8 +26,11 @@ package org.syncon.evernote.panic.model
 	import org.syncon.evernote.model.Note2;
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
+	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
+	
+	import spark.components.Group;
  
 	public class   PanicModel   extends Actor 
 	{
@@ -43,11 +46,31 @@ package org.syncon.evernote.panic.model
 		}
 		public function get  board ( ) : BoardVO  { return this._board   }		
 				
+		private var _editMode : Boolean = false
+		public function set editMode ( p : Boolean )  : void
+		{
+			this._editMode = p; 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.EDIT_MODE_CHANGED, this._editMode ) )
+		}
+		public function get  editMode ( ) : Boolean  { return this._editMode   }		
+		
+		private var _adminMode : Boolean = false
+		public function set adminMode ( p : Boolean )  : void
+		{
+			this._adminMode = p; 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.ADMIN_MODE_CHANGED, this._adminMode ) )
+		}
+		public function get  adminMode ( ) : Boolean  { return this._adminMode   }		
+				
 		public function refreshBoard()  : void
 		{
+			this.editMode = false; 
+			this.dispatch( new Event(  BuildBoardCommand.BUILD_BOARD  ) ) 
 			this.dispatch( new PanicModelEvent( PanicModelEvent.REFRESH_BOARD, this._board ) )
+			
 		}
 			
+		public var boardHolder : Group
 		
 		
 		

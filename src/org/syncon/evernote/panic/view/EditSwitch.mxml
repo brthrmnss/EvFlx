@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			public var creationComplete : Boolean = false; 
+			
+			public var editMode : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+			}
+
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedEdit', this.editMode ) ) 
+			}
+
+			public function show() : void
+			{
+				this.alpha = 1
+			}
+			
+			public function hide()  : void
+			{
+				this.alpha  = 0	
+			}
+
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				this.alpha = 0;
+			}
+
+		]]>
+	</fx:Script>
+ 
+	
+	<s:Rect right="0" left="0" top="0" bottom="0" 
+			topLeftRadiusX="-10" topLeftRadiusY="10"
+			topRightRadiusX="-10" topRightRadiusY="10"
+			 bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
+			 bottomRightRadiusX="10"  bottomRightRadiusY="10"
+			 >
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
+		<s:Label id="lblMessage" />
+		<s:Button label="Edit"  id="btnEdit" click="btnEdit_clickHandler(event)"/>
+	</s:HGroup>
+
+	
+
+</s:Group>

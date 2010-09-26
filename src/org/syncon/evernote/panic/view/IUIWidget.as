@@ -35,5 +35,8 @@ package  org.syncon.evernote.panic.view
 		 * */
 		function importData_(e: Object) : void
 
+			
+		function showEdit() : void
+		function hideEdit() : void
 	}
 }

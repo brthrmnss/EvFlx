@@ -48,6 +48,18 @@ package org.syncon.evernote.panic.vo
 			return 'GIF'+'/'+items[index].toString()
 		}
 		
+		public function export() : Object
+		{
+			return this; 
+		}
+		
+
+		public function importX( x : Object)  : void
+		{
+			//return x;
+		}			
+		
+		
  
 	}
 }

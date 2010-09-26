@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
-		 color="0xFFFFFF" fontSize="34"
+		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -86,6 +86,16 @@
 				return this._widgetData; 
 			}							
 			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}						
 		]]>
 	</fx:Script>
 	
@@ -96,4 +106,6 @@
 				<s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>
 			</s:layout>
 		</s:List>
+	
+	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

@@ -7,6 +7,7 @@ package  org.syncon.evernote.panic.view
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
  
@@ -30,8 +31,20 @@ package  org.syncon.evernote.panic.view
 			/*eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
 				this.onAuthenticated);	*/		
 			this.onImportConfig( null ) 
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
+				this.onEditModeChanged);						
+			this.onEditModeChanged(null)				
 		}
 		 
+		public function onEditModeChanged(e:PanicModelEvent): void
+		{
+			if ( this.model.editMode ) 
+				this.ui.showEdit()
+			else
+				this.ui.hideEdit(); 
+		}		
+		
 		public function onImportConfig(e:WidgetEvent): void
 		{
 			var dbg : Array = this.model.board.projects; 

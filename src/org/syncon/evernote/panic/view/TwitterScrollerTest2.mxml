@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()" alpha="0"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"		 
-		 color="0xFFFFFF" fontSize="34"
+		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -177,7 +177,7 @@
 			{
 				
 				this.pth.valueFrom = 0 
-				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum+this.width;
+				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum; //+this.width;
 				this.anim.duration = this.list1.dataProvider.length*25*1000;
 				anim.play([this.list1.layout]);
 			}
@@ -230,6 +230,17 @@
 				return this._widgetData; 
 			}						
 			
+			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}		
 		]]>
 	</fx:Script>
 	
@@ -268,4 +279,6 @@
 		</s:fill>
 	</s:Rect>	
 	<!--</s:VGroup>-->
+
+	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>
