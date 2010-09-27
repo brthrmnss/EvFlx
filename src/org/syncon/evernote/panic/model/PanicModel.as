@@ -64,7 +64,7 @@ package org.syncon.evernote.panic.model
 				
 		public function refreshBoard()  : void
 		{
-			this.editMode = false; 
+			//this.editMode = false; 
 			this.dispatch( new Event(  BuildBoardCommand.BUILD_BOARD  ) ) 
 			this.dispatch( new PanicModelEvent( PanicModelEvent.REFRESH_BOARD, this._board ) )
 			

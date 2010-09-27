@@ -25,7 +25,7 @@ package  org.syncon.evernote.panic.view
 				this.onAdminModeChanged(null)
 				
 				 ui.addEventListener('clickedEdit', onClickedHandler ) 		
-				 this.onClickedHandler(null)
+				 //this.onClickedHandler(null)
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void

@@ -45,8 +45,8 @@
 				this.popupCode.open( false, false ) 
 				this.dispatchEvent( new CustomEvent( EDIT_WIDGET, a ) ) 
 				this.ui = a.ui as GraphWidget; 
-				this.txtTop.text = this.ui.labelTop; 
-				this.txtBottom.text = this.ui.labelBottom; 
+				this.txtTop.text = a.data.labelTop; 
+				this.txtBottom.text =  a.data.labelBottom; 
 				this.timer.dataX = a ; 
 				this.txtValue.text = a.source; 
 				this.txtMaximum.text = this.ui.maximum.toString()

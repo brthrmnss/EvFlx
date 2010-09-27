@@ -27,8 +27,8 @@
 			public var creationComplete : Boolean = false; 
 			public var _widgetData : WidgetVO = new WidgetVO
 				
-			public var labelBottom : String = ''; 
-			public var labelTop : String = ''; 
+			//public var labelBottom : String = ''; 
+			//public var labelTop : String = ''; 
 			public var maximum : Number = NaN; 	
 			
 			
@@ -91,7 +91,9 @@
 			
 			public function set fillC( s : uint )  : void
 			{
-				this.fillColor.color = s; 
+				s = 0xd2d2d2
+				this.fillColor_.color = s; 
+				colorSeries.setStyle('fill', this.fillColor_ ) 
 			}
 			
 			/**
@@ -110,13 +112,11 @@
 			public function refresh(temp  : WidgetVO= null) : void
 			{
 				var useSettings : WidgetVO = this.widgetData; 
-				if ( temp ) 
+				if ( temp != null ) 
 					useSettings = temp; 
-				this.fillC = uint( useSettings.data.fillColor ) 
-				this.labelBottom = useSettings.data.labelBottom; 
-				this.labelTop = useSettings.data.labelTop; 
-				this.maximum = useSettings.data.max			
-				this.expenses.getItemAt(0).Expenses = useSettings.data.max		
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+					null, useSettings ) ) 
+
 			}
 			
 						/**
@@ -132,9 +132,9 @@
 					return;
 				this.widgetData = j
 				this.widgetData.ui = this; 
-				this.refresh()
-				
 				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
+					
+				this.refresh()
 			}
 						
 			public function importData_( o:   Object )  : void
@@ -165,11 +165,16 @@
 			}			
 			public function exportConfig( ) : WidgetVO    
 			{
-				_widgetData.data.fillColor = this.fillColor.color; 
+				//if not created, don't try to load from ui 
+				if ( this.creationComplete == false ) 
+					return this._widgetData.clone(); 
+				//u can't pull the values like this ... what if they're sourced?
+				/*
+				_widgetData.data.fillColor = this.fillColor_.color; 
 				_widgetData.data.labelTop = labelTop
 				_widgetData.data.labelBottom = labelBottom
 				_widgetData.data.max = this.maximum; 
-								
+				*/				
 				return this._widgetData.clone(); 
 			}			
 			
@@ -207,7 +212,8 @@
 	</fx:Style>
 	
 	<fx:Declarations>
-		<s:SolidColor id="fillColor" color="0xFFDDFF" />
+		<!--<s:SolidColor id="fillColor_" color="0xFFDDFF" />-->
+		<s:SolidColor id="fillColor_" color="#990033" />
 	</fx:Declarations>
 	
 
@@ -217,7 +223,7 @@
 		
 	
 	 
-	<s:Label text="89/3" fontSize="36" id="lblTop" />
+	<s:Label text="..." fontSize="36" id="lblTop" />
 	<mx:BarChart height="80"  width="180%"   id="chart"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
@@ -250,8 +256,8 @@
 		<mx:series>
 			<mx:ColumnSeries 
 				xField="Month"  
-				yField="Expenses" 
-				displayName="Expenses" fill="{this.fillColor}"
+				yField="Expenses"   id="colorSeries"
+				displayName="Expenses" fill="{this.fillColor_}"
 				/>
 		</mx:series>
 
