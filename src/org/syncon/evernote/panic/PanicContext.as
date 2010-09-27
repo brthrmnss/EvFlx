@@ -22,6 +22,8 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.ImportBoardCommand;
 	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommand;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.*;
@@ -44,7 +46,8 @@ package   org.syncon.evernote.panic
 			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_BOARD,  ImportBoardCommand, null, false );
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );		
-			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );					
+			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );			
+			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );						
 			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );

@@ -88,8 +88,9 @@ package org.syncon.evernote.panic.model
 		public function sourced( s : String )  :  Boolean
 		{
 			var sourced :  Boolean = false
-			if ( s.indexOf('{') != -1 ) //that is non espaced?  
+			if ( s.indexOf('{') != -1  ) //that is non espaced?  
 				sourced = true
+				//if index before example is not escaped ... still no goo
 			return sourced
 		}
 		

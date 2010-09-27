@@ -4,6 +4,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
@@ -21,6 +22,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function onRegister():void
 		{
 	 		this.ui.addEventListener( GraphWidgetEditorPopup.EDIT_WIDGET, this.onEditWidget ) 
+			this.ui.addEventListener( 'testClick', this.onTest ) 
 		}
 		
 		private function onEditWidget(e:CustomEvent) : void
@@ -30,6 +32,18 @@ package  org.syncon.evernote.panic.view.popup.editors
 			
 		}		
  
+		private function onTest(e:CustomEvent) : void
+		{
+			this.ui.ui.textTop = this.ui.txtTop.text; 
+			this.ui.ui.textBottom = this.ui.txtBottom.text; 
+			this.dispatch( new LoadDataSourceCommandTriggerEvent ( LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
+					this.ui.txtTop.text, this.ui.ui, 'textTop', null )  )
+			this.dispatch( new LoadDataSourceCommandTriggerEvent ( LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
+				this.ui.txtBottom.text, this.ui.ui, 'textBottom', null )  )				
+		}		
+				
+		
+		
 		
 		 
 		

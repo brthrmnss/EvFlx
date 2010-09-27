@@ -119,7 +119,7 @@
 			{
 			}		
 			static public function importData( name : String, desc:String, labelTop : String, 
-			labelBottom : String, value : Number, max : Number=NaN, fillColor : String='', 
+			labelBottom : String, value :  Object, max : Number=NaN, fillColor : String='', 
 			 refreshTime :  Number=15000)  :  GraphWidget
 			{
 				var o : Object = {}
@@ -137,7 +137,8 @@
 				o.labelTop = labelTop
 				o.labelBottom = labelBottom
 				o.max = max; 
-				
+				//a string .. that is scrted to anumber later
+				o.value = value; 
 				return g ; 
 			}			
 			public function exportConfig( ) : WidgetVO    
@@ -202,12 +203,12 @@
 		
 		<mx:horizontalAxisRenderers>
 			<mx:AxisRenderer  
-				axis="{a1}" styleName="myAxisStyle"
+				axis="{a1}" styleName="myAxisStyle" showLabels="false"
 				showLine="false"/>
 		</mx:horizontalAxisRenderers>
 		<mx:verticalAxisRenderers>
 			<mx:AxisRenderer  
-				axis="{a1}" styleName="myAxisStyle"
+				axis="{a1}" styleName="myAxisStyle" showLabels="false"
 				showLine="false"
 				/>
 		</mx:verticalAxisRenderers>		

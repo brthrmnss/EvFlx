@@ -73,8 +73,8 @@
 			
 			protected function btnTest_clickHandler(event:MouseEvent):void
 			{
-				this.ui.textTop = this.txtTop.text; 
-				this.ui.textBottom = this.txtBottom.text; 
+			
+				this.dispatchEvent( new CustomEvent( 'testClick' ) ) 
 				
 			}			
 
