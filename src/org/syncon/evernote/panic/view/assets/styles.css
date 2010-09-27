@@ -70,3 +70,13 @@ mx|Tooltip{
 	content:     Embed( source="icons/16/delete.png" );
 }
 
+.btnUp
+{
+	content:     Embed( source="icons/24/arrow_up.png" );
+}
+
+.btnDown
+{
+	content:     Embed( source="icons/24/arrow_down.png" );
+}
+

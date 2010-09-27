@@ -23,11 +23,11 @@ package  org.syncon.evernote.panic.view
 		{
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);	
-			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
-			
-			ui.addEventListener('cancelSelect', onCancelHandler ) 		
 			this.onEditModeChanged(null)
 				
+			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
+			ui.addEventListener('cancelSelect', onCancelHandler ) 		
+			
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
 				this.onElementSelected);					
 		}

@@ -94,6 +94,31 @@
 				this.fillColor.color = s; 
 			}
 			
+			/**
+			 * Update settings from .... data on config 
+			 * two settings 
+			 * 
+			 * config data 
+			 * actual values set 
+			 * the temporary values 
+			 * 
+			 * setter function 
+			 * getter function? 
+			 * 
+			 * to udpate ... pass in temporarly widgetVO
+			 * */
+			public function refresh(temp  : WidgetVO= null) : void
+			{
+				var useSettings : WidgetVO = this.widgetData; 
+				if ( temp ) 
+					useSettings = temp; 
+				this.fillC = uint( useSettings.data.fillColor ) 
+				this.labelBottom = useSettings.data.labelBottom; 
+				this.labelTop = useSettings.data.labelTop; 
+				this.maximum = useSettings.data.max			
+				this.expenses.getItemAt(0).Expenses = useSettings.data.max		
+			}
+			
 						/**
 						 * how tomake sure changes are propgated to vo? 
 						 * when ou change them ... call a update vo function 
@@ -107,10 +132,7 @@
 					return;
 				this.widgetData = j
 				this.widgetData.ui = this; 
-				this.fillC = uint( j.data.fillColor ) 
-				this.labelBottom = j.data.labelBottom; 
-				this.labelTop = j.data.labelTop; 
-				this.maximum = j.data.max
+				this.refresh()
 				
 				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
@@ -148,7 +170,7 @@
 				_widgetData.data.labelBottom = labelBottom
 				_widgetData.data.max = this.maximum; 
 								
-				return this._widgetData; 
+				return this._widgetData.clone(); 
 			}			
 			
 			

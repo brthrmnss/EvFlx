@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			public var creationComplete : Boolean = false; 
+			protected function onInit():void
+			{
+				this.creationComplete = true
+			}
+
+		]]>
+	</fx:Script>
+ 
+	 <view:AddWidget top="100" left="0" />
+	
+	<view:EditSwitch top="0" right="20" />
+
+</s:Group>

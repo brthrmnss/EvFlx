@@ -18,11 +18,14 @@ package  org.syncon.evernote.panic.view
 		{
 				eventMap.mapListener(eventDispatcher, PanicModelEvent.REFRESH_BOARD, 
 				this.onBoardRefreshed);	
-				eventMap.mapListener(eventDispatcher, PanicModelEvent.ADMIN_MODE_CHANGED, 
-					this.onAdminModeChanged);					
-			 ui.addEventListener('clickedEdit', onClickedHandler ) 						
 				this.onBoardRefreshed(null)
+					
+				eventMap.mapListener(eventDispatcher, PanicModelEvent.ADMIN_MODE_CHANGED, 
+					this.onAdminModeChanged);	
 				this.onAdminModeChanged(null)
+				
+				 ui.addEventListener('clickedEdit', onClickedHandler ) 		
+				 this.onClickedHandler(null)
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void

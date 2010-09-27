@@ -75,5 +75,10 @@ package org.syncon.evernote.panic.vo
 			
 			return o
 		}
+		
+		public function clone() : WidgetVO
+		{
+			return this; 
+		}
 	}
 }

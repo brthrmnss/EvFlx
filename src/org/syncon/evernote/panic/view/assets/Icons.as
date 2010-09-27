@@ -39,6 +39,7 @@ package org.syncon.evernote.panic.view.assets
 		
 		static public function getFormatPainter( name : String = '.trashBtn')  :  Class
 		{
+			//var styleMan : Object = getStyleManager()
 			var bdb : Object = getStyleManager().getStyleDeclaration( name ).getStyle( 'content')
 			return  Class(bdb);
 		}	
