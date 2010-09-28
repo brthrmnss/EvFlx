@@ -27,14 +27,14 @@ package   org.syncon.evernote.panic.controller
 		override public function execute():void
 		{
 			this.board = this.model.board; 
-			var outputX : Array = []; 
+			var layoutExport : Array = []; 
 			var target :  Group = this.model.boardHolder
 			for ( var i : int =0 ; i < target.numElements; i++ )
 			{
 				var xxx : Object = target.getElementAt( i ) 
 				var   row :     BoardRow  = target.getElementAt( i ) as BoardRow
 				var rowExport : Array = []; 
-				outputX.push( rowExport ) 
+				layoutExport.push( rowExport ) 
 				
 				var hgroup : HGroup = row.content
 				for ( var z : int =0 ; z < hgroup.numElements; z++ )
@@ -52,7 +52,7 @@ package   org.syncon.evernote.panic.controller
 				}
 			}	
 			var board_ : Object = this.board.export()
-			board_.layout = output
+			board_.layout =  layoutExport  
 			
 			var output : Object = {}
 			var people : Array = [];

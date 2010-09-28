@@ -55,6 +55,11 @@ package org.syncon.evernote.panic.vo
 		 
 		public function importX( x : Object)  : void
 		{
+			for  ( var prop : Object in  x ) 
+			{
+				if ( x.hasOwnProperty( prop ) )
+					this[prop] = x[prop] 
+			}			
 			/*
 			this.name = x.name; 
 			var layout : Array = x.layout; 

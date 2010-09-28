@@ -25,7 +25,7 @@ package  org.syncon.evernote.panic.view
 				this.onAdminModeChanged(null)
 				
 				 ui.addEventListener('clickedEdit', onClickedHandler ) 		
-				 //this.onClickedHandler(null)
+				 this.onClickedHandler(null)
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -41,8 +41,16 @@ package  org.syncon.evernote.panic.view
 		
 		private function onClickedHandler(e:CustomEvent): void
 		{
-			this.ui.editMode = ! this.ui.editMode; 
-			this.model.editMode = this.ui.editMode
+			//if nto updating, just adjust words
+			if ( e != null )
+			{
+				this.ui.editMode = ! this.ui.editMode; 
+				this.model.editMode = this.ui.editMode
+			}
+			else
+			{
+				this.ui.editMode =  this.model.editMode; 
+			}
 			if ( this.ui.editMode )
 				this.ui.btnEdit.label = 'Leave Edit Mode'
 			else

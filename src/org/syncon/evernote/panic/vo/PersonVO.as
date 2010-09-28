@@ -53,10 +53,13 @@ package org.syncon.evernote.panic.vo
 			return this; 
 		}
 		
-
 		public function importX( x : Object)  : void
 		{
-			//return x;
+			for  ( var prop : Object in  x ) 
+			{
+				if ( x.hasOwnProperty( prop ) )
+					this[prop] = x[prop] 
+			}			
 		}			
 		
 		
