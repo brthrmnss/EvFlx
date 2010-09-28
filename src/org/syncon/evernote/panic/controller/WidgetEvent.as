@@ -8,6 +8,7 @@ package   org.syncon.evernote.panic.controller
 	{
 		static public var IMPORT_CONFIG : String = 'importConfig'
 		static public var AUTOMATE_WIDGET : String = 'automateWidget'
+		static public var UPDATE_CONFIG : String = 'updateConfig'
 		public var ui :  Object; 
 		public var data : WidgetVO; 
 		public function WidgetEvent(type:String, ui : Object =null, data : WidgetVO=null)  

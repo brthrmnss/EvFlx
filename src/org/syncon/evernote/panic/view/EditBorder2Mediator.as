@@ -1,5 +1,7 @@
 package  org.syncon.evernote.panic.view
 {
+	import flash.utils.setTimeout;
+	
 	import mx.core.UIComponent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -32,7 +34,12 @@ package  org.syncon.evernote.panic.view
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, 
 				 this.onHighlighCertainItems);		
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
-				 this.onHighlighCertainItems_Selected);					 
+				 this.onHighlighCertainItems_Selected);			
+			 
+			 ui.addEventListener( EditBorder2.SHOW , onShowHandler ) 		
+			 /**
+			 * Show edit is controled by boardrowwidgemediator thi sis confusing 
+			 * */
 		}
 		 
 		
@@ -71,7 +78,30 @@ package  org.syncon.evernote.panic.view
 	
 			this.highligtSelectionMode = true
 			this.ui.clickableShade.visible = true; 
+			this.onShowHandler(null)
+		}
+		
 			
+		public function onShowHandler( e :  CustomEvent)  : void
+		{	
+			var parent : BoardRow = this.ui.parentDocument as  BoardRow
+			var dd : Array = [parent.parent.getChildIndex( parent ) ]
+			if (   parent.parent.getChildIndex( parent ) == 0  ) 
+			{
+				this.ui.btnUp.visible = false; 
+			}
+			else
+			{
+				this.ui.btnUp.visible = true
+			}			
+			if ( parent.parent.numChildren -1 == parent.parent.getChildIndex( parent ) ) 
+			{
+				this.ui.btnDown.visible = false; 
+			}
+			else
+			{
+				this.ui.btnDown.visible = true
+			}
 		}			
 		
 		private function onHighlighCertainItems_Selected(e:PanicModelEvent): void
@@ -100,14 +130,37 @@ package  org.syncon.evernote.panic.view
 			var index : int = this.model.boardHolder.getChildIndex( this.ui.parent ) 
 			if ( index != 0 ) 
 				this.model.boardHolder.swapElementsAt( index, index-1 ) 
+			//redraw arrows
+			//this.onShowHandler(null)
+			//(this.model.boardHolder.getElementAt( index) as BoardRow).dispatchEvent( 	new CustomEvent( EditBorder2.SHOW ) ) 
+			this.ui.callLater( this.updateSwitchedArrows, [index, index-1] ) 		
 		}
 		
 		private function onClickedDownHandler(e:CustomEvent): void
 		{
 			var index : int = this.model.boardHolder.getChildIndex( this.ui.parent ) 
 			if ( index != this.model.boardHolder.numChildren-1 ) 
-				this.model.boardHolder.swapElementsAt( index, index+1 ) 			
+				this.model.boardHolder.swapElementsAt( index, index+1 ) 	
+			
+			this.ui.callLater( this.updateSwitchedArrows, [index, index+1] ) 
+		/*	this.onShowHandler(null)
+			var otherThing :  BoardRow = this.model.boardHolder.getElementAt( index)  as BoardRow ;
+				var dd : Object = [this.model.boardHolder.getChildAt( index), this.model.boardHolder.getElementAt( index)    ];
+				otherThing.dispatchEvent( 	new CustomEvent( EditBorder2.SHOW ) ) 	*/				
 		}		
 		 
+		private function updateSwitchedArrows(i : int, i2 : int, wait :  Boolean = true) : void
+		{
+		/*	if ( wait ) { 
+				flash.utils.setTimeout( this.updateSwitchedArrows, 500, i, i2, false ) 
+				return	
+			}*/
+		
+			//this.onShowHandler(null)
+			var otherThing :  BoardRow = this.model.boardHolder.getElementAt( i)  as BoardRow ;
+			otherThing.editBorder.dispatchEvent( 	new CustomEvent( EditBorder2.SHOW ) ) 	
+			otherThing = this.model.boardHolder.getElementAt( i2)  as BoardRow ;
+			otherThing.editBorder.dispatchEvent( 	new CustomEvent( EditBorder2.SHOW ) ) 					
+		}
 	}
 }

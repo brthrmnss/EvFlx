@@ -11,6 +11,7 @@
 	<fx:Script>
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.view.GraphWidget;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
@@ -18,6 +19,8 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			static public var EDIT_WIDGET : String = 'editWidget'; 
+			static public var UPDATE_WIDGET_CONFIG  : String = 'updateWdigetConfig'; 
+			static public var TEST_WIDGET : String = 'testWidget'; 
 			
 			public var ui : GraphWidget; 
 			
@@ -43,15 +46,29 @@
 			public function open( a :  WidgetVO  )  : void
 			{
 				this.popupCode.open( false, false ) 
-				this.dispatchEvent( new CustomEvent( EDIT_WIDGET, a ) ) 
+				this.dispatchEvent( new CustomEvent( EDIT_WIDGET, a ) )
 				this.ui = a.ui as GraphWidget; 
+				this.loadValues(a)
+			}
+			
+			/**
+			 * Move values from data to the ui
+			 * */
+			public function loadValues(a :  WidgetVO ) : void
+			{
 				this.txtTop.text = a.data.labelTop; 
 				this.txtBottom.text =  a.data.labelBottom; 
 				this.timer.dataX = a ; 
 				this.txtValue.text = a.source; 
-				this.txtMaximum.text = this.ui.maximum.toString()
-			}			
-		 
+				this.txtMaximum.text = a.data.max
+				this.colorPicker.selectedColor = a.data.fillColor; 
+					
+			}		
+			
+			 /**
+			 * Export move data from ui to data object
+			 * */
+			
 			override public function hide( ) : void
 			{
 				this.popupCode.close() 
@@ -67,15 +84,12 @@
 
 			protected function btnOk_clickHandler(event:MouseEvent):void
 			{
-				this.btnTest_clickHandler(null); 
-				this.hide()
+				this.dispatchEvent( new CustomEvent( UPDATE_WIDGET_CONFIG ) ) 
 			}
 			
 			protected function btnTest_clickHandler(event:MouseEvent):void
 			{
-			
-				this.dispatchEvent( new CustomEvent( 'testClick' ) ) 
-				
+				this.dispatchEvent( new CustomEvent(  TEST_WIDGET ) ) 
 			}			
 
 		]]>
@@ -113,6 +127,11 @@
 		<mx:FormItem label="Maximum Value Text Source" >
 			<s:TextInput id="txtMaximum" />
 		</mx:FormItem>	
+		
+		<mx:FormItem label="Color" >
+			<mx:ColorPicker id="colorPicker" />
+		</mx:FormItem>			
+		
 		<mx:FormItem>
 			<s:HGroup>
 				<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />

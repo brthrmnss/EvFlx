@@ -7,6 +7,7 @@ package org.syncon.evernote.panic.controller
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequestHeader;
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
@@ -70,7 +71,11 @@ package org.syncon.evernote.panic.controller
 				//	loader.addEventListener(ProgressEvent.PROGRESS, progressListener);
 				//this.dictX[
 				try {
-					loader.load( new URLRequest(u));
+					var urlfull : String = u+randomIzer()
+					var header: URLRequestHeader = new URLRequestHeader("pragma", "no-cache");
+					var request:URLRequest = new URLRequest(urlfull);
+					request.requestHeaders.push(header);						
+					loader.load(  request );
 				} catch (error:Error) {
 					trace("Unable to load requested document.");
 				}
@@ -125,8 +130,8 @@ package org.syncon.evernote.panic.controller
 			private function completeListener(event: Event):void
 			{
 				var str : String =  event.currentTarget.data 
-				trace(" all done loading " + event.currentTarget.data + 
-					" and here's the xml file we loaded "); 
+			//	trace(" all done loading " + event.currentTarget.data + 
+			//		" and here's the xml file we loaded "); 
 				var urlLoaded :  String = this.dictX[event.currentTarget]
 					delete this.dictX[event.currentTarget]  ; 
 				this.loaders.removeItemAt( this.loaders.getItemIndex( event.currentTarget) ) 
@@ -204,6 +209,14 @@ package org.syncon.evernote.panic.controller
 				var homeLink:URLRequest = new URLRequest(u);
 				navigateToURL(homeLink);
 			}			
-			
+			/**
+			 * Append random string on url o prevent caching
+			 * look up cleaner solution
+			 * */
+			public function randomIzer() : String
+			{
+				//+”?time=” + new Date().getTime()
+				return '?rand='+Math.round(Math.random()*120000).toString()
+			}
 	}
 }

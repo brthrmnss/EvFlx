@@ -72,7 +72,7 @@
 				<s:SolidColorStroke color="0x83F52C" />
 			</s:stroke>
 			<s:fill>
-				<s:SolidColor color="0" alpha="0.8" />
+				<s:SolidColor color="0" alpha="0.6" />
 			</s:fill>
 		</s:Rect>
 		<s:Rect id="borderEdit2" right="0" left="0" top="0"  height="50"   >
@@ -84,11 +84,18 @@
 	</s:Group>
 	<!--   content="{Icons.get('')}" -->
 	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" left="10">
+		
+		<s:HGroup id="goBtn" >
+			<s:Button label="L" width="20" />
+			<s:Button label="R" width="20" />
+		</s:HGroup>
+		
+		
+		<s:Button label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
+				  content="{Icons.getFormatPainter( '.iconSettings' )}"  skinClass="org.syncon.evernote.panic.view.skins.ButtonSkin"	/>
 		<s:Button label="X"  id="btnRemove" click="btnRemove_clickHandler(event)" toolTip="Remove Item"
 				  content="{Icons.getFormatPainter( '.iconTrash' )}"  skinClass="org.syncon.evernote.panic.view.skins.ButtonSkin"	/>
 		
-		<s:Button label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
-				  content="{Icons.getFormatPainter( '.iconSettings' )}"  skinClass="org.syncon.evernote.panic.view.skins.ButtonSkin"	/>		
 	</s:HGroup>
 
 	

@@ -48,9 +48,9 @@ package   org.syncon.evernote.panic.controller
 			if ( event.type == SETUP ) 
 			{
 				this.model.boardHolder = FlexGlobals.topLevelApplication.boardGroup;
-				/*this.model.editMode = true; 
+				this.model.editMode = true; 
 				this.model.adminMode = true; 
-				setTimeout(  this.onGoToEditMode, 1000 ) */
+				setTimeout(  this.onGoToEditMode, 1000 ) 
 			}			
 		}
 		
@@ -67,13 +67,15 @@ package   org.syncon.evernote.panic.controller
 			var arr : Array = []; 
 			var board : BoardVO = new BoardVO()
 			arr.push( [
-				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl', 4, 100, '0xFCBF17',15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl2', 4, 100, '0x47C816',15000).widgetData,
+				 
+				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
+				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
+			 
 				GraphWidget.importData('Eccles lister', '', 
-					'{http://city-21.com/php/random_number.php}/{http://city-21.com/php/random_number.php}',
-					'Ec3 - {http://city-21.com/php/random_number.php}',
-					'{http://city-21.com/php/random_number.php}', 100, '0xFF3D19', 15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl4', 4, 100, '0x7652C0' , 15000).widgetData
+					'{http://city-21.com/php/random_number.php}/100',
+					'Ec3 - {http://city-21.com/php/random_string.php?f=8}',
+					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
+				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
 				])
 			arr.push( [
 				ProjectList.importData('Project Lister', '', 355, 15000).widgetData,

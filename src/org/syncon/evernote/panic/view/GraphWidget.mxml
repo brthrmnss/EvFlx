@@ -12,6 +12,7 @@
 		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
 	</fx:Metadata>		
 	
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.events.ResizeEvent;
@@ -25,23 +26,24 @@
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
 			public var creationComplete : Boolean = false; 
-			public var _widgetData : WidgetVO = new WidgetVO
+			private var _widgetData : WidgetVO = new WidgetVO
 				
 			//public var labelBottom : String = ''; 
 			//public var labelTop : String = ''; 
-			public var maximum : Number = NaN; 	
+			//public var maximum : Number = NaN; 	
 			
 			
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			import mx.collections.ArrayCollection;
-			[Bindable]
+			
 /* 			public var expenses:ArrayCollection = new ArrayCollection([
 				{Month:"Jan", Profit:2000, Expenses:1500},
 				{Month:"Feb", Profit:1000, Expenses:200},
 				{Month:"Mar", Profit:1500, Expenses:500}
 			]);
 			 */
+			[Bindable]
 			public var expenses:ArrayCollection = new ArrayCollection([
 				{Month:"Jan", Expenses:1500},
 			]);
@@ -51,6 +53,7 @@
 				 this.creationComplete = true
 			//	this.importConfig( this._widgetData );
 				 group1_resizeHandler(null)
+				 this.chart.alpha = 0; 
 			}				
 				
 			
@@ -91,9 +94,29 @@
 			
 			public function set fillC( s : uint )  : void
 			{
-				s = 0xd2d2d2
+				this.fade.play([this.chart] ) 
+				//s = 0xd2d2d2
 				this.fillColor_.color = s; 
-				colorSeries.setStyle('fill', this.fillColor_ ) 
+				//columnSeries.setStyle('fill', this.fillColor_ ) 
+				columnSeries.setStyle('fills', [this.fillColor_] ) 
+			}
+			
+			public function set value ( s : Object )  : void
+			{
+				if ( s.toString().indexOf('[') == -1 ) 
+					s = Number( s ) 
+				if ( s is Number ) 
+					this.expenses.getItemAt(0).Expenses = s
+						
+				this.chart.dataProvider = this.expenses; 
+			}
+			
+			public function set maximum ( s : Object )  : void
+			{
+				if ( s.toString().indexOf('[') == -1 ) 
+					s = Number( s ) 
+				if ( s is Number ) 
+					this.a2.maximum = s as Number; 
 			}
 			
 			/**
@@ -141,7 +164,7 @@
 			{
 			}		
 			static public function importData( name : String, desc:String, labelTop : String, 
-			labelBottom : String, value :  Object, max : Number=NaN, fillColor : String='', 
+			labelBottom : String, value :  Object, max : Object= null, fillColor : uint = NaN, 
 			 refreshTime :  Number=15000)  :  GraphWidget
 			{
 				var o : Object = {}
@@ -160,7 +183,7 @@
 				o.labelBottom = labelBottom
 				o.max = max; 
 				//a string .. that is scrted to anumber later
-				o.value = value; 
+				vo.source = value.toString(); 
 				return g ; 
 			}			
 			public function exportConfig( ) : WidgetVO    
@@ -214,6 +237,8 @@
 	<fx:Declarations>
 		<!--<s:SolidColor id="fillColor_" color="0xFFDDFF" />-->
 		<s:SolidColor id="fillColor_" color="#990033" />
+		<s:Fade id="fade" duration="1500"  alphaTo="1" />
+		
 	</fx:Declarations>
 	
 
@@ -256,8 +281,8 @@
 		<mx:series>
 			<mx:ColumnSeries 
 				xField="Month"  
-				yField="Expenses"   id="colorSeries"
-				displayName="Expenses" fill="{this.fillColor_}"
+				yField="Expenses"   id="columnSeries"
+				displayName="Expenses" fills="{[this.fillColor_]}"
 				/>
 		</mx:series>
 
@@ -301,7 +326,7 @@
 			</mx:series>
 		</mx:LineChart>-->
 
-	<s:Label  id="lblBottom" text="Transcode"  />
+	<s:Label  id="lblBottom" text="Transcode"  maxDisplayedLines="1"   />
 	</s:VGroup>
 	
 	

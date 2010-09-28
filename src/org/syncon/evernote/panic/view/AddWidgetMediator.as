@@ -81,7 +81,7 @@ package  org.syncon.evernote.panic.view
 				else
 					row = ui.parentDocument as BoardRow
 				
-				row.addWidget( GraphWidget.importData( 'new', '', 'new', 'new', 10, 12, '0xFFDDFF' )  )
+				row.addWidget( GraphWidget.importData( 'new', '', 'new', 'new', 10, 12,  0xFFDDFF )  )
 									
 			}
 			this.ui.message = ''

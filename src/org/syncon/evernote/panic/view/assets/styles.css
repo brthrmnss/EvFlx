@@ -36,7 +36,8 @@ mx|mx.controls.Label {
 mx|AxisRenderer,
 mx|Label,
 mx|ToolTip,
-mx|ColumnSeries{
+mx|ColumnSeries,
+mx|TextInput {
 	font-family: ACaslonProRegularEmbedded2;
 }
 /*

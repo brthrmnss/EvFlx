@@ -22,10 +22,12 @@
 			static public var CLICKED : String = 'clicked_' 				
 			static public var CLICKED_UP : String = 'clickedUp' 
 			static public var CLICKED_DOWN : String = 'clickedDown' 
+			static public var SHOW : String = 'showEdit' 
 				
 			protected function onInit():void
 			{
 				this.creationComplete = true
+				this.hide()
 			}
 
 			
@@ -51,6 +53,7 @@
 			public function show() : void
 			{
 				this.visible = true
+				this.dispatchEvent( new CustomEvent( SHOW ) ) 
 			}
 			
 			public function hide()  : void
