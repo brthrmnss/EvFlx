@@ -8,6 +8,8 @@ package   org.syncon.evernote.panic.controller
 	import mx.core.mx_internal;
 	
 	import org.robotlegs.mvcs.Command;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.BoardRow;
 	import org.syncon.evernote.panic.view.IUIWidget;
@@ -22,11 +24,15 @@ package   org.syncon.evernote.panic.controller
 	public class ExportBoardCommand extends Command
 	{
 		[Inject] public var model: PanicModel;
+		[Inject] public var apiModel:  EvernoteAPIModel;				
 		[Inject] public var event: ExportBoardCommandTriggerEvent;
 		private var board : BoardVO; 
 		override public function execute():void
 		{
 			this.board = this.model.board; 
+			if ( event.board != null ) 
+				board = this.event.board; 
+			
 			var layoutExport : Array = []; 
 			var target :  Group = this.model.boardHolder
 			for ( var i : int =0 ; i < target.numElements; i++ )
@@ -75,11 +81,50 @@ package   org.syncon.evernote.panic.controller
 			var result : String = JSON.encode( output  ) 
 				
 				
+			event.result = result; 
 			//export to json 
-			//event.type = ExportBoardCommandTriggerEvent.EXPORT_BOARD_RESULT
+			if ( event.type == ExportBoardCommandTriggerEvent.EXPORT_BOARD )
+			{
+				if ( event.fxComplete != null ) event.fxComplete(event)
+			}
+			if ( event.type == ExportBoardCommandTriggerEvent.SAVE_BOARD )
+			{
+				this.model.configNote.content = this.apiModel.wrapContent(result )
+				this.dispatch(  
+					EvernoteAPICommandTriggerEvent.UpdateNote( 
+							this.model.configNote,onNoteSaved, onNoteSavedFault  )  
+				)	
+			}			
 			//this.dispatch( event ) 
 				return; 
 		}
 		 
+		
+		
+		
+		private function onNoteSaved( o:Object):void
+		{
+			this.alert( 'board saved' ) 
+			if ( event.fxComplete != null ) event.fxComplete()
+			return;
+		}					
+		private function onNoteSavedFault( o:Object):void
+		{
+			var msg : String = 'Could not save note'; 
+			this.alert( msg ) 
+		}				
+		
+		private function alert(s:String):void
+		{
+		/*	this.dispatch( new   ShowAlertMessageTriggerEvent(
+				ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 
+				msg  ) )  */
+		}
+		
+		
+		
+		
+		
+		
 	}
 }

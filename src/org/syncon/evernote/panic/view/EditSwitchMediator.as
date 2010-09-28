@@ -2,6 +2,7 @@ package  org.syncon.evernote.panic.view
 {
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
  
@@ -24,8 +25,10 @@ package  org.syncon.evernote.panic.view
 					this.onAdminModeChanged);	
 				this.onAdminModeChanged(null)
 				
-				 ui.addEventListener('clickedEdit', onClickedHandler ) 		
-				 this.onClickedHandler(null)
+				 ui.addEventListener('clickedEdit', onClickedEditHandler ) 		
+				 this.onClickedEditHandler(null)
+					 
+				 ui.addEventListener('clickedSave', onClickedSaveHandler ) 			 
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -38,8 +41,13 @@ package  org.syncon.evernote.panic.view
 			else
 			this.ui.hide()
 		}		
-		
-		private function onClickedHandler(e:CustomEvent): void
+		private function onClickedSaveHandler(e:CustomEvent): void
+		{
+			var ee : ExportBoardCommandTriggerEvent = new ExportBoardCommandTriggerEvent(
+				ExportBoardCommandTriggerEvent.SAVE_BOARD ) 
+			this.dispatch( ee )
+		}
+		private function onClickedEditHandler(e:CustomEvent): void
 		{
 			//if nto updating, just adjust words
 			if ( e != null )

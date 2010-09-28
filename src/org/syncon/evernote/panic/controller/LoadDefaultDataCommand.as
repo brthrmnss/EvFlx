@@ -14,6 +14,8 @@ package   org.syncon.evernote.panic.controller
 	import mx.core.FlexGlobals;
 	
 	import org.robotlegs.mvcs.Command;
+	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
+	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
@@ -43,7 +45,7 @@ package   org.syncon.evernote.panic.controller
 			}
 			if ( event.type == LIVE_DATA ) 
 			{
-				//this.liveData()
+				this.liveData()
 			}
 			if ( event.type == SETUP ) 
 			{
@@ -196,6 +198,24 @@ package   org.syncon.evernote.panic.controller
 		{
 			var newDate : Date = DateField.stringToDate( str, 'MM/DD/YYYY' ) 
 			return newDate;
+		}
+	
+		public function liveData() : void
+		{
+			var ee : EvernoteAPIModel
+			this.authenticate()
+			EvernoteAPIModel.EvernoteUrl = 'sandbox.evernote.com';
+			EvernoteService.edamBaseUrl = "https://sandbox.evernote.com";
+			
+			this.model.boardName = 'mercy';
+			var eed  :  ImportBoardCommandTriggerEvent
+			this.dispatch( new ImportBoardCommandTriggerEvent( 
+				ImportBoardCommandTriggerEvent.LOAD_BOARD, null, 'mercy' ))		
+		}
+		
+		private function authenticate()  : void
+		{
+			this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 		}
 		
 	}

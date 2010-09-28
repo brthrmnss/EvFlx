@@ -17,6 +17,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.EvernoteToTextflowCommandTriggerEvent;
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
+	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
@@ -39,13 +40,16 @@ package   org.syncon.evernote.panic
 		override public function startup():void
 		{
 			// Model
-			injector.mapSingleton( PanicModel  )		
+			injector.mapSingleton( PanicModel  )	
+			injector.mapSingleton( EvernoteAPIModel  )						
 			// Controller
 			commandMap.mapEvent(LoadDefaultDataCommand.SETUP,  LoadDefaultDataCommand, null, false );				
 			commandMap.mapEvent(LoadDefaultDataCommand.START,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_BOARD,  ImportBoardCommand, null, false );
-			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );		
+			commandMap.mapEvent(ImportBoardCommandTriggerEvent.LOAD_BOARD,  ImportBoardCommand, null, false );
+			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );					
+			commandMap.mapEvent(ExportBoardCommandTriggerEvent.SAVE_BOARD,  ExportBoardCommand, null, false );		
 			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );			
 			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );						
 			/*
@@ -62,6 +66,9 @@ package   org.syncon.evernote.panic
 			
 			injector.mapSingleton( EvernoteService )
 			*/
+			EvernoteAPICommand.mapCommands( commandMap )
+			injector.mapSingleton( EvernoteService )
+				
 			// View
 			mediatorMap.mapView(  GraphWidget,  GraphWidgetMediator );	
 			mediatorMap.mapView(  MessageWidget,  MessageWidgetMediator );	
@@ -99,14 +106,20 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.SETUP ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
-			setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
-			 
+			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
+			
+			 //setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
+			this.importBoardFromString()
+		}
+		public function importBoardFromString() : void
+		{
 			var exp : String = '{"layout":[[{"type":"graph","labelBottom":"Eccl","name":"Eccles lister","refreshTime":15000,"fillColor":"0xFCBF17","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl2","name":"Eccles lister","refreshTime":15000,"fillColor":"0x47C816","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl3","name":"Eccles lister","refreshTime":15000,"fillColor":"0xFF3D19","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl4","name":"Eccles lister","refreshTime":15000,"fillColor":"0x7652C0","source":"","labelTop":"89/6"}],[{"type":"projectList","labelBottom":"Eccl","name":"Eccles lister","refreshTime":-1,"labelTop":"89/6","source":"","description":""}],[{"type":"spacer"}],[{"type":"message","name":"Global Alert","source":"25 Days until tswitter launch","refreshTime":15000}],[{"type":"spacer"}],[{"type":"pane","color1":5064772,"color2":921102,"name":"Global Alert","source":"Something1","refreshTime":15000},{"type":"pane","color1":4082524,"color2":334129,"name":"Global Alert","source":"2Something1","refreshTime":15000},{"type":"pane","color1":4013884,"color2":4013884,"name":"Global Alert","source":"3Something1","refreshTime":15000}],[{"type":"spacer"}],[{"type":"twitterScroller","refreshTime":15000,"name":"Twitter Pane","source":"Panic Board","description":"..."}]],"name":""}'
-			exp = '{"board":{"name":"","layout":[[{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":16563991,"max":100,"source":"56","labelBottom":"Eccl"},{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":4704278,"max":100,"source":"99","labelBottom":"Eccl2"},{"type":"graph","labelTop":"{http://city-21.com/php/random_number.php}/100","refreshTime":15000,"name":"Eccles lister","fillColor":16727321,"max":100,"source":"{http://city-21.com/php/random_number.php}","labelBottom":"Ec3 - {http://city-21.com/php/random_string.php?f=8}"},{"type":"graph","labelTop":"12/100","refreshTime":15000,"name":"Eccles lister","fillColor":7754432,"max":100,"source":"12","labelBottom":"Eccl4"}],[{"height":355,"type":"projectList","refreshTime":15000,"name":"Project Lister","source":""}],[{"type":"spacer"}],[{"type":"message","refreshTime":15000,"name":"Global Alert","source":"25 Days until tswitter launch"}],[{"type":"spacer"}],[{"type":"pane","color2":921102,"color1":5064772,"refreshTime":15000,"name":"Global Alert","source":"Something1"},{"type":"pane","color2":334129,"color1":4082524,"refreshTime":15000,"name":"Global Alert","source":"2Something1"},{"type":"pane","color2":4013884,"color1":4013884,"refreshTime":15000,"name":"Global Alert","source":"3Something1"}],[{"type":"spacer"}],[{"refreshTime":15000,"type":"twitterScroller","name":"Twitter Pane","source":"Panic Board","description":"..."}]]},"projects":[{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA c","bA b","A d"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA d","bA c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA b","A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","bA d","cA b","d Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA c","cA d"],"desc":"coda is coda","ppl":[]}],"people":[{"name":"A b","src":"GIF/D03 copy.gif","desc":"","email":"","twitter":""},{"name":"A c","src":"GIF/E03 copy.gif","desc":"","email":"","twitter":""},{"name":"A d","src":"GIF/E02 copy.gif","desc":"","email":"","twitter":""},{"name":"d Y","src":"GIF/A04 copy.gif","desc":"","email":"","twitter":""},{"name":"bA b","src":"GIF/I02 copy.gif","desc":"","email":"","twitter":""},{"name":"bA c","src":"GIF/FC01 copy.gif","desc":"","email":"","twitter":""},{"name":"bA d","src":"GIF/D01 copy.gif","desc":"","email":"","twitter":""},{"name":"bd Y","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cA b","src":"GIF/A03 copy.gif","desc":"","email":"","twitter":""},{"name":"cA c","src":"GIF/A05 copy.gif","desc":"","email":"","twitter":""},{"name":"cA d","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cd Y","src":"GIF/E05 copy.gif","desc":"","email":"","twitter":""}]}'
-			this.dispatchEvent( new ImportBoardCommandTriggerEvent( ImportBoardCommandTriggerEvent.IMPORT_BOARD, exp ))				
-			
+			exp = '{"board":{"name":"mercy","layout":[[{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":16563991,"max":100,"source":"56","labelBottom":"Eccl"},{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":4704278,"max":100,"source":"99","labelBottom":"Eccl2"},{"type":"graph","labelTop":"{http://city-21.com/php/random_number.php}/100","refreshTime":15000,"name":"Eccles lister","fillColor":16727321,"max":100,"source":"{http://city-21.com/php/random_number.php}","labelBottom":"Ec3 - {http://city-21.com/php/random_string.php?f=8}"},{"type":"graph","labelTop":"12/100","refreshTime":15000,"name":"Eccles lister","fillColor":7754432,"max":100,"source":"12","labelBottom":"Eccl4"}],[{"height":355,"type":"projectList","refreshTime":15000,"name":"Project Lister","source":""}],[{"type":"spacer"}],[{"type":"message","refreshTime":15000,"name":"Global Alert","source":"25 Days until tswitter launch"}],[{"type":"spacer"}],[{"type":"pane","color2":921102,"color1":5064772,"refreshTime":15000,"name":"Global Alert","source":"Something1"},{"type":"pane","color2":334129,"color1":4082524,"refreshTime":15000,"name":"Global Alert","source":"2Something1"},{"type":"pane","color2":4013884,"color1":4013884,"refreshTime":15000,"name":"Global Alert","source":"3Something1"}],[{"type":"spacer"}],[{"refreshTime":15000,"type":"twitterScroller","name":"Twitter Pane","source":"Panic Board","description":"..."}]]},"projects":[{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA c","bA b","A d"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA d","bA c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA b","A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","bA d","cA b","d Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA c","cA d"],"desc":"coda is coda","ppl":[]}],"people":[{"name":"A b","src":"GIF/D03 copy.gif","desc":"","email":"","twitter":""},{"name":"A c","src":"GIF/E03 copy.gif","desc":"","email":"","twitter":""},{"name":"A d","src":"GIF/E02 copy.gif","desc":"","email":"","twitter":""},{"name":"d Y","src":"GIF/A04 copy.gif","desc":"","email":"","twitter":""},{"name":"bA b","src":"GIF/I02 copy.gif","desc":"","email":"","twitter":""},{"name":"bA c","src":"GIF/FC01 copy.gif","desc":"","email":"","twitter":""},{"name":"bA d","src":"GIF/D01 copy.gif","desc":"","email":"","twitter":""},{"name":"bd Y","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cA b","src":"GIF/A03 copy.gif","desc":"","email":"","twitter":""},{"name":"cA c","src":"GIF/A05 copy.gif","desc":"","email":"","twitter":""},{"name":"cA d","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cd Y","src":"GIF/E05 copy.gif","desc":"","email":"","twitter":""}]}'
+			this.dispatchEvent( new ImportBoardCommandTriggerEvent( 
+									ImportBoardCommandTriggerEvent.IMPORT_BOARD, exp ))				
+							
 				//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			//this.subContext.onInit(); 
 		}

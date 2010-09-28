@@ -345,6 +345,28 @@ package org.syncon.evernote.basic.model
 			return note 	
 		}
 		
+		
+		public function wrapContent( s : String )  :   String
+		{
+			var start : String = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>'
+			start += '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">'
+			start += '<en-note>'
+			var end : String = '</en-note>'
+			return start + s 	+ end
+		}
+		public function unwrapContent( s : String )  :   String
+		{
+			var start : String = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>'
+			start += '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml.dtd">'
+			start += '<en-note>'
+			var end : String = '</en-note>'
+			s = s.replace(  start, '' )
+			s = s.replace(  end, '')	
+			return s 
+		}		
+		
+				
+		
 		public function convertTagNamesToTags( names :  Array )  : Array
 		{
 			var tags :  Array = []; 

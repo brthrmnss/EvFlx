@@ -22,6 +22,10 @@
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedEdit', this.editMode ) ) 
 			}
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedSave', this.editMode ) ) 
+			}			
 
 			public function show() : void
 			{
@@ -55,7 +59,11 @@
 	
 	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 		<s:Label id="lblMessage" />
-		<s:Button label="Edit"  id="btnEdit" click="btnEdit_clickHandler(event)"/>
+		<s:VGroup>
+			<s:Button label="Edit"  id="btnEdit" click="btnEdit_clickHandler(event)"/>
+			<s:Button label="Save"  id="btnSave" click="btnSave_clickHandler(event)"/>
+		</s:VGroup>
+		
 	</s:HGroup>
 
 	
