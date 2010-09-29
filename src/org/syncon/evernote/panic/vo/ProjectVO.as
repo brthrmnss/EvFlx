@@ -78,5 +78,9 @@ package org.syncon.evernote.panic.vo
 		}	
 	 
  
+		public function update()  : void
+		{
+			//dispatch some event
+		}
 	}
 }

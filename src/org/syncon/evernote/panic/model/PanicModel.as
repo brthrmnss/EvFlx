@@ -27,6 +27,7 @@ package org.syncon.evernote.panic.model
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
+	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
@@ -78,8 +79,12 @@ package org.syncon.evernote.panic.model
 			
 		public var boardHolder : Group
 		
-		
-		
+		public function saveBoard()  : void
+		{
+			return;
+			this.dispatch( new ExportBoardCommandTriggerEvent( 
+				ExportBoardCommandTriggerEvent.SAVE_BOARD )  ) 
+		}
 		
 		
 		

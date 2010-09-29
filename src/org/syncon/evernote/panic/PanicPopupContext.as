@@ -12,6 +12,7 @@ package  org.syncon.evernote.panic
 	import org.syncon.evernote.panic.view.popup.*;
 	import org.syncon.evernote.panic.view.popup.default_popups.*;
 	import org.syncon.evernote.panic.view.popup.editors.*;
+	import org.syncon.evernote.panic.view.popup.management.*;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
@@ -105,7 +106,24 @@ package  org.syncon.evernote.panic
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, GraphWidgetEditorPopup, 'GraphWidgetEditorPopup',  true ) );
 			mediatorMap.mapView( GraphWidgetEditorPopup , GraphWidgetEditorPopupMediator, null, false, false );				
+			var ee :  ProjectManagementPopupMediator
+			var eee : PopupEditProjectMediator
 			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditProject, 'PopupEditProject',  false ) );
+			mediatorMap.mapView( PopupEditProject , PopupEditProjectMediator, null, false, false );	
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, ProjectManagementPopup, 'ProjectManagementPopup',  true ) );
+			mediatorMap.mapView( ProjectManagementPopup , ProjectManagementPopupMediator, null, false, false );				
+			//this._this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+			//	'ProjectManagementPopup' )  )   
+				
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PeopleManagementPopup, 'PeopleManagementPopup',  true ) );
+			mediatorMap.mapView( PeopleManagementPopup , PeopleManagementPopupMediator, null, false, false );				
+			this._this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PeopleManagementPopup' )  )   			
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditPerson, 'PopupEditPerson',  false ) );
+			mediatorMap.mapView( PopupEditPerson , PopupEditPersonMediator, null, false, false );				
 			/*
 			//commented out b/c it requiers evernote model 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 

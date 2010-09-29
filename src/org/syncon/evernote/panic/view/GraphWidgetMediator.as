@@ -68,9 +68,11 @@ package  org.syncon.evernote.panic.view
 							
 		}
 		
-		public function getSourcedValue( source : String, host : Object, property : String, fx : Function = null )  : void
+		public function getSourcedValue( source : String, host : Object, property : String, 
+										 fx : Function = null )  : void
 		{
-			this.dispatch( new LoadDataSourceCommandTriggerEvent ( LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
+			this.dispatch( new LoadDataSourceCommandTriggerEvent (
+				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
 				source, host ,property, fx )  )					
 		}
 		
@@ -98,7 +100,8 @@ package  org.syncon.evernote.panic.view
 		public function onEditClicked(e:CustomEvent) : void
 		{
 			this.widgetData.ui = this.ui; 
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 'GraphWidgetEditorPopup', [this.widgetData] )  )  
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'GraphWidgetEditorPopup', [this.widgetData] )  )  
 		}
 	}
 }

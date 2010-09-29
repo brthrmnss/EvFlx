@@ -13,6 +13,7 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
+			
 			import org.syncon.evernote.panic.vo.PersonVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 			
@@ -20,7 +21,7 @@
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
 			public var creationComplete : Boolean = false; 
-			
+			public var deleteMode :  Boolean = false; 
 			protected function onInit():void
 			{
 				this.creationComplete = true

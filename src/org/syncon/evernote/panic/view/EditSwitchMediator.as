@@ -5,6 +5,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
 	public class EditSwitchMediator extends Mediator  
 	{
@@ -28,7 +29,9 @@ package  org.syncon.evernote.panic.view
 				 ui.addEventListener('clickedEdit', onClickedEditHandler ) 		
 				 this.onClickedEditHandler(null)
 					 
-				 ui.addEventListener('clickedSave', onClickedSaveHandler ) 			 
+				 ui.addEventListener('clickedSave', onClickedSaveHandler ) 		
+				 ui.addEventListener('clickedPeople', onClickedPeopleHandler ) 		
+				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 							 
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -47,6 +50,16 @@ package  org.syncon.evernote.panic.view
 				ExportBoardCommandTriggerEvent.SAVE_BOARD ) 
 			this.dispatch( ee )
 		}
+		private function onClickedPeopleHandler(e:CustomEvent): void
+		{
+			 this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PeopleManagementPopup' )  )  
+		}
+		private function onClickedProjectsHandler(e:CustomEvent): void
+		{
+			 this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'ProjectManagementPopup' )  )   
+		}		
 		private function onClickedEditHandler(e:CustomEvent): void
 		{
 			//if nto updating, just adjust words

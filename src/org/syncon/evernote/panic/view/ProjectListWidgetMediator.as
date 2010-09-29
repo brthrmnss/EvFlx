@@ -34,7 +34,13 @@ package  org.syncon.evernote.panic.view
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
-			this.onEditModeChanged(null)				
+			this.onEditModeChanged(null)	
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PEOPLE, 
+				this.onRefresh );	
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PROJECTS, 
+				this.onRefresh );				
+				
 		}
 		 
 		public function onEditModeChanged(e:PanicModelEvent): void
@@ -57,6 +63,11 @@ package  org.syncon.evernote.panic.view
 			}
 			this.ui.list1.dataProvider = new ArrayList( this.model.board.projects )
 			this.widgetData = this.ui.widgetData; 
-		}		
+		}	
+		
+		public function onRefresh(e:Event):void
+		{
+			this.ui.list1.dataProvider = new ArrayList( this.model.board.projects )
+		}
 	}
 }

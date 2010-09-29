@@ -6,13 +6,18 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
+	<fx:Declarations>
+		<s:Fade id="fxFadeIn" alphaFrom="0" alphaTo="1" targets="{[this]}" />
+		<s:Fade id="fxFadeOut"   alphaFrom="1" alphaTo="0" targets="{[this]}" />
+	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
 			import mx.core.UIComponent;
+			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
-			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.view.assets.Icons;
+			
 			public var creationComplete : Boolean = false; 
 			
 			public var editMode : Boolean = false; 
@@ -21,10 +26,15 @@
 			static public var CLICKED_EDIT : String  = 'clickedEdit'				
 			static public var CLICKED_REMOVE : String  = 'clickedRemove'				
 				
-				
+			private var timerFade : Timer; // = new Timer()	
+			
 			protected function onInit():void
 			{
 				this.creationComplete = true
+				this.timerFade = new Timer(850, 1 ) 
+				this.fxFadeIn.duration = this.fxFadeOut.duration = 850
+				this.timerFade.addEventListener(TimerEvent.TIMER, this.onDone ) 
+				
 			}
 
 			protected function btnEdit_clickHandler(event:MouseEvent):void
@@ -40,14 +50,32 @@
 			
 			public function show() : void
 			{
+				this.fxFadeOut.stop(); 
+				this.fxFadeIn.play()
 				this.visible = true
+				this.timerFade.stop()
 			}
 			
 			public function hide()  : void
 			{
-				this.visible = false 
+				if ( this.creationComplete == false ) 
+				{
+					this.visible = false; 
+					return; 
+				}
+				this.fxFadeIn.stop()			
+				this.fxFadeOut.play(); 
+					
+				//this.visible = false 
+				this.timerFade.start()
+				
 			}
 
+			public function onDone(e:Event):void
+			{
+				this.visible = false; 
+			}
+			
 			protected function group1_initializeHandler(event:FlexEvent):void
 			{
 				this.hide()
@@ -59,6 +87,12 @@
 			{
 				this.dispatchEvent( new CustomEvent( CLICKED  ) ) 
 				event.stopImmediatePropagation()
+			}
+
+
+			protected function fxFadeOut_effectStopHandler(event:EffectEvent):void
+			{
+				// TODO Auto-generated method stub
 			}
 
 		]]>

@@ -3,14 +3,16 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"
-				
+				 creationComplete="itemrenderer1_creationCompleteHandler(event)"
 				minHeight="35" minWidth="35" xmlns:view="org.syncon.evernote.panic.view.*" 
 				>
 	
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var menu :   PersonVO = new PersonVO()
@@ -21,9 +23,27 @@
 				this.img.source = menu.src; 
 				this.img.toolTip = menu.name;
 				//this.img2.source = menu.src; 
-				
+				if ( this.parentDocument.parentDocument != null &&  
+					this.parentDocument.parentDocument.hasOwnProperty('deleteMode' )  
+					 ) 
+				{
+					//this.owner.parent
+					this.btnDelete.visible = this.parentDocument.parentDocument.deleteMode; 
+				}				
 			} 
  
+
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+
+			}
+
+
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'deletePerson', this.menu ) ) 
+			}
+
 		]]> 
 	</fx:Script> 	
 	
@@ -51,4 +71,6 @@
 	<view:ResampledImage id="img2"    useHandCursor="true" buttonMode="true"
 						 
 						 maxHeight="35" maxWidth="35"  alpha.hovered=".6" />-->
+	
+	<s:Button  visible="false" height="10" width="10" id="btnDelete" click="btnDelete_clickHandler(event)" />
 </s:ItemRenderer>

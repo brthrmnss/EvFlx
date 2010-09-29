@@ -40,6 +40,9 @@ package  org.syncon.evernote.panic.model
 		public static const HIGHLIGHT_CERTAIN_ITEMS : String = 'highlightCertainItems' ; 		
 		public static const HIGHLIGHT_CERTAIN_ITEMS_SELECTED : String = 'highlightItemSelected' ; 
 		
+		public static const CHANGED_PEOPLE : String = 'changedPeople' ; 		
+		public static const CHANGED_PROJECTS : String = 'changedProjects' ; 
+		
 		public var data: Object;
 		
 		public function PanicModelEvent(type:String, _data:Object = null)

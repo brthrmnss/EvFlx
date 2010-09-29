@@ -25,6 +25,14 @@
 			protected function btnSave_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedSave', this.editMode ) ) 
+			}		
+			protected function btnProjects_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedProjects', this.editMode ) ) 
+			}
+			protected function btnPeople_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedPeople', this.editMode ) ) 
 			}			
 
 			public function show() : void
@@ -59,6 +67,8 @@
 	
 	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 		<s:Label id="lblMessage" />
+		<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
+		<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
 		<s:VGroup>
 			<s:Button label="Edit"  id="btnEdit" click="btnEdit_clickHandler(event)"/>
 			<s:Button label="Save"  id="btnSave" click="btnSave_clickHandler(event)"/>

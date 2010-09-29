@@ -63,6 +63,9 @@ package org.syncon.evernote.panic.vo
 		}			
 		
 		
- 
+ 			public function update() : void
+			{
+				
+			}
 	}
 }
