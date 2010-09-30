@@ -11,10 +11,11 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.components.HGroup;
  
-	public class BoardRowWidgetMediator extends Mediator implements IWidget
+	public class BoardRowWidgetMediator extends Mediator implements IWidgetMediator
 	{
 		[Inject] public var ui: BoardRow;
 		[Inject] public var model : PanicModel;
@@ -29,19 +30,31 @@ package  org.syncon.evernote.panic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 		
-			ui.addEventListener( BoardRow.ADD_UI, onAddUi ) 					
-			
-			/*ui.addEventListener( top_links.HELP, onHelpClickedHandler ) 						
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/		
+			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 
 			this.onImportConfig( null ) 
+			ui.addEventListener( BoardRow.ADD_UI, onAddUi ) 					
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
 			this.onEditModeChanged(null)				
+				
+			ui.addEventListener( EditBorder2.CLICKED_EDIT, onEditClicked ) 		
+			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
+			this.onAutomateWidget(null)					
 		}
 		 
+		
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			//this.ui.loadedHiehgt = useSettings.height 
+		}
+				
+		
 		public function onEditModeChanged(e:PanicModelEvent): void
 		{
 			if ( this.model.editMode ) 
@@ -76,6 +89,14 @@ package  org.syncon.evernote.panic.view
 				j.percentWidth = percentWidth
 			}	*/		
 		}
+		
+		public function onEditClicked(e: CustomEvent) : void
+		{
+			throw 'not implemented yet'
+			this.widgetData.ui = this.ui; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'BoardRowWidgetEditorPopup', [this.widgetData] )  )  
+		}		
 		
 		
 		}

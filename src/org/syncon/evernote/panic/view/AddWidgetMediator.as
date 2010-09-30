@@ -14,7 +14,8 @@ package  org.syncon.evernote.panic.view
 		[Inject] public var model : PanicModel;
 		
 		private var addingA : String = ''; 
-		
+		private var left : Boolean = true
+			
 		public function AddWidgetMediator()
 		{
 		} 
@@ -26,7 +27,8 @@ package  org.syncon.evernote.panic.view
 			this.onEditModeChanged(null)
 				
 			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
-			ui.addEventListener('cancelSelect', onCancelHandler ) 		
+			ui.addEventListener('cancelSelect', onCancelHandler ) 	
+			ui.addEventListener('moveWidget', onMoveWidgetHandler ) 		
 			
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
 				this.onElementSelected);					
@@ -58,8 +60,21 @@ package  org.syncon.evernote.panic.view
 			this.ui.btnCancel.visible = false; 
 			this.addingA = null 
 			this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED ) ) 
-			
 		}
+		
+		private function onMoveWidgetHandler(e:CustomEvent) : void
+		{
+			this.left = ! this.left 
+			if ( this.left ) 
+			{
+				this.ui.currentState = 'left'
+			}
+			else
+			{
+				this.ui.currentState = 'right'
+			}
+		}
+			
 		
 		private function onElementSelected(e:PanicModelEvent): void
 		{

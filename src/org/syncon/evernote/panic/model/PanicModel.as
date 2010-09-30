@@ -28,6 +28,7 @@ package org.syncon.evernote.panic.model
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
@@ -81,11 +82,20 @@ package org.syncon.evernote.panic.model
 		
 		public function saveBoard()  : void
 		{
+			this.dispatch( new ExportBoardCommandTriggerEvent( 
+				ExportBoardCommandTriggerEvent.EXPORT_BOARD, this.boardExported )  ) 
+				
 			//return;
 			this.dispatch( new ExportBoardCommandTriggerEvent( 
 				ExportBoardCommandTriggerEvent.SAVE_BOARD )  ) 
 		}
 		
+		public function boardExported(s:String):void
+		{
+			trace('exported board:') 
+			trace( s) 
+			trace()
+		}
 		
 		
 		
@@ -104,6 +114,15 @@ package org.syncon.evernote.panic.model
 				//if index before example is not escaped ... still no goo
 			return sourced
 		}
+		
+		public function source( source : String, host : Object, property : String, 
+										 fx : Function = null )  : void
+		{
+			this.dispatch( new LoadDataSourceCommandTriggerEvent (
+				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
+				source, host ,property, fx )  )					
+		}
+				
 		
 		
 	}

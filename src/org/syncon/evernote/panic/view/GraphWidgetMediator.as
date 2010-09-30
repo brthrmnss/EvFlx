@@ -13,7 +13,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class GraphWidgetMediator extends Mediator implements IWidget
+	public class GraphWidgetMediator extends Mediator implements IWidgetMediator
 	{
 		[Inject] public var ui:GraphWidget;
 		[Inject] public var model : PanicModel;
@@ -34,9 +34,6 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
 			this.onAutomateWidget(null)				
-			/*
-			 eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
 			this.onEditModeChanged(null)
@@ -44,7 +41,7 @@ package  org.syncon.evernote.panic.view
 			
 		}
 		 
-		public function onAutomateWidget( e : WidgetEvent = null )  : void
+		public function onAutomateWidget( e : WidgetEvent )  : void
 		{
 			var useSettings : WidgetVO = this.widgetData; 
 			if ( e != null && e.data != null) 
@@ -90,11 +87,7 @@ package  org.syncon.evernote.panic.view
 		 
 		public function onImportConfig(e:WidgetEvent): void
 		{
-			this.widgetData = this.ui.widgetData; //y push this around access it directly
-		/*	if ( this.model.sourced( this.ui.labelBottom ) == false ) 
-				this.ui.lblBottom.text = this.ui.labelBottom.toUpperCase()
-			if ( this.model.sourced( this.ui.labelTop ) == false ) 
-				this.ui.lblTop.text = this.ui.labelTop.toUpperCase()	*/				
+			this.widgetData = this.ui.widgetData; 
 		}		
 		
 		public function onEditClicked(e:CustomEvent) : void

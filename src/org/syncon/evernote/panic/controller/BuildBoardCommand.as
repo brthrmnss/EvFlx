@@ -10,7 +10,7 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
-	import org.syncon.evernote.panic.view.ProjectList;
+	import org.syncon.evernote.panic.view.ProjectListWidget;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.PersonVO;
@@ -71,7 +71,7 @@ package   org.syncon.evernote.panic.controller
 					}							
 					if ( j.type == WidgetVO.PROJECT_LIST ) 
 					{
-						var  projectList : ProjectList = new ProjectList()
+						var  projectList : ProjectListWidget = new ProjectListWidget()
 						projectList.importConfig( j ) 
 						projectList.percentWidth = percentWidth
 						hgroup.addElement( projectList ) 

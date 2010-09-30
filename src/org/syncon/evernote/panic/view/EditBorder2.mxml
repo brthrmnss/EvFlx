@@ -17,12 +17,12 @@
 			
 			public var editMode : Boolean = false; 
 			
-			static public var CLICKED_REMOVE : String = 'clickedRemove' 			
-			static public var CLICKED_EDIT : String = 'clickedEdit' 
+			static public var CLICKED_REMOVE : String = 'clickedRemove2' 			
+			static public var CLICKED_EDIT : String = 'clickedEdit2' 
 			static public var CLICKED : String = 'clicked_' 				
-			static public var CLICKED_UP : String = 'clickedUp' 
-			static public var CLICKED_DOWN : String = 'clickedDown' 
-			static public var SHOW : String = 'showEdit' 
+			static public var CLICKED_UP : String = 'clickedUp2' 
+			static public var CLICKED_DOWN : String = 'clickedDown2' 
+			static public var SHOW : String = 'showEdit2' 
 				
 			protected function onInit():void
 			{
@@ -52,6 +52,7 @@
 
 			public function show() : void
 			{
+				//return;
 				this.fxFadeIn.show()
 				//this.visible = true
 				this.dispatchEvent( new CustomEvent( SHOW ) ) 
@@ -80,7 +81,7 @@
 		]]>
 	</fx:Script>
  	
-	<utils:FadeInOutByFunction id="fxFadeIn" />
+	<utils:FadeInOutByFunction id="fxFadeIn"  visible="false"/>
  
 	<s:Group id="clickableShade"  buttonMode="true" 
 			 
@@ -111,23 +112,35 @@
 		-->
 	</s:Group>
 	
-	<s:Group  right="10" bottom="10">
+	<s:Group  right="10" bottom="10"  >
 		
 		<s:Rect id="borderEdit2" right="0" left="0" bottom="0"  top="0" 
-				 	radiusX="5" radiusY="5" >
+				 	 >
 			<s:fill>
 				<s:SolidColor color="0xFFFFFF" alpha="0.8" />
 			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke color="0x666666"  pixelHinting="true"  weight="1"/>
+			</s:stroke>
 		</s:Rect>			
 		<s:HGroup  verticalCenter="0" height="30"  
 			paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" 
 				    verticalAlign="middle"
 				  >
-			<utils:IconButton  iconSkin=".btnUp"  id="btnUp" click="btnUp_clickHandler(event)"/>
-			<utils:IconButton  iconSkin=".btnDown"  id="btnDown" click="btnDown_clickHandler(event)"/>
-			<utils:IconButton  iconSkin=".closeBtn"  id="btnRemove" click="btnRemove_clickHandler(event)"/>
+			<utils:IconButton  iconSkin=".btnUp"  id="btnUp"  toolTip="Move Up one Row"
+							   click="btnUp_clickHandler(event)"/>
+			<utils:IconButton  iconSkin=".btnDown"  id="btnDown"  toolTip="Move Down one Row"
+							   click="btnDown_clickHandler(event)"/>
+			<utils:IconButton  iconSkin=".iconTrash"  id="btnRemove"  toolTip="Remove Row"
+							   click="btnRemove_clickHandler(event)"/>
 		</s:HGroup>
 	</s:Group>
 	
-
+	<s:filters>
+		<s:DropShadowFilter
+			alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="0x000000" 
+			distance="2" hideObject="false" inner="false" knockout="false" quality="2" 
+			strength="1"/>
+	</s:filters>
+	
 </s:Group>

@@ -22,7 +22,7 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
-	import org.syncon.evernote.panic.view.ProjectList;
+	import org.syncon.evernote.panic.view.ProjectListWidget;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.PersonVO;
@@ -80,7 +80,7 @@ package   org.syncon.evernote.panic.controller
 				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
 				])
 			arr.push( [
-				ProjectList.importData('Project Lister', '', 355, 15000).widgetData,
+				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )

@@ -108,6 +108,15 @@
 					j.percentWidth = percentWidth
 				}					
 			}
+			
+			public function refresh(temp  : WidgetVO= null) : void
+			{
+				var useSettings : WidgetVO = this.widgetData; 
+				if ( temp != null ) 
+					useSettings = temp; 
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+					null, useSettings ) ) 
+			}				
 			/* 
 			override public function setLayoutBoundsPosition(x:Number, y:Number, postLayoutTransform:Boolean=true):void
 			{

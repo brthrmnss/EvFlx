@@ -1,9 +1,14 @@
 package  org.syncon.evernote.panic.view
 {
+	import mx.core.UIComponent;
+	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	
+	import spark.components.Group;
+	import spark.components.HGroup;
  
 	public class EditBorderMediator extends Mediator  
 	{
@@ -20,6 +25,12 @@ package  org.syncon.evernote.panic.view
 		{
 			ui.addEventListener( EditBorder.CLICKED , onClickedHandler ) 	
 			ui.addEventListener( EditBorder.CLICKED_REMOVE , onClickedRemoveHandler ) 
+				
+			ui.addEventListener( EditBorder.CLICKED_LEFT , onClickedLeftHandler ) 	
+			ui.addEventListener( EditBorder.CLICKED_RIGHT , onClickedRightHandler ) 	
+				
+			ui.addEventListener( EditBorder.ADJUST_ARROWS , onShowHandler ) 	
+			this.onShowHandler(null)	
 			/*	
 			ui.addEventListener( EditBorder.CLICKED_LEFT, onClickedRemoveHandler ) 
 			ui.addEventListener( EditBorder.CLICKED_RIGHT, onClickedRemoveHandler ) 				
@@ -47,6 +58,8 @@ package  org.syncon.evernote.panic.view
 			}
 			this.highligtSelectionMode = true
 			this.ui.show()
+				
+			this.onShowHandler(null)	
 		}	
 		private function onHighlighCertainItems_Selected(e:PanicModelEvent): void
 		{
@@ -98,6 +111,67 @@ package  org.syncon.evernote.panic.view
 			if ( index != this.model.boardHolder.numChildren-1 ) 
 				this.model.boardHolder.swapElementsAt( index, index+1 ) 			
 		}		
-		 
+		
+		public function get row ()  :  HGroup
+		{
+			var p :  BoardRow = this.ui.parentDocument.parentDocument as BoardRow
+				
+			return p.content
+		}
+		
+		private function onClickedLeftHandler(e:CustomEvent): void
+		{
+			var rowHolder :    HGroup  = this.row
+			var index : int = rowHolder.getChildIndex( this.ui.parent ) 
+			if ( index != 0 ) 
+			{
+				rowHolder.swapElementsAt( index, index-1 ) 
+				this.ui.callLater( this.updateSwitchedArrows, [index, index-1] )
+			}
+		}
+		
+		private function onClickedRightHandler(e:CustomEvent): void
+		{
+			var rowHolder :    HGroup  = this.row
+			var index : int = rowHolder.getChildIndex( this.ui.parent ) 
+			if ( index != rowHolder.numChildren-1 ) 
+			{
+				rowHolder.swapElementsAt( index, index+1 ) 	
+				this.ui.callLater( this.updateSwitchedArrows, [index, index+1] )
+			}
+		}			
+		
+		private function updateSwitchedArrows(i : int, i2 : int, wait :  Boolean = true) : void
+		{
+			var rowHolder :    HGroup  = this.row
+			var otherThing : Object = rowHolder.getElementAt( i) as Object ;
+			otherThing.editBorder.dispatchEvent( new CustomEvent( EditBorder.ADJUST_ARROWS )) 	
+			otherThing = rowHolder.getElementAt( i2)  as Object ;
+			otherThing.editBorder.dispatchEvent( new CustomEvent( EditBorder.ADJUST_ARROWS )) 					
+		}		
+		
+		public function onShowHandler( e :  CustomEvent)  : void
+		{	
+			var rowHolder :    HGroup  = this.row
+			var parent : UIComponent = this.ui.parentDocument as UIComponent
+			var dd : Array = [parent.parent.getChildIndex( parent ) ]
+			if (   parent.parent.getChildIndex( parent ) == 0  ) 
+			{
+				this.ui.btnLeft.visible = false; 
+			}
+			else
+			{
+				this.ui.btnLeft.visible = true
+			}			
+			if ( parent.parent.numChildren -1 == parent.parent.getChildIndex( parent ) ) 
+			{
+				this.ui.btnRight.visible = false; 
+			}
+			else
+			{
+				this.ui.btnRight.visible = true
+			}
+		}	
+		
 	}
 }

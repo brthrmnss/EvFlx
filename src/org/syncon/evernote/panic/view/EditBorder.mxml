@@ -25,7 +25,8 @@
 			static public var CLICKED_LEFT : String  = 'clickedLeft'				
 			static public var CLICKED_RIGHT : String  = 'clickedRight'						
 			
-			
+			static public var ADJUST_ARROWS : String  = 'show_'
+				
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -56,6 +57,7 @@
 			
 			public function show() : void
 			{
+				//return;
 				this.fxFader.show()
 			}
 			
@@ -88,10 +90,13 @@
 			
 		]]>
 	</fx:Script>
- <utils:FadeInOutByFunction id="fxFader" />
+ <utils:FadeInOutByFunction id="fxFader" visible="false" />
  
 	
-	<s:Group buttonMode="true" useHandCursor="true" width="100%" height="100%" click="group2_clickHandler(event)" >
+	<s:Group buttonMode="true" useHandCursor="true" 
+			 right="0" left="0" top="0" bottom="0" 
+			 click="group2_clickHandler(event)" >
+		
 		<s:Rect id="borderEdit" right="0" left="0" top="0" bottom="0"    >
 			<s:stroke>
 				<s:SolidColorStroke color="0x83F52C" />
@@ -105,10 +110,14 @@
 			<s:fill>
 				<s:SolidColor color="0xFFFFFF" alpha="0.8" />
 			</s:fill>
-		</s:Rect>		
+		</s:Rect>	
+		
 	</s:Group>
 	<!--   content="{Icons.get('')}" -->
-	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" left="10">
+	<s:HGroup
+		 
+		paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" 
+		left="10">
 		
 		<s:HGroup id="goBtn" >
 			<utils:IconButton label="L"  id="btnLeft" click="btnLeft_clickHandler(event)" 

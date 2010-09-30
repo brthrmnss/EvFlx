@@ -8,8 +8,9 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class PaneWidgetMediator extends Mediator implements IWidget
+	public class PaneWidgetMediator extends Mediator implements IWidgetMediator
 	{
 		[Inject] public var ui: PaneWidget;
 		[Inject] public var model : PanicModel;
@@ -26,13 +27,26 @@ package  org.syncon.evernote.panic.view
 		override public function onRegister():void
 		{
 			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 			
-			/*eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/		
 			this.onImportConfig( null ) 
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
-			this.onEditModeChanged(null)				
+			this.onEditModeChanged(null)			
+				
+			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
+			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
+			this.onAutomateWidget(null)						
+		}
+		
+		
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			//this.ui.loadedHiehgt = useSettings.height 
 		}
 		
 		public function onEditModeChanged(e:PanicModelEvent): void
@@ -47,5 +61,14 @@ package  org.syncon.evernote.panic.view
 		{
 			this.widgetData = this.ui.widgetData; 
 		}		
+		
+		public function onEditClicked(e: CustomEvent) : void
+		{
+			throw 'not implemented yet'
+			this.widgetData.ui = this.ui; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'BoardRowWidgetEditorPopup', [this.widgetData] )  )  
+		}			
+		
 	}
 }

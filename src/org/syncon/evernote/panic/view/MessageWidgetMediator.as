@@ -8,8 +8,9 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class MessageWidgetMediator extends Mediator implements IWidget
+	public class MessageWidgetMediator extends Mediator implements IWidgetMediator
 	{
 		[Inject] public var ui:MessageWidget;
 		[Inject] public var model : PanicModel;
@@ -25,10 +26,11 @@ package  org.syncon.evernote.panic.view
 		override public function onRegister():void
 		{
 			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 				
-			/*ui.addEventListener( top_links.HELP, onHelpClickedHandler ) 						
-			eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/		
 			this.onImportConfig( null ) 
+				
+			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
+			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
+			this.onAutomateWidget(null)					
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
@@ -45,13 +47,29 @@ package  org.syncon.evernote.panic.view
 		
 		public function onImportConfig(e:WidgetEvent): void
 		{
-			/**
-			 * remove source from model 
-			 * get result 
-			 * */
-			if ( this.model.sourced( this.ui.message ) == false ) 
-				this.ui.lblMessage.text = this.ui.message.toUpperCase()
+			this.widgetData = this.ui.widgetData; 
 		}		
+		
+		public function onEditClicked(e:CustomEvent) : void
+		{
+			this.widgetData.ui = this.ui; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'MessageWidgetEditorPopup', [this.widgetData] )  )  
+		}		
+		
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			this.model.source( useSettings.source, this.ui, 'message', null  )
+		}
+				
+		
+		
+		
 		 
 	}
 }

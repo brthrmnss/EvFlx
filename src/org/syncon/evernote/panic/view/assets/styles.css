@@ -118,3 +118,7 @@ mx|Tooltip{
 {
 	content:     Embed( source="icons/16/add.png" );
 }
+.btnRefresh
+{
+	content:     Embed( source="icons/16/refresh.png" );
+}

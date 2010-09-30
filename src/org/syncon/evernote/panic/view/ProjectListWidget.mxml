@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()"
+		 implements="org.syncon.evernote.panic.view.IUIWidget"
+		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
+		 >
+	
+	<fx:Metadata>
+		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
+	</fx:Metadata>		
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.vo.ProjectVO;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			public var _widgetData : WidgetVO = new WidgetVO
+			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
+			
+			/**
+			 * Flag indiates whether tags should be removed instantly 
+			 * */
+			public var creationComplete : Boolean = false; 
+			public var createDefault : Boolean = false; 
+			protected function onInit():void
+			{
+				this.creationComplete = true
+				var arr :  Array = [
+					['Transmit', 'Bind', 'x', ['mark', 'john', '2', '4'], 'blue.jpg'],
+					['Unsion', 'Bind', 'x', ['mark', 'john', '2', '4'], 'blue.jpg'],
+					['CODA', 'Bind', 'x', ['5', '6', '2', '4'], 'blue.jpg'],
+					['Membrane', 'Bind', 'x', ['7', '9'], 'blue.jpg'],
+					['Marksus', 'Bind', 'x', ['10', '12' ], 'blue.jpg'],
+				]
+				var dp : ArrayList = new ArrayList( )
+				
+				for each ( var ar :  Array in arr ) 
+				{
+					var m: ProjectVO = new  ProjectVO(ar[0], '' , ar[1], 
+						ar[2],  ar[3],  ar[4] 	)
+					 
+					dp.addItem( m )
+				}
+				if ( this.createDefault ) 
+					this.list1.dataProvider = dp; 
+				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+			}				
+			
+			public function importConfig(j :  WidgetVO )  : void
+			{
+				this.widgetData = j
+				this.dispatchEvent( new WidgetEvent( WidgetVO.IMPORT_CONFIG,  j ) )
+				this.list1.height = j.height
+			}			
+				public function refresh(temp  : WidgetVO= null) : void
+				{
+					var useSettings : WidgetVO = this.widgetData; 
+					if ( temp != null ) 
+						useSettings = temp; 
+					this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+						null, useSettings ) ) 
+				}					
+			public function importData_( o:   Object )  : void
+			{
+			}		
+			static public function importData( name : String, desc:String,
+															  height : Number = NaN, 
+											 refreshTime :  Number=15000)  :  ProjectListWidget
+			{
+				var o : Object = {}
+				var vo : WidgetVO = new WidgetVO(WidgetVO.PROJECT_LIST, o); 	
+				var g : ProjectListWidget = new ProjectListWidget()
+				g.widgetData = vo
+				
+				vo.name = name; 
+				vo.description = desc
+				vo.height = height; 
+				vo.refreshTime = refreshTime; 
+				
+				return g ; 	
+			}					
+			
+			public function exportConfig( ) : WidgetVO    
+			{
+				return this._widgetData; 
+			}							
+			
+			
+			public function showEdit() : void
+			{
+				this.editBorder.show()
+			}
+			
+			public function hideEdit()  : void
+			{
+				this.editBorder.hide()
+			}						
+		]]>
+	</fx:Script>
+	
+		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.project_renderer" 
+				 width="100%"  
+				contentBackgroundAlpha="0"  borderVisible="false">
+			<s:layout>
+				<s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>
+			</s:layout>
+		</s:List>
+	
+	<view:EditBorder id="editBorder" edit="{this}" />
+</s:Group>

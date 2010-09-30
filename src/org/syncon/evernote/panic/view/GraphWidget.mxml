@@ -2,13 +2,13 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" 
 						  xmlns:mx="library://ns.adobe.com/flex/mx"  
-						   addedEffect="{this.faFade}" removedEffect="{this.faFadeOut}"
+						
 						   implements="org.syncon.evernote.panic.view.IUIWidget"
 						   creationComplete="onInit()" resize="group1_resizeHandler(event)"
 						   fontSize="24" clipAndEnableScrolling="true"
 						   color="0xFFFFFF" xmlns:view="org.syncon.evernote.panic.view.*"
 						 >
-
+	<!--addedEffect="{this.faFade}" removedEffect="{this.faFadeOut}"-->
 	<fx:Metadata>
 		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
 	</fx:Metadata>		

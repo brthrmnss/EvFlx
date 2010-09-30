@@ -52,7 +52,7 @@
 			public function show() : void
 			{
 				this.currentState = 'edit'
-				this.alpha = 1
+				this.alpha = 0.95
 			}
 			
 			public function hide()  : void
@@ -68,8 +68,14 @@
 		]]>
 	</fx:Script>
  
+	<s:filters>
+		<s:DropShadowFilter
+			alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="0x000000" 
+			distance="2" hideObject="false" inner="false" knockout="false" quality="2" 
+			strength="1"/>
+	</s:filters>
 	
-	<s:Rect right="0" left="0" top="0" bottom="0" 
+	<s:Rect right="0" left="0" top="-1" bottom="0" 
 			topLeftRadiusX="-10" topLeftRadiusY="10"
 			topRightRadiusX="-10" topRightRadiusY="10"
 			 bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
@@ -78,7 +84,11 @@
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF" />
 		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke color="0x666666"  pixelHinting="true"  weight="1"/>
+		</s:stroke>		
 	</s:Rect>
+	
 	<s:VGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
 		
 

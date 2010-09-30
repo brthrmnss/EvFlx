@@ -27,19 +27,33 @@
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
 			
-			public var message :  String = ''; 
+			public function set  message ( s : String ) : void
+			{
+				this.lblMessage.text = s.toUpperCase() ; 
+			}
 			
 			protected function onInit():void
 			{
 				this.creationComplete = true
 			}				
  
+			public function refresh(temp  : WidgetVO= null) : void
+			{
+				var useSettings : WidgetVO = this.widgetData; 
+				if ( temp != null ) 
+					useSettings = temp; 
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+					null, useSettings ) ) 
+			}			
+			
 			public function importConfig(j :  WidgetVO )  : void
 			{
+				if ( j.data == null ) 
+					return;
 				this.widgetData = j
-				this.message = j.source;  
+				this.widgetData.ui = this; 
 				this.dispatchEvent( new WidgetEvent(WidgetEvent.IMPORT_CONFIG,  j ) )
-				
+				this.refresh()
 			}
 			public function importData_( o:   Object )  : void
 			{
@@ -78,7 +92,7 @@
 	</fx:Script>
  
 	<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
+		<s:Label  id="lblMessage" text="25 DAS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
 	
 	<view:EditBorder id="editBorder" edit="{this}" />

@@ -207,6 +207,14 @@
 				this.widgetData = j
 				this.dispatchEvent( new  WidgetEvent (WidgetEvent.IMPORT_CONFIG,  j ) )
 			}
+				public function refresh(temp  : WidgetVO= null) : void
+				{
+					var useSettings : WidgetVO = this.widgetData; 
+					if ( temp != null ) 
+						useSettings = temp; 
+					this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+						null, useSettings ) ) 
+				}		
 			public function importData_( o:   Object )  : void
 			{
 			}		

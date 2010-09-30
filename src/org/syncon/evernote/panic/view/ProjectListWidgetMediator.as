@@ -5,15 +5,17 @@ package  org.syncon.evernote.panic.view
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class ProjectListWidgetMediator extends Mediator implements IWidget
+	public class ProjectListWidgetMediator extends Mediator implements IWidgetMediator
 	{
-		[Inject] public var ui: ProjectList;
+		[Inject] public var ui: ProjectListWidget;
 		[Inject] public var model : PanicModel;
 		
 		private var _widgetData : WidgetVO = new  WidgetVO
@@ -28,8 +30,6 @@ package  org.syncon.evernote.panic.view
 		override public function onRegister():void
 		{
 			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 			
-			/*eventMap.mapListener(eventDispatcher, EvernoteAPIModelEvent.AUTHENTICATED, 
-				this.onAuthenticated);	*/		
 			this.onImportConfig( null ) 
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
@@ -39,10 +39,25 @@ package  org.syncon.evernote.panic.view
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PEOPLE, 
 				this.onRefresh );	
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PROJECTS, 
-				this.onRefresh );				
+				this.onRefresh );	
+			
+			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
+			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
+			this.onAutomateWidget(null)		
+			
 				
 		}
 		 
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			//this.ui.loadedHiehgt = useSettings.height 
+		}
+		
 		public function onEditModeChanged(e:PanicModelEvent): void
 		{
 			if ( this.model.editMode ) 
@@ -64,6 +79,13 @@ package  org.syncon.evernote.panic.view
 			this.ui.list1.dataProvider = new ArrayList( this.model.board.projects )
 			this.widgetData = this.ui.widgetData; 
 		}	
+		
+		public function onEditClicked(e: CustomEvent) : void
+		{
+			this.widgetData.ui = this.ui; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'ProjectListWidgetEditorPopup', [this.widgetData] )  )  
+		}
 		
 		public function onRefresh(e:Event):void
 		{

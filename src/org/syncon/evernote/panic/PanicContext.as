@@ -75,7 +75,7 @@ package   org.syncon.evernote.panic
 			mediatorMap.mapView(  PaneWidget,  PaneWidgetMediator );				
 			mediatorMap.mapView(  PanicBoard,  PanicBoardMediator );	
 			mediatorMap.mapView(  TwitterScrollerTest2,  TwitterScrollerWidgetMediator );	
-			mediatorMap.mapView(  ProjectList,  ProjectListWidgetMediator );	
+			mediatorMap.mapView(  ProjectListWidget,  ProjectListWidgetMediator );	
 			
 			mediatorMap.mapView(  BoardRow,  BoardRowWidgetMediator );	
 			
@@ -106,12 +106,12 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.SETUP ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
-			this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
+			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			
 			 //setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
-			//this.importBoardFromString()
+			this.importBoardFromString()
 		}
 		public function importBoardFromString() : void
 		{

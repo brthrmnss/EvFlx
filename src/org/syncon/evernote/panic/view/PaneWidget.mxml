@@ -81,6 +81,15 @@
 					this.color2.color = j.data.color2; 					
 			}
 			
+				public function refresh(temp  : WidgetVO= null) : void
+				{
+					var useSettings : WidgetVO = this.widgetData; 
+					if ( temp != null ) 
+						useSettings = temp; 
+					this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+						null, useSettings ) ) 
+				}					
+			
 			public function importData_( o:   Object )  : void
 			{
 			}		

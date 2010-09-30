@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				 xmlns:s="library://ns.adobe.com/flex/spark" 
+				 xmlns:mx="library://ns.adobe.com/flex/mx"
+				 xmlns:comps="org.syncon.comps.*" 
+				 creationComplete="onInit()" 
+				 implements="org.syncon.popups.view.IPopup"
+				 xmlns:popup="org.syncon.evernote.basic.view.popup.*" 
+				 xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" 
+				 xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+				 >
+	
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.ProjectListWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			public var ui : ProjectListWidget; 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup : ProjectListWidgetEditorPopup = new ProjectListWidgetEditorPopup()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open( false,true ) 
+			}
+			
+			public function open( a :  WidgetVO  )  : void
+			{
+				this.popupCode.open( false, false ) 
+				this.dispatchEvent( new CustomEvent( WidgetEvent.EDIT_WIDGET, a ) )
+				this.ui = a.ui as ProjectListWidget; 
+				this.loadValues(a)
+			}
+			
+			/**
+			 * Move values from data to the ui
+			 * */
+			public function loadValues(a :  WidgetVO ) : void
+			{
+				this.timer.dataX = a ; 
+				this.txtMessage.text = a.height.toString(); 
+			}		
+			
+			/**
+			 * Export move data from ui to data object
+			 * */
+			
+			override public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+			
+			
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+			
+			
+			protected function btnOk_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( WidgetEvent.UPDATE_WIDGET_CONFIG ) ) 
+			}
+			
+			protected function btnTest_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
+			}			
+			
+		]]>
+	</fx:Script>
+	
+	<editors:PopupBg />
+	
+	
+	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+		<popup:PopupHeader  bold="false"   label="Edit Project List"  padding="0"  width="100%"/>
+		
+		<mx:Form>
+			<mx:FormItem label="Height" >
+				<s:TextInput id="txtMessage" />
+			</mx:FormItem>
+			
+			<mx:FormItem>
+				<s:HGroup>
+					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
+					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
+				</s:HGroup>
+			</mx:FormItem>
+			<editors:WidgetUpdateSettingsControlBox id="timer" />
+			
+		</mx:Form>
+		
+		
+	</s:VGroup>
+	<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+	
+	<utils:IconButton  label="X"  iconSkin=".closeBtn" 
+					   click="button1_clickHandler(event)" right="5" top="10" />
+</popup:PopupBase>

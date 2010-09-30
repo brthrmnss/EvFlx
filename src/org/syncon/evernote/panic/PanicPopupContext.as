@@ -104,10 +104,20 @@ package  org.syncon.evernote.panic
 			mediatorMap.mapView( PopupLogin , PopupLoginMediator, null, false, false );	
 			*/
 			
-			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, GraphWidgetEditorPopup, 'GraphWidgetEditorPopup',  true ) );
-			mediatorMap.mapView( GraphWidgetEditorPopup , GraphWidgetEditorPopupMediator, null, false, false );				
-			var ee :  ProjectManagementPopupMediator
-			var eee : PopupEditProjectMediator
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				GraphWidgetEditorPopup, 'GraphWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( GraphWidgetEditorPopup , 
+				GraphWidgetEditorPopupMediator, null, false, false );	
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				MessageWidgetEditorPopup, 'MessageWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( MessageWidgetEditorPopup , 
+				MessageWidgetEditorPopupMediator, null, false, false );	
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				ProjectListWidgetEditorPopup, 'ProjectListWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( ProjectListWidgetEditorPopup , 
+				ProjectListWidgetEditorPopupMediator, null, false, false );							
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditProject, 'PopupEditProject',  true ) );
 			mediatorMap.mapView( PopupEditProject , PopupEditProjectMediator, null, false, false );	
@@ -119,8 +129,8 @@ package  org.syncon.evernote.panic
 				
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PeopleManagementPopup, 'PeopleManagementPopup',  true ) );
 			mediatorMap.mapView( PeopleManagementPopup , PeopleManagementPopupMediator, null, false, false );				
-			this._this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PeopleManagementPopup' )  )   			
+			//this._this.dispatchEvent( new ShowPopupEvent(
+			//ShowPopupEvent.SHOW_POPUP,  'PeopleManagementPopup' )  )   			
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditPerson, 'PopupEditPerson',  true ) );
 			mediatorMap.mapView( PopupEditPerson , PopupEditPersonMediator, null, false, false );				
