@@ -58,7 +58,7 @@
 	
 	
  <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader label="Loading..."  padding="0"  width="100%"/>
+	 <popup:PopupHeader   bold="false"  label="Loading..."  padding="0"  width="100%"/>
 	 
 	  <s:List id="list" contentBackgroundAlpha="0.0" alpha="0.3"
 			   borderVisible="false" width="100"

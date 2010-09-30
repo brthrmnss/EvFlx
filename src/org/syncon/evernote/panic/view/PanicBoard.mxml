@@ -9,10 +9,13 @@
 			import mx.charts.AxisRenderer;
 			import mx.controls.ToolTip;
 			import mx.core.UITextField;
+			
+			import org.syncon.evernote.panic.view.assets.Fonts;
 			public var creationComplete : Boolean = false; 
 			
 			protected function onInit():void
 			{
+				//var ede :  Fonts
 				this.creationComplete = true
 				var ee : UITextField
 				var eee  : ToolTip

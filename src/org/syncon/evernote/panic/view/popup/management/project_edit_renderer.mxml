@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  fontSize="12"   width="100%"
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import mx.collections.ArrayList;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.vo.ProjectVO;
+			[Bindable] public var project :  ProjectVO = new ProjectVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				project = value as ProjectVO
+				txtLbl.text = this.project.name.toString().toUpperCase(); 
+				this.txtDesc.text = this.project.desc.toString().toUpperCase()
+			} 
+ 
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(ProjectManagementPopup.EDIT_PROJECT, this.project  ) ) 
+			}
+
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl, this.txtDesc]}"   duration="250" />
+		</s:Transition>
+	</s:transitions>	
+	
+	<s:layout>
+		<s:HorizontalLayout gap="10" horizontalAlign="left" />
+	</s:layout>
+	
+ 
+		<s:Label   id="txtLbl" verticalCenter="0"
+				   color.hovered="0x696969"  x="5"
+				   useHandCursor="true"  buttonMode="true"
+				     />		
+ 
+	
+	<s:Label   id="txtDesc" verticalCenter="0"
+			   color.hovered="0x696969"  x="5"
+			   useHandCursor="true"  buttonMode="true"
+			     />		
+	
+	<s:Button label="Edit" click="button1_clickHandler(event)" />
+</s:ItemRenderer>

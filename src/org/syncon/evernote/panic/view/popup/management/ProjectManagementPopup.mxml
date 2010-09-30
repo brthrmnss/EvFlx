@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var EDIT_PROJECT : String = 'editProject'; 
+			static public var ADD_PROJECT  : String = 'addProject'; 
+			static public var OPENED_POPUP : String = 'openedPopup'; 
+			static public var CLOSED_POPUP : String = 'closedPopup'; 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup :   ProjectManagementPopup = new  ProjectManagementPopup ()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open(false,true  ) 
+				this.dispatchEvent( new CustomEvent( OPENED_POPUP  ) )
+			}
+ /* 
+			public function open(   )  : void
+			{
+				this.popupCode.open( false, false ) 
+				this.dispatchEvent( new CustomEvent( OPENED_POPUP  ) )
+			}
+			 */
+			 /**
+			 * Export move data from ui to data object
+			 * */
+			
+			override public function hide( ) : void
+			{
+				this.dispatchEvent( new CustomEvent( CLOSED_POPUP  ) )
+				this.popupCode.close() 
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+			
+			protected function btnAdd_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( ADD_PROJECT  ) ) 
+			}
+
+
+			protected function list1_changeHandler(event:IndexChangeEvent):void
+			{
+				//this.dispatchEvent( new CustomEvent( EDIT_PROJECT,  this.list1.dataProvider.getItemAs(event.newIndex)  )
+			}
+
+		]]>
+	</fx:Script>
+
+	<!--	
+	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
+		<s:fill>
+			<s:SolidColor color="0xEDF6F7" />
+		</s:fill>	
+	</s:Rect>	 	
+	
+	-->
+	
+	<s:Rect width="100%" height="100%"  >
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>	
+	</s:Rect>		
+	
+ <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader  bold="false"   label="Projects"  padding="0"  width="100%"/>
+	 
+	 <utils:IconButton  label="Add"  iconSkin=".btnAdd" click="btnAdd_clickHandler(event)" right="10" top="10" />
+	 <s:List id="list1" 
+			 itemRenderer="org.syncon.evernote.panic.view.popup.management.project_edit_renderer" 
+			 width="400"   height="400" change="list1_changeHandler(event)"
+			 contentBackgroundAlpha="0"  borderVisible="false">
+		 <s:layout>
+			 <s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>
+		 </s:layout>
+	 </s:List>
+ </s:VGroup>
+
+		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="10" top="10" />
+</popup:PopupBase>

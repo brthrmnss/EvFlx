@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()" 
+		 >
+	<fx:Declarations>
+		<s:Fade id="fxFadeIn" alphaFrom="0" alphaTo="1" targets="{[this]}" />
+		<s:Fade id="fxFadeOut"   alphaFrom="1" alphaTo="0" targets="{[this]}" />
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			 
+			private var timerFade :  Timer; // = new Timer()	
+			
+			public var creationComplete : Boolean = false; 
+			private var _duration : Number =  850	
+			protected function onInit():void
+			{
+				this.fxFadeIn.targets = this.fxFadeOut.targets = [this.parentDocument]
+				//var dd : Object =[ this.parent, this.parentDocument]
+				this.creationComplete = true
+				this.timerFade = new Timer(_duration, 1 ) 
+				this.fxFadeIn.duration = this.fxFadeOut.duration = _duration
+				this.timerFade.addEventListener(TimerEvent.TIMER, this.onDone ) 					
+			}
+		
+			public function set duration ( s : Number )  : void
+			{
+				this.fxFadeIn.duration = s
+				this.fxFadeOut.duration = s; 
+				this.timerFade.delay = s; 
+				this._duration = s; 
+			}
+			
+			public function show() : void
+			{
+				this.fxFadeOut.stop(); 
+				this.fxFadeIn.play()
+				this.parent.visible = true
+				this.timerFade.stop()
+			}
+			
+			public function hide()  : void
+			{
+				if ( this.creationComplete == false ) 
+				{
+					this.parent.visible = false 
+					return; 
+				}
+				this.fxFadeIn.stop()			
+				this.fxFadeOut.play(); 
+				
+				//this.visible = false 
+				this.timerFade.start()
+			}
+
+			
+			public function onDone(e:Event):void
+			{
+				this.visible = false; 
+			}			
+			
+		]]>
+	</fx:Script>
+	
+ 
+	
+</s:Group>

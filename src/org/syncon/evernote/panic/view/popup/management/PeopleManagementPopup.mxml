@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:management="org.syncon.evernote.panic.view.popup.management.*"					  
+					  >
+	<popup:states> 
+		<s:State name="normal"/> 
+		<s:State name="selecting"/> 
+	</popup:states> 	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var EDIT_PERSON : String = 'editPerson'; 
+			static public var ADD_PERSON  : String = 'addPerson'; 
+			static public var PEOPLE_SELECTED : String = 'peopleSelected'
+			static public var OPENED_POPUP : String = 'openedPopup'; 
+			static public var CLOSED_POPUP : String = 'closedPopup'; 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup : PeopleManagementPopup = new PeopleManagementPopup ()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open(false,true  ) 
+				this.dispatchEvent( new CustomEvent( OPENED_POPUP  ) )
+			}
+			public var selectorMode : Boolean = false; 
+ 			public var dp  : ArrayCollection 
+			public var fxSelected : Function; 
+			public function open( selectedItems:  Array = null, fxSelected : Function = null  ) : void
+			{
+				this.show()
+				this.currentState = ''
+				this.selectorMode = false; 
+				if ( selectedItems != null  ) 
+				{
+					this.selectorMode = true
+					this.currentState = 'selecting'
+					dp = new ArrayCollection(selectedItems)
+					this.selector.dp = this.dp; 
+					this.fxSelected = fxSelected; 
+				}
+			}
+			 /**
+			 * Export move data from ui to data object
+			 * */
+			
+			override public function hide( ) : void
+			{
+				this.dispatchEvent( new CustomEvent( CLOSED_POPUP  ) )
+				
+				this.popupCode.close() 
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+			
+			protected function btnAdd_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( ADD_PERSON  ) ) 
+			}
+
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				 this.dispatchEvent( new CustomEvent( PEOPLE_SELECTED ) ) ; 
+			}
+			
+			protected function list1_changeHandler(event:IndexChangeEvent):void
+			{
+				//this.dispatchEvent( new CustomEvent( EDIT_PROJECT,  this.list1.dataProvider.getItemAs(event.newIndex)  )
+			}
+
+		]]>
+	</fx:Script>
+
+	<!--	
+	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
+		<s:fill>
+			<s:SolidColor color="0xEDF6F7" />
+		</s:fill>	
+	</s:Rect>	 	
+	
+	-->
+	
+	<s:Rect width="100%" height="100%"  >
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>	
+	</s:Rect>		
+	
+ <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader  bold="false"  label="People"   padding="0"  width="100%"/>
+	 
+	 <management:PeopleSelector id="selector" includeIn="selecting" />
+	 <s:Button label="Finished" id="btnFinished" includeIn="selecting"  
+			   click="btnEdit_clickHandler(event)" />
+	 <utils:IconButton  label="Add"  
+						iconSkin=".btnAdd" 
+						click="btnAdd_clickHandler(event)" right="10" top="10" />
+	 <s:List id="list1" 
+			 itemRenderer="org.syncon.evernote.panic.view.popup.management.person_edit_renderer" 
+			 width="400"   height="400" change="list1_changeHandler(event)"
+			 contentBackgroundAlpha="0"  borderVisible="false">
+		 <s:layout>
+			 <s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>
+		 </s:layout>
+	 </s:List>
+ </s:VGroup>
+
+		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="10" top="10" />
+</popup:PopupBase>

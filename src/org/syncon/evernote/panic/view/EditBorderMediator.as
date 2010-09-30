@@ -18,7 +18,14 @@ package  org.syncon.evernote.panic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener( EditBorder.CLICKED , onClickedHandler ) 		
+			ui.addEventListener( EditBorder.CLICKED , onClickedHandler ) 	
+			ui.addEventListener( EditBorder.CLICKED_REMOVE , onClickedRemoveHandler ) 
+			/*	
+			ui.addEventListener( EditBorder.CLICKED_LEFT, onClickedRemoveHandler ) 
+			ui.addEventListener( EditBorder.CLICKED_RIGHT, onClickedRemoveHandler ) 				
+			*/	
+			//we don't capture Edit
+				//ui.addEventListener( EditBorder.CLICKED_EDIT , onClickedHandler ) 		
 			/*
 			 ui.addEventListener( EditBorder.CLICKED_EDIT , onClickedHandler ) 		
 			 ui.addEventListener( EditBorder.CLICKED_UP , onClickedUpHandler ) 	
@@ -56,8 +63,14 @@ package  org.syncon.evernote.panic.view
 		private function onClickedHandler(e:CustomEvent): void
 		{
 			if ( this.highligtSelectionMode ) 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, this.ui.parentDocument ) ) 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, this.ui.parentDocument ) )  
 		}		
+		
+		private function onClickedRemoveHandler(e:CustomEvent): void
+		{
+			//confirm popup
+		}				
+		
 		
 		private function onHighlightRows(e:PanicModelEvent): void
 		{

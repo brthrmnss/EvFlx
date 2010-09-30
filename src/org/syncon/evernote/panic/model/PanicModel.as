@@ -81,7 +81,7 @@ package org.syncon.evernote.panic.model
 		
 		public function saveBoard()  : void
 		{
-			return;
+			//return;
 			this.dispatch( new ExportBoardCommandTriggerEvent( 
 				ExportBoardCommandTriggerEvent.SAVE_BOARD )  ) 
 		}

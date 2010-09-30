@@ -3,6 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()" 
+	 
 		 contentBackgroundColor="0xFF0000" contentBackgroundAlpha="1"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
 	 	xmlns:view="org.syncon.evernote.panic.view.*"
@@ -13,8 +14,17 @@
 		[Event(name="tagsChanged", type="org.syncon.evernote.basic.model.CustomEvent")]
 	</fx:Metadata>		
 	
+	<fx:Declarations>
+		<s:Fade id="faFade" duration="500" alphaFrom="0" alphaTo="1" />
+		<s:Fade id="faFadeOut" duration="500" alphaFrom="1" alphaTo="0" />
+		<s:Move id="moveX" duration="500" />
+		<s:Move id="moveY" duration="500" />
+	</fx:Declarations>	
+	
 	<fx:Script>
 		<![CDATA[
+			import mx.core.FlexVersion;
+			import mx.core.IUIComponent;
 			import mx.core.IVisualElement;
 			import mx.core.UIComponent;
 			
@@ -98,7 +108,87 @@
 					j.percentWidth = percentWidth
 				}					
 			}
+			/* 
+			override public function setLayoutBoundsPosition(x:Number, y:Number, postLayoutTransform:Boolean=true):void
+			{
+				var pt : Point =  setLayoutBoundsPosition2(this,x,y,postLayoutTransform? nonDeltaLayoutMatrix():null);
+				this.moveX.xFrom = this.x
+				this.moveX.xTo = pt.x; 
+				this.moveX.duration = 500
+				this.moveX.stop()
+					
+				this.moveY.xFrom = this.y
+				this.moveY.xTo = pt.y; 
+				this.moveY.duration = 500
+				this.moveY.stop()					
+			}
 			
+			
+			public   function setLayoutBoundsPosition2(obj: IUIComponent,x:Number, y:Number, transformMatrix:Matrix):Point
+			{
+				if (transformMatrix)
+				{
+					//race("Setting actual position to " + x + "," + y);
+					//race("\tcurrent x/y is " + obj.x + "," + obj.y); 
+					//race("\tcurrent actual position is " + actualPosition.x + "," + actualPosition.y);
+					x = x - getLayoutBoundsX2(obj,transformMatrix) + obj.x;
+					y = y - getLayoutBoundsY2(obj,transformMatrix) + obj.y;
+				}
+				//obj.move(
+				//obj.move(x, y);
+				var pt : Point = new Point(x,y)
+				return pt 
+			}			
+			
+			
+			public static function getLayoutBoundsX2(obj:IUIComponent,transformMatrix:Matrix):Number
+			{
+				if (transformMatrix == null)
+					return obj.x;
+				
+				
+				var width:Number = obj.width;
+				var height:Number = obj.height;
+				
+				if (FlexVersion.compatibilityVersion < FlexVersion.VERSION_4_0)
+				{
+					width = (obj.scaleX == 0) ? 0 : width / obj.scaleX;
+					height = (obj.scaleY == 0) ? 0 : height / obj.scaleY;
+				}
+				
+				// We are already taking scale into account from the transform,
+				// so adjust here since IUIComponent mixes it with width/height
+				var pos:Point = new Point();
+				MatrixUtil.transformBounds(width, height,
+					transformMatrix,
+					pos);
+				return pos.x;
+			}
+			import mx.utils.MatrixUtil
+			public static function getLayoutBoundsY2(obj:IUIComponent,transformMatrix:Matrix):Number
+			{
+				if (transformMatrix == null)
+					return obj.y;
+				
+				
+				var width:Number = obj.width;
+				var height:Number = obj.height;
+				
+				if (FlexVersion.compatibilityVersion < FlexVersion.VERSION_4_0)
+				{
+					width = (obj.scaleX == 0) ? 0 : width / obj.scaleX;
+					height = (obj.scaleY == 0) ? 0 : height / obj.scaleY;
+				}
+				
+				// We are already taking scale into account from the transform,
+				// so adjust here since IUIComponent mixes it with width/height
+				var pos:Point = new Point();
+				MatrixUtil.transformBounds(width, height,
+					transformMatrix,
+					pos);
+				return pos.y;
+			}			
+			 */
 		]]>
 	</fx:Script>
   

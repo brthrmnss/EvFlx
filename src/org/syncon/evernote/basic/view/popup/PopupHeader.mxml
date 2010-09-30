@@ -7,10 +7,13 @@
 	<fx:Script>
 		<![CDATA[
 			private var _lbl : String = '' ;
+			public var bold : Boolean = true; 
 			public function onInit() : void 
 			{
 				this.lblText.text = _lbl
 				this.padding = _padding
+				if ( bold == false ) 
+					this.lblText.setStyle( 'fontWeight', 'normal' ) 
 			}
 			public function set label (lbl:String):void
 			{

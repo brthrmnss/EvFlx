@@ -4,6 +4,18 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
+	<s:states> 
+		<s:State name="edit"/> 
+		<s:State name="noEdit"/> 
+	</s:states> 	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:Resize target="{this.btnEdit}"   duration="250" />
+		</s:Transition>
+	</s:transitions>
+	<fx:Declarations>
+	</fx:Declarations>
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
@@ -15,6 +27,8 @@
 			
 			protected function onInit():void
 			{
+				if ( this.currentState != 'edit' )
+					this.currentState = 'noEdit'
 				this.creationComplete = true
 			}
 
@@ -37,6 +51,7 @@
 
 			public function show() : void
 			{
+				this.currentState = 'edit'
 				this.alpha = 1
 			}
 			
@@ -64,18 +79,26 @@
 			<s:SolidColor color="0xFFFFFF" />
 		</s:fill>
 	</s:Rect>
-	
-	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
+	<s:VGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
+		
+
+	<s:HGroup horizontalAlign="right" >
 		<s:Label id="lblMessage" />
-		<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
-		<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
+		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
+	</s:HGroup>	
+		
+		<s:HGroup id="holderStuff" includeIn="edit">
+			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
+			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
+		</s:HGroup>
+
 		<s:VGroup>
-			<s:Button label="Edit"  id="btnEdit" click="btnEdit_clickHandler(event)"/>
-			<s:Button label="Save"  id="btnSave" click="btnSave_clickHandler(event)"/>
+			
+			<s:Button label="Save" includeIn="edit"  id="btnSave" click="btnSave_clickHandler(event)"/>
 		</s:VGroup>
 		
-	</s:HGroup>
-
 	
+
+	</s:VGroup>
 
 </s:Group>

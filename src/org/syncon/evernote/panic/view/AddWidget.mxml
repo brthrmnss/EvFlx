@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
 	<fx:Script>
 		<![CDATA[
@@ -42,12 +42,14 @@
 
 			public function show() : void
 			{
-				this.visible = true; 
+				this.fxFadeIn.show()
+				//this.visible = true; 
 			}
 			
 			public function hide() : void
 			{
-				this.visible = false; 
+				this.fxFadeIn.hide()
+				//this.visible = false; 
 			}			
 			
 			
@@ -69,7 +71,7 @@
 		]]>
 	</fx:Script>
 	
-	
+	<utils:FadeInOutByFunction id="fxFadeIn" />
 	<s:Rect right="0" left="0" top="0" bottom="0"
 			topLeftRadiusX="10" topLeftRadiusY="-10"
 			topRightRadiusX="10" topRightRadiusY="10"

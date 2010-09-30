@@ -160,7 +160,7 @@
 	</s:Rect>
 	
 	<s:VGroup paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10">
-		<popup:PopupHeader   id="lbl_msg" label="{this.titleLbl}" 
+		<popup:PopupHeader  bold="false"  id="lbl_msg" label="{this.titleLbl}" 
 							 padding="0"  width="100%"/>
 		<s:Label   text="{this.message}" width="310" />
 		<s:HGroup width="100%" horizontalAlign="right">

@@ -104,7 +104,9 @@ package   org.syncon.evernote.panic.controller
 		
 		private function onNoteSaved( o:Object):void
 		{
-			this.alert( 'board saved' ) 
+			//var ee : StatusUpdateEvent 
+			StatusUpdateEvent.ChangeStatus( 'Configuration Saved..' )
+			//this.alert( 'board saved' ) 
 			if ( event.fxComplete != null ) event.fxComplete()
 			return;
 		}					

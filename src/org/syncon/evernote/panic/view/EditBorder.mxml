@@ -4,12 +4,9 @@
 		 width="100%" height="100%"
 		 fontSize="12"  color="0"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
-		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
-	<fx:Declarations>
-		<s:Fade id="fxFadeIn" alphaFrom="0" alphaTo="1" targets="{[this]}" />
-		<s:Fade id="fxFadeOut"   alphaFrom="1" alphaTo="0" targets="{[this]}" />
-	</fx:Declarations>
+
 	<fx:Script>
 		<![CDATA[
 			import mx.core.UIComponent;
@@ -25,16 +22,14 @@
 			static public var CLICKED : String  = 'clicked_'
 			static public var CLICKED_EDIT : String  = 'clickedEdit'				
 			static public var CLICKED_REMOVE : String  = 'clickedRemove'				
-				
-			private var timerFade : Timer; // = new Timer()	
+			static public var CLICKED_LEFT : String  = 'clickedLeft'				
+			static public var CLICKED_RIGHT : String  = 'clickedRight'						
+			
 			
 			protected function onInit():void
 			{
 				this.creationComplete = true
-				this.timerFade = new Timer(850, 1 ) 
-				this.fxFadeIn.duration = this.fxFadeOut.duration = 850
-				this.timerFade.addEventListener(TimerEvent.TIMER, this.onDone ) 
-				
+				this.fxFader.duration = 850
 			}
 
 			protected function btnEdit_clickHandler(event:MouseEvent):void
@@ -48,32 +43,26 @@
 				this.dispatchEvent( new CustomEvent(CLICKED_REMOVE ) );
 			}			
 			
+			
+			protected function btnLeft_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_LEFT ) );
+			}			
+			
+			protected function btnRight_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_RIGHT) );
+			}			
+			
 			public function show() : void
 			{
-				this.fxFadeOut.stop(); 
-				this.fxFadeIn.play()
-				this.visible = true
-				this.timerFade.stop()
+				this.fxFader.show()
 			}
 			
 			public function hide()  : void
 			{
-				if ( this.creationComplete == false ) 
-				{
-					this.visible = false; 
-					return; 
-				}
-				this.fxFadeIn.stop()			
-				this.fxFadeOut.play(); 
-					
-				//this.visible = false 
-				this.timerFade.start()
+				this.fxFader.hide()
 				
-			}
-
-			public function onDone(e:Event):void
-			{
-				this.visible = false; 
 			}
 			
 			protected function group1_initializeHandler(event:FlexEvent):void
@@ -95,9 +84,11 @@
 				// TODO Auto-generated method stub
 			}
 
+			
+			
 		]]>
 	</fx:Script>
- 
+ <utils:FadeInOutByFunction id="fxFader" />
  
 	
 	<s:Group buttonMode="true" useHandCursor="true" width="100%" height="100%" click="group2_clickHandler(event)" >
@@ -120,15 +111,23 @@
 	<s:HGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" left="10">
 		
 		<s:HGroup id="goBtn" >
+			<utils:IconButton label="L"  id="btnLeft" click="btnLeft_clickHandler(event)" 
+					  toolTip="Move Left"
+					  content="{Icons.getFormatPainter( '.btnLeft' )}"  />
+			<utils:IconButton label="R"  id="btnRight" click="btnRight_clickHandler(event)" 
+					  toolTip="Move Right"
+					  content="{Icons.getFormatPainter( '.btnRight' )}"   />
+			<!--			
 			<s:Button label="L" width="20" />
 			<s:Button label="R" width="20" />
+			-->
 		</s:HGroup>
 		
 		
-		<s:Button label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
-				  content="{Icons.getFormatPainter( '.iconSettings' )}"  skinClass="org.syncon.evernote.panic.view.skins.ButtonSkin"	/>
-		<s:Button label="X"  id="btnRemove" click="btnRemove_clickHandler(event)" toolTip="Remove Item"
-				  content="{Icons.getFormatPainter( '.iconTrash' )}"  skinClass="org.syncon.evernote.panic.view.skins.ButtonSkin"	/>
+		<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
+				  content="{Icons.getFormatPainter( '.iconSettings' )}"    />
+		<utils:IconButton label="X"  id="btnRemove" click="btnRemove_clickHandler(event)" toolTip="Remove Item"
+				  content="{Icons.getFormatPainter( '.iconTrash' )}"   />
 		
 	</s:HGroup>
 

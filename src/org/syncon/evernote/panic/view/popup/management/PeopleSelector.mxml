@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" 
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+	 		
+			private var creationComplete:Boolean = false			
+			
+			 public function onInit() : void 
+			{
+				this.creationComplete = true; 
+			}
+			
+ 			public function set dp ( a : ArrayCollection )  : void
+			{
+				this.list.list1.dataProvider = a; 				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup>
+		<s:Label text="Selected People:" />
+		<view:ProjectMembersList id="list"  deleteMode="true" />
+	</s:VGroup>
+			
+	
+</s:Group>

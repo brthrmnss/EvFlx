@@ -206,7 +206,7 @@
 	
 	<s:VGroup paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10">
  
-		<popup:PopupHeader   label="{this.tTitle}" includeIn="normal"   
+		<popup:PopupHeader  bold="false"    label="{this.tTitle}" includeIn="normal"   
 							 id="titleTxt"		 	    />
 		<!--
 	    <mx:Label id="titleTxt"  text="{this.tTitle}" fontSize="14" />

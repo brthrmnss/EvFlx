@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  useHandCursor="true" buttonMode="true"
+		   width="36" height="36"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.view.assets.Icons;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			
+			public var creationComplete : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+			}
+
+			public function set source ( s :   String ) : void
+			{
+				this.defaultImg.visible = false; 
+				this.img.source = s; 
+				//this.content= Icons.getFormatPainter( s ) 
+				//this.invalidateDisplayList();
+			}
+
+			protected function img_ioErrorHandler(event:IOErrorEvent):void
+			{
+				this.defaultImg.visible = true
+				this.img.source = false; 
+			}
+
+		]]>
+	</fx:Script>
+	
+
+	<mx:Image id="img"    ioError="img_ioErrorHandler(event)"
+			  horizontalCenter="0" verticalCenter="0"
+			  useHandCursor="true" buttonMode="true"
+			  maxHeight="35" maxWidth="35"    />
+	
+	<utils:IconButton iconSkin=".imgUserNotFound" 
+					  id="defaultImg"
+					  horizontalCenter="0" verticalCenter="0"
+					  />
+	
+</s:Group>

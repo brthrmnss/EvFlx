@@ -10,6 +10,23 @@
 	
 	embedAsCFF: true;
 }
+@font-face {
+	src: url("fonts/REZB____.TTF");
+	src: url("fonts/AlteHaasGroteskBold.ttf");	
+	
+	fontFamily: "ACaslonProRegularEmbedded";
+	
+	embedAsCFF: true;
+}
+
+@font-face {
+	src: url("fonts/REZB____.TTF");
+	src: url("fonts/AlteHaasGroteskBold.ttf");	
+	
+	fontFamily: "ACaslonProRegularEmbedded2";
+
+	embedAsCFF: false;
+}
 
 @font-face {
 	src: url("fonts/REZB____.TTF");
@@ -58,12 +75,12 @@ mx|Tooltip{
 
 .iconTrash
 {
-	content:     Embed( source="icons/24/trash.png" );
+	content:     Embed( source="icons/16/trash.png" );
 }
  
 .iconSettings
 {
-	content:     Embed( source="icons/24/tools.png" );
+	content:     Embed( source="icons/16/tools.png" );
 }
 
 .closeBtn
@@ -73,11 +90,31 @@ mx|Tooltip{
 
 .btnUp
 {
-	content:     Embed( source="icons/24/arrow_up.png" );
+	content:     Embed( source="icons/16/arrow_up.png" );
 }
 
 .btnDown
 {
-	content:     Embed( source="icons/24/arrow_down.png" );
+	content:     Embed( source="icons/16/arrow_down.png" );
 }
 
+.btnRight
+{
+	content:     Embed( source="icons/16/arrow_right.png" );
+}
+
+.btnLeft
+{
+	content:     Embed( source="icons/16/arrow_left.png" );
+}
+
+.imgUserNotFound
+{
+	content:     Embed( source="icons/32/user.png" );
+}
+
+
+.btnAdd
+{
+	content:     Embed( source="icons/16/add.png" );
+}
