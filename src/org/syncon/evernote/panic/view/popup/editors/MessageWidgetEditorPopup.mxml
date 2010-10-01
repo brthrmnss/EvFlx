@@ -28,7 +28,6 @@
 				this.popupCode.center()
 			}
 			
-			
 			override public  function create(app:Object)  : IPopup
 			{
 				var popup : MessageWidgetEditorPopup = new MessageWidgetEditorPopup()
@@ -44,24 +43,9 @@
 			public function open( a :  WidgetVO  )  : void
 			{
 				this.popupCode.open( false, false ) 
-				this.dispatchEvent( new CustomEvent( WidgetEvent.EDIT_WIDGET, a ) )
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.EDIT_WIDGET, null,  a ) )
 				this.ui = a.ui as  MessageWidget; 
-				this.loadValues(a)
 			}
-			
-			/**
-			 * Move values from data to the ui
-			 * */
-			public function loadValues(a :  WidgetVO ) : void
-			{
-				this.timer.dataX = a ; 
-				this.txtMessage.text = a.source; 
-			}		
-			
-			/**
-			 * Export move data from ui to data object
-			 * */
-			
 			override public function hide( ) : void
 			{
 				this.popupCode.close() 

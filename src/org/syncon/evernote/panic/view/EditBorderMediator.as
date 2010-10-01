@@ -1,11 +1,13 @@
 package  org.syncon.evernote.panic.view
 {
+	import mx.core.IVisualElement;
 	import mx.core.UIComponent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.components.Group;
 	import spark.components.HGroup;
@@ -82,8 +84,14 @@ package  org.syncon.evernote.panic.view
 		private function onClickedRemoveHandler(e:CustomEvent): void
 		{
 			//confirm popup
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'popup_confirm', ['Are you sure you want to remove this component? '+
+				'This change cannot be undone.', this.onRemoveComponent ] )  )
 		}				
-		
+			private function onRemoveComponent () : void
+			{
+				this.row.removeElement( this.ui.parent as IVisualElement) 
+			}
 		
 		private function onHighlightRows(e:PanicModelEvent): void
 		{
@@ -97,7 +105,7 @@ package  org.syncon.evernote.panic.view
 		}			
 		
 
-		
+		/*
 		private function onClickedUpHandler(e:CustomEvent): void
 		{
 			var index : int = this.model.boardHolder.getChildIndex( this.ui.parent ) 
@@ -111,7 +119,7 @@ package  org.syncon.evernote.panic.view
 			if ( index != this.model.boardHolder.numChildren-1 ) 
 				this.model.boardHolder.swapElementsAt( index, index+1 ) 			
 		}		
-		
+		*/
 		public function get row ()  :  HGroup
 		{
 			var p :  BoardRow = this.ui.parentDocument.parentDocument as BoardRow
@@ -154,6 +162,9 @@ package  org.syncon.evernote.panic.view
 		{	
 			var rowHolder :    HGroup  = this.row
 			var parent : UIComponent = this.ui.parentDocument as UIComponent
+			//try to set name and desc
+			this.ui.lblName.text = this.ui.parentDocument.widgetData.name
+			this.ui.lblDesc.text = this.ui.parentDocument.widgetData.description
 			var dd : Array = [parent.parent.getChildIndex( parent ) ]
 			if (   parent.parent.getChildIndex( parent ) == 0  ) 
 			{

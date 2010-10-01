@@ -14,13 +14,13 @@
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
-			import org.syncon.evernote.panic.view.ProjectListWidget;
+			import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
-			public var ui : ProjectListWidget; 
+			public var ui : TwitterScrollerTest2; 
 			
 			override public function onInit() : void 
 			{
@@ -31,7 +31,7 @@
 			
 			override public  function create(app:Object)  : IPopup
 			{
-				var popup : ProjectListWidgetEditorPopup = new ProjectListWidgetEditorPopup()
+				var popup : TwitterWidgetEditorPopup = new TwitterWidgetEditorPopup()
 				popup.popupCode = PopupCode.Create( popup, app ) 
 				return popup			
 			} 
@@ -45,15 +45,15 @@
 			{
 				this.popupCode.open( false, false ) 
 				this.dispatchEvent( new WidgetEvent( WidgetEvent.EDIT_WIDGET, null,  a ) )
-				this.ui = a.ui as ProjectListWidget; 
+				this.ui = a.ui as  TwitterScrollerTest2 ; 
 			}
-  
+			
 			override public function hide( ) : void
 			{
 				this.popupCode.close() 
 			}
 			
-			protected function button1_clickHandler(event:MouseEvent):void
+			protected function btnClose_clickHandler(event:MouseEvent):void
 			{
 				this.hide()
 			}
@@ -75,13 +75,13 @@
 	
 	
 	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-		<popup:PopupHeader  bold="false"   label="Edit Project List"  padding="0"  width="100%"/>
+		<popup:PopupHeader  bold="false"   label="Edit Twitter Scroller"  padding="0"  width="100%"/>
 		
 		<mx:Form>
-			<mx:FormItem label="Height" >
+			<mx:FormItem label="Search Terms" >
 				<s:TextInput id="txtMessage" />
 			</mx:FormItem>
-			
+		 
 			<mx:FormItem>
 				<s:HGroup>
 					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
@@ -94,8 +94,7 @@
 		
 		
 	</s:VGroup>
-	<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
 	
 	<utils:IconButton  label="X"  iconSkin=".closeBtn" 
-					   click="button1_clickHandler(event)" right="5" top="10" />
+					   click="btnClose_clickHandler(event)" right="5" top="10" />
 </popup:PopupBase>

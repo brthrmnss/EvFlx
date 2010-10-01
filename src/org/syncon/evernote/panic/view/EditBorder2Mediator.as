@@ -2,6 +2,7 @@ package  org.syncon.evernote.panic.view
 {
 	import flash.utils.setTimeout;
 	
+	import mx.core.IVisualElement;
 	import mx.core.UIComponent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -9,6 +10,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
 	public class EditBorder2Mediator extends Mediator  
 	{
@@ -30,6 +32,8 @@ package  org.syncon.evernote.panic.view
 			 ui.addEventListener( EditBorder2.CLICKED , onClickedHandler ) 						 
 			 ui.addEventListener( EditBorder2.CLICKED_UP , onClickedUpHandler ) 	
 			 ui.addEventListener( EditBorder2.CLICKED_DOWN , onClickedDownHandler ) 	
+			 ui.addEventListener( EditBorder2.CLICKED_REMOVE , onClickedRemoveHandler ) 
+				 				 
 				 
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, 
 				 this.onHighlighCertainItems);		
@@ -162,5 +166,20 @@ package  org.syncon.evernote.panic.view
 			otherThing = this.model.boardHolder.getElementAt( i2)  as BoardRow ;
 			otherThing.editBorder.dispatchEvent( 	new CustomEvent( EditBorder2.SHOW ) ) 					
 		}
+		
+		private function onClickedRemoveHandler(e:CustomEvent): void
+		{
+			//confirm popup
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'popup_confirm', ['Are you sure you want to remove this component? '+
+					'This change cannot be undone.', this.onRemoveComponent ] )  )
+		}				
+		private function onRemoveComponent () : void
+		{
+			this.model.boardHolder.removeElement( this.ui.parent as IVisualElement) 
+		}		
+		
+		
+		
 	}
 }

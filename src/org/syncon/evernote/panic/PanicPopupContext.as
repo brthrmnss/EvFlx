@@ -119,6 +119,18 @@ package  org.syncon.evernote.panic
 			mediatorMap.mapView( ProjectListWidgetEditorPopup , 
 				ProjectListWidgetEditorPopupMediator, null, false, false );							
 			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				PaneWidgetEditorPopup, 'PaneWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( PaneWidgetEditorPopup , 
+				PaneWidgetEditorPopupMediator, null, false, false );							
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				TwitterWidgetEditorPopup, 'TwitterWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( TwitterWidgetEditorPopup , 
+				TwitterWidgetEditorPopupMediator, null, false, false );							
+						
+			
+			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditProject, 'PopupEditProject',  true ) );
 			mediatorMap.mapView( PopupEditProject , PopupEditProjectMediator, null, false, false );	
 			

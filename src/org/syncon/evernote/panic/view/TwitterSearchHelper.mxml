@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 creationComplete="onInit()" 
+		 >
+	 
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.serialization.json.JSON;
+			
+			import mx.collections.ArrayCollection;
+			import mx.formatters.DateFormatter;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			
+			import org.syncon.evernote.basic.vo.MenuVO;			
+			
+			[Bindable]
+			public var publicTimeline:ArrayCollection;			
+			
+			public var creationComplete : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				this.creationComplete = true
+		 
+				loadPublicTimeline();
+			}
+			
+			private function loadPublicTimeline():void
+			{
+				twitterService.send();
+			}
+			
+			private function onPublicTimelineResult( event:ResultEvent ):void
+			{
+				var rawData:String = String( event.result );
+				var arr:Array = JSON.decode( rawData ).results as Array;
+				var arr2 :  Array = []; 
+				//var arr:Array = JSON.decode( rawData ) as Array;
+				for each ( var a :  Object in arr ) 
+				{
+					var m :   MenuVO = new MenuVO()
+						m.name = a.from_user;
+						m.name = a.text
+						m.data = a.profile_image_url
+						m.data
+					arr2.push( m ) 
+				}
+				if ( arr2.length == 0 )
+				{
+					 m  = new MenuVO()
+					m.name = 'No Results Found'
+					arr2.push( m ) 
+				}
+					
+				publicTimeline = new ArrayCollection( arr2 );  
+				
+				this.recieveFx()
+			}
+			
+			public var recieveFx : Function; 
+			
+			private function onPublicTimelineFault( event:FaultEvent ):void
+			{
+				trace( event.fault.toString() );
+			}
+			/*
+			private function getFormattedDate( item:Object, column:DataGridColumn ):String
+			{
+				var dateFormatter:DateFormatter = new DateFormatter();
+				dateFormatter.formatString = "MMMM D, YYYY, J:NN:SS";    
+				return dateFormatter.format( item.created_at );
+			}
+			
+			private function getScreenName( item:Object, column:DataGridColumn ):String
+			{   
+				return item.from_user;
+				//return item.user.screen_name;
+			}  	
+			*/
+			private var _query : String = ''; 
+			public function set query ( s  :  String )  : void
+			{
+				this._query = s; 
+				this.twitterService.url = 'http://search.twitter.com/search.json?q='+s
+				this.loadPublicTimeline()
+			}
+			public function get query ()  : String
+			{
+				return this._query; 
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:HTTPService 
+			id="twitterService" 
+			url="http://search.twitter.com/search.json?q=@noradio"
+			resultFormat="text" 
+			result="onPublicTimelineResult(event)" 
+			fault="onPublicTimelineFault(event)"
+			showBusyCursor="true"/>
+	</fx:Declarations>
+
+</s:Group>

@@ -8,6 +8,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
  
 	public class TwitterScrollerWidgetMediator extends Mediator implements IWidgetMediator
 	{
@@ -45,6 +46,8 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data == null ) 
 				return; 
 			//this.ui.loadedHiehgt = useSettings.height 
+			this.ui.searcher.query =  useSettings.source
+			
 		}
 				
 		
@@ -63,10 +66,9 @@ package  org.syncon.evernote.panic.view
 		
 		public function onEditClicked(e: CustomEvent) : void
 		{
-			throw 'not implemented yet'
 			this.widgetData.ui = this.ui; 
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'BoardRowWidgetEditorPopup', [this.widgetData] )  )  
+				'TwitterWidgetEditorPopup', [this.widgetData] )  )  
 		}				
 		
 	}

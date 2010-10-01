@@ -40,31 +40,7 @@ package  org.syncon.evernote.panic.view
 				
 			
 		}
-		 
-		public function onAutomateWidget( e : WidgetEvent )  : void
-		{
-			var useSettings : WidgetVO = this.widgetData; 
-			if ( e != null && e.data != null) 
-					useSettings = e.data; 
-			if ( useSettings.data == null ) 
-				return; 
-			//this.ui.textTop = 'lll'
-			//return;
-			this.ui.fillC = uint( useSettings.data.fillColor ) 
-			this.getSourcedValue( useSettings.data.labelTop, this.ui, 'textTop', null  )
-			this.getSourcedValue( useSettings.data.labelBottom, this.ui, 'textBottom', null  )
-			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
-			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
-			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
-			//	this.ui.textTop = uint( useSettings.data.fillColor ).toString()
-			/*	
-			this.ui.lblBottom.text = useSettings.data.labelBottom; 
-			var ee 
-			this.ui.lblTop.text = useSettings.data.labelTop; 
-			*/
-							
-		}
-		
+
 		public function getSourcedValue( source : String, host : Object, property : String, 
 										 fx : Function = null )  : void
 		{
@@ -89,6 +65,24 @@ package  org.syncon.evernote.panic.view
 		{
 			this.widgetData = this.ui.widgetData; 
 		}		
+		
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			//this.ui.textTop = 'lll'
+			//return;
+			this.ui.fillC = uint( useSettings.data.fillColor ) 
+			this.getSourcedValue( useSettings.data.labelTop, this.ui, 'textTop', null  )
+			this.getSourcedValue( useSettings.data.labelBottom, this.ui, 'textBottom', null  )
+			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
+			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
+			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
+		}
+				
 		
 		public function onEditClicked(e:CustomEvent) : void
 		{

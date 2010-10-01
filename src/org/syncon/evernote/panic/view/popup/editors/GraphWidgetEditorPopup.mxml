@@ -41,28 +41,9 @@
 			public function open( a :  WidgetVO  )  : void
 			{
 				this.popupCode.open( false, false ) 
-				this.dispatchEvent( new CustomEvent( WidgetEvent.EDIT_WIDGET, a ) )
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.EDIT_WIDGET, null,  a ) )
 				this.ui = a.ui as GraphWidget; 
-				this.loadValues(a)
 			}
-			
-			/**
-			 * Move values from data to the ui
-			 * */
-			public function loadValues(a :  WidgetVO ) : void
-			{
-				this.txtTop.text = a.data.labelTop; 
-				this.txtBottom.text =  a.data.labelBottom; 
-				this.timer.dataX = a ; 
-				this.txtValue.text = a.source; 
-				this.txtMaximum.text = a.data.max
-				this.colorPicker.selectedColor = a.data.fillColor; 
-					
-			}		
-			
-			 /**
-			 * Export move data from ui to data object
-			 * */
 			
 			override public function hide( ) : void
 			{

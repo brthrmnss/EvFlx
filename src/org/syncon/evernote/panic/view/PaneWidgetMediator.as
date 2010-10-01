@@ -1,6 +1,11 @@
 package  org.syncon.evernote.panic.view
 {
+	import com.adobe.serialization.json.JSON;
+	import com.adobe.serialization.json.JSONDecoder;
+	
 	import flash.events.Event;
+	
+	import mx.graphics.GradientEntry;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
@@ -47,7 +52,70 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data == null ) 
 				return; 
 			//this.ui.loadedHiehgt = useSettings.height 
+			//this.ui.colorThing = this.convertColorString(useSettings.data.colorString)
+			//save this 
+			//this.ui.text_ = 
+			this.updateText(  useSettings.source )  
+			this.ui.height = widgetData.height
+			if ( useSettings.data.hasOwnProperty( 'color1' ) )
+				this.ui.color1.color = useSettings.data.color1; 
+			if ( useSettings.data.hasOwnProperty( 'color2' ) )
+				this.ui.color2.color = useSettings.data.color2; 		
+			
 		}
+		/**
+		 * color
+		 * graident stops
+		 * {stops:[{ratio:0.0, color:2344233, alpha:1},{ratio:0.2, color:2344233, alpha:1}]}
+		 * */
+		/*
+		private function convertColorString(a : String ) : String
+		{
+			var str : String = ''; 
+			if ( a.length < 7 && a.indexOf( 'stops') == -1 ) 
+				str = a 
+			else
+			{
+				var stops : Object = JSON.decode( a ) 
+				var gr : Array = stops.stops; 
+				var gra : Array = []; 
+				for each ( var o :  Object in gr ) 
+				{
+					var ee :   GradientEntry = new GradientEntry(o.color, o.ratio, o.alpha ) 
+					gra.push(ee)
+				}
+			}
+			return a
+		}
+		
+		private function GradientToStopStri()  : String
+		{
+			var strops :  String = ''; 
+			var gra : Array = []; 
+			for each ( var o :   GradientEntry in this.ui.gradientBg ) 
+			{
+				var ee :    Object = {color:o.color, ration:o.ratio, alpha:o.alpha }
+				gra.push(ee)
+			}
+			var obj : Object = {}
+			obj.stops = gra
+			return JSON.encode( obj )  
+		}
+		*/
+		/**
+		 * convert html to text flow
+		 * plain text wrap as textflow? 
+		 * just use existing thing 
+		 * */
+		private function updateText(a : String ) : String
+		{
+			var str : String = ''; 
+			str = a
+			var ee : HtmlConvertor = new HtmlConvertor()
+			this.ui.txt.textFlow = ee.convert( a ) 
+				var dd : Object = ee.convert( a ) 
+			return str
+		}		
 		
 		public function onEditModeChanged(e:PanicModelEvent): void
 		{
@@ -64,10 +132,9 @@ package  org.syncon.evernote.panic.view
 		
 		public function onEditClicked(e: CustomEvent) : void
 		{
-			throw 'not implemented yet'
 			this.widgetData.ui = this.ui; 
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'BoardRowWidgetEditorPopup', [this.widgetData] )  )  
+				'PaneWidgetEditorPopup', [this.widgetData] )  )  
 		}			
 		
 	}

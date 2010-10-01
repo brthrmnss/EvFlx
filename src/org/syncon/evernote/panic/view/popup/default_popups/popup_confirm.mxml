@@ -164,8 +164,8 @@
 							 padding="0"  width="100%"/>
 		<s:Label   text="{this.message}" width="310" />
 		<s:HGroup width="100%" horizontalAlign="right">
-	 	 	<mx:Button   label="{this.yesMessage}"  click="onYes()"  id="btn_yes"/>
-			<mx:Button   label="{this.noMessage}"  click="onNo()"  id="btn_no"/>
+	 	 	<s:Button   label="{this.yesMessage}"  click="onYes()"  id="btn_yes"/>
+			<s:Button   label="{this.noMessage}"  click="onNo()"  id="btn_no"/>
 		</s:HGroup>
 	</s:VGroup>
 </s:SkinnableContainer>

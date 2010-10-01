@@ -11,68 +11,45 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
-	public class GraphWidgetEditorPopupMediator extends Mediator
-		implements IWidgetEditorMediator
+	public class GraphWidgetEditorPopupMediator extends 
+				WidgetEditorPopupMediatorBase
 	{
-		[Inject] public var ui:GraphWidgetEditorPopup;
-		[Inject] public var model :  PanicModel;
-		
-		private var data : WidgetVO; 
-		
+		[Inject] public function set ui  ( i : GraphWidgetEditorPopup) : void 
+		{	this.editor = i  }
+		public function get ui () : GraphWidgetEditorPopup
+		{ return this.editor as GraphWidgetEditorPopup;  }
+
 		public function GraphWidgetEditorPopupMediator()
 		{
 		} 
 		
 		override public function onRegister():void
 		{
-	 		this.ui.addEventListener( WidgetEvent.EDIT_WIDGET, this.onEditWidget ) 
-			this.ui.addEventListener( WidgetEvent.TEST_WIDGET, this.onTestWidget) 
-			this.ui.addEventListener( WidgetEvent.UPDATE_WIDGET_CONFIG, this.onUpdateWidgetConfig ) 
+			super.onRegister();
 		}
 		
-		private function onUpdateWidgetConfig(e:CustomEvent) : void
+		override public function onImportEditConfig(e:WidgetEvent) : void
 		{
-			
-			this.onTestWidget(null)
-			//import it actually sets the data , test is unnecsary
-			ui.ui.importConfig( this.currentConfig() ) ; 
-			this.dispatch( new PanicModelEvent( PanicModelEvent.BOARD_CHANGED ) ) 
-			this.ui.hide()
-		}			
-		
-		private function onEditWidget(e:CustomEvent) : void
-		{
-		 	this.data = e.data as WidgetVO
-			//this.ui.txtTop = this.data
-			
+			super.onImportEditConfig( e ) 
+
+			this.ui.timer.dataX = this.data ; 
+			this.ui.txtTop.text = this.data.data.labelTop; 
+			this.ui.txtBottom.text =  this.data.data.labelBottom; 
+			this.ui.txtValue.text = this.data.source; 
+			this.ui.txtMaximum.text = this.data.data.max
+			this.ui.colorPicker.selectedColor = this.data.data.fillColor; 
 		}		
- 
-		private function onTestWidget(e:CustomEvent) : void
-		{
-			var d : WidgetVO  = this.currentConfig() 
-			this.ui.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
-			/*this.ui.ui.textTop = this.ui.txtTop.text; 
-			this.ui.ui.textBottom = this.ui.txtBottom.text; 
-			this.dispatch( new LoadDataSourceCommandTriggerEvent ( LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
-					this.ui.txtTop.text, this.ui.ui, 'textTop', null )  )
-			this.dispatch( new LoadDataSourceCommandTriggerEvent ( LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
-				this.ui.txtBottom.text, this.ui.ui, 'textBottom', null )  )	*/		
-			//this.ui.hide()
-			
-		}		
-				
+ 	
 		/**
 		 * Read settings for text value
 		 * */
-		public function currentConfig()  :   WidgetVO
+		override public function currentConfig()  :   WidgetVO
 		{
 			var d : WidgetVO = GraphWidget.importData( this.data.name, this.data.description, 
 				this.ui.txtTop.text, this.ui.txtBottom.text, this.ui.txtValue.text,
 				this.ui.txtMaximum.text,  this.ui.colorPicker.selectedColor,  this.data.refreshTime ).widgetData;
 			return d ; 	
 		}
-		
-		
 		 
 		
 	}

@@ -54,6 +54,9 @@
 				super.percentWidth =  w;
 				//this.height = this.width*(115/99) 
 			}			
+			/**
+			 * Used by stuff placed on screen only
+			 * */
 			public function set colorScheme( i : int )  : void
 			{
 				if ( i == 0 ) 
@@ -67,18 +70,12 @@
 					this.color2.color = 0x3D3F3C				
 				}
 			}
-			
-			
+			public var text_ :  String = ''; 
 			
 			public function importConfig(j :   WidgetVO )  : void
 			{
 				this.widgetData = j
 				this.dispatchEvent( new WidgetEvent(WidgetVO.IMPORT_CONFIG,  j ) )
-				this.height = j.height
-				if ( j.data.hasOwnProperty( 'color1' ) )
-					this.color1.color = j.data.color1; 
-				if ( j.data.hasOwnProperty( 'color2' ) )
-					this.color2.color = j.data.color2; 					
 			}
 			
 				public function refresh(temp  : WidgetVO= null) : void
@@ -124,7 +121,10 @@
 				if ( this.percentWidth != 0 && ! isNaN( this.percentWidth  ) ) 
 				{
 				//if ( this.data.vo.height == NaN ) 
-				this.height = this.parentDocument.width*this.percentWidth/100*(115/99)
+				
+					var newHeight : Number = this.parentDocument.width*this.percentWidth/100*(115/99)
+					newHeight = Math.min( 300, newHeight ) 
+					this.height = newHeight
 				}
 			}
 			
@@ -143,7 +143,7 @@
 	
 	<s:Rect  radiusX="12" radiusY="12"  top="0" right="0" bottom="0" left="0">
 		<s:fill>
-			<s:LinearGradient  rotation="86">
+			<s:LinearGradient  rotation="90" id="gradientBg">
 				<s:GradientEntry  id="color1" color="0x3E4B5C" ratio="0.2"/>
 				<s:GradientEntry   id="color2" color="0x051931" ratio="1"/>
 			</s:LinearGradient>
@@ -157,10 +157,10 @@
 	</s:Rect>
 		
 	-->
-	<s:VGroup horizontalCenter="0" verticalCenter="0">
+	<!--<s:VGroup horizontalCenter="0" verticalCenter="0">
 		<s:Label text="89/3" />
 		<s:Label text="Transcode"  />
-	</s:VGroup>
-	
+	</s:VGroup>-->
+	<s:RichText width="100%" height="100%" id="txt" />
 	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

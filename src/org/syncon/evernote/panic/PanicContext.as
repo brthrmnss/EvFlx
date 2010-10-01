@@ -111,7 +111,8 @@ package   org.syncon.evernote.panic
 			 //setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
-			this.importBoardFromString()
+			//this.importBoardFromString()
+			this.importBoardFromCommand()
 		}
 		public function importBoardFromString() : void
 		{
@@ -123,6 +124,10 @@ package   org.syncon.evernote.panic
 				//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			//this.subContext.onInit(); 
 		}
+		public function importBoardFromCommand() : void
+		{
+			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
+		}		
 	 
 
 				

@@ -79,6 +79,7 @@ package   org.syncon.evernote.panic.controller
 					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
 				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
 				])
+			/*
 			arr.push( [
 				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
 			])			
@@ -90,11 +91,13 @@ package   org.syncon.evernote.panic.controller
 			])	
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
-			])					
+			])		
+			*/
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '2Something1', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '3Something1', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,				
+				PaneWidget.importData('Global Alert', '', '3Something1', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', 15000,  '0', '0x3D3F3C'  ).widgetData,				
 			])	
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [

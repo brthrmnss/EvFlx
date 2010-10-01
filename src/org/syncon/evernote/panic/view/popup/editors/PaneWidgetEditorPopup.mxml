@@ -14,13 +14,13 @@
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
-			import org.syncon.evernote.panic.view.ProjectListWidget;
+			import org.syncon.evernote.panic.view.PaneWidget;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
-			public var ui : ProjectListWidget; 
+			public var ui : PaneWidget; 
 			
 			override public function onInit() : void 
 			{
@@ -31,7 +31,7 @@
 			
 			override public  function create(app:Object)  : IPopup
 			{
-				var popup : ProjectListWidgetEditorPopup = new ProjectListWidgetEditorPopup()
+				var popup :  PaneWidgetEditorPopup = new PaneWidgetEditorPopup()
 				popup.popupCode = PopupCode.Create( popup, app ) 
 				return popup			
 			} 
@@ -45,18 +45,22 @@
 			{
 				this.popupCode.open( false, false ) 
 				this.dispatchEvent( new WidgetEvent( WidgetEvent.EDIT_WIDGET, null,  a ) )
-				this.ui = a.ui as ProjectListWidget; 
+				this.ui = a.ui as PaneWidget; 
 			}
-  
+ 
+			
 			override public function hide( ) : void
 			{
 				this.popupCode.close() 
 			}
 			
+			
+			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				this.hide()
 			}
+			
 			
 			protected function btnOk_clickHandler(event:MouseEvent):void
 			{
@@ -75,13 +79,18 @@
 	
 	
 	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-		<popup:PopupHeader  bold="false"   label="Edit Project List"  padding="0"  width="100%"/>
+		<popup:PopupHeader  bold="false"   label="Edit Pane"  padding="0"  width="100%"/>
 		
 		<mx:Form>
-			<mx:FormItem label="Height" >
+			<mx:FormItem label="Text" >
 				<s:TextInput id="txtMessage" />
 			</mx:FormItem>
-			
+			<mx:FormItem label="Color 1" >
+				<mx:ColorPicker id="colorPicker1" />
+			</mx:FormItem>	
+			<mx:FormItem label="Color 2" >
+				<mx:ColorPicker id="colorPicker2" />
+			</mx:FormItem>				
 			<mx:FormItem>
 				<s:HGroup>
 					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />

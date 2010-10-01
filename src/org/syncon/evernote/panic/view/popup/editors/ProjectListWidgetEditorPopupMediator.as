@@ -1,23 +1,17 @@
 package  org.syncon.evernote.panic.view.popup.editors
 {
-	import org.robotlegs.mvcs.Mediator;
-	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
-	import org.syncon.evernote.events.EvernoteServiceEvent;
-	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
-	import org.syncon.evernote.panic.model.PanicModel;
-	import org.syncon.evernote.panic.model.PanicModelEvent;
-	import org.syncon.evernote.panic.view.ProjectListWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
-	
-	public class ProjectListWidgetEditorPopupMediator extends Mediator
-			implements IWidgetEditorMediator
+	import org.syncon.evernote.panic.view.ProjectListWidget;
+ 
+	public class ProjectListWidgetEditorPopupMediator extends 
+		WidgetEditorPopupMediatorBase
 	{
-		[Inject] public var ui: ProjectListWidgetEditorPopup;
-		[Inject] public var model :  PanicModel;
-		
-		private var data : WidgetVO; 
+		[Inject] public function set ui  ( i : ProjectListWidgetEditorPopup) : void 
+		{	this.editor = i  }
+		public function get ui () : ProjectListWidgetEditorPopup
+		{ return this.editor as ProjectListWidgetEditorPopup;  }
 		
 		public function ProjectListWidgetEditorPopupMediator()
 		{
@@ -25,37 +19,24 @@ package  org.syncon.evernote.panic.view.popup.editors
 		
 		override public function onRegister():void
 		{
-			this.ui.addEventListener( WidgetEvent.EDIT_WIDGET, this.onEditWidget ) 
-			this.ui.addEventListener( WidgetEvent.TEST_WIDGET, this.onTestWidget) 
-			this.ui.addEventListener( WidgetEvent.UPDATE_WIDGET_CONFIG, this.onUpdateWidgetConfig ) 
+			super.onRegister();
 		}
 		
-		private function onUpdateWidgetConfig(e:CustomEvent) : void
+		override public function onImportEditConfig(e:WidgetEvent) : void
 		{
-			this.onTestWidget(null)
-			//import it actually sets the data , test is unnecsary
-			this.data.ui.importConfig( this.currentConfig() ) ; 
-			this.dispatch( new PanicModelEvent( PanicModelEvent.BOARD_CHANGED ) ) 
-			this.ui.hide()
-		}			
-		
-		private function onEditWidget(e:CustomEvent) : void
-		{
-			this.data = e.data as WidgetVO
-		}		
-		
-		private function onTestWidget(e:CustomEvent) : void
-		{
-			var d : WidgetVO  = this.currentConfig() 
-			this.data.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			super.onImportEditConfig( e ) 
+			
+			this.ui.timer.dataX = this.data ; 
+			this.ui.txtMessage.text = this.data.height.toString(); 				
 		}		
 		
 		/**
 		 * Read settings for text value
 		 * */
-		public function currentConfig()  :   WidgetVO
+		override public function currentConfig()  :   WidgetVO
 		{
-			var d : WidgetVO = ProjectListWidget.importData( this.data.name, this.data.description, 
+			var d : WidgetVO = ProjectListWidget.importData( this.data.name, 
+				this.data.description, 
 				Number(this.ui.txtMessage.text),  this.data.refreshTime ).widgetData;
 			return d ; 	
 		}

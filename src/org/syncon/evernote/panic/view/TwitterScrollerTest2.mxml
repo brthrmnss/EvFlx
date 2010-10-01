@@ -85,6 +85,8 @@
 				this.list1.dataProvider = dp; 
 				this.list2.dataProvider = dp; 
 				
+				this.searcher.recieveFx = go
+				
 				this.list2.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
 				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
 				
@@ -92,8 +94,13 @@
 				
 				
 			}				
-			
-			
+			public function go() : void
+			{
+				this.list1.dataProvider = this.searcher.publicTimeline; 
+				this.list2.dataProvider = this.searcher.publicTimeline; ; 				
+				
+				this.init2()
+			}
 			import mx.events.EffectEvent;
 			
 			// Timer variable
@@ -251,7 +258,7 @@
 			}		
 		]]>
 	</fx:Script>
-	
+	<view:TwitterSearchHelper id="searcher" />
 	<!--<s:VGroup>-->
 		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.twitter_renderer" 
 				 width="100%"
