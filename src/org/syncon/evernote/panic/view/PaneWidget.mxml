@@ -161,6 +161,10 @@
 		<s:Label text="89/3" />
 		<s:Label text="Transcode"  />
 	</s:VGroup>-->
-	<s:RichText width="100%" height="100%" id="txt" />
+	<s:RichText width="100%" height="100%" id="txt" 
+				fontLookup="embeddedCFF" fontSize="13" renderingMode="cff"
+				paddingBottom="10" paddingLeft="10"  fontFamily="ACaslonProRegularEmbedded"
+				paddingTop="10" paddingRight="10" 
+				/>
 	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

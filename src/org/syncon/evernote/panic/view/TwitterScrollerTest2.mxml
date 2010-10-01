@@ -12,20 +12,26 @@
 	</fx:Metadata>		
 	
 	<fx:Declarations>
+		<!--
 		<s:Move id="moveIn" duration="10000"  
 				effectEnd="moveInEnd(event)"/>
 		<s:Move id="moveOut" duration="1000" xFrom="90" xTo="-500" 
 				effectEnd="moveOutEnd(event)"/>
+		
+		
 		<s:NumberInterpolator id="b" />
-		<s:Linear id="line" />
-			<s:Animate id="anim" duration="5000"  easer="{line}" interpolator="{b}"  effectEnd="anim_effectEndHandler(event)">
+		-->
+		<s:Linear id="line"  />
+			<s:Animate id="anim" duration="5000"   easer="{line}" 
+					   effectEnd="anim_effectEndHandler(event)">
 				<s:motionPaths>
 					<s:SimpleMotionPath  id="pth"  property="horizontalScrollPosition"  />
 				</s:motionPaths>
 			</s:Animate>
 		
 		<s:Linear id="line2" />
-		<s:Animate id="anim2" duration="5000"  easer="{line2}"   effectEnd="anim_effectEndHandler2(event)">
+		<s:Animate id="anim2" duration="5000"  easer="{line2}"  
+				   effectEnd="anim_effectEndHandler2(event)">
 			<s:motionPaths>
 				<s:SimpleMotionPath  id="pth2"  property="horizontalScrollPosition"  />
 			</s:motionPaths>
@@ -157,6 +163,8 @@
 			
 			private function resetMovement()  : void
 			{
+				this.list1.invalidateDisplayList()
+				this.list2.invalidateDisplayList()
 				this.anim_effectEndHandler(null)
 				this.anim_effectEndHandler2(null)
 				/* this.moveIn.xFrom = this.list1.width; 
@@ -182,32 +190,38 @@
 
 			protected function anim_effectEndHandler(event:EffectEvent):void
 			{
-				
+				 this.list1.layout.horizontalScrollPosition = 0;   
+				this.list1.scroller.horizontalScrollBar.value
 				this.pth.valueFrom = 0 
-				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum; //+this.width;
-				this.anim.duration = this.list1.dataProvider.length*25*1000;
+				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum*.7; //+this.width;
+				this.anim.duration = this.list1.dataProvider.length*timePerTweet;
+				anim.stop(); 
 				anim.play([this.list1.layout]);
 			}
 
-			private var  odd : Boolean = false; 
+			private var  odd : Boolean = true; 
 			protected function anim_effectEndHandler2(event:EffectEvent):void
 			{
+				
 				odd = ! odd
 				if ( odd ) 
 				{
-					this.pth2.valueFrom = this.list2.scroller.horizontalScrollBar.maximum/2
+					this.pth2.valueFrom = (this.list2.scroller.horizontalScrollBar.maximum*.55)/2
 					this.pth2.valueTo = this.list2.scroller.horizontalScrollBar.maximum ;
 				}
 				else
 				{
 					this.pth2.valueFrom = 0
-					this.pth2.valueTo = this.list2.scroller.horizontalScrollBar.maximum/2 
+					this.pth2.valueTo = (this.list2.scroller.horizontalScrollBar.maximum*.55)/2 
 				}
+				this.list2.layout.horizontalScrollPosition = Number(this.pth2.valueFrom);   
 				this.pth2.valueBy = .1
-				this.anim2.duration = this.list2.dataProvider.length*25*1000/2;
+				this.anim2.duration = this.list2.dataProvider.length*timePerTweet/2;
+				anim2.stop()
 				anim2.play([this.list2.layout]);
 			}			
 			
+			private var timePerTweet : Number = 25*1000/(10/10*2)
 			
 			public function importConfig(j : WidgetVO )  : void
 			{

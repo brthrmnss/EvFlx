@@ -4,6 +4,13 @@ package  org.syncon.evernote.panic.view
 	import com.adobe.serialization.json.JSONDecoder;
 	
 	import flash.events.Event;
+	import flash.text.engine.FontLookup;
+	import flash.text.engine.RenderingMode;
+	
+	import flashx.textLayout.conversion.TextConverter;
+	import flashx.textLayout.elements.FlowElement;
+	import flashx.textLayout.elements.ParagraphElement;
+	import flashx.textLayout.elements.TextFlow;
 	
 	import mx.graphics.GradientEntry;
 	
@@ -112,9 +119,52 @@ package  org.syncon.evernote.panic.view
 			var str : String = ''; 
 			str = a
 			var ee : HtmlConvertor = new HtmlConvertor()
-			this.ui.txt.textFlow = ee.convert( a ) 
-				var dd : Object = ee.convert( a ) 
-			return str
+			textFlow= ee.convert( a ) 
+				//var dd : Object = ee.convert( a ) 
+				textFlow.fontLookup = FontLookup.EMBEDDED_CFF;
+				textFlow.renderingMode = RenderingMode.CFF;
+				textFlow.fontFamily = 'ACaslonProRegularEmbedded'
+				textFlow.fontSize = '13'
+				textFlow.mxmlChildren[0].fontFamily = 'ACaslonProRegularEmbedded'
+				for each ( var c : Object in textFlow.mxmlChildren ) 
+				{
+					c.fontFamily =  'ACaslonProRegularEmbedded'
+					for each ( var c2 : Object in c.mxmlChildren ) 
+					{
+						var dee :  FlowElement
+						if ( c2 is FlowElement == false ) 
+							continue; 
+						c2.fontFamily =  'ACaslonProRegularEmbedded'
+						for each ( var c3 : Object in c2.mxmlChildren ) 
+						{
+							if ( c3 is FlowElement == false ) 
+								continue; 							
+							c3.fontFamily =  'ACaslonProRegularEmbedded'
+						}
+					}
+				}
+				this.ui.txt.textFlow= textFlow
+				var bb : Object	=	textFlow//.toString()
+			var g :  Object = this.ui.txt.textFlow.mxmlChildren[0]
+				
+				//http://forums.adobe.com/message/3112952
+			//return '' 
+			var xml:XML = <TextFlow fontFamily="ACaslonProRegularEmbedded"
+fontLookup="embeddedCFF" fontSize="13" renderingMode="cff" 
+whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008">
+<p   fontFamily="ACaslonProRegularEmbedded"  >
+<span>Ein kritischer Blick in die Nachbarschaft:</span>
+</p></TextFlow>;
+			
+			
+			var textFlow: TextFlow = new TextFlow();
+			textFlow = TextConverter.importToFlow(xml, TextConverter.TEXT_LAYOUT_FORMAT);
+		//	textFlow.fontLookup = FontLookup.EMBEDDED_CFF;
+		//	textFlow.renderingMode = RenderingMode.CFF;
+			
+			this.ui.txt.textFlow = textFlow
+			
+				return str
 		}		
 		
 		public function onEditModeChanged(e:PanicModelEvent): void

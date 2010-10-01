@@ -50,6 +50,7 @@ package   org.syncon.evernote.panic.controller
 			if ( event.type == SETUP ) 
 			{
 				this.model.boardHolder = FlexGlobals.topLevelApplication.boardGroup;
+				return;
 				this.model.editMode = true; 
 				this.model.adminMode = true; 
 				setTimeout(  this.onGoToEditMode, 1000 ) 
