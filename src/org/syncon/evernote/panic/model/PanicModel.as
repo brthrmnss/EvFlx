@@ -123,6 +123,13 @@ package org.syncon.evernote.panic.model
 				source, host ,property, fx )  )					
 		}
 				
+		/**
+		 * Creates unique title for board
+		 * */
+		public function createBoardTitle(boardName  : String) : String
+		{
+			return   'board_name_'+ boardName  
+		}
 		
 		
 	}

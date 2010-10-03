@@ -40,7 +40,15 @@ package org.syncon.utils
 						layoutTarget.invalidateDisplayList();
 					}
 				}
-				
+				/*
+				public function set verticalGap(val:Number):void {
+					_gap = val;
+					var layoutTarget:GroupBase = target;
+					if (layoutTarget) {
+						layoutTarget.invalidateDisplayList();
+					}
+				}				
+				*/
 				public function set paddingLeft(val:Number):void {
 					_paddingLeft = val;
 					var layoutTarget:GroupBase = target;

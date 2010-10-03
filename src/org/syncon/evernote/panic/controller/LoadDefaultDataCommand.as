@@ -37,6 +37,8 @@ package   org.syncon.evernote.panic.controller
 		static public var START : String = 'LoadDefaultDataCommand.START'
 		static public var SETUP : String = 'LoadDefaultDataCommand.SETUP'			
 		static public var LIVE_DATA : String = 'LoadDefaultDataCommand.LIVE_DATA'
+		static public var AUTHENTICATE : String = 'LoadDefaultDataCommand.AUTHENTICATE'			
+		
 		override public function execute():void
 		{
 			if ( event.type == START ) 
@@ -55,6 +57,10 @@ package   org.syncon.evernote.panic.controller
 				this.model.adminMode = true; 
 				setTimeout(  this.onGoToEditMode, 1000 ) 
 			}			
+			if ( event.type == AUTHENTICATE ) 
+			{
+				this.authenticate(); 
+			}				
 		}
 		
 		import flash.utils.setTimeout
@@ -69,6 +75,7 @@ package   org.syncon.evernote.panic.controller
 			
 			var arr : Array = []; 
 			var board : BoardVO = new BoardVO()
+			board.name = 'blickem'
 			arr.push( [
 				 
 				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
@@ -96,7 +103,7 @@ package   org.syncon.evernote.panic.controller
 			*/
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '2Something1', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '3Something1', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
 				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', 15000,  '0', '0x3D3F3C'  ).widgetData,				
 			])	

@@ -55,7 +55,7 @@ package  org.syncon.evernote.panic.view
 				useSettings = e.data; 
 			if ( useSettings.data == null ) 
 				return; 
-			//this.ui.loadedHiehgt = useSettings.height 
+			this.ui.list1.height = useSettings.height 
 		}
 		
 		public function onEditModeChanged(e:PanicModelEvent): void

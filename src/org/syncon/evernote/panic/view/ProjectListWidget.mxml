@@ -59,7 +59,7 @@
 			{
 				this.widgetData = j
 				this.dispatchEvent( new WidgetEvent( WidgetVO.IMPORT_CONFIG,  j ) )
-				this.list1.height = j.height
+				//this.list1.height = j.height
 			}			
 				public function refresh(temp  : WidgetVO= null) : void
 				{

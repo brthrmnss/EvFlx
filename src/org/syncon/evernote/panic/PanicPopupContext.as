@@ -93,6 +93,10 @@ package  org.syncon.evernote.panic
 		
 		public function customContext() : void
 		{
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				PopupLogin, 'PopupLogin',  true ) );
+			mediatorMap.mapView( PopupLogin , 
+				PopupLoginMediator, null, false, false );				
 			/*
 			mediatorMap.mapView( PopupTagForm , PopupTagMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupTagForm, 'popup_tag_form'  ) );
@@ -129,7 +133,10 @@ package  org.syncon.evernote.panic
 			mediatorMap.mapView( TwitterWidgetEditorPopup , 
 				TwitterWidgetEditorPopupMediator, null, false, false );							
 						
-			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				BoardManagementPopup, 'BoardManagementPopup',  true ) );
+			mediatorMap.mapView( BoardManagementPopup , 
+				BoardManagementPopupMediator, null, false, false );							
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditProject, 'PopupEditProject',  true ) );
 			mediatorMap.mapView( PopupEditProject , PopupEditProjectMediator, null, false, false );	

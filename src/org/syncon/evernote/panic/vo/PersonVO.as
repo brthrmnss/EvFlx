@@ -7,7 +7,10 @@ package org.syncon.evernote.panic.vo
 		public var email :  String = ''; 		
 		public var twitter : String = ''; 
 		public var src :  String = ''; 
-		
+		public var admin : Boolean = false; 
+		public var canLogin :  Boolean = false
+		public var username : String 
+		public var password : String 
 		public function PersonVO( name_ : String='', desc : String = '', 
 								  email : String='', twitter : String = '' , src : String = ''  ) 
 								 

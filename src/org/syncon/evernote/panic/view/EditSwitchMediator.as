@@ -32,7 +32,9 @@ package  org.syncon.evernote.panic.view
 					 
 				 ui.addEventListener('clickedSave', onClickedSaveHandler ) 		
 				 ui.addEventListener('clickedPeople', onClickedPeopleHandler ) 		
-				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 							 
+				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 			
+				 ui.addEventListener('clickedBoard', onClickedBoardHandler ) 							 
+				 
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -61,6 +63,12 @@ package  org.syncon.evernote.panic.view
 			 this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				'ProjectManagementPopup' )  )   
 		}		
+		private function onClickedBoardHandler(e:CustomEvent): void
+		{
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'BoardManagementPopup' )  )   
+		}				
+		
 		private function onClickedEditHandler(e:CustomEvent): void
 		{
 			//if nto updating, just adjust words

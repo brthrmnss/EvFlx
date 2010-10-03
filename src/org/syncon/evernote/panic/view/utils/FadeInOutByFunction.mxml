@@ -16,6 +16,7 @@
 			
 			public var creationComplete : Boolean = false; 
 			private var _duration : Number =  850	
+			private var _maxAlpha: Number = 1; 
 			protected function onInit():void
 			{
 				this.fxFadeIn.targets = this.fxFadeOut.targets = [this.parentDocument]
@@ -36,17 +37,24 @@
 			
 			public function set maxAlpha ( s : Number )  : void
 			{
-				this.fxFadeIn.alphaTo = s
-				this.fxFadeOut.alphaFrom = s; 
+				this._maxAlpha = s
+				this.fxFadeIn.alphaTo =_maxAlpha
+				this.fxFadeOut.alphaFrom = _maxAlpha; 
 			}			
 			
-			
+			/**
+			 * Don't fade in component twice
+			 * */
 			public function show() : void
 			{
 				this.fxFadeOut.stop(); 
+				this.timerFade.stop()
+				if ( this.parent.visible && this.parent.alpha >= this._maxAlpha ) 
+					return;
+				
 				this.fxFadeIn.play()
 				this.parent.visible = true
-				this.timerFade.stop()
+				
 			}
 			
 			public function hide()  : void

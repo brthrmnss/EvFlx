@@ -129,24 +129,63 @@ package  org.syncon.evernote.panic.view
 				for each ( var c : Object in textFlow.mxmlChildren ) 
 				{
 					c.fontFamily =  'ACaslonProRegularEmbedded'
+					c.fontWeight =  'normal'
 					for each ( var c2 : Object in c.mxmlChildren ) 
 					{
 						var dee :  FlowElement
 						if ( c2 is FlowElement == false ) 
 							continue; 
 						c2.fontFamily =  'ACaslonProRegularEmbedded'
+						c2.fontWeight =  'normal'							
 						for each ( var c3 : Object in c2.mxmlChildren ) 
 						{
 							if ( c3 is FlowElement == false ) 
 								continue; 							
 							c3.fontFamily =  'ACaslonProRegularEmbedded'
+							c3.fontWeight =  'normal'								
 						}
 					}
 				}
 				this.ui.txt.textFlow= textFlow
 				var bb : Object	=	textFlow//.toString()
 			var g :  Object = this.ui.txt.textFlow.mxmlChildren[0]
-				
+			var xx : Object = 	 ee.export(textFlow ) 
+	/*	 textFlow = TextConverter.importToFlow(xx, TextConverter.TEXT_LAYOUT_FORMAT);
+			this.ui.txt.textFlow = textFlow*/
+				return ''; 
+			var xml2:XML =<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" 
+fontFamily="ACaslonProRegularEmbedded" fontLookup="embeddedCFF" fontSize="13" lineBreak="inherit" 
+paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" renderingMode="cff" 
+verticalAlign="inherit" whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008">
+<p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded">2Something1</span>
+</p></TextFlow>	
+				xml2 = <TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit"
+fontFamily="ACaslonProRegularEmbedded" fontLookup="embeddedCFF" fontSize="13"
+lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" 
+paddingTop="inherit" renderingMode="cff" verticalAlign="inherit" whiteSpaceCollapse="preserve"
+xmlns="http://ns.adobe.com/textLayout/2008"><p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="bold">
+•Custom Flex and ColdFusion Web Application Development</span></p>
+<p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="bold">
+• Custom AIR Desktop Application Development</span></p><p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="bold">
+•Business Systems Analysis and Implementation</span>
+</p></TextFlow>
+				xml2 = <TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit"
+fontFamily="ACaslonProRegularEmbedded" fontLookup="embeddedCFF" fontSize="13"
+lineBreak="inherit" paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" 
+paddingTop="inherit" renderingMode="cff" verticalAlign="inherit" whiteSpaceCollapse="preserve"
+xmlns="http://ns.adobe.com/textLayout/2008"><p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="bold">
+•Custom Flex and ColdFusion Web Application Development</span></p>
+<p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="bold">
+• Custom AIR Desktop Application Development</span></p><p fontFamily="ACaslonProRegularEmbedded">
+<span fontFamily="ACaslonProRegularEmbedded" fontWeight="normal">
+•Business Systems Analysis and Implementation</span>
+</p></TextFlow>
 				//http://forums.adobe.com/message/3112952
 			//return '' 
 			var xml:XML = <TextFlow fontFamily="ACaslonProRegularEmbedded"
@@ -161,7 +200,7 @@ whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008">
 			textFlow = TextConverter.importToFlow(xml, TextConverter.TEXT_LAYOUT_FORMAT);
 		//	textFlow.fontLookup = FontLookup.EMBEDDED_CFF;
 		//	textFlow.renderingMode = RenderingMode.CFF;
-			
+			textFlow = TextConverter.importToFlow(xml2, TextConverter.TEXT_LAYOUT_FORMAT);
 			this.ui.txt.textFlow = textFlow
 			
 				return str

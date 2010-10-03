@@ -67,7 +67,7 @@
 				//this.height = w*(115/99) 
 				this.height = 300
 				this.chart.height = this.height - 100
-				this.chart.width = w*1.5
+				this.chart.width = w*2
 			}
 			
 			protected function group1_resizeHandler(event:ResizeEvent):void
@@ -253,7 +253,7 @@
 	
 	 
 	<s:Label text="..." fontSize="36" id="lblTop" />
-	<mx:BarChart height="80"  width="180%"   id="chart"
+	<mx:BarChart height="80"  width="250%"   id="chart"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
 		</mx:backgroundElements>

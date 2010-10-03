@@ -117,7 +117,7 @@
 	<s:Group 	left="10" width="100%">
 
 	<s:layout>
-		<utils1:FlowLayout2    />
+		<utils1:FlowLayout2   gap="2"   />
 		<!--<s:HorizontalLayout paddingBottom="10" paddingLeft="10" 
 							paddingTop="10" paddingRight="10" 
 						/>-->

@@ -63,6 +63,7 @@ package  org.syncon.evernote.basic.controller
 			if ( retryWaitForAuthenticationCount > 3 ) 
 			{
 				trace(' failed to ' + this.event.type ) 
+				this.notAuthenticatedRetryTimer.stop()
 				this.deReference( )
 				return; 
 			}

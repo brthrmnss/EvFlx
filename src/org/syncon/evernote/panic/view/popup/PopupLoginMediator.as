@@ -11,6 +11,7 @@ package   org.syncon.evernote.panic.view.popup
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommandTriggerEvent;
 	import org.syncon.evernote.services.EvernoteService;
 	import org.syncon.utils.Js;
 	
@@ -42,6 +43,7 @@ package   org.syncon.evernote.panic.view.popup
 		}
 		private function creationComplete(e:Event):void
 		{
+			if ( this.ui.meth1 ) return ; 
 			if ( this.service.auth != null ) 
 				this.ui.hide()			
 		}
@@ -54,15 +56,31 @@ package   org.syncon.evernote.panic.view.popup
  
 		private function onLogin(e: Event):void
 		{	
-			this.dispatch(
+			if ( this.ui.meth1 ) 
+			{
+				this.dispatch( new AuthenticateToBoardCommandTriggerEvent( AuthenticateToBoardCommandTriggerEvent.METH1, 
+				this.ui.txtBoardName.text, null, this.ui.txtPassword.text, this.ui.chkAdmin.selected,  this.onLoginResult_M1, this.onLoginFault_M1 ))			
+			}
+				/*this.dispatch(
 			EvernoteAPICommandTriggerEvent.Authenticate( this.ui.txtUsername.text, 
 					this.ui.txtPassword.text, this.onLoginResult, this.onLoginFault  )
-			)
+			)*/
 		}
+			private function onLoginResult_M1(e:Object):void
+			{
+				this.ui.loginOk()
+				
+			}
+			private function onLoginFault_M1(e:Object):void
+			{
+				this.ui.status = 'Could not log you in, please try again'
+				this.ui.show()
+			}		
 			private function onLoginResult(e:Object):void
 			{
 				this.dispatch( new Event( CreateDefaultDataCommand.LIVE_DATA ))
 				this.ui.loginOk()
+
 			}
 			private function onLoginFault(e:Object):void
 			{
@@ -72,8 +90,9 @@ package   org.syncon.evernote.panic.view.popup
 			
 		private function onRegisterClickedHandler(e: Event):void
 		{	
-			var link : String = 'https://sandbox.evernote.com/Registration.action'
-			Js.goToUrl(link)		
+			
+			/*var link : String = 'https://sandbox.evernote.com/Registration.action'
+			Js.goToUrl(link)*/		
 		}
 		
 		private function onForgotPassword(e: Event):void
@@ -84,7 +103,7 @@ package   org.syncon.evernote.panic.view.popup
 		
 		private function onAuthenticated(e:EvernoteServiceEvent):void
 		{
-			this.ui.hide();
+			//this.ui.hide();
 		}
 		
 	}

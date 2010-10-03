@@ -100,9 +100,9 @@
 			
 			right.right="-1" left.right="0"  
 			topLeftRadiusX.right="10" topLeftRadiusY.right="10"
-			topRightRadiusX.right="-10" topRightRadiusY.right="10"
+			topRightRadiusX.right="0" topRightRadiusY.right="10"
 			bottomLeftRadiusX.right="10" bottomLeftRadiusY.right="10"
-			bottomRightRadiusX.right="-10"  bottomRightRadiusY.right="10"
+			bottomRightRadiusX.right="0"  bottomRightRadiusY.right="10"
 			
 			>
 		<s:fill>

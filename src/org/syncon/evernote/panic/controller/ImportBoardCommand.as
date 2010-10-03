@@ -29,12 +29,18 @@ package   org.syncon.evernote.panic.controller
 			{
 				this.importFromServer()	
 			}
+			if ( event.type == ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD )
+			{
+				this.findNote( event.data as Note ) ; ///()	
+			} 
 		}
 		
 		public function importFromString () : void
 		{
 			if ( event.data is   String ) {}
-			var json :   Object = JSON.decode( event.data.toString() ) 
+			var info : String =  event.data.toString()
+
+			var json :   Object = JSON.decode( info ) 
 			
 			var b : BoardVO = new BoardVO()
 			var people : Array = [];
@@ -58,6 +64,8 @@ package   org.syncon.evernote.panic.controller
 			b.importX( json.board ); 
 			this.model.board = b; 
 			this.model.refreshBoard(); 
+			if ( event.goIntoAdmin ) 
+				this.model.adminMode = true; 
 		}
 		
 		public function importFromServer() : void
@@ -141,10 +149,27 @@ package   org.syncon.evernote.panic.controller
 				str = this.model.defaultBoardImportString
 			}
 			
+			str
+			if ( str.indexOf( '&quot;') != -1 ) 
+			{
+				var searchPattern:RegExp = new RegExp('&quot;', "gi");        
+				str = str.replace(searchPattern, '"')
+			}	
+			  searchPattern  = new RegExp('\n', "gi");        
+			str = str.replace(searchPattern, '"')			
+	
+			str =  this.apiModel.unwrapContent( str )
+				//remove anything before / after
+			var split : Array = str.split('{')
+			str = '{'+split.slice(1,split.length).join('{')
+			split  = str.split('}')
+			str = split.slice(0,split.length-1).join('}')		+'}'		
 			this.dispatch( 
-				new ImportBoardCommandTriggerEvent( 
-					ImportBoardCommandTriggerEvent.IMPORT_BOARD, this.apiModel.unwrapContent( str )  ) 
-				)
+			new ImportBoardCommandTriggerEvent( 
+				ImportBoardCommandTriggerEvent.IMPORT_BOARD,str, null, event.goIntoAdmin  ) 
+			)
+				
+			
 		}
 		
 		
@@ -153,9 +178,9 @@ package   org.syncon.evernote.panic.controller
 			
 		}
 		
-		public function noteTitle() : String
+		public function noteTitle( ) :   String
 		{
-			return 'board_name_'+event.boardName
+			return this.model.createBoardTitle(   event.boardName )
 		}
 		
 	}

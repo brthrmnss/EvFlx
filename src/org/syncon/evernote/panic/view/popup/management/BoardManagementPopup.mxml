@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var SAVE_BOARD : String = 'saveBoard'; 
+			static public var CHECK_NAME  : String = 'checkName'; 
+			static public var OPENED_POPUP : String = 'openedPopup'; 
+			static public var CLOSED_POPUP : String = 'closedPopup'; 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup : BoardManagementPopup = new BoardManagementPopup ()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open(false,true  ) 
+				this.dispatchEvent( new CustomEvent( OPENED_POPUP  ) )
+			}
+ 
+			override public function hide( ) : void
+			{
+				this.dispatchEvent( new CustomEvent( CLOSED_POPUP  ) )
+				this.popupCode.close() 
+			}
+
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( SAVE_BOARD  ) )
+				this.hide()
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			} 
+			protected function btnClose_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			} 			
+
+
+			protected function txtName_focusOutHandler(event:FocusEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( CHECK_NAME  ) )
+			}
+
+		]]>
+	</fx:Script>
+ 
+	<editors:PopupBg />
+	<!--<s:Rect width="100%" height="100%"  >
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>	
+	</s:Rect>		
+	-->
+ <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader  bold="false"   label="Edit Board"  padding="0"  width="100%"/>
+	 <mx:Form>
+		 <mx:FormItem label="Name" >
+			 <s:TextInput id="txtName" editable="false" focusOut="txtName_focusOutHandler(event)" />
+			 <s:Label id="txtNameOk" />
+			 <s:Label id="txtUrl" />
+		 </mx:FormItem>
+		 <mx:FormItem label="Description" >
+			 <s:TextInput id="txtDesc" />
+		 </mx:FormItem>
+		 <mx:FormItem label="Board Password:" >
+			 <s:TextInput id="txtPassword" />
+			 <s:Label text="If set will override user based permissions" />
+		 </mx:FormItem>	
+ 	
+		 <mx:FormItem label="Board Admin Password:" >
+			 <s:TextInput id="txtAdminPassword" />
+			 <s:Label text="If set will override user based permissions" />
+		 </mx:FormItem>			 
+		 
+		 			 
+		 <mx:FormItem>
+			 <s:HGroup>
+				 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
+				 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
+			 </s:HGroup>
+		 </mx:FormItem>
+	 </mx:Form>
+
+ </s:VGroup>
+
+		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" right="10" top="10" />
+</popup:PopupBase>

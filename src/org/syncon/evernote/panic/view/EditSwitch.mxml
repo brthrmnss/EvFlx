@@ -27,8 +27,10 @@
 			
 			protected function onInit():void
 			{
+				/*
 				if ( this.currentState != 'edit' )
-					this.currentState = 'noEdit'
+					this.currentState = 'noEdit' 
+				*/
 				this.creationComplete = true
 			}
 
@@ -40,6 +42,10 @@
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedSave', this.editMode ) ) 
 			}		
+			protected function btnBoard_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedBoard', this.editMode ) ) 
+			}					
 			protected function btnProjects_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedProjects', this.editMode ) ) 
@@ -51,7 +57,7 @@
 
 			public function show() : void
 			{
-				this.currentState = 'edit'
+				//this.currentState = 'edit'
 				this.alpha = 0.95
 			}
 			
@@ -98,6 +104,9 @@
 	</s:HGroup>	
 		
 		<s:HGroup id="holderStuff" includeIn="edit">
+			<s:Button label="Board Config"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
+		</s:HGroup>		
+		<s:HGroup id="holderStuff2" includeIn="edit">
 			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
 			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
 		</s:HGroup>
