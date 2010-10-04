@@ -1,5 +1,7 @@
 package  org.syncon.evernote.panic.view
 {
+	import mx.core.UIComponent;
+	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
@@ -51,6 +53,34 @@ package  org.syncon.evernote.panic.view
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.GRAPH, WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.GRAPH; 
 			}
+			if ( e.data == WidgetVO.PROJECT_LIST ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.PROJECT_LIST; 
+			}	
+			if ( e.data == WidgetVO.MESSAGE ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.MESSAGE; 
+			}				
+			if ( e.data == WidgetVO.TWITTER_SCROLLER ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.TWITTER_SCROLLER; 
+			}				
+			if ( e.data == WidgetVO.PANE ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.PANE, WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.PANE; 
+			}			
 		}
 		
 		public function onCancelHandler(e:CustomEvent)  : void
@@ -83,25 +113,56 @@ package  org.syncon.evernote.panic.view
 			var row : BoardRow; 
 			if ( addingA == WidgetVO.GRAPH ) 
 			{
-				
-				if ( ui is BoardRow ) 
-				{
-					row = (ui as BoardRow)
-					var x :  Group = row.parent as Group; //.getElementIndex( row )
-					var index : int = x.getElementIndex( row ) 
-					row = new BoardRow()
-					row.percentWidth = 100; 
-					x.addElementAt( row, index+1 ) ; //
-				}
-				else
-					row = ui.parentDocument as BoardRow
-				
+				row = getRowOrFindParentRow( ui  )				
 				row.addWidget( GraphWidget.importData( 'new', '', 'new', 'new', 10, 12,  0xFFDDFF )  )
-									
 			}
+			if ( addingA == WidgetVO.PANE ) 
+			{
+				row = getRowOrFindParentRow( ui  )				
+				row.addWidget( PaneWidget.importData( 'Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E' )  )
+			}
+			if ( addingA == WidgetVO.MESSAGE ) 
+			{
+				row = getRowOrFindParentRow( ui  )				
+				row.addWidget( MessageWidget.importData('Global Alert', '', 'New Alert' , 15000)  )
+			}
+			if ( addingA == WidgetVO.TWITTER_SCROLLER ) 
+			{
+				row = getRowOrFindParentRow( ui  )				
+				row.addWidget( TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000)  )
+			}
+			if ( addingA == WidgetVO.PROJECT_LIST ) 
+			{
+				row = getRowOrFindParentRow( ui  )				
+				row.addWidget( ProjectListWidget.importData('Project Lister', '', 355, 15000)  )
+			}			
+			/*
+			if ( addingA == WidgetVO.GRAPH ) 
+			{
+				row = getRowOrFindParentRow( ui  )				
+				row.addWidget( GraphWidget.importData( 'new', '', 'new', 'new', 10, 12,  0xFFDDFF )  )
+			}			*/
 			this.ui.message = ''
 			this.ui.list.selectedIndex = -1
 		}		
 	
+		public function getRowOrFindParentRow ( ui :  Object )  : BoardRow
+		{
+			var row : BoardRow; 
+			if ( ui is BoardRow ) 
+			{
+				row = (ui as BoardRow)
+				var x :  Group = row.parent as Group; //.getElementIndex( row )
+				var index : int = x.getElementIndex( row ) 
+				row = new BoardRow()
+				row.percentWidth = 100; 
+				x.addElementAt( row, index+1 ) ; //
+			}
+			else
+				row = ui.parentDocument as BoardRow
+					
+			return row 
+		}
+		
 }
 }

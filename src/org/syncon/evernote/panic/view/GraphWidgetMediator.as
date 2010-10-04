@@ -1,6 +1,8 @@
 package  org.syncon.evernote.panic.view
 {
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
@@ -38,7 +40,7 @@ package  org.syncon.evernote.panic.view
 				this.onEditModeChanged);						
 			this.onEditModeChanged(null)
 				
-			
+			this.setupGetter()
 		}
 
 		public function getSourcedValue( source : String, host : Object, property : String, 
@@ -81,8 +83,32 @@ package  org.syncon.evernote.panic.view
 			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
 			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
 			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
+			
+			this.setupGetter()
 		}
+		private var timer : Timer ;//= new Timer()
+		override public function onRemove() : void
+		{
+			super.onRemove()
+			this.timer.stop()
+			this.timer.removeEventListener(TimerEvent.TIMER, this.onUpdateMeTimer )
+		}
+		public function setupGetter()  : void
+		{
+			if ( this.timer == null ) 
+			{
+				this.timer = new Timer( this.widgetData.refreshTime, 0 ) 
 				
+				this.timer.addEventListener(TimerEvent.TIMER, this.onUpdateMeTimer, false, 0, true )
+				this.timer.start()
+			}
+		}
+		
+		public function onUpdateMeTimer(e:Event) : void
+		{
+			if ( this.widgetData.editing == false )  
+			onAutomateWidget( null ) 
+		}
 		
 		public function onEditClicked(e:CustomEvent) : void
 		{

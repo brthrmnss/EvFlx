@@ -23,7 +23,7 @@
 		<s:layout>
 			<s:VerticalLayout />
 		</s:layout>
-	
+<!--	
 	<s:HGroup paddingRight="10" paddingLeft="10">
 		<view:GraphWidget width="{(this.width-20)/5}"  textBottom="transmit"  fillC="0xFCBF17" />
 		<view:GraphWidget width="{(this.width-20)/5}"   textBottom="coda"    fillC="0x47C816" />
@@ -43,10 +43,8 @@
 		<view:PaneWidget  width="{(this.width-20-15)/3}" colorScheme="2"/>
 	</s:HGroup>
 	<mx:Spacer height="15" /><mx:Spacer height="15" />
-	<!--<view:TwitterScrollerTest />-->
 	<view:TwitterScrollerTest2  width="100%"/>
-	<!--<view:TwitterScroller />-->
-	
+	-->
 	</s:Group>
 	
 	

@@ -4,8 +4,10 @@ package  org.syncon.evernote.panic.view
 	import com.adobe.serialization.json.JSONDecoder;
 	
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.text.engine.FontLookup;
 	import flash.text.engine.RenderingMode;
+	import flash.utils.Timer;
 	
 	import flashx.textLayout.conversion.TextConverter;
 	import flashx.textLayout.elements.FlowElement;
@@ -68,7 +70,30 @@ package  org.syncon.evernote.panic.view
 				this.ui.color1.color = useSettings.data.color1; 
 			if ( useSettings.data.hasOwnProperty( 'color2' ) )
 				this.ui.color2.color = useSettings.data.color2; 		
-			
+			this.setupGetter()
+		}
+		private var timer :  Timer ;//= new Timer()
+		override public function onRemove() : void
+		{
+			super.onRemove()
+			this.timer.stop()
+			this.timer.removeEventListener(TimerEvent.TIMER, this.onUpdateMeTimer )
+		}
+		public function setupGetter()  : void
+		{
+			if ( this.timer == null ) 
+			{
+				this.timer = new Timer( this.widgetData.refreshTime, 0 ) 
+				
+				this.timer.addEventListener(TimerEvent.TIMER, this.onUpdateMeTimer, false, 0, true )
+				this.timer.start()
+			}
+		}
+		
+		public function onUpdateMeTimer(e:Event) : void
+		{
+			if ( this.widgetData.editing == false )  
+				onAutomateWidget( null ) 
 		}
 		/**
 		 * color

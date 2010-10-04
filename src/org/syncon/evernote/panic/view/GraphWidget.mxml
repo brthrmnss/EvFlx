@@ -242,7 +242,12 @@
 		<!--<s:SolidColor id="fillColor_" color="0xFFDDFF" />-->
 		<s:SolidColor id="fillColor_" color="#990033" />
 		<s:Fade id="fade" duration="1500"  alphaTo="1" />
-		
+		<!-- Define chart effect. -->  
+		<mx:SeriesInterpolate id="rearrangeData" 
+							  duration="1000" 
+							  minimumElementDuration="200" 
+							  elementOffset="0"
+							  />
 	</fx:Declarations>
 	
 
@@ -284,7 +289,7 @@
 		</mx:verticalAxis>		
 		<mx:series>
 			<mx:ColumnSeries 
-				xField="Month"  
+				xField="Month"   showDataEffect="rearrangeData"
 				yField="Expenses"   id="columnSeries"
 				displayName="Expenses" fills="{[this.fillColor_]}"
 				/>
