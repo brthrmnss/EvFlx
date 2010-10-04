@@ -1,0 +1,96 @@
+/*******************************************
+ *
+ * Based on the HexCells shader written by 
+ * Petri Leskinen, Espoo, Finland
+ * leskinen.petri[at]luukku.com
+ * Espoo, Finland, 25 Feb, 2008 Ð June 2008
+ *
+ ********************************************/
+<languageVersion: 1.0;>
+
+kernel HexCells
+<
+    namespace : "HexCellsTransition";
+    vendor : "Petri Leskinen";
+    version : 2;
+    description : "Hexagonal Tiling";
+>
+
+{
+    // Progress of transition
+    parameter float progress;
+    
+    // Input width
+    parameter float width
+    <
+      minValue: float(0);
+      maxValue: float(1024);
+    >;
+    
+    // Input height
+    parameter float height
+    <
+      minValue: float(0);
+      maxValue: float(1024);
+    >;
+   
+    // First input image parameter is unused in 
+    // AnimateTransitionShader effect
+    input image4 src0;   
+    input image4 from;
+    input image4 to;
+    
+    // Output image
+    output pixel4 pxl;
+  
+    // Constants needed for hexagon maths
+    const float sqrt3 = 1.7320508076;
+    const float halfSqrt3 = 0.866025404;
+
+    void evaluatePixel()
+    {
+        // We need to reference src0 to ensure compiler does not optimize away this field.
+        pixel4 src0Pixel = sampleNearest(src0, outCoord());
+        
+        float p1 = progress * 2.0;
+        float p2 = (1.0 - progress) * 2.0;
+        float perc = (progress <= .5) ? p1 : p2;
+        float size = (perc * 30.5) - .5;
+        float2 base = float2(width/2.0,height/2.0);
+
+        // Tiling by counting a distance to two regular grids,
+        // and choosing the sample point of the closer one
+        // Scales of this transformation are ÕsizeÕ in x-direction
+        // and sqrt(3)*size in y-direction
+        float2 grid = float2(size,sqrt3*size);
+
+        // First grid ( like red dots in the above image )
+        // to get regular ÔpixelationÕ we first divide by grid size,
+        // apply ÔfloorÕ and then multiply back
+        float2 po1 = floor((outCoord()-base)/grid+0.5);
+        po1 = po1*grid +base -outCoord();
+
+        // Squared distance to a center point of that
+        // (we only compare the distances, so no reason applying ÔheavyÕ sqrt-operation )
+        float dst1 = po1.x*po1.x + po1.y*po1.y;
+
+        // Same thing with the Second grid (blue dots):
+        // base point here is in the middle of first grid
+        float2 base2 = base+size*float2(0.5,halfSqrt3);
+        float2 po2 = floor((outCoord()-base2)/grid+0.5);
+        po2 = po2*grid +base2 -outCoord();
+
+        // Second distance
+        float dst2 = po2.x*po2.x + po2.y*po2.y;
+
+        // pick the closer point for sampling :
+        po1= (dst1<dst2) ? po1 : po2;
+    
+        // Compute destination pixel.
+        if (progress > .5)
+            pxl = sampleNearest(to, po1+outCoord());
+        else
+            pxl = sampleNearest(from, po1+outCoord());
+    }
+
+}

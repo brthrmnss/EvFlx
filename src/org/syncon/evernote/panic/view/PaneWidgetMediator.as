@@ -55,6 +55,7 @@ package  org.syncon.evernote.panic.view
 		
 		public function onAutomateWidget( e : WidgetEvent )  : void
 		{
+			
 			var useSettings : WidgetVO = this.widgetData; 
 			if ( e != null && e.data != null) 
 				useSettings = e.data; 
@@ -71,6 +72,7 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data.hasOwnProperty( 'color2' ) )
 				this.ui.color2.color = useSettings.data.color2; 		
 			this.setupGetter()
+			this.ui.animateHover(this.ui)
 		}
 		private var timer :  Timer ;//= new Timer()
 		override public function onRemove() : void

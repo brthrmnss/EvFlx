@@ -27,9 +27,22 @@
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
 			
+			[Bindable] private var state1Text : String = '';
+			[Bindable] private var state2Text : String = ''; 	
+			
 			public function set  message ( s : String ) : void
 			{
-				this.lblMessage.text = s.toUpperCase() ; 
+				//this.lblMessage.text = s.toUpperCase() ; 
+				if ( this.currentState == 'State1' ) 
+				{
+					this.state2Text = s
+					this.currentState = 'State2'					
+				}
+				else
+				{
+					this.state1Text = s					
+					this.currentState = 'State1'
+				}
 			}
 			
 			protected function onInit():void
@@ -90,9 +103,24 @@
 			}					
 		]]>
 	</fx:Script>
- 
-	<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Label  id="lblMessage" text="25 DAS UNTIL IPAD LAUNCH"   />
+	
+	<s:transitions>
+		<s:Transition>
+			<s:AnimateTransitionShader target="{ticker}" duration="1100"
+				shaderByteCode="@Embed(source='org/syncon/evernote/panic/view/utils/HexCells.pbj',
+									   mimeType='application/octet-stream')"/>
+		</s:Transition>
+	</s:transitions>	 
+	
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="State2"/>
+	</s:states>
+	
+	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0">
+		<s:Label  id="lblMessage"
+				  text.State1="{state1Text}" text.State2="{this.state2Text}"
+				  text="25 DAS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
 	
 	<view:EditBorder id="editBorder" edit="{this}" />

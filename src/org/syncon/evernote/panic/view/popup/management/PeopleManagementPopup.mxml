@@ -110,12 +110,14 @@
 	
 	-->
 	
+	<editors:PopupBg />
+	<!--
 	<s:Rect width="100%" height="100%"  >
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF" />
 		</s:fill>	
 	</s:Rect>		
-	
+	-->
  <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"  label="People"   padding="0"  width="100%"/>
 	 

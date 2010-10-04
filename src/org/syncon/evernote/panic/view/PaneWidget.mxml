@@ -13,11 +13,15 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.effects.Effect;
+			import mx.events.EffectEvent;
 			import mx.events.ResizeEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
+			
+			import spark.effects.animation.RepeatBehavior;
 			
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 			
@@ -93,11 +97,11 @@
 			static public function importData( name : String, desc:String, 
 											   source : String='',   refreshTime :  Number=15000, 
 												color1 : String = '', color2 : String = '', 
-											   height : Number = NaN)  :   MessageWidget
+											   height : Number = NaN)  :   PaneWidget
 			{
 				var o : Object = {}
 				var vo : WidgetVO = new WidgetVO(WidgetVO.PANE, o); 	
-				var g : MessageWidget = new MessageWidget()
+				var g :  PaneWidget = new PaneWidget()
 				g.widgetData = vo
 				
 				vo.name = name; 
@@ -138,9 +142,40 @@
 				this.editBorder.hide()
 			}					
 
+			
+			private var animatingTargets:Object = new Object();
+			
+			public function animateHover(target:Object):void
+			{
+				if (animatingTargets[target.id] === undefined)
+				{
+					var effect: Effect;                
+					if (true)
+						effect = rotator;
+					else
+						effect = mover;
+					effect.target = target;
+					animatingTargets[target.id] = effect;
+					effect.play();
+				}
+			}
+			private function effectEndHandler(event: EffectEvent):void
+			{
+				delete animatingTargets[event.effectInstance.target.id];
+			}			
+			
 		]]>
 	</fx:Script>
-	
+	<fx:Declarations> 
+		<s:Rotate3D id="rotator" angleYFrom="0" angleYTo="360"
+					autoCenterTransform="true"
+					effectEnd="effectEndHandler(event)"/>
+		<s:Move3D id="mover" duration="200"
+				  zBy="-30" repeatCount="2"
+				  repeatBehavior="{RepeatBehavior.REVERSE}"
+				  autoCenterTransform="true"
+				  effectEnd="effectEndHandler(event)"/>
+	</fx:Declarations>
 	<s:Rect  radiusX="12" radiusY="12"  top="0" right="0" bottom="0" left="0">
 		<s:fill>
 			<s:LinearGradient  rotation="90" id="gradientBg">
