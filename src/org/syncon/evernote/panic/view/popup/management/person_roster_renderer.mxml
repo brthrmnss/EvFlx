@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  fontSize="12"   width="360"
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			[Bindable] public var person : PersonVO = new  PersonVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				person = value as PersonVO
+				txtLbl.text = this.person.name.toString()//.toUpperCase(); 
+				this.txtDesc.text = this.person.desc.toString()//.toUpperCase()
+				this.pic.source = this.person.src; 
+			} 
+
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
+			}
+
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:AnimateColor targets="{[this.txtLbl, this.txtDesc]}"   duration="250" />
+		</s:Transition>
+	</s:transitions>	
+	
+	<s:layout>
+		<s:HorizontalLayout gap="10" horizontalAlign="left" />
+	</s:layout>
+	
+ <utils:Avatar id="pic" emptySetting="border" />
+	
+		<s:Label   id="txtLbl" verticalCenter="0" width="125"
+				   color.hovered="0x696969"  x="5"
+				   useHandCursor="true"  buttonMode="true"
+				     />		
+	
+	<s:Label   id="txtDesc" verticalCenter="0" width="150"
+			   color.hovered="0x696969"  x="5"
+			   useHandCursor="true"  buttonMode="true"
+			     />		
+	<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)"
+					  toolTip="Eamil"
+					  iconSkin=".iconSettings"    />
+ <s:Button label="Send Email" click="btnEdit_clickHandler(event)" /> 
+</s:ItemRenderer>

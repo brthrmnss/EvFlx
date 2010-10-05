@@ -3,6 +3,8 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"
+				 rollOver="itemrenderer1_rollOverHandler(event)"
+				  rollOut="itemrenderer1_rollOutHandler(event)"
 				 creationComplete="itemrenderer1_creationCompleteHandler(event)"
 				minHeight="35" minWidth="35" xmlns:view="org.syncon.evernote.panic.view.*" 
 				>
@@ -13,6 +15,7 @@
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var menu :   PersonVO = new PersonVO()
@@ -21,7 +24,7 @@
 				if (value== null)  return; 
 				menu = value as PersonVO
 				this.img.source = menu.src; 
-				this.img.toolTip = menu.name;
+				//this.img.toolTip = menu.name;
 				//this.img2.source = menu.src; 
 				if ( this.parentDocument.parentDocument != null &&  
 					this.parentDocument.parentDocument.hasOwnProperty('deleteMode' )  
@@ -42,6 +45,20 @@
 			protected function btnDelete_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( 'deletePerson', this.menu ) ) 
+			}
+
+
+			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
+			{
+				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
+					HoverPersonEvent.SHOW_PERSON_HOVER, this.menu, this ) ) 
+			}
+
+
+			protected function itemrenderer1_rollOutHandler(event:MouseEvent):void
+			{
+				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
+					HoverPersonEvent.HIDE_PERSON_HOVER, this.menu, this ) ) 
 			}
 
 		]]> 

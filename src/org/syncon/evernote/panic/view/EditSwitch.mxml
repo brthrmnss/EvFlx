@@ -10,7 +10,10 @@
 	</s:states> 	
 	<s:transitions>
 		<s:Transition toState="*" >
-			<s:Resize target="{this.btnEdit}"   duration="250" />
+			<s:Parallel>
+				<s:Resize target="{this.btnEdit}"   duration="250" />
+				<s:Resize target="{this}"   duration="250" />
+			</s:Parallel>
 		</s:Transition>
 	</s:transitions>
 	<fx:Declarations>
@@ -71,6 +74,12 @@
 				this.alpha = 0;
 			}
 
+			protected function btnRoster_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedRoster' ) )
+			}			
+			
+			
 		]]>
 	</fx:Script>
  
@@ -81,12 +90,20 @@
 			strength="1"/>
 	</s:filters>
 	
+<!--	
 	<s:Rect right="0" left="0" top="-1" bottom="0" 
 			topLeftRadiusX="-10" topLeftRadiusY="10"
 			topRightRadiusX="-10" topRightRadiusY="10"
 			 bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
 			 bottomRightRadiusX="10"  bottomRightRadiusY="10"
 			 >
+	-->
+	<s:Rect right="0" left="0" top="-1" bottom="0" 
+			topLeftRadiusX="0" topLeftRadiusY="0"
+			topRightRadiusX="0" topRightRadiusY="0"
+			bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
+			bottomRightRadiusX="10"  bottomRightRadiusY="10"
+			>	
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF" />
 		</s:fill>
@@ -96,10 +113,11 @@
 	</s:Rect>
 	
 	<s:VGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
-		
 
-	<s:HGroup horizontalAlign="right" >
-		<s:Label id="lblMessage" />
+
+	<s:HGroup  >
+		<s:Label id="lblMessage"  text=""/>
+		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)"/>
 		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
 	</s:HGroup>	
 		

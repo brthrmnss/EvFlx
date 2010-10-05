@@ -161,7 +161,7 @@ package  org.syncon.evernote.panic
 					
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
-				PopupPersonHover, 'PopupPersonHover',  true ) );			
+				PopupPersonHover, 'PopupPersonHover',  false ) );			
 			
 			
 			/*

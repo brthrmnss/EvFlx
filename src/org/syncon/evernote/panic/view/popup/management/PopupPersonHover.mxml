@@ -31,6 +31,7 @@
 			{
 				this.creationComplete = true; 
 				this.popupCode.center()
+				this.popupCode.fadeTime = 0.25
 			}
 			
 			override public  function create(app:Object)  : IPopup
@@ -47,8 +48,8 @@
  
 			public function open( person :  PersonVO , ui : UIComponent  )  : void
 			{
-				this.popupCode.open( false, true )
-				this.popupCode.moveToComponent( ui, 'tr' ) 
+				this.popupCode.open( false,  false )
+				this.popupCode.moveToComponent( ui, 'tr', false ) 
 				this.person = person
 				this.txtName.text = this.person.name; 
 				//this.txtDesc.text = this.person.desc
@@ -65,15 +66,10 @@
 
 			public function close( person :  PersonVO , ui : UIComponent  )  : void
 			{
-				this.popupCode.open( false, true )
-				this.popupCode.moveToComponent( ui, 'tr' ) 
-				this.person = person
-				this.txtName.text = this.person.name; 
-				//this.txtDesc.text = this.person.desc
-				this.chkAvailable.selected = this.person.available
-				this.txtStatus.text  = this.person.status; 
-				this.txtEmail.text = this.person.email;
-				this.txtTwitter.text = this.person.twitter				
+				if ( this.person == person ) 
+				{
+					this.hide()
+				}
 			}			
 			
 			protected function btnClose_clickHandler(event:MouseEvent):void
@@ -84,15 +80,34 @@
 
 		]]>
 	</fx:Script>
-
+<!--
 	<editors:PopupBg />
+	-->
+	<popup:filters>
+		<s:DropShadowFilter
+			alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="0x000000" 
+			distance="4" hideObject="false" inner="false" knockout="false" quality="2" 
+			strength="1"/>
+	</popup:filters>
 	
- <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-			 <s:TextInput id="txtName" />
-			 <s:TextInput id="txtStatus"   />
+	<s:Rect width="100%" height="100%"   radiusX="5" radiusY="5">
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" alpha="0.8" />
+		</s:fill>	
+		<s:stroke>
+			<s:SolidColorStroke color="0"  pixelHinting="true"  weight="1"/>
+		</s:stroke>
+	</s:Rect>		
+	
+	
+ <s:VGroup gap="0" 
+		    width="110"
+		   paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+			 <s:Label id="txtName" />
+			 <s:Label id="txtStatus"   />
 			 <s:CheckBox id="chkAvailable"   />
-			 <s:TextInput id="txtEmail"   />
-			 <s:TextInput id="txtTwitter"   />
+			 <s:Label id="txtEmail"   />
+			 <s:Label id="txtTwitter"   />
  </s:VGroup>
 <!--
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 

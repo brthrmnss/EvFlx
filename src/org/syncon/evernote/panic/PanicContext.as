@@ -25,6 +25,8 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
+	import org.syncon.evernote.panic.controller.HoverPersonCommand;
+	import org.syncon.evernote.panic.controller.HoverPersonEvent;
 	import org.syncon.evernote.panic.controller.ImportBoardCommand;
 	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDataSourceCommand;
@@ -64,6 +66,8 @@ package   org.syncon.evernote.panic
 			
 			commandMap.mapEvent(AuthenticateToBoardCommandTriggerEvent.METH1,  AuthenticateToBoardCommand, null, false );	
 			commandMap.mapEvent(AuthenticateToBoardCommandTriggerEvent.METH2,  AuthenticateToBoardCommand, null, false );				
+			commandMap.mapEvent(HoverPersonEvent.SHOW_PERSON_HOVER,  HoverPersonCommand, null, false );	
+			commandMap.mapEvent(HoverPersonEvent.HIDE_PERSON_HOVER,  HoverPersonCommand, null, false );							
 			
 			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
