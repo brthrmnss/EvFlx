@@ -20,6 +20,7 @@
 			import org.syncon.popups.view.IPopup;
 			
 			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
@@ -113,27 +114,22 @@
 				// TODO Auto-generated method stub
 			}
 
+			protected function txtImage_changeHandler(event:TextOperationEvent):void
+			{
+				this.img.source = this.txtImage.text ; 
+			}
+			protected function changePic():void
+			{
+				this.txtImage.text = this.img.source; 
+			}					
+			
 		]]>
 	</fx:Script>
 
-	<!--	
-	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
-		<s:fill>
-			<s:SolidColor color="0xEDF6F7" />
-		</s:fill>	
-	</s:Rect>	 	
+	 <editors:PopupBg />
 	
-	-->
-	
-	<s:Rect width="100%" height="100%"  >
-		<s:fill>
-			<s:SolidColor color="0xFFFFFF" />
-		</s:fill>	
-	</s:Rect>		
-	
- <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+ <s:VGroup  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
-	 
 	 <mx:Form>
 		 <mx:FormItem label="Name" >
 			 <s:TextInput id="txtName" />
@@ -148,11 +144,14 @@
 			 <s:TextInput id="txtCol3" />
 		 </mx:FormItem>		
 		 <mx:FormItem label="Image:" >
-			 <s:TextInput id="txtImage" />
+			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
 		 </mx:FormItem>		
-		 <mx:FormItem label="Image:" >
+		 <mx:FormItem>
+			 <utils:AvatarEdit id="img"  changeFx="{this.changePic}" />
+		 </mx:FormItem>		 
+		 <mx:FormItem label="Members:" >
 			 <s:HGroup>
-				 <view:ProjectMembersList id="memberLIst"  width="250" />
+				 <view:ProjectMembersList id="memberLIst"  width="180"  clipAndEnableScrolling="true" />
 				 <s:Button label="Change" id="btnEditMembers" click="btnEditMembers_clickHandler(event)" />
 			 </s:HGroup>
 		 </mx:FormItem>				 

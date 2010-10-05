@@ -31,7 +31,7 @@
 			static public var PEOPLE_SELECTED : String = 'peopleSelected'
 			static public var OPENED_POPUP : String = 'openedPopup'; 
 			static public var CLOSED_POPUP : String = 'closedPopup'; 
-			
+			static public var ADD_PERSON_TO_SELECTION : String = 'addPersonToSelection'
 			override public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -95,7 +95,8 @@
 			
 			protected function list1_changeHandler(event:IndexChangeEvent):void
 			{
-				//this.dispatchEvent( new CustomEvent( EDIT_PROJECT,  this.list1.dataProvider.getItemAs(event.newIndex)  )
+				this.dispatchEvent( new CustomEvent( ADD_PERSON_TO_SELECTION, 
+					this.list1.dataProvider.getItemAt(event.newIndex)  ) )
 			}
 
 		]]>
@@ -138,5 +139,5 @@
  </s:VGroup>
 
 		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
-		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="10" top="10" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="5" top="10" />
 </popup:PopupBase>

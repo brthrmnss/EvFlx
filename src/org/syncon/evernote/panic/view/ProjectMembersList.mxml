@@ -50,7 +50,7 @@
 	
 	<s:VGroup>
 		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.project_member_renderer" 
-				 width="100%"
+				 width="100%"  
 				contentBackgroundAlpha="0"  borderVisible="false">
 			<s:layout>
 				<s:HorizontalLayout  paddingLeft="10" paddingBottom="5" gap="10"/>

@@ -6,6 +6,13 @@
 		  
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
+
+	
+	<fx:Metadata>
+		[Event(name="changedAvatar", type="org.syncon.evernote.basic.model.CustomEvent")]		
+	</fx:Metadata>		
+	
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -34,6 +41,8 @@
 			}
 			public function get  source ( ) :   String 
 			{
+				if ( this.img.source == null ) 
+					return ''
 				return this.img.source.toString(); 
 			}			
 

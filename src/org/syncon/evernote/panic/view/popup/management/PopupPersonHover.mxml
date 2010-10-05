@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.core.UIComponent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			import org.syncon.evernote.panic.vo.ProjectVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			public var completeFx : Function; 
+			public var person : PersonVO = new PersonVO(); 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup:   PopupPersonHover = new PopupPersonHover()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open( false,true ) 
+			}
+ 
+			public function open( person :  PersonVO , ui : UIComponent  )  : void
+			{
+				this.popupCode.open( false, true )
+				this.popupCode.moveToComponent( ui, 'tr' ) 
+				this.person = person
+				this.txtName.text = this.person.name; 
+				//this.txtDesc.text = this.person.desc
+				this.chkAvailable.selected = this.person.available
+				this.txtStatus.text  = this.person.status; 
+				this.txtEmail.text = this.person.email;
+				this.txtTwitter.text = this.person.twitter				
+			}
+ 
+			override public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+
+			public function close( person :  PersonVO , ui : UIComponent  )  : void
+			{
+				this.popupCode.open( false, true )
+				this.popupCode.moveToComponent( ui, 'tr' ) 
+				this.person = person
+				this.txtName.text = this.person.name; 
+				//this.txtDesc.text = this.person.desc
+				this.chkAvailable.selected = this.person.available
+				this.txtStatus.text  = this.person.status; 
+				this.txtEmail.text = this.person.email;
+				this.txtTwitter.text = this.person.twitter				
+			}			
+			
+			protected function btnClose_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+ 
+
+		]]>
+	</fx:Script>
+
+	<editors:PopupBg />
+	
+ <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+			 <s:TextInput id="txtName" />
+			 <s:TextInput id="txtStatus"   />
+			 <s:CheckBox id="chkAvailable"   />
+			 <s:TextInput id="txtEmail"   />
+			 <s:TextInput id="txtTwitter"   />
+ </s:VGroup>
+<!--
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
+						   right="5" top="10" />-->
+</popup:PopupBase>

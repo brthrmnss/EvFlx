@@ -5,6 +5,8 @@ package org.syncon.evernote.panic.vo
 		public var name :  String = ''
 		public var desc :  String = ''
 		public var email :  String = ''; 		
+		public var status : String = ''; 
+		public var available : Boolean = true; 
 		public var twitter : String = ''; 
 		public var src :  String = ''; 
 		public var admin : Boolean = false; 

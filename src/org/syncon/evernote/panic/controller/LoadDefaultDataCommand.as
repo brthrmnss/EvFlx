@@ -87,8 +87,8 @@ package   org.syncon.evernote.panic.controller
 			board.name = 'blickem'
 			arr.push( [
 				 
-				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
 			 
 				GraphWidget.importData('Eccles lister', '', 
 					'{http://city-21.com/php/random_number.php}/100',
@@ -96,7 +96,7 @@ package   org.syncon.evernote.panic.controller
 					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
 				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
 				])
-			/*
+			
 			arr.push( [
 				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
 			])			
@@ -109,7 +109,7 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])		
-			*/
+			
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
@@ -154,7 +154,8 @@ package   org.syncon.evernote.panic.controller
 				
 			this.model.board = board; 
 			this.model.refreshBoard()
-				
+			
+			this.model.adminMode = true; 
 			
 		}
 		

@@ -24,6 +24,7 @@ package  org.syncon.evernote.panic.view.popup.management
 		override public function onRegister():void
 		{
 	 		this.ui.addEventListener( PeopleManagementPopup.ADD_PERSON, this.onAddPerson) 
+			this.ui.addEventListener( PeopleManagementPopup.ADD_PERSON_TO_SELECTION, this.onEditPerson) 
 			this.ui.addEventListener( PeopleManagementPopup.OPENED_POPUP, this.onOpenedPopup) 
 			this.ui.addEventListener( PeopleManagementPopup.CLOSED_POPUP, this.onClosedPopup) 				
 			this.ui.addEventListener( PeopleManagementPopup.EDIT_PERSON, this.onEditPerson)

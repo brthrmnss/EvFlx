@@ -8,6 +8,7 @@ package  org.syncon.evernote.panic.view.popup.management
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
+	import org.syncon.evernote.panic.view.utils.AvatarEdit;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
@@ -23,7 +24,8 @@ package  org.syncon.evernote.panic.view.popup.management
 		
 		override public function onRegister():void
 		{
-			this.ui.addEventListener( 'editMembers', this.onEditProject) 
+			this.ui.addEventListener( 'editMembers', this.onEditProject)
+			this.ui.addEventListener( AvatarEdit.EditAvatar, this.onEditAvatar) 
 		}
 		
 		private function onEditProject(e:CustomEvent) : void
@@ -37,7 +39,7 @@ package  org.syncon.evernote.panic.view.popup.management
 			//maybe only if neccesary , ... 
 			//now it will always update when changed ... but who really cares 
 			this.ui.project.ppl = newPeople; 
-			
+			this.ui.memberLIst.list1.dataProvider = new ArrayList( this.ui.project.ppl ) 
 		}
 		 /*
 		private function onEditProject(e:CustomEvent) : void
@@ -47,5 +49,22 @@ package  org.syncon.evernote.panic.view.popup.management
 		}				
  */
  
+		
+		
+		private function onEditAvatar(e:CustomEvent) : void
+		{
+			avatar = e.data as AvatarEdit; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PictureChooser',  [this.model.projectPics, this.pickedPicture, this.avatar,
+					this.avatar.source] )  )  				
+		}			
+		
+		private var avatar : AvatarEdit; 
+		
+		private function pickedPicture(s: String) : void
+		{
+			this.avatar.source = s; 				
+		}				
+		
 	}
 }

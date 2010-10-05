@@ -41,6 +41,7 @@ package org.syncon.evernote.panic.model
 		}
 		
 		public var peoplePics : Array = []; 
+		public var projectPics : Array = []; 		
 		
 		/**
 		 * Used for new layouts ... updated by live command

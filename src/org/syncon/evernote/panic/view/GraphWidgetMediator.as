@@ -83,7 +83,7 @@ package  org.syncon.evernote.panic.view
 			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
 			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
 			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
-			
+			this.ui.chart.toolTip = useSettings.description;
 			this.setupGetter()
 		}
 		private var timer : Timer ;//= new Timer()

@@ -65,6 +65,11 @@
 				this.txtImage.text = this.person.src; 
 				this.img.source = this.person.src;
 				//this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
+				this.chkAvailable.selected = this.person.available
+				this.txtStatus.text  = this.person.status; 
+				this.txtEmail.text = this.person.email;
+				this.txtTwitter.text = this.person.twitter				
+				
 			}
 			
 			 /**
@@ -91,6 +96,12 @@
 				this.person.col3 = this.txtCol4.text   */
 				this.person.src = this.txtImage.text  
 				this.img.source = this.txtImage.text
+					
+				this.person.status= this.txtStatus.text  
+				this.person.available= this.chkAvailable.selected  
+				this.person.email = this.txtEmail.text
+				this.person.twitter = this.txtTwitter.text
+					
 				 if ( this.completeFx != null ) this.completeFx( this.person )
 					 
 				this.person.update()
@@ -103,23 +114,20 @@
 				this.hide()
 			}
 
-
-			protected function btnEditMembers_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new CustomEvent( 'editMembers' ) ) 
-				// TODO Auto-generated method stub
-			}
-
-
 			protected function txtImage_changeHandler(event:TextOperationEvent):void
 			{
-				// TODO Auto-generated method stub
 				this.img.source = this.txtImage.text ; 
 			}
 			protected function changePic():void
 			{
 				this.txtImage.text = this.img.source; 
 			}			
+
+			protected function img_changedAvatarHandler(event: CustomEvent):void
+			{
+				this.changePic();
+			}
+
 		]]>
 	</fx:Script>
 
@@ -134,14 +142,28 @@
 			 <s:TextInput id="txtName" />
 		 </mx:FormItem>
 		 <mx:FormItem>
-			 <utils:AvatarEdit id="img"  changeFx="{this.changePic}" />
+			 <utils:AvatarEdit id="img"   changedAvatar="img_changedAvatarHandler(event)"/>
 		 </mx:FormItem>
-		 <mx:FormItem label="Image:" >
+		 <mx:FormItem label="Image" >
 			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
-		 </mx:FormItem>			 
+		 </mx:FormItem>		
+		 
 		 <mx:FormItem label="Description" >
-			 <s:TextInput id="txtDesc" />
+			 <s:TextArea  heightInLines="2" id="txtDesc" />
 		 </mx:FormItem>
+		 
+		 <mx:FormItem label="Status" >
+			 <s:TextInput id="txtStatus"   />
+		 </mx:FormItem>	
+		 <mx:FormItem label="Available" >
+			 <s:CheckBox id="chkAvailable"   />
+		 </mx:FormItem>				 
+		 <mx:FormItem label="Email" >
+			 <s:TextInput id="txtEmail"   />
+		 </mx:FormItem>		
+		 <mx:FormItem label="Twitter" >
+			 <s:TextInput id="txtTwitter"   />
+		 </mx:FormItem>				 
 		<!-- 
 		 <mx:FormItem label="Column 2:" >
 			 <s:TextInput id="txtCol4" />
@@ -159,7 +181,6 @@
 	 </s:HGroup>
  </s:VGroup>
 
-		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
-						   right="5" top="5" />
+						   right="5" top="10" />
 </popup:PopupBase>
