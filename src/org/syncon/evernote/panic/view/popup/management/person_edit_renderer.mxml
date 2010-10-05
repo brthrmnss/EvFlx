@@ -20,7 +20,7 @@
 			} 
  
 
-			protected function button1_clickHandler(event:MouseEvent):void
+			protected function btnEdit_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
 			}
@@ -44,18 +44,19 @@
 		<s:HorizontalLayout gap="10" horizontalAlign="left" />
 	</s:layout>
 	
- <utils:Avatar id="pic" />
+ <utils:Avatar id="pic" emptySetting="border" />
 	
-		<s:Label   id="txtLbl" verticalCenter="0" width="25%"
+		<s:Label   id="txtLbl" verticalCenter="0" width="125"
 				   color.hovered="0x696969"  x="5"
 				   useHandCursor="true"  buttonMode="true"
 				     />		
- 
 	
-	<s:Label   id="txtDesc" verticalCenter="0"
+	<s:Label   id="txtDesc" verticalCenter="0" width="150"
 			   color.hovered="0x696969"  x="5"
 			   useHandCursor="true"  buttonMode="true"
 			     />		
-	
-	<s:Button label="Edit" click="button1_clickHandler(event)" />
+	<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)"
+					  toolTip="Edit Person"
+					  iconSkin=".iconSettings"    />
+<!--	<s:Button label="Edit" click="btnEdit_clickHandler(event)" />-->
 </s:ItemRenderer>

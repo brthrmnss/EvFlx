@@ -30,7 +30,7 @@
 			{
 				this.creationComplete = true
 				var options : Array = [];
-				var options1 : Array = ['Graph', 'Project List', 'Twitter Message', 'Message', 'Spacer', 'Window Pane', 'Row' ] 
+				var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 'Message', 'Spacer', 'Window Pane', 'Row' ] 
 				var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
 														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 					
 				for  ( var i : int = 0 ; i < options1.length; i++)

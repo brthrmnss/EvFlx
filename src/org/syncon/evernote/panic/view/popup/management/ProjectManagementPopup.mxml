@@ -97,7 +97,8 @@
  <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"   label="Projects"  padding="0"  width="100%"/>
 	 
-	 <utils:IconButton  label="Add"  iconSkin=".btnAdd" click="btnAdd_clickHandler(event)" right="10" top="10" />
+	 <utils:IconButton  label="Add"  iconSkin=".btnAdd"  toolTip="Add Project"
+						click="btnAdd_clickHandler(event)" right="10" top="10" />
 	 <s:List id="list1" 
 			 itemRenderer="org.syncon.evernote.panic.view.popup.management.project_edit_renderer" 
 			 width="400"   height="400" change="list1_changeHandler(event)"

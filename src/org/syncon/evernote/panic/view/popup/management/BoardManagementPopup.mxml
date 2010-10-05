@@ -5,7 +5,9 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
 					  implements="org.syncon.popups.view.IPopup"
-					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*"
+					  xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" 
+					  xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
 					  >
 
 	<fx:Script>

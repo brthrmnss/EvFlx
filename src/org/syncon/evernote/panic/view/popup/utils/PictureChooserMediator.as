@@ -1,4 +1,4 @@
-package  org.syncon.evernote.panic.view.popup.management
+package   org.syncon.evernote.panic.view.popup.utils
 {
 	import mx.collections.ArrayList;
 	
@@ -13,13 +13,14 @@ package  org.syncon.evernote.panic.view.popup.management
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
-	public class PopupEditPersonMediator extends Mediator
+	public class PictureChooserMediator extends Mediator
 	{
-		[Inject] public var ui:   PopupEditPerson;
+		[Inject] public var ui:  PictureChooser;
 		[Inject] public var model :  PanicModel;
 		
-		public function PopupEditPersonMediator()
+		public function PictureChooserMediator()
 		{
+			
 		} 
 		
 		override public function onRegister():void
@@ -39,8 +40,7 @@ package  org.syncon.evernote.panic.view.popup.management
 		{
 			avatar = e.data as AvatarEdit; 
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PictureChooser',  [this.model.peoplePics, this.pickedPicture, this.avatar,
-				this.avatar.source] )  )  				
+				'PictureChooser', [this.model.peoplePics, this.pickedPicture] )  )  				
 		}			
 			
 		private var avatar : AvatarEdit; 

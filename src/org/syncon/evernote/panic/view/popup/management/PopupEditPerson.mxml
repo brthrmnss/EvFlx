@@ -19,6 +19,7 @@
 			import org.syncon.popups.view.IPopup;
 			
 			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
@@ -62,6 +63,7 @@
 			/* 	this.txtCol3.text = this.person.col2
 				this.txtCol4.text = this.person.col3 */
 				this.txtImage.text = this.person.src; 
+				this.img.source = this.person.src;
 				//this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
 			}
 			
@@ -108,6 +110,16 @@
 				// TODO Auto-generated method stub
 			}
 
+
+			protected function txtImage_changeHandler(event:TextOperationEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.img.source = this.txtImage.text ; 
+			}
+			protected function changePic():void
+			{
+				this.txtImage.text = this.img.source; 
+			}			
 		]]>
 	</fx:Script>
 
@@ -117,12 +129,16 @@
 	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
 	 
 	 <mx:Form>
-		 <mx:FormItem>
-			 <utils:AvatarEdit id="img" />
-		 </mx:FormItem>
+
 		 <mx:FormItem label="Name" >
 			 <s:TextInput id="txtName" />
 		 </mx:FormItem>
+		 <mx:FormItem>
+			 <utils:AvatarEdit id="img"  changeFx="{this.changePic}" />
+		 </mx:FormItem>
+		 <mx:FormItem label="Image:" >
+			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
+		 </mx:FormItem>			 
 		 <mx:FormItem label="Description" >
 			 <s:TextInput id="txtDesc" />
 		 </mx:FormItem>
@@ -134,9 +150,7 @@
 			 <s:TextInput id="txtCol3" />
 		 </mx:FormItem>		
 		 -->
-		 <mx:FormItem label="Image:" >
-			 <s:TextInput id="txtImage" />
-		 </mx:FormItem>		
+	
 		 
 	 </mx:Form>
 	 <s:HGroup>

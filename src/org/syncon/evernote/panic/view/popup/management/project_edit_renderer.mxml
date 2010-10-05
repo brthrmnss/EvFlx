@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 		  fontSize="12"   width="100%"
-				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*">
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
@@ -22,9 +22,10 @@
 			} 
  
 
-			protected function button1_clickHandler(event:MouseEvent):void
+			protected function btnEdit_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent(ProjectManagementPopup.EDIT_PROJECT, this.project  ) ) 
+				this.dispatchEvent( new CustomEvent(ProjectManagementPopup.EDIT_PROJECT, 
+					this.project  ) ) 
 			}
 
 		]]> 
@@ -46,17 +47,20 @@
 		<s:HorizontalLayout gap="10" horizontalAlign="left" />
 	</s:layout>
 	
- 
-		<s:Label   id="txtLbl" verticalCenter="0"
-				   color.hovered="0x696969"  x="5"
-				   useHandCursor="true"  buttonMode="true"
-				     />		
- 
+	<utils:Avatar id="pic" />
 	
-	<s:Label   id="txtDesc" verticalCenter="0"
+	<s:Label   id="txtLbl" verticalCenter="0" width="125"
 			   color.hovered="0x696969"  x="5"
 			   useHandCursor="true"  buttonMode="true"
-			     />		
+			   />		
 	
-	<s:Button label="Edit" click="button1_clickHandler(event)" />
+	<s:Label   id="txtDesc" verticalCenter="0" width="150"
+			   color.hovered="0x696969"  x="5"
+			   useHandCursor="true"  buttonMode="true"
+			   />		
+	<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)"
+					  toolTip="Edit"
+					  iconSkin=".iconSettings"    />
+	<!--	<s:Button label="Edit" click="btnEdit_clickHandler(event)" />-->
+	
 </s:ItemRenderer>

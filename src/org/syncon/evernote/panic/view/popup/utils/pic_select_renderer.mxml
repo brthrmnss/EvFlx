@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				fontSize="12"   
+				 useHandCursor="true"  buttonMode="true"
+				autoDrawBackground="false" 
+				xmlns:view="org.syncon.evernote.panic.view.*"
+				xmlns:utils="org.syncon.evernote.panic.view.utils.*">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			[Bindable] public var url :  String = ''; // = new  PersonVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+			 url = value.toString()
+				this.pic.source = this.url
+			} 
+ 
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+ 
+	<mx:Image id="pic"  width="50" height="50"/>
+<!-- <utils:Avatar id="pic" />
+ -->
+</s:ItemRenderer>

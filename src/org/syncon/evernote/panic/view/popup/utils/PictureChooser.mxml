@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
+					  >
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.core.UIComponent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			import org.syncon.evernote.panic.vo.ProjectVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			public var completeFx : Function; 
+			public var person : PersonVO = new PersonVO(); 
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup: PictureChooser = new PictureChooser()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open( false,true ) 
+			}
+ 
+			public function open( pics : Array, completeFx : Function, goToUi : UIComponent, currentPic : String = '')  : void
+			{
+				this.popupCode.open( false, true ) 
+						
+				this.completeFx = completeFx
+					
+				this.popupCode.moveToComponent( goToUi, 'tr', false  ) 
+				this.list1.dataProvider = new ArrayList(pics)
+				
+					//scroll to item 
+				for   ( var i : int = 0; i < pics.length; i++ ) 
+				{
+					if ( pics[i] == currentPic ) 
+					{
+						this.list1.selectedIndex = i;
+						this.callLater( this.list1.ensureIndexIsVisible, [i] )
+						//this.list1.ensureIndexIsVisible( i ) 
+					}
+					//	this.list1.
+				}
+				this.pic.source = currentPic
+			}
+			
+			 /**
+			 * Export move data from ui to data object
+			 * */
+			
+			override public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+
+			protected function btnClose_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+ 
+
+			protected function btnEditMembers_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'editMembers' ) ) 
+				// TODO Auto-generated method stub
+			}
+ 	
+
+			protected function btnSelect_clickHandler(event:MouseEvent):void
+			{
+				this.completeFx( this.pic.source ) ; 
+				this.hide()
+			}
+
+
+			protected function list1_changeHandler(event:IndexChangeEvent):void
+			{
+				this.pic.source = this.list1.dataProvider.getItemAt( event.newIndex ).toString()
+			}
+
+		]]>
+	</fx:Script>
+
+	<editors:PopupBg />
+	
+ <s:VGroup   paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <!--
+	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
+	 -->
+	 <mx:Spacer height="15" />
+	 <s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.popup.utils.pic_select_renderer" 
+			 width="100%" height="300"
+			  change="list1_changeHandler(event)"
+			 contentBackgroundAlpha="0"  borderVisible="false">
+		<!-- <s:layout>
+			 <s:HorizontalLayout  paddingLeft="10" paddingBottom="5" gap="10"/>
+		 </s:layout>-->
+	 </s:List>
+	 <s:HGroup verticalAlign="middle">
+		 <utils:Avatar id="pic" />
+		 <s:Button label="Select"  id="btnSelect" click="btnSelect_clickHandler(event)" />
+	 </s:HGroup>
+
+ </s:VGroup>
+
+		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
+						   right="5" top="5" />
+</popup:PopupBase>

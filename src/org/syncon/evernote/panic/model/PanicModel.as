@@ -40,6 +40,8 @@ package org.syncon.evernote.panic.model
 		{
 		}
 		
+		public var peoplePics : Array = []; 
+		
 		/**
 		 * Used for new layouts ... updated by live command
 		 * */

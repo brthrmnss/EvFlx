@@ -26,16 +26,31 @@
 			{
 				this.defaultImg.visible = false; 
 				this.img.source = s; 
+				if ( s == null || s == '' ) 
+					showDefault()
 				//this.content= Icons.getFormatPainter( s ) 
 				//this.invalidateDisplayList();
 			}
+			public function get  source ( ) :   String 
+			{
+				return this.img.source.toString(); 
+			}						
 
 			protected function img_ioErrorHandler(event:IOErrorEvent):void
+			{
+				this.showDefault()
+			}
+			
+			public function showDefault() : void
 			{
 				this.defaultImg.visible = true
 				this.img.source = false; 
 			}
 
+			public function set emptySetting ( s : String )  : void
+			{
+				this.defaultImg.visible = false; 
+			}
 		]]>
 	</fx:Script>
 	

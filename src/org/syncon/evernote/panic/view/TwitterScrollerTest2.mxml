@@ -240,11 +240,11 @@
 			{
 			}		
 			static public function importData( name : String, desc:String,  
-											   source : String='',   refreshTime :  Number=15000)  :   MessageWidget
+											   source : String='',   refreshTime :  Number=15000)  : TwitterScrollerTest2
 			{
 				var o : Object = {}
 				var vo : WidgetVO = new WidgetVO(WidgetVO.TWITTER_SCROLLER, o); 	
-				var g : MessageWidget = new MessageWidget()
+				var g :  TwitterScrollerTest2 = new TwitterScrollerTest2 ()
 				g.widgetData = vo
 				
 				vo.name = name; 

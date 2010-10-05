@@ -13,6 +13,7 @@ package  org.syncon.evernote.panic
 	import org.syncon.evernote.panic.view.popup.default_popups.*;
 	import org.syncon.evernote.panic.view.popup.editors.*;
 	import org.syncon.evernote.panic.view.popup.management.*;
+	import org.syncon.evernote.panic.view.popup.utils.*;
 	import org.syncon.popups.controller.*;
 	import org.syncon.popups.controller.default_commands.*;
 	import org.syncon.popups.model.PopupModel;
@@ -153,6 +154,13 @@ package  org.syncon.evernote.panic
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditPerson, 'PopupEditPerson',  true ) );
 			mediatorMap.mapView( PopupEditPerson , PopupEditPersonMediator, null, false, false );				
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				PictureChooser, 'PictureChooser',  true ) );
+			mediatorMap.mapView( PictureChooser , PictureChooserMediator, null, false, false );				
+						
+			
+			
 			/*
 			//commented out b/c it requiers evernote model 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 

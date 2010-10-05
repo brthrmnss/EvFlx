@@ -117,6 +117,7 @@ package   org.syncon.evernote.panic
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
 		public function onInit()  : void
 		{
+			
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.SETUP ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
@@ -128,6 +129,8 @@ package   org.syncon.evernote.panic
 			//this.importBoardFromObjects()
 			//this.importBoardFromEvernote()
 			this.authentication1()
+				
+			this.openPopup()
 		}
 		public function importBoardFromEvernote() : void
 		{
@@ -167,6 +170,11 @@ package   org.syncon.evernote.panic
 				'mercy', null, 'mighty' ))*/
 		}				
 
+		public function openPopup()  : void
+		{
+			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PeopleManagementPopup'    )  ) 
+		}
 				
  
 	}

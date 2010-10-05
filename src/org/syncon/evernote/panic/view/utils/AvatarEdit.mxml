@@ -15,6 +15,9 @@
 			import org.syncon.evernote.panic.view.assets.Icons;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			
+			static public var EditAvatar :  String = 'editAvatar' 
+			static public var ChangedAvatar :  String = 'changedAvatar' 
+				
 			public var creationComplete : Boolean = false; 
 			
 			protected function onInit():void
@@ -29,6 +32,10 @@
 				//this.content= Icons.getFormatPainter( s ) 
 				//this.invalidateDisplayList();
 			}
+			public function get  source ( ) :   String 
+			{
+				return this.img.source.toString(); 
+			}			
 
 			protected function img_ioErrorHandler(event:IOErrorEvent):void
 			{
@@ -39,9 +46,12 @@
 
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
+				this.dispatchEvent( new CustomEvent( EditAvatar, this ) ) 
 				//this call mediator while will open the real thing , near me
 			}
 
+			public var changeFx : Function; 
+			
 		]]>
 	</fx:Script>
 	<s:VGroup>
