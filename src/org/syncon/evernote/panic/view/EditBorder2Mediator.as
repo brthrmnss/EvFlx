@@ -62,6 +62,7 @@ package  org.syncon.evernote.panic.view
 					
 					
 			//if a type is on a row ... don't highlight that row 
+			//go through all elements on row, and see if you can match that type
 			var parent : BoardRow = this.ui.parentDocument as  BoardRow
 			for ( var z : int =0 ; z < parent.content.numElements; z++ )
 			{
@@ -79,7 +80,7 @@ package  org.syncon.evernote.panic.view
 					rowExport.push( new WidgetVO( WidgetVO.SPACER ).export()  ) 
 				}*/
 			}
-	
+			this.ui.txtInstructions.visible = true 
 			this.highligtSelectionMode = true
 			this.ui.clickableShade.visible = true; 
 			this.onShowHandler(null)
@@ -112,7 +113,7 @@ package  org.syncon.evernote.panic.view
 		{
 			if ( this.model.editMode )
 				this.ui.show()
-					
+			this.ui.txtInstructions.visible = false 		
 			this.highligtSelectionMode = false
 			this.ui.clickableShade.visible = false;					
 		}			

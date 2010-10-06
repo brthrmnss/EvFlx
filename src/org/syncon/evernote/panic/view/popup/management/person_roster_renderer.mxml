@@ -17,12 +17,28 @@
 				txtLbl.text = this.person.name.toString()//.toUpperCase(); 
 				this.txtDesc.text = this.person.desc.toString()//.toUpperCase()
 				this.pic.source = this.person.src; 
+				this.btnEdit.visible = this.parentDocument.parentDocument.admin 
+					
+				this.btnTwitter.toolTip = this.person.twitter;
 			} 
 
 			protected function btnEdit_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
 			}
+			
+			protected function btnTwitter_clickHandler(event:MouseEvent):void
+			{
+				//this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
+			}			
+			protected function btnPhone_clickHandler(event:MouseEvent):void
+			{
+				//this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
+			}		
+			protected function btnEmail_clickHandler(event:MouseEvent):void
+			{
+				//this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
+			}					
 
 		]]> 
 	</fx:Script> 	
@@ -45,17 +61,27 @@
 	
  <utils:Avatar id="pic" emptySetting="border" />
 	
-		<s:Label   id="txtLbl" verticalCenter="0" width="125"
+		<s:Label   id="txtLbl" verticalCenter="0" width="100"
 				   color.hovered="0x696969"  x="5"
 				   useHandCursor="true"  buttonMode="true"
 				     />		
 	
-	<s:Label   id="txtDesc" verticalCenter="0" width="150"
+	<s:Label   id="txtDesc" verticalCenter="0" width="75"
 			   color.hovered="0x696969"  x="5"
 			   useHandCursor="true"  buttonMode="true"
 			     />		
+	
+	<mx:Spacer width="10" />
 	<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)"
-					  toolTip="Eamil"
-					  iconSkin=".iconSettings"    />
- <s:Button label="Send Email" click="btnEdit_clickHandler(event)" /> 
+					  toolTip="Edit this person"
+					  iconSkin=".iconSettings"    /> 	
+ <utils:IconButton label="edit"  id="btnEmail" click="btnEmail_clickHandler(event)"
+					  toolTip="Email this person"
+					  iconSkin=".btnEmail"    /> 
+	<utils:IconButton label="edit"  id="btnTwitter" click="btnTwitter_clickHandler(event)"
+					  toolTip="Tweet this person"
+					  iconSkin=".btnTwitter"    /> 
+	<utils:IconButton label="edit"  id="btnCall" click="btnPhone_clickHandler(event)"
+					  toolTip="Call this person"
+					  iconSkin=".btnPhone"    /> 	
 </s:ItemRenderer>

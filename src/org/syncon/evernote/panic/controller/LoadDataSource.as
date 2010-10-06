@@ -91,18 +91,18 @@ package org.syncon.evernote.panic.controller
 			
 			private function completeHandler(event:Event):void {
 				var loader:URLLoader = URLLoader(event.target);
-				trace("completeHandler: " + loader.data);
+				//trace("completeHandler: " + loader.data);
 				
 				//var vars:URLVariables = new URLVariables(loader.data);
 				//trace("The answer is " + vars.answer);
 			}
 			
 			private function openHandler(event:Event):void { 
-				trace("openHandler: " + event);
+				//trace("openHandler: " + event);
 			}
 			
 			private function progressHandler(event: ProgressEvent):void {
-				trace("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
+				//trace("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
 			}
 			
 			private function securityErrorHandler(event: SecurityErrorEvent):void {
@@ -111,7 +111,7 @@ package org.syncon.evernote.panic.controller
 			}
 			
 			private function httpStatusHandler(event: HTTPStatusEvent):void {
-				trace("httpStatusHandler: " + event);
+				//trace("httpStatusHandler: " + event);
 			}
 			
 			private function ioErrorHandler(event: IOErrorEvent):void {
@@ -173,7 +173,7 @@ package org.syncon.evernote.panic.controller
 				var result:Object = re.exec(str);
 				var results : Array = []; 
 				while (result != null) {
-					trace ( result.index, "\t", result[1]);
+					//trace ( result.index, "\t", result[1]);
 					results.push(  result[1] )
 					result = re.exec(str);
 				}	

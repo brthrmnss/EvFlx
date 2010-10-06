@@ -30,7 +30,10 @@
 			{
 				this.creationComplete = true
 				var options : Array = [];
-				var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 'Message', 'Spacer', 'Window Pane', 'Row' ] 
+				var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 
+											'Message', 'Spacer', 'Window Pane', 'Row' ] 
+				var options3 : Array = ['btnAddGraph', 'btnAddProjectList', 'btnAddTwitter', 
+											'btnAddAlert', 'btnAddSpacer', 'btnAddPane', 'btnAddSpacer' ] 
 				var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
 														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 					
 				for  ( var i : int = 0 ; i < options1.length; i++)
@@ -38,6 +41,7 @@
 					var obj : Object = new Object()
 					obj.label = options1[i]
 					obj.type = options2[i]
+					obj.icon = options3[i]						
 					options.push( obj ) 
 				}
 				this.dp.addAll( new ArrayList( options  ) ) 
@@ -120,8 +124,9 @@
 	
 	<s:VGroup  paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
 		<s:Label text="Add A:" />
-		<s:List id="list" change="list_changeHandler(event)" borderVisible="false" labelField="label">
-			
+		<s:List id="list" change="list_changeHandler(event)" 
+				borderVisible="false" labelField="label">
+			 
 		</s:List>
 		<s:Label  id="lblMessage" color="0xFF0000"  width="100"/>
 		<s:Button  label="Cancel" id="btnCancel" click="btnCancel_clickHandler(event)" />

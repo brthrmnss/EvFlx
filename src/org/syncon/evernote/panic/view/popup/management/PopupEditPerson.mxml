@@ -59,6 +59,7 @@
 				this.completeFx = completeFx
 					
 				this.txtName.text = this.person.name; 
+				this.txtNickname.text = this.person.nickname; 
 				this.txtDesc.text = this.person.desc
 			/* 	this.txtCol3.text = this.person.col2
 				this.txtCol4.text = this.person.col3 */
@@ -68,7 +69,9 @@
 				this.chkAvailable.selected = this.person.available
 				this.txtStatus.text  = this.person.status; 
 				this.txtEmail.text = this.person.email;
-				this.txtTwitter.text = this.person.twitter				
+				this.txtTwitter.text = this.person.twitter		
+				this.txtNickname.text = this.person.nickname; 	
+				this.txtPhone.text = this.person.phone; 		
 				
 			}
 			
@@ -89,7 +92,13 @@
 
 			protected function btnSave_clickHandler(event:MouseEvent):void
 			{
+				if ( this.txtName.text == '' ) 
+				{
+					alertTxt.text = 'Name must be set'
+					return; 
+				}
 				this.person.name = this.txtName.text 
+				this.person.nickname = this.txtNickname.text 
 				this.person.desc = this.txtDesc.text
 					
 				/* this.person.col2 = this.txtCol3.text  
@@ -101,7 +110,9 @@
 				this.person.available= this.chkAvailable.selected  
 				this.person.email = this.txtEmail.text
 				this.person.twitter = this.txtTwitter.text
-					
+				this.person.phone = this.txtPhone.text 
+				
+				alertTxt.text = ''
 				 if ( this.completeFx != null ) this.completeFx( this.person )
 					 
 				this.person.update()
@@ -135,12 +146,15 @@
 	
  <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
-	 
+	 <s:Label id="alertTxt" />
 	 <mx:Form>
 
-		 <mx:FormItem label="Name" >
+		 <mx:FormItem label="Name" required="true" >
 			 <s:TextInput id="txtName" />
 		 </mx:FormItem>
+		 <mx:FormItem label="Nickname" >
+			 <s:TextInput id="txtNickname"   />
+		 </mx:FormItem>		
 		 <mx:FormItem>
 			 <utils:AvatarEdit id="img"   changedAvatar="img_changedAvatarHandler(event)"/>
 		 </mx:FormItem>
@@ -163,6 +177,9 @@
 		 </mx:FormItem>		
 		 <mx:FormItem label="Twitter" >
 			 <s:TextInput id="txtTwitter"   />
+		 </mx:FormItem>			
+		 <mx:FormItem label="Phone" >
+			 <s:TextInput id="txtPhone"   />
 		 </mx:FormItem>				 
 		<!-- 
 		 <mx:FormItem label="Column 2:" >

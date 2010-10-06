@@ -8,6 +8,8 @@ package org.syncon.evernote.panic.vo
 		public var status : String = ''; 
 		public var available : Boolean = true; 
 		public var twitter : String = ''; 
+		public var phone : String = ''; 
+		public var nickname : String = ''; 
 		public var src :  String = ''; 
 		public var admin : Boolean = false; 
 		public var canLogin :  Boolean = false

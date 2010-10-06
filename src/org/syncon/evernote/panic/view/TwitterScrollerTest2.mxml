@@ -217,7 +217,7 @@
 				this.list2.layout.horizontalScrollPosition = Number(this.pth2.valueFrom);   
 				this.pth2.valueBy = .1
 				this.anim2.duration = this.list2.dataProvider.length*timePerTweet/2;
-				anim2.stop()
+				//anim2.stop()
 				anim2.play([this.list2.layout]);
 			}			
 			

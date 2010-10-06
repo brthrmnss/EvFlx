@@ -149,6 +149,10 @@ package  org.syncon.evernote.panic
 				
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PeopleManagementPopup, 'PeopleManagementPopup',  true ) );
 			mediatorMap.mapView( PeopleManagementPopup , PeopleManagementPopupMediator, null, false, false );				
+
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, RosterPopup, 'RosterPopup',  true ) );
+			mediatorMap.mapView( RosterPopup , RosterPopupMediator, null, false, false );		
+			
 			//this._this.dispatchEvent( new ShowPopupEvent(
 			//ShowPopupEvent.SHOW_POPUP,  'PeopleManagementPopup' )  )   			
 			

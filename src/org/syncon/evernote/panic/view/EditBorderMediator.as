@@ -60,17 +60,19 @@ package  org.syncon.evernote.panic.view
 			}
 			this.highligtSelectionMode = true
 			this.ui.show()
-				
+			this.ui.txtInstructions.visible = true 	
 			this.onShowHandler(null)	
 		}	
 		private function onHighlighCertainItems_Selected(e:PanicModelEvent): void
 		{
+			
 			leaveSelectionMode()
 			if ( this.model.editMode )
 				this.ui.show()
 		}			
 			private function leaveSelectionMode()  : void
 			{
+				this.ui.txtInstructions.visible = false 
 				this.highligtSelectionMode = false
 				this.ui.hide()
 			}

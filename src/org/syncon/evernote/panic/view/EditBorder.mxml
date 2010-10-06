@@ -70,6 +70,7 @@
 			protected function group1_initializeHandler(event:FlexEvent):void
 			{
 				this.hide()
+				this.txtInstructions.visible = false; 
 			}
 
 			public var edit : UIComponent ; 
@@ -94,9 +95,9 @@
  
 	
 	<s:Group buttonMode="true" useHandCursor="true" 
-			 right="0" left="0" top="0" bottom="0" 
+			 right="1" left="1" top="1" bottom="1" 
 			 click="group2_clickHandler(event)" >
-		
+		<!--right="1" left="1" top="1" bottom="1" -->
 		<s:Rect id="borderEdit" right="0" left="0" top="0" bottom="0"    >
 			<s:stroke>
 				<s:SolidColorStroke color="0x83F52C" />
@@ -111,13 +112,15 @@
 				<s:SolidColor color="0xFFFFFF" alpha="0.8" />
 			</s:fill>
 		</s:Rect>	
-		
+		<s:Label text="ADD AFTER THIS"  id="txtInstructions"
+				 color="0xFFFFFF"
+				 verticalCenter="0" horizontalCenter="0" fontSize="18"/>
 	</s:Group>
 	<!--   content="{Icons.get('')}" -->
 	<s:Group 	left="10" width="100%">
 
 	<s:layout>
-		<utils1:FlowLayout2   gap="2"   />
+		<utils1:FlowLayout2   gap="2"  paddingLeft="-5"  />
 		<!--<s:HorizontalLayout paddingBottom="10" paddingLeft="10" 
 							paddingTop="10" paddingRight="10" 
 						/>-->
