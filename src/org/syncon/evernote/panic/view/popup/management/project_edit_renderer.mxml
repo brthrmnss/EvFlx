@@ -17,6 +17,7 @@
 				super.data = value; 
 				if (value== null)  return; 
 				project = value as ProjectVO
+				this.pic.source = this.project.img; 
 				txtLbl.text = this.project.name.toString().toUpperCase(); 
 				this.txtDesc.text = this.project.desc.toString().toUpperCase()
 			} 

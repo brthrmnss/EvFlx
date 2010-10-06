@@ -27,6 +27,7 @@
 			import mx.core.IUIComponent;
 			import mx.core.IVisualElement;
 			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
@@ -106,7 +107,16 @@
 				{
 					var   j :     UIComponent  = hgroup.getElementAt(z)  as  UIComponent; 
 					j.percentWidth = percentWidth
-				}					
+				}		
+				ui2.addEventListener(FlexEvent.CREATION_COMPLETE, this.onCreatedComponent, false, 0, true ) 
+				//ui2.dispatchEvent( new CustomEvent(EditBorder.CLICKED_EDIT) ) 
+				//setTimeout( ui2.dispatchEvent, 500, new CustomEvent(EditBorder.CLICKED_EDIT) )
+			}
+			
+			public function onCreatedComponent(e : FlexEvent)  : void
+			{
+				e.currentTarget.removeEventListener( FlexEvent.CREATION_COMPLETE, this.onCreatedComponent)
+				e.currentTarget.dispatchEvent( new CustomEvent(EditBorder.CLICKED_EDIT) ) 
 			}
 			
 			public function refresh(temp  : WidgetVO= null) : void

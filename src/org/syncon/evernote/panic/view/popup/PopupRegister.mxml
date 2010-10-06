@@ -51,7 +51,7 @@
 			
 			override public  function create(app:Object)  : IPopup
 			{
-				var popup :  PopupLogin = new PopupLogin ()
+				var popup :  PopupRegister = new  PopupRegister ()
 				popup.popupCode =     PopupCode.Create( popup ,app ) 
 				return popup			
 			} 
@@ -59,21 +59,22 @@
 			override public function show(  )  : void
 			{
 				TweenerHelpers.removeTweens( this );
-				this.popupCode.open( false, true, true ) 
+				this.popupCode.open( false, true ) 
 			}
  			public var meth1 : Boolean = false; 
 			public function open( a : Boolean = false, automateBoardName : String = '', 
-								  username : String = '', automatePassword : String = '',automateAdmin : Boolean = false, 
-			autoLogin : Boolean = false  )  : void
+								  username : String = '', automatePassword : String = '',automateAdmin : Boolean = false  )  : void
 			{
 				this.meth1 = false; 
 				this.show()
-				this.alpha = 1
-				this.visible = true; 
 				if ( a ) 
 				{	
 					this.meth1 = true; 
 					this.currentState = 'board_auth'
+					/*
+
+					
+						*/
 				}
 				else
 					this.currentState = 'normal'
@@ -81,8 +82,7 @@
 				this.txtBoardName.text =automateBoardName
 				this.txtPassword.text = username
 				this.txtPassword.text =automatePassword
-				this.chkAdmin.selected = automateAdmin; 
-				if ( autoLogin  ) 
+				if ( automateBoardName != '' || username != '' || automatePassword != '' ) 
 					this.onLogin(null)
 			}			
 	 
@@ -134,7 +134,7 @@
 	
 	
  <s:VGroup gap="-1"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader label="Sign in to Board"  bold="false" padding="0"  width="100%"/>
+	 <popup:PopupHeader label="Register"  bold="false" padding="0"  width="100%"/>
 	 <s:Label id="txtStatus"  text="Please Login..." />
 	 	<mx:Form>
 			<mx:FormItem label="Board Name" >
@@ -147,20 +147,20 @@
 			<mx:FormItem label="Password" >
 				<s:TextInput id="txtPassword" displayAsPassword="true"   width="200"/>
 			</mx:FormItem>	
-			<mx:FormItem label="  " >
-				<s:CheckBox label="Admin" id="chkAdmin" />
-			</mx:FormItem>				
-			<mx:FormItem label=" " >
-				<s:CheckBox label="Remember me for a week" id="chkRemember" />
-				<s:Button  label="Sign in"  click="onLogin(event)" />
+			<mx:FormItem label="Confirm" >
+				<s:TextInput id="txtPassword2" displayAsPassword="true"   width="200"/>
+			</mx:FormItem>	
+			<mx:FormItem label="Email" >
+				<s:TextInput id="txtEmail" displayAsPassword="true"   width="200"/>
+			</mx:FormItem>	
+			<mx:FormItem label="Name" >
+				<s:TextInput id="txtName"   width="200"/>
 			</mx:FormItem>		
-			<mx:FormItem >
-				<s:HGroup>
-					<s:Button label="Forgot Password" click="button1_clickHandler(event)" />
-					
-				</s:HGroup>
-				<s:Button label="Make New Board" click="button2_clickHandler(event)" />
-			</mx:FormItem>
+ 
+			<mx:FormItem label=" " >
+				<s:Button  label="Register"  click="onLogin(event)" />
+			</mx:FormItem>		
+ 
 		</mx:Form>
 	 
 		

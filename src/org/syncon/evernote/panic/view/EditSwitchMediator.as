@@ -35,6 +35,7 @@ package  org.syncon.evernote.panic.view
 				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 			
 				 ui.addEventListener('clickedBoard', onClickedBoardHandler ) 	
 				 ui.addEventListener('clickedRoster', onClickedRosterHandler ) 	
+				 ui.addEventListener('clickedInvite', onClickedInviteHandler ) 						 
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -74,6 +75,14 @@ package  org.syncon.evernote.panic.view
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				'RosterPopup' )  )   
 		}			
+		
+		private function onClickedInviteHandler(e:CustomEvent): void
+		{
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PopupInvite' )  )   
+		}			
+				
+		
 		
 		private function onClickedEditHandler(e:CustomEvent): void
 		{

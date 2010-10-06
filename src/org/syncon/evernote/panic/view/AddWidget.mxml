@@ -31,11 +31,11 @@
 				this.creationComplete = true
 				var options : Array = [];
 				var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 
-											'Message', 'Spacer', 'Window Pane', 'Row' ] 
+											'Message', 'Spacer', 'Window Pane']//, 'Row' ] 
 				var options3 : Array = ['btnAddGraph', 'btnAddProjectList', 'btnAddTwitter', 
-											'btnAddAlert', 'btnAddSpacer', 'btnAddPane', 'btnAddSpacer' ] 
+											'btnAddAlert', 'btnAddSpacer', 'btnAddPane']//, 'btnAddSpacer' ] 
 				var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
-														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 					
+														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE]//, WidgetVO.ROW ] 					
 				for  ( var i : int = 0 ; i < options1.length; i++)
 				{
 					var obj : Object = new Object()
@@ -97,9 +97,9 @@
 	</s:filters>
 	<utils:FadeInOutByFunction id="fxFadeIn"  maxAlpha="0.95"/>
 	<s:Rect right="0" left="-1" top="0" bottom="0"
-			topLeftRadiusX="10" topLeftRadiusY="-10"
+			topLeftRadiusX="10" topLeftRadiusY="0"
 			topRightRadiusX="10" topRightRadiusY="10"
-			bottomLeftRadiusX="10" bottomLeftRadiusY="-10"
+			bottomLeftRadiusX="10" bottomLeftRadiusY="0"
 			bottomRightRadiusX="10"  bottomRightRadiusY="10"
 			
 			right.right="-1" left.right="0"  
@@ -109,6 +109,21 @@
 			bottomRightRadiusX.right="0"  bottomRightRadiusY.right="10"
 			
 			>
+		
+		<!--
+		<s:Rect right="0" left="-1" top="0" bottom="0"
+				topLeftRadiusX="10" topLeftRadiusY="-10"
+				topRightRadiusX="10" topRightRadiusY="10"
+				bottomLeftRadiusX="10" bottomLeftRadiusY="-10"
+				bottomRightRadiusX="10"  bottomRightRadiusY="10"
+				
+				right.right="-1" left.right="0"  
+				topLeftRadiusX.right="10" topLeftRadiusY.right="10"
+				topRightRadiusX.right="0" topRightRadiusY.right="10"
+				bottomLeftRadiusX.right="10" bottomLeftRadiusY.right="10"
+				bottomRightRadiusX.right="0"  bottomRightRadiusY.right="10"
+				>
+		-->
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF" />
 		</s:fill>
@@ -123,8 +138,9 @@
 					  click="btnMove_clickHandler(event)"/>
 	
 	<s:VGroup  paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
-		<s:Label text="Add A:" />
+		<s:Label text="Add Widget" fontSize="16" />
 		<s:List id="list" change="list_changeHandler(event)" 
+				 itemRenderer="org.syncon.evernote.panic.view.add_widget_renderer"
 				borderVisible="false" labelField="label">
 			 
 		</s:List>

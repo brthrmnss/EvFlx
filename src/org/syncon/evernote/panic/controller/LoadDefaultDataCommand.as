@@ -104,7 +104,7 @@ package   org.syncon.evernote.panic.controller
 				new WidgetVO( WidgetVO.SPACER )
 			])						
 			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch' , 15000).widgetData,
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 15000).widgetData,
 			])	
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
@@ -140,10 +140,10 @@ package   org.syncon.evernote.panic.controller
 			people.push( 	new PersonVO( 'cd Y', '', '', '', PersonVO.getRandomPic() )  ) 				
 			
 			var projects : Array = []; 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
 			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'gif/A01 copy.gif"', this.randSet( 4,0, people, 'name' ) ) ) 
 			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
 			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
 			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 

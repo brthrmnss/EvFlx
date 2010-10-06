@@ -53,13 +53,6 @@ package  org.syncon.evernote.panic.view
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.GRAPH, WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.GRAPH; 
 			}
-			if ( e.data == WidgetVO.PROJECT_LIST ) 
-			{
-				this.ui.message = 'Select the element to go after'
-				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
-				this.addingA = WidgetVO.PROJECT_LIST; 
-			}	
 			if ( e.data == WidgetVO.MESSAGE ) 
 			{
 				this.ui.message = 'Select the element to go after'
@@ -67,19 +60,33 @@ package  org.syncon.evernote.panic.view
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.MESSAGE; 
 			}				
-			if ( e.data == WidgetVO.TWITTER_SCROLLER ) 
-			{
-				this.ui.message = 'Select the element to go after'
-				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
-				this.addingA = WidgetVO.TWITTER_SCROLLER; 
-			}				
 			if ( e.data == WidgetVO.PANE ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.PANE, WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.PANE; 
+			}		
+			if ( e.data == WidgetVO.PROJECT_LIST ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.PROJECT_LIST; 
+			}				
+			if ( e.data == WidgetVO.SPACER ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.SPACER; 
+			}
+			if ( e.data == WidgetVO.TWITTER_SCROLLER ) 
+			{
+				this.ui.message = 'Select the element to go after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.TWITTER_SCROLLER; 
 			}			
 		}
 		
@@ -136,12 +143,11 @@ package  org.syncon.evernote.panic.view
 				row = getRowOrFindParentRow( ui  )				
 				row.addWidget( ProjectListWidget.importData('Project Lister', '', 355, 15000)  )
 			}			
-			/*
-			if ( addingA == WidgetVO.GRAPH ) 
+			if ( addingA == WidgetVO.SPACER ) 
 			{
 				row = getRowOrFindParentRow( ui  )				
-				row.addWidget( GraphWidget.importData( 'new', '', 'new', 'new', 10, 12,  0xFFDDFF )  )
-			}			*/
+				row.addWidget( SpacerWidget.importData( 'spacer', '', 30  ) )
+			}		 
 			this.ui.message = ''
 			this.ui.list.selectedIndex = -1
 		}		

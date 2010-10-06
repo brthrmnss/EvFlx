@@ -33,7 +33,16 @@
 			{
 				this.creationComplete = true
 			}				
- 
+			
+			public function refresh(temp  : WidgetVO= null) : void
+			{
+				var useSettings : WidgetVO = this.widgetData; 
+				if ( temp != null ) 
+					useSettings = temp; 
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET,
+					null, useSettings ) ) 
+			}			
+			
 			public function importConfig(j :  WidgetVO )  : void
 			{
 				this.widgetData = j
@@ -44,18 +53,18 @@
 			public function importData_( o:   Object )  : void
 			{
 			}		
-			static public function importData( name : String, desc:String,     height :  Number =  NaN )  :   MessageWidget
+			static public function importData( name : String, desc:String,     height :  Number =  NaN ) : SpacerWidget
 			{
 				var o : Object = {}
-				var vo : WidgetVO = new WidgetVO(WidgetVO.MESSAGE, o); 	
-				var g : MessageWidget = new MessageWidget()
+				var vo : WidgetVO = new WidgetVO(WidgetVO.SPACER, o); 	
+				var g : SpacerWidget = new  SpacerWidget()
 				g.widgetData = vo
 					
 				vo.name = name; 
 				vo.description = desc
-				vo.source = source; 
+				/* vo.source = source; 
 				vo.refreshTime = refreshTime; 
-				
+				 */
 				return g ; 
 			}						
 			
@@ -76,10 +85,13 @@
 		]]>
 	</fx:Script>
  
-	<s:VGroup horizontalCenter="0" verticalCenter="0">
+	<!--<s:VGroup horizontalCenter="0" verticalCenter="0">
 		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
+	-->
+	<fx:Declarations>
+		<view:EditBorder id="editBorder" edit="{this}" />
+	</fx:Declarations>
 	
-	<view:EditBorder id="editBorder" edit="{this}" />
 	
 </mx:Spacer>

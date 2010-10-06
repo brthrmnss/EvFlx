@@ -29,9 +29,9 @@
 			
 			[Bindable] private var state1Text : String = '';
 			[Bindable] private var state2Text : String = ''; 	
-			
 			public function set  message ( s : String ) : void
 			{
+				 
 				//this.lblMessage.text = s.toUpperCase() ; 
 				if ( this.currentState == 'State1' ) 
 				{
@@ -118,11 +118,11 @@
 	</s:states>
 	
 	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0">
-		<s:Label  id="lblMessage"
+		<s:Label  id="lblMessage" visible="false"
 				  text.State1="{state1Text}" text.State2="{this.state2Text}"
 				  text="25 DAS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
-	
+	<s:RichText  maxDisplayedLines="1" id="lblMessage2"  horizontalCenter="0" verticalCenter="0" />
 	<view:EditBorder id="editBorder" edit="{this}" />
 	
 </s:Group>

@@ -16,7 +16,7 @@
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			
 			public var creationComplete : Boolean = false; 
-			
+			public var imgMode : Boolean = false; 
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -43,12 +43,18 @@
 			
 			public function showDefault() : void
 			{
-				this.defaultImg.visible = true
+				if ( this.imgMode ) 
+				{
+					
+				}
+				else
+					this.defaultImg.visible = true
 				this.img.source = false; 
 			}
 
 			public function set emptySetting ( s : String )  : void
 			{
+				this.imgMode = true
 				this.defaultImg.visible = false; 
 			}
 		]]>

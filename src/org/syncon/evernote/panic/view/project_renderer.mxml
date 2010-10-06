@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 		  fontSize="24" height="42" width="100%"
-				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*">
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
@@ -16,6 +16,7 @@
 				super.data = value; 
 				if (value== null)  return; 
 				menu = value as ProjectVO
+				this.img.source =  menu.img
 				txtLbl.text = menu.name.toString().toUpperCase(); 
 				this.txtCol2.text = this.menu.col2.toString().toUpperCase()
 				this.txtCol3.text = this.menu.col3.toString().toUpperCase()					
@@ -43,9 +44,13 @@
 		<s:HorizontalLayout gap="10" horizontalAlign="left" />
 	</s:layout>
 	
-	<s:SkinnableContainer  height="42" width="35"
-		skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" />
-	
+	<s:Group  height="42" width="42">
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+				  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" >
+		</s:SkinnableContainer>
+		<utils:Avatar id="img"   emptySetting="" horizontalCenter="0" verticalCenter="0" />
+	</s:Group>
+
 	<s:Group width="28%" height="42">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">

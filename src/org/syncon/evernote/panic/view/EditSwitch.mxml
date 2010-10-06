@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		  rollOver="group1_rollOverHandler(event)"
+		   rollOut="group1_rollOutHandler(event)"
+		    clipAndEnableScrolling="true"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
@@ -48,7 +51,12 @@
 			protected function btnBoard_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedBoard', this.editMode ) ) 
+			}		
+			protected function btnInvite_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedInvite', this.editMode ) ) 
 			}					
+			
 			protected function btnProjects_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( 'clickedProjects', this.editMode ) ) 
@@ -80,6 +88,33 @@
 			}			
 			
 			
+			public var autoHide : Boolean = false; 
+			protected function chk_changeHandler(event:Event):void
+			{
+				this.dispatchEvent( new CustomEvent( 'changedAutohide' ) )
+				this.autoHide = this.chk.selected
+			}
+
+
+			protected function group1_rollOverHandler(event:MouseEvent):void
+			{
+				if ( this.prevHeight != 0 ) 
+				this.height = NaN
+				//'this.currentState = 'hiddenFromView'
+				// TODO Auto-generated method stub
+			}
+
+			public var prevHeight : Number = 0; 
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				if ( this.autoHide == false ) 
+					return; 
+				this.prevHeight = this.height; 
+				this.height = 1
+				//this.timer.start()
+				//this.currentState = 'hiddenFromView'
+			}
+
 		]]>
 	</fx:Script>
  
@@ -116,14 +151,16 @@
 
 
 	<s:HGroup  >
-		<s:Label id="lblMessage"  text=""/>
-		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)"/>
+		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
+		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
 		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
+		<s:CheckBox label="Auto-Hide"   id="chk" change="chk_changeHandler(event)"/>
 	</s:HGroup>	
 		
 		<s:HGroup id="holderStuff" includeIn="edit">
-			<s:Button label="Board Config"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
+			<s:Button label="Settings"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
 		</s:HGroup>		
+		<s:Button label="Invite Users" includeIn="edit" id="btnInvite" click="btnInvite_clickHandler(event)"/>
 		<s:HGroup id="holderStuff2" includeIn="edit">
 			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
 			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>

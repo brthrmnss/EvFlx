@@ -97,7 +97,13 @@ package  org.syncon.evernote.panic
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
 				PopupLogin, 'PopupLogin',  true ) );
 			mediatorMap.mapView( PopupLogin , 
-				PopupLoginMediator, null, false, false );				
+				PopupLoginMediator, null, false, false );		
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				PopupRegister, 'PopupRegister',  true ) );
+			mediatorMap.mapView( PopupRegister , 
+				PopupRegisterMediator, null, false, false );				
+			
 			/*
 			mediatorMap.mapView( PopupTagForm , PopupTagMediator, null, false, false );	
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupTagForm, 'popup_tag_form'  ) );
@@ -152,6 +158,10 @@ package  org.syncon.evernote.panic
 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, RosterPopup, 'RosterPopup',  true ) );
 			mediatorMap.mapView( RosterPopup , RosterPopupMediator, null, false, false );		
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupInvite, 'PopupInvite',  true ) );
+			mediatorMap.mapView( PopupInvite , PopupInviteMediator, null, false, false );				
+			
 			
 			//this._this.dispatchEvent( new ShowPopupEvent(
 			//ShowPopupEvent.SHOW_POPUP,  'PeopleManagementPopup' )  )   			

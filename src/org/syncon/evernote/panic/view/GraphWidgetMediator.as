@@ -84,6 +84,7 @@ package  org.syncon.evernote.panic.view
 			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
 			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
 			this.ui.chart.toolTip = useSettings.description;
+			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
 			this.setupGetter()
 		}
 		private var timer : Timer ;//= new Timer()

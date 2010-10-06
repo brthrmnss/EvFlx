@@ -42,7 +42,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function currentConfig()  :   WidgetVO
 		{
 			var d : WidgetVO = PaneWidget.importData( this.data.name, this.data.description, 
-				this.ui.txtMessage.text, this.data.refreshTime,  
+				this.ui.txtMessage.text,   this.ui.timer.time,  
 				this.ui.colorPicker1.selectedColor.toString(), 
 				this.ui.colorPicker2.selectedColor.toString() ).widgetData;
 			return d ; 	

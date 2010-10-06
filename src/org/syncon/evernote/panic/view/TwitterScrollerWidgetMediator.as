@@ -15,6 +15,9 @@ package  org.syncon.evernote.panic.view
 		[Inject] public var ui: TwitterScrollerTest2;
 		[Inject] public var model : PanicModel;
 		
+		public var supressTweens : Boolean = true; 
+		public var animate : Boolean = true ;
+		
 		private var _widgetData : WidgetVO = new  WidgetVO
 		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	

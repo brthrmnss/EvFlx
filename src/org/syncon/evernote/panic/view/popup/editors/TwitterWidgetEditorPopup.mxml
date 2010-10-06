@@ -80,6 +80,7 @@
 		<mx:Form>
 			<mx:FormItem label="Search Terms" >
 				<s:TextInput id="txtMessage" />
+				<s:Label text="seperate with spaces" />
 			</mx:FormItem>
 		 
 			<mx:FormItem>
@@ -88,7 +89,7 @@
 					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 				</s:HGroup>
 			</mx:FormItem>
-			<editors:WidgetUpdateSettingsControlBox id="timer" />
+			<editors:WidgetUpdateSettingsControlBox id="timer"  />
 			
 		</mx:Form>
 		

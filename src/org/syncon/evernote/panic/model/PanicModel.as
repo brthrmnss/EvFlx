@@ -43,6 +43,8 @@ package org.syncon.evernote.panic.model
 		public var peoplePics : Array = []; 
 		public var projectPics : Array = []; 		
 		
+		public var authMode1 : Boolean = true; 
+		
 		/**
 		 * Used for new layouts ... updated by live command
 		 * */
@@ -73,6 +75,17 @@ package org.syncon.evernote.panic.model
 		}
 		public function get  adminMode ( ) : Boolean  { return this._adminMode   }		
 				
+		private var _surpressTweens : Boolean = false
+		public function set surpressTweens ( p : Boolean )  : void
+		{
+			this._surpressTweens = p; 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.SUPRESS_TWEENS_CHANGED, this._surpressTweens ) )
+		}
+		public function get  surpressTweens ( ) : Boolean  { return this._surpressTweens   }		
+				
+		
+		
+		
 		public function refreshBoard()  : void
 		{
 			//this.editMode = false; 
@@ -134,6 +147,7 @@ package org.syncon.evernote.panic.model
 			return   'board_name_'+ boardName  
 		}
 		
+		public var baseUrl : String = 'http://crashstatusboard.com/?='
 		
 	}
 }

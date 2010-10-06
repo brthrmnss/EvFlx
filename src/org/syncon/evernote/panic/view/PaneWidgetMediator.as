@@ -29,6 +29,9 @@ package  org.syncon.evernote.panic.view
 		[Inject] public var ui: PaneWidget;
 		[Inject] public var model : PanicModel;
 		
+		public var supressTweens : Boolean = true; 
+		public var animate : Boolean = true ;
+		
 		private var _widgetData : WidgetVO = new  WidgetVO
 		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
@@ -50,6 +53,15 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
 			this.onAutomateWidget(null)						
+			
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.SUPRESS_TWEENS_CHANGED, 
+				this.onSurpressTweensChanged);				
+			this.onSurpressTweensChanged(null)				
+		}
+		
+		private function onSurpressTweensChanged(e:PanicModelEvent) : void
+		{
+			this.supressTweens = this.model.surpressTweens
 		}
 		
 		
@@ -72,7 +84,7 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data.hasOwnProperty( 'color2' ) )
 				this.ui.color2.color = useSettings.data.color2; 		
 			this.setupGetter()
-			this.ui.animateHover(this.ui)
+			
 		}
 		private var timer :  Timer ;//= new Timer()
 		override public function onRemove() : void
@@ -136,6 +148,7 @@ package  org.syncon.evernote.panic.view
 			return JSON.encode( obj )  
 		}
 		*/
+		public var oldTextString: String = ''; 
 		/**
 		 * convert html to text flow
 		 * plain text wrap as textflow? 
@@ -143,6 +156,10 @@ package  org.syncon.evernote.panic.view
 		 * */
 		private function updateText(a : String ) : String
 		{
+			if ( a != this.oldTextString && supressTweens ) 
+				return null
+				oldTextString = a; 	
+			this.ui.animateHover(this.ui)
 			var str : String = ''; 
 			str = a
 			var ee : HtmlConvertor = new HtmlConvertor()

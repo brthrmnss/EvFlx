@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  fontSize="12"   width="150"
+				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			//[Bindable] public var person : PersonVO = new  PersonVO()
+			override public function set data(value:Object):void { 
+				super.data = value; 
+				if (value== null)  return; 
+				//person = value as PersonVO
+				txtLbl.text = this.data.label; 
+				this.btnCall.iconSkin ='.'+ this.data.icon; 
+			} 
+/* 
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
+			}
+			 */
+		]]> 
+	</fx:Script> 	
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+		<s:State name="disabled"/> 
+	</s:states> 	
+	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:Parallel>
+				<s:AnimateColor targets="{[this.txtLbl]}"   duration="250" />
+				<s:Fade targets="{[btnCall]}"   duration="250" />
+			</s:Parallel>
+			
+		</s:Transition>
+	</s:transitions>	
+	
+	<s:layout>
+		<s:HorizontalLayout gap="10" horizontalAlign="left" />
+	</s:layout>
+	
+	<utils:IconButton label="edit"  id="btnCall" 
+					   alpha="1" alpha.hovered="0.6"
+					  toolTip="Call this person"
+					     /> 	
+	
+		<s:Label   id="txtLbl" verticalCenter="0" width="100"
+				   color.hovered="0x696969"  x="5"
+				   useHandCursor="true"  buttonMode="true"
+				     />		
+ 
+
+</s:ItemRenderer>

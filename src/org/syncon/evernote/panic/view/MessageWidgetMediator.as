@@ -4,6 +4,8 @@ package  org.syncon.evernote.panic.view
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import flashx.textLayout.elements.TextFlow;
+	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
@@ -17,6 +19,9 @@ package  org.syncon.evernote.panic.view
 		[Inject] public var ui:MessageWidget;
 		[Inject] public var model : PanicModel;
 			
+		public var supressTweens : Boolean = true; 
+		public var animate : Boolean = true ;		
+		
 		private var _widgetData : WidgetVO = new  WidgetVO
 		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
@@ -35,10 +40,20 @@ package  org.syncon.evernote.panic.view
 			this.onAutomateWidget(null)					
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
-				this.onEditModeChanged);						
-			this.onEditModeChanged(null)				
+				this.onEditModeChanged);		
+			this.onEditModeChanged(null)	
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.SUPRESS_TWEENS_CHANGED, 
+				this.onSurpressTweensChanged);				
+			this.onSurpressTweensChanged(null)				
 		}
 		 
+		private function onSurpressTweensChanged(e:PanicModelEvent) : void
+		{
+			this.supressTweens = this.model.surpressTweens
+		}
+			
+		
 		public function onEditModeChanged(e:PanicModelEvent): void
 		{
 			if ( this.model.editMode ) 
@@ -66,8 +81,25 @@ package  org.syncon.evernote.panic.view
 				useSettings = e.data; 
 			if ( useSettings.data == null ) 
 				return; 
-			this.model.source( useSettings.source, this.ui, 'message', null  )
+			this.model.source( useSettings.source, this, 'message', null  )
 			this.setupGetter()
+		}
+		/**
+		 * Surpess messages
+		 * */
+		private var oldMessage : String = ''; 
+		public function set message( m : String ) : void{
+			
+			
+			var ee : HtmlConvertor = new HtmlConvertor()
+			var x : Object = ee.convert2( m, 0xFFFFFF, 34 )
+			if ( m == oldMessage  && this.supressTweens ) 
+			{
+				return; 
+			}
+			oldMessage = m 
+			this.ui.message = m; 
+			this.ui.lblMessage2.textFlow = x as TextFlow
 		}
 		
 		private var timer :  Timer ; 

@@ -130,9 +130,9 @@ package   org.syncon.evernote.panic
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
 			//this.importBoardFromString()
-			this.importBoardFromObjects()
+			//this.importBoardFromObjects()
 			//this.importBoardFromEvernote()
-			//this.authentication1()
+			this.authenticationMode1()
 				
 			//this.openPopup()
 		}
@@ -157,7 +157,7 @@ package   org.syncon.evernote.panic
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 		}		
 	 
-		public function authentication1() : void
+		public function authenticationMode1() : void
 		{
 			this.dispatchEvent( new Event( LoadDefaultDataCommand.AUTHENTICATE ))
 			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
@@ -169,7 +169,11 @@ package   org.syncon.evernote.panic
 					boardName = FlexGlobals.topLevelApplication.parameters["board"];
 				}
 			}
-			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true ] )  ) 
+			setTimeout( this.dispatchEvent, 1000, 
+				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] ) 
+			)
+			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true ] )  )
+			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] )  ) 
 			/*this.dispatchEvent( new AuthenticateToBoardCommandTriggerEvent( AuthenticateToBoardCommandTriggerEvent.METH1, 
 				'mercy', null, 'mighty' ))*/
 		}				

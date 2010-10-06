@@ -26,6 +26,11 @@
 			public function set dataX ( a :  WidgetVO )  : void
 			{
 				this.config = a; 	
+				this.txtTime.text = int( a.refreshTime/1000 ).toString()
+			}
+			public function get time ()  : Number
+			{
+				return Number( this.txtTime.text )
 			}
 		]]>
 	</fx:Script>
@@ -41,8 +46,8 @@
 	
 	<s:HGroup  verticalAlign="middle"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 		<s:Label text="Update Time (seconds )" />
-		<s:TextInput id="lbl" />
-		<s:Button label="Refresh" click="button1_clickHandler(event)" />
+		<s:TextInput id="txtTime" />
+		<!--<s:Button label="Refresh" click="button1_clickHandler(event)" />-->
 	</s:HGroup>
 	
 	

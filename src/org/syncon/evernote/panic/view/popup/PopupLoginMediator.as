@@ -12,13 +12,16 @@ package   org.syncon.evernote.panic.view.popup
 	import org.syncon.evernote.basic.model.EvernoteAPIModelEvent;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommandTriggerEvent;
+	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.services.EvernoteService;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	import org.syncon.utils.Js;
 	
 	public class PopupLoginMediator extends Mediator
 	{
 		[Inject] public var ui:PopupLogin;
-		[Inject] public var model : EvernoteAPIModel;
+		[Inject] public var apiModel : EvernoteAPIModel;
+		[Inject] public var model : PanicModel;
 		[Inject] public var service :  EvernoteService;
 		
 		public function PopupLoginMediator()
@@ -50,7 +53,7 @@ package   org.syncon.evernote.panic.view.popup
 		
 		private function onPreferencesChanged(e:Event) : void
 		{
-			this.ui.txtUsername.text = this.model.preferences.username
+			this.ui.txtUsername.text = this.apiModel.preferences.username
 			 this.ui.txtPassword.text = ''; 
 		}		
  
@@ -90,6 +93,11 @@ package   org.syncon.evernote.panic.view.popup
 			
 		private function onRegisterClickedHandler(e: Event):void
 		{	
+			if ( this.model.authMode1 ) 
+			{
+				this.dispatch( new ShowPopupEvent( 
+					ShowPopupEvent.SHOW_POPUP,  'PopupRegister' ) );	
+			}
 			
 			/*var link : String = 'https://sandbox.evernote.com/Registration.action'
 			Js.goToUrl(link)*/		

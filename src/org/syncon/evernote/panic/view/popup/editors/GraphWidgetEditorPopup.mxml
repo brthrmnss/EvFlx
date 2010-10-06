@@ -96,21 +96,21 @@
 		<mx:FormItem label="Value Source" >
 			<s:TextInput id="txtValue" />
 		</mx:FormItem>
-		<mx:FormItem label="Maximum Value Text Source" >
+		<mx:FormItem label="Maximum Value Source" >
 			<s:TextInput id="txtMaximum" />
 		</mx:FormItem>	
 		
 		<mx:FormItem label="Color" >
 			<mx:ColorPicker id="colorPicker" />
 		</mx:FormItem>			
-		
+		<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
 		<mx:FormItem>
 			<s:HGroup>
 				<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
 				<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 			</s:HGroup>
 		</mx:FormItem>
-		<editors:WidgetUpdateSettingsControlBox id="timer" />
+		
 
 	</mx:Form>
 		

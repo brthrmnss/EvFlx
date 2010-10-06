@@ -47,7 +47,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		{
 			var d : WidgetVO = GraphWidget.importData( this.data.name, this.data.description, 
 				this.ui.txtTop.text, this.ui.txtBottom.text, this.ui.txtValue.text,
-				this.ui.txtMaximum.text,  this.ui.colorPicker.selectedColor,  this.data.refreshTime ).widgetData;
+				this.ui.txtMaximum.text,  this.ui.colorPicker.selectedColor,  this.ui.timer.time ).widgetData;
 			return d ; 	
 		}
 		 
