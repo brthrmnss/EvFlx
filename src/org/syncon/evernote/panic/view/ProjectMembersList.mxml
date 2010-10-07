@@ -48,13 +48,13 @@
 		]]>
 	</fx:Script>
 	
-	<s:VGroup>
+<!--	<s:VGroup>-->
 		<s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.project_member_renderer" 
 				 width="100%"  
 				contentBackgroundAlpha="0"  borderVisible="false">
 			<s:layout>
-				<s:HorizontalLayout  paddingLeft="10" paddingBottom="5" gap="10"/>
+				<s:HorizontalLayout  paddingLeft="10" gap="10"/>
 			</s:layout>
 		</s:List>
-	</s:VGroup>
+	<!--</s:VGroup>-->
 </s:Group>

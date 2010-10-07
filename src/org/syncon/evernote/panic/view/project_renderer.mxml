@@ -19,7 +19,17 @@
 				this.img.source =  menu.img
 				txtLbl.text = menu.name.toString().toUpperCase(); 
 				this.txtCol2.text = this.menu.col2.toString().toUpperCase()
-				this.txtCol3.text = this.menu.col3.toString().toUpperCase()					
+				this.txtCol3.text = this.menu.col3.toString().toUpperCase()		
+					
+					var rotation_  : Number = Math.random()*3
+					if ( Math.random() < 0.5 )
+						rotation_ *= -1
+				//this.txtCol2.rotation = rotation_
+					
+					  rotation_   = Math.random()*3
+					if ( Math.random() < 0.5 )
+						rotation_ *= -1				
+				//this.memberLIst.rotation = Math.random()*5
 				//txtLbl.toolTip = menu.toolTip.toString();
 				//lblVariable.text = menu.name2.toString();
 				this.memberLIst.list1.dataProvider = new ArrayList( this.menu.ppl ) 
@@ -49,6 +59,9 @@
 				  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" >
 		</s:SkinnableContainer>
 		<utils:Avatar id="img"   emptySetting="" horizontalCenter="0" verticalCenter="0" />
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
+		</s:SkinnableContainer>		
 	</s:Group>
 
 	<s:Group width="28%" height="42">
@@ -59,6 +72,9 @@
 				   color.hovered="0x696969"  x="5"
 				   useHandCursor="true"  buttonMode="true"
 				   color="0xFFFFFF"  />		
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
+		</s:SkinnableContainer>			
 	</s:Group>
 
 	
@@ -71,6 +87,9 @@
 				   paddingLeft="5" paddingRight="5"
 				   useHandCursor="true"  buttonMode="true"
 				   color="0xFFFFFF"  />		
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
+		</s:SkinnableContainer>			
 	</s:Group>
 
 	
@@ -82,7 +101,10 @@
 				   color.hovered="0x696969"  
 				    paddingLeft="5" paddingRight="5"
 				   useHandCursor="true"  buttonMode="true"
-				   color="0xFFFFFF"  />		
+				   color="0xFFFFFF"  />	
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
+		</s:SkinnableContainer>			
 	</s:Group>
 
 	
@@ -90,7 +112,11 @@
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
-		 <view:ProjectMembersList id="memberLIst" />
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0" alpha="1"
+							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
+		</s:SkinnableContainer>		
+		 <view:ProjectMembersList id="memberLIst"  verticalCenter="0"/>
+			
 	</s:Group>
 	
 		

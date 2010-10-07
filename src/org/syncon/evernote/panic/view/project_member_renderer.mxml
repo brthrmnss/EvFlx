@@ -38,7 +38,7 @@
 
 			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
 			{
-
+				//this.parentDocument.parentDocument.addEventListener( 'rollOut', this.itemrenderer1_rollOutHandler, false, 0, true )
 			}
 
 

@@ -107,6 +107,9 @@ package   org.syncon.evernote.panic.controller
 				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
 			])	
 			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
+				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
+				]
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])		
