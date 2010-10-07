@@ -18,6 +18,7 @@ package org.syncon.evernote.panic.vo
 		static public var TWITTER_SCROLLER : String = 'twitterScroller'				
 		
 		public var data : Object = null; 
+		public var test : Object = {}; 
 		public var fx :  Function;
 		public var enabled : Boolean = true; 
 		

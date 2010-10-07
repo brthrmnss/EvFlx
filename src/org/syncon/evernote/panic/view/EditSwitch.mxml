@@ -20,6 +20,7 @@
 		</s:Transition>
 	</s:transitions>
 	<fx:Declarations>
+		<s:Resize id="resizeMe" />
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -100,6 +101,9 @@
 			{
 				if ( this.prevHeight != 0 ) 
 				this.height = NaN
+			//	this.resizeMe.heightTo = NaN 
+			//	this.resizeMe.duration = 1200
+			//	this.resizeMe.play([this])					
 				//'this.currentState = 'hiddenFromView'
 				// TODO Auto-generated method stub
 			}
@@ -110,7 +114,10 @@
 				if ( this.autoHide == false ) 
 					return; 
 				this.prevHeight = this.height; 
-				this.height = 1
+			//	this.height = 1
+				this.resizeMe.heightTo = 1; 
+				this.resizeMe.duration = 500
+				//this.resizeMe.play([this])
 				//this.timer.start()
 				//this.currentState = 'hiddenFromView'
 			}

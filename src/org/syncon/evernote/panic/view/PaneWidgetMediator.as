@@ -77,7 +77,8 @@ package  org.syncon.evernote.panic.view
 			//this.ui.colorThing = this.convertColorString(useSettings.data.colorString)
 			//save this 
 			//this.ui.text_ = 
-			this.updateText(  useSettings.source )  
+			//this.updateText(  useSettings.source )  
+			this.model.source( useSettings.source, this, 'updateText', null , useSettings.test.source )
 			this.ui.height = widgetData.height
 			if ( useSettings.data.hasOwnProperty( 'color1' ) )
 				this.ui.color1.color = useSettings.data.color1; 
@@ -154,16 +155,18 @@ package  org.syncon.evernote.panic.view
 		 * plain text wrap as textflow? 
 		 * just use existing thing 
 		 * */
-		private function updateText(a : String ) : String
+		public function set updateText(a : String ) : void
 		{
 			if ( a != this.oldTextString && supressTweens ) 
-				return null
+				return  
 				oldTextString = a; 	
 			this.ui.animateHover(this.ui)
 			var str : String = ''; 
 			str = a
 			var ee : HtmlConvertor = new HtmlConvertor()
-			textFlow= ee.convert( a ) 
+			textFlow= ee.convert2( a, 0xFFFFFF, 15 ) 
+			this.ui.txt.textFlow = textFlow
+			return  ; 
 				//var dd : Object = ee.convert( a ) 
 				textFlow.fontLookup = FontLookup.EMBEDDED_CFF;
 				textFlow.renderingMode = RenderingMode.CFF;
@@ -196,7 +199,7 @@ package  org.syncon.evernote.panic.view
 			var xx : Object = 	 ee.export(textFlow ) 
 	/*	 textFlow = TextConverter.importToFlow(xx, TextConverter.TEXT_LAYOUT_FORMAT);
 			this.ui.txt.textFlow = textFlow*/
-				return ''; 
+				return  
 			var xml2:XML =<TextFlow columnCount="inherit" columnGap="inherit" columnWidth="inherit" 
 fontFamily="ACaslonProRegularEmbedded" fontLookup="embeddedCFF" fontSize="13" lineBreak="inherit" 
 paddingBottom="inherit" paddingLeft="inherit" paddingRight="inherit" paddingTop="inherit" renderingMode="cff" 
@@ -247,7 +250,7 @@ whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008">
 			textFlow = TextConverter.importToFlow(xml2, TextConverter.TEXT_LAYOUT_FORMAT);
 			this.ui.txt.textFlow = textFlow
 			
-				return str
+				return  
 		}		
 		
 		public function onEditModeChanged(e:PanicModelEvent): void

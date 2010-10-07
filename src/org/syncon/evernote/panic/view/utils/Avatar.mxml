@@ -3,13 +3,14 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		  useHandCursor="true" buttonMode="true"
-		   width="36" height="36"
+		   width="32" height="32"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.collections.ArrayList;
+			import mx.core.UIComponent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.view.assets.Icons;
@@ -19,15 +20,64 @@
 			public var imgMode : Boolean = false; 
 			protected function onInit():void
 			{
+				//this.init();
 				this.creationComplete = true
+	  	
 			}
 
+			private var contentLoader:Loader;
+			private function init():void
+			{
+				//this.removeAllElements()
+				contentLoader = new Loader();
+				contentLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, LoadComplete);
+				contentLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, IOErrorHandler);
+				
+				var request: URLRequest = new URLRequest(this._source);
+				contentLoader.load(request);
+			}
+			
+			//When image loaded, create scaled bitmap
+			private function LoadComplete(evt:Event):void
+			{
+				evt.stopImmediatePropagation();
+				var loader:Loader = Loader(evt.target.loader);
+				var image:Bitmap = Bitmap(loader.content);
+				
+				var sxy:Number = (image.width > image.height)?(this.width/image.width):(this.height/image.height);
+				var scaleMatrix:Matrix = new Matrix();
+				scaleMatrix.scale(sxy,sxy);
+				
+				var container: UIComponent = new UIComponent();
+				this.addElement(container);
+				
+				var scaledImage:Bitmap = new Bitmap(new BitmapData(this.height,this.width,true,0));
+				scaledImage.bitmapData.draw(image,scaleMatrix);
+				
+				container.addChild(scaledImage);
+				contentLoader = null;
+				image.bitmapData.dispose();
+			}  
+			private function IOErrorHandler(evt:IOErrorEvent):void
+			{
+				trace("Error loading",this._source);
+				this.img_ioErrorHandler(evt)
+			}
+
+			private var _source : String = ''; 
 			public function set source ( s :   String ) : void
 			{
+				this._source = s; 
 				this.defaultImg.visible = false; 
 				this.img.source = s; 
 				if ( s == null || s == '' ) 
 					showDefault()
+				
+	/* 			 if ( this.creationComplete ) 
+				{
+				var request: URLRequest = new URLRequest(this._source);
+				contentLoader.load(request);
+				}   */
 				//this.content= Icons.getFormatPainter( s ) 
 				//this.invalidateDisplayList();
 			}
@@ -59,13 +109,17 @@
 			}
 		]]>
 	</fx:Script>
-	
-
+	<!--
+	<utils:SmoothImage id="img"    ioError="img_ioErrorHandler(event)"
+					   horizontalCenter="0" verticalCenter="0"
+					   useHandCursor="true" buttonMode="true"
+					   height="35" width="35"    />
+ -->
 	<mx:Image id="img"    ioError="img_ioErrorHandler(event)"
 			  horizontalCenter="0" verticalCenter="0"
 			  useHandCursor="true" buttonMode="true"
-			  maxHeight="35" maxWidth="35"    />
-	
+			  maxHeight="32" maxWidth="32"    />
+ 
 	<utils:IconButton iconSkin=".imgUserNotFound" 
 					  id="defaultImg"
 					  horizontalCenter="0" verticalCenter="0"

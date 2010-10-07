@@ -85,10 +85,14 @@ package  org.syncon.evernote.panic.view
 			test = [//'Yo dowg', 'abc123', 
 				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Thided <a>link</a> for tes link.<img source="http://avatar.cnn.com/people/MsLearning/avatar/48.png"/></TextFlow>',
 				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">This . Added <a>link</a> for testing. .<img source="http://avatar.cnn.com/people/MsLearning/avatar/48.png"/></TextFlow>',
-				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img  width="100" height="100" source="gif/A01 copy.gif"/></TextFlow>',
-				]
-				//'light', 'druid', '25 days', '24 days', 'loveless']
-			this.model.source( useSettings.source, this, 'message', null , test )
+				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
+				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
+				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008"    paragraphSpaceAfter="15" paddingTop="4" paddingLeft="4" fontFamily="Times New Roman"> <p>:<img source="http://www.google.com/intl/en_ALL/images/srpr/logo1w.png"/> Dont you agree?</p></TextFlow>' 
+				//]
+				//'light', 'druid', '25 days', 
+				//'24 days', 
+				'loveless']
+			this.model.source( useSettings.source, this, 'message', null , useSettings.test.source )
 			this.setupGetter()
 		}
 		/**

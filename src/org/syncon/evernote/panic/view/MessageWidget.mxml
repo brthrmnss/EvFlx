@@ -52,22 +52,32 @@
 			
 			public function set  messageTF ( s :  TextFlow ) : void
 			{
+			/* 	s = 	 TextConverter.importToFlow( 
+					'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008" fontSize="14" textIndent="15" paragraphSpaceAfter="15" paddingTop="4" paddingLeft="4" fontFamily="Times New Roman"> <p>:<img source="http://www.google.com/intl/en_ALL/images/srpr/logo1w.png"/> Dont you agree?</p></TextFlow>', 
+					TextConverter.TEXT_LAYOUT_FORMAT); */
 				if ( this.currentState == 'State1' ) 
 				{
 					this.lblMessage4.textFlow = s; 
 					this.state1Tf = s
-					this.currentState = 'State2'					
+					this.currentState = 'State2'	
+					//setTimeout( this.updateTfMessage, 1200, this.lblMessage3, s ) 
 				}
 				else
 				{
 					this.state2Tf = s	
 					this.lblMessage3.textFlow = s; 
 					this.currentState = 'State1'
-						
+					//setTimeout( this.updateTfMessage, 1200, this.lblMessage4, s ) 	
 					
 				}
 			}
-						
+			/**
+			 * Set other one to this size so we see a nice tween
+			 * */
+			public function updateTfMessage( sx :   Object, s : Object )  : void
+			{
+				sx.textFlow = s; 
+			}
 			
 			protected function onInit():void
 			{
@@ -133,9 +143,14 @@
 	
 	<s:transitions>
 		<s:Transition>
-			<s:AnimateTransitionShader target="{ticker}" duration="1100"
-				shaderByteCode="@Embed(source='org/syncon/evernote/panic/view/utils/HexCells.pbj',
+			<s:Parallel>
+				<s:Animate target="{this.ticker}"  duration="1100"/>
+				<s:Resize targets="{[this.lblMessage3, this.lblMessage4, this]}"  duration="1100"/>
+				<s:Resize target="{this.ticker}"  duration="1100"/>
+				<s:AnimateTransitionShader target="{ticker}" duration="1100"
+					shaderByteCode="@Embed(source='org/syncon/evernote/panic/view/utils/HexCells.pbj',
 									   mimeType='application/octet-stream')"/>
+			</s:Parallel>
 		</s:Transition>
 	</s:transitions>	 
 	
@@ -150,17 +165,19 @@
 				  text="25 DAS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
 	-->
-	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0" >
+	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0"  width="100%">
 	<!--<s:RichText  maxDisplayedLines="1" id="lblMessage2" 
 				 textFlow.State1="{state1Tf}" textFlow.State2="{this.state2Tf}"
 				 horizontalCenter="0" verticalCenter="0" />
 		-->
-		<s:RichText  maxDisplayedLines="1" id="lblMessage3" 
-					 includeIn="State1"
-					 horizontalCenter="0" verticalCenter="0" />
-		<s:RichText  maxDisplayedLines="1" id="lblMessage4" 
-					 excludeFrom="State1" 
-					 horizontalCenter="0" verticalCenter="0" />
+		<s:RichText   id="lblMessage3"  
+					 includeIn="State1" width="100%"
+					  height="100%"
+				 />
+		<s:RichText    id="lblMessage4" 
+					   includeIn="State2"    width="100%"
+					 height="100%"
+					 />
 		
 </s:VGroup>
 	<view:EditBorder id="editBorder" edit="{this}" />

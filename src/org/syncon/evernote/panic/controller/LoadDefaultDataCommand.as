@@ -104,18 +104,20 @@ package   org.syncon.evernote.panic.controller
 				new WidgetVO( WidgetVO.SPACER )
 			])						
 			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 15000).widgetData,
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
 			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])		
 			
 			arr.push( [
-				PaneWidget.importData('Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Something1', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '3Something1', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
-				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', 15000,  '0', '0x3D3F3C'  ).widgetData,				
+				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', 3000,  '0', '0x3D3F3C'  ).widgetData,				
 			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,

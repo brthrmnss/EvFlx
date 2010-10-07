@@ -6,7 +6,7 @@
 				 rollOver="itemrenderer1_rollOverHandler(event)"
 				  rollOut="itemrenderer1_rollOutHandler(event)"
 				 creationComplete="itemrenderer1_creationCompleteHandler(event)"
-				minHeight="35" minWidth="35" xmlns:view="org.syncon.evernote.panic.view.*" 
+				minHeight="35" minWidth="35" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" 
 				>
 	
 	<fx:Script> 
@@ -81,9 +81,14 @@
 			<mx:AnimateProperty targets="{[this.img]}" property="alpha"    duration="250" />
 		</s:Transition>
 	</s:transitions>		
-	 <mx:Image id="img" 
+	<utils:Avatar id="img" 
+				  useHandCursor="true" buttonMode="true"   alpha.hovered=".6"
+				  />
+	 <!--
+		<mx:Image id="img" 
 			    useHandCursor="true" buttonMode="true"
 			   maxHeight="35" maxWidth="35"  alpha.hovered=".6" />
+				  -->
 	<!--
 	<view:ResampledImage id="img2"    useHandCursor="true" buttonMode="true"
 						 
