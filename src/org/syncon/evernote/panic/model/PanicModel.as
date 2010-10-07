@@ -45,6 +45,8 @@ package org.syncon.evernote.panic.model
 		
 		public var authMode1 : Boolean = true; 
 		
+		public var debugMode : Boolean = true; 
+		
 		/**
 		 * Used for new layouts ... updated by live command
 		 * */
@@ -132,11 +134,11 @@ package org.syncon.evernote.panic.model
 		}
 		
 		public function source( source : String, host : Object, property : String, 
-										 fx : Function = null )  : void
+										 fx : Function = null, test:Array=null )  : void
 		{
 			this.dispatch( new LoadDataSourceCommandTriggerEvent (
 				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
-				source, host ,property, fx )  )					
+				source, host ,property, fx, test )  )					
 		}
 				
 		/**
@@ -149,5 +151,16 @@ package org.syncon.evernote.panic.model
 		
 		public var baseUrl : String = 'http://crashstatusboard.com/?='
 		
+		public function random(items : Array )  : Object
+		{
+			var index : int = Math.round( Math.random()*items.length)
+			if ( index == items.length ) 
+			{
+				index -= 1
+				index =0 ;
+			}
+			return items[index]; 
+		}
+			
 	}
 }

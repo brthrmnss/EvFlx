@@ -23,6 +23,8 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommand;
 	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
+	import org.syncon.evernote.panic.controller.CreateBoardCommand;
+	import org.syncon.evernote.panic.controller.CreateBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.ExportBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.HoverPersonCommand;
@@ -63,6 +65,9 @@ package   org.syncon.evernote.panic
 			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );			
 			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );	
 
+			commandMap.mapEvent(CreateBoardCommandTriggerEvent.CREATE_BOARD,  CreateBoardCommand, null, false );	
+			
+			
 			
 			commandMap.mapEvent(AuthenticateToBoardCommandTriggerEvent.METH1,  AuthenticateToBoardCommand, null, false );	
 			commandMap.mapEvent(AuthenticateToBoardCommandTriggerEvent.METH2,  AuthenticateToBoardCommand, null, false );				
@@ -130,9 +135,9 @@ package   org.syncon.evernote.panic
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
 			//this.importBoardFromString()
-			//this.importBoardFromObjects()
+			this.importBoardFromObjects()
 			//this.importBoardFromEvernote()
-			this.authenticationMode1()
+			//this.authenticationMode1()
 				
 			//this.openPopup()
 		}

@@ -6,7 +6,7 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
 					  implements="org.syncon.popups.view.IPopup" 
-					  xmlns:popup="org.syncon.evernote.basic.view.popup.*"					  
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*"					  
 					  >
 	
 	<popup:states>
@@ -124,16 +124,18 @@
 		]]>
 	</fx:Script>
 
-		
-	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
-		<s:fill>
-			<s:SolidColor color="0xEDF6F7" />
-		</s:fill>	
-	</s:Rect>	 	
-	
-	
-	
- <s:VGroup gap="-1"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	<editors:PopupBg />
+	<s:Rect   top="1" right="1" bottom="1" left="1">
+	 <s:stroke>
+		 <s:SolidColorStroke color="0xd2d2d2" />
+	 </s:stroke>
+	</s:Rect>	
+	<s:Rect   top="0" right="0" bottom="0" left="0">
+		<s:stroke>
+			<s:SolidColorStroke color="0x666666" />
+		</s:stroke>
+	</s:Rect>		
+ <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader label="Sign in to Board"  bold="false" padding="0"  width="100%"/>
 	 <s:Label id="txtStatus"  text="Please Login..." />
 	 	<mx:Form>
@@ -149,7 +151,15 @@
 			</mx:FormItem>	
 			<mx:FormItem label="  " >
 				<s:CheckBox label="Admin" id="chkAdmin" />
-			</mx:FormItem>				
+			</mx:FormItem>		
+			<s:Group width="100%" >
+				<s:Line width="100%" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x666666" />
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+
 			<mx:FormItem label=" " >
 				<s:CheckBox label="Remember me for a week" id="chkRemember" />
 				<s:Button  label="Sign in"  click="onLogin(event)" />

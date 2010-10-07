@@ -6,33 +6,58 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
 					  implements="org.syncon.popups.view.IPopup" 
-					  xmlns:popup="org.syncon.evernote.basic.view.popup.*"					  
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*"					  
 					  >
-	
-	<popup:states>
-		<s:State name="normal" />
-		<s:State name="board_auth" />
-	</popup:states>
-	
+ 
 	<fx:Script>
 		<![CDATA[
 			import sss.Shelpers.Shelpers.other.TweenerHelpers;
 			
-			static public var LOGIN : String = 'login'; 
-			static public var REGISTER : String = 'register'
-			static public var FORGOT_PASSWORD : String = 'password' 
-			
+			static public var CREATE_BOARD : String = 'createBoard'
+			static public var BOARD_NAME_CHANGED : String = 'boardNameChanged' 
+			static public var OPENED_REGISTER_POPUP : String = 'openedRegisterPopup'
+				
+			private var strError : String = '' 
+				
 			protected function onLogin(event:MouseEvent):void
 			{
-				/* if ( this.txtPassword.text.length < 4 ) 
+				this.strError = ''
+				this.validateLength( this.txtBoardName.text.length, 5, 'Boardname is too short')					
+				this.validateLength( this.txtUsername.text.length, 5, 'Username is too short')
+				this.validateLength( this.txtEmail.text.length, 5, 'Email is too short')		
+				var val :  Object =  this.email.validate( this.txtEmail.text )
+				if ( val.results != null ) this.alert( this.email.validate( this.txtEmail.text ).message)
+				this.validateLength( this.txtPassword.text.length, 5, 'Password not long enough')
+				this.validateTrue( this.txtPassword.text== this.txtPassword2.text , 'Passwords do not match')
+				this.validateTrue( this.txtAccessPassword.text== this.txtAccessPassword2.text , 'Board Passwords do not match')
+				
+				this.txtStatus.text = this.strError
+				if ( this.strError != '' ) 
 					return; 
-				 */
-				this.dispatchEvent( new Event( LOGIN ) ) ; 
-				// TODO Auto-generated method stub
+				
+				this.dispatchEvent( new Event( CREATE_BOARD ) ) ; 
 			}
 			
-			import org.syncon.popups.view.IPopup;
+			private function validateLength( length : int, minLength : int, error : String) : void
+			{
+				if ( length < minLength ) 
+					this.alert( error ) 
+			}
 			
+			private function validateTrue(  boo : Boolean, error : String) : void
+			{
+				if ( boo == false ) 
+					this.alert( error ) 
+			}			
+			
+			
+			private function alert( str : String )  : void{
+				if ( this.strError != '' ) this.strError += ', '
+				this.strError += str 
+			}
+			
+			
+			import org.syncon.popups.view.IPopup;
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			override public function onInit() : void 
@@ -40,15 +65,7 @@
 				this.creationComplete = true; 
 				this.popupCode.center()
 			}
-			/* 
-			override public  function create(app:Object)  : IPopup
-			{
-				var popup :  PopupLogin = new PopupLogin ()
-				popup._popupCode =     PopupCode.Create( popup ,app ) 
-				return popup			
-			} 
-				 */		
-			
+ 
 			override public  function create(app:Object)  : IPopup
 			{
 				var popup :  PopupRegister = new  PopupRegister ()
@@ -67,17 +84,6 @@
 			{
 				this.meth1 = false; 
 				this.show()
-				if ( a ) 
-				{	
-					this.meth1 = true; 
-					this.currentState = 'board_auth'
-					/*
-
-					
-						*/
-				}
-				else
-					this.currentState = 'normal'
 						
 				this.txtBoardName.text =automateBoardName
 				this.txtPassword.text = username
@@ -96,18 +102,7 @@
 				this.popupCode.showing
 				
 			}
- 
-
-			protected function button1_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new Event( PopupLogin.FORGOT_PASSWORD) ) 
-			}
-
-
-			protected function button2_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new Event( PopupLogin.REGISTER) ) 
-			}
+  
 			
 			public function set status ( s : String )  : void
 			{
@@ -119,46 +114,109 @@
 				this.status = 'Login ok ... loading ...' 
 				setTimeout( this.hide, 2500 ) 
 			}
-			
+
+			protected function txtBoardName_focusOutHandler(event:FocusEvent):void
+			{
+				if ( this.txtBoardName.text.length < 5 ) 
+				{
+					return;
+				}
+				this.dispatchEvent( new Event( PopupRegister.BOARD_NAME_CHANGED ) ) 
+			}
 
 		]]>
 	</fx:Script>
+	<fx:Declarations>
+		<mx:EmailValidator id="email"  requiredFieldError="E-mail address is required"/>
+	</fx:Declarations>
+	
+	<editors:PopupBg />
+	
 
-		
-	<s:Rect width="100%" height="100%" radiusX="8" radiusY="8">
-		<s:fill>
-			<s:SolidColor color="0xEDF6F7" />
-		</s:fill>	
-	</s:Rect>	 	
-	
-	
-	
- <s:VGroup gap="-1"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader label="Register"  bold="false" padding="0"  width="100%"/>
-	 <s:Label id="txtStatus"  text="Please Login..." />
+ <s:VGroup  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader label="Register/Create A New Board"  bold="false" padding="0"  width="100%"/>
+	 
 	 	<mx:Form>
-			<mx:FormItem label="Board Name" >
-				<s:TextInput id="txtBoardName"  width="200"/>
+			<s:Label id="txtStatus"  text="Fill Out the form" width="350" />
+			<mx:FormItem label="Board Name" required="true"
+						  toolTip="This is the name you will use to access this board"
+						 >
+				<s:TextInput id="txtBoardName"     focusOut="txtBoardName_focusOutHandler(event)"
+							 toolTip="This is the name you will use to access this board"
+							 width="200"/>
+				<s:Label text="" id="txtBoardOk"  color="#3DCCD9" width="200" />
 			</mx:FormItem>			
-			<mx:FormItem label="Username" excludeFrom="board_auth" >
-				<s:TextInput id="txtUsername"  width="200"/>
-				<s:Label text="If you do not have one, leave this blank" />
-			</mx:FormItem>
-			<mx:FormItem label="Password" >
-				<s:TextInput id="txtPassword" displayAsPassword="true"   width="200"/>
-			</mx:FormItem>	
-			<mx:FormItem label="Confirm" >
-				<s:TextInput id="txtPassword2" displayAsPassword="true"   width="200"/>
-			</mx:FormItem>	
-			<mx:FormItem label="Email" >
-				<s:TextInput id="txtEmail" displayAsPassword="true"   width="200"/>
-			</mx:FormItem>	
-			<mx:FormItem label="Name" >
+			
+			<mx:FormItem label="Name"   required="true" >
 				<s:TextInput id="txtName"   width="200"/>
-			</mx:FormItem>		
+			</mx:FormItem>					
+			<mx:FormItem label="Email"   required="true" >
+				<s:TextInput id="txtEmail"  maxChars="80"   width="200"/>
+				
+				<s:Label text="Confirmation email will be sent to this address" width="200" />
+			</mx:FormItem>	
+			<s:Group width="100%" >
+				<s:Line width="100%" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x666666" />
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+
+			<mx:FormItem label="Username" required="true"
+						 toolTip="This is the board admin's login">
+				<s:TextInput id="txtUsername" 
+							 maxChars="80" 
+							 width="200"/>
+				
+			</mx:FormItem>
+			<mx:FormItem label="Admin Password"  required="true"  >
+				<s:TextInput id="txtPassword" displayAsPassword="true" 
+							 maxChars="40" 
+							 width="200"/>
+			</mx:FormItem>	
+			<mx:FormItem label="Confirm"  required="true"  >
+				<s:TextInput id="txtPassword2" displayAsPassword="true" 
+							 maxChars="40" 
+							 width="200"/>
+			</mx:FormItem>	
+			<s:Group width="100%" >
+				<s:Line width="100%" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x666666" />
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+
+			<mx:FormItem label="Board Password"  required="false" 
+						  toolTip="Require a password to view this board"
+						 >
+				<s:TextInput id="txtAccessPassword" displayAsPassword="true" 
+							 toolTip="Require a password to view this board"
+							 maxChars="40" 
+							 width="200"/>
+				<s:Label text="Limit who can view this board. Can be blank for a public board" width="200" />
+			</mx:FormItem>	
+			<mx:FormItem label="Confirm"  required="false"  >
+				<s:TextInput id="txtAccessPassword2" displayAsPassword="true" 
+							 maxChars="40" 
+							 width="200"/>
+			</mx:FormItem>	
+			<s:Group width="100%" >
+				<s:Line width="100%" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x666666" />
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+
  
 			<mx:FormItem label=" " >
-				<s:Button  label="Register"  click="onLogin(event)" />
+				<s:HGroup>
+					<s:Button  label="Register"  click="onLogin(event)" />
+					<s:Button  label="Cancel"  click="this.hide()" />
+				</s:HGroup>
+				
 			</mx:FormItem>		
  
 		</mx:Form>

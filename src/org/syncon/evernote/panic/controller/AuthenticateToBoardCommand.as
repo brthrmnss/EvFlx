@@ -110,7 +110,7 @@ package   org.syncon.evernote.panic.controller
 				if ( this.event.fxComplete != null ) this.event.fxComplete(note)
 					
 				this.dispatch( new ImportBoardCommandTriggerEvent( 
-					ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, true ))		
+					ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, this.event.admin ))		
 			}
 			
 			
@@ -119,70 +119,8 @@ package   org.syncon.evernote.panic.controller
 				if ( this.event.fxFault != null ) this.event.fxFault()
 			}					
 		
-		
-		
-		private function rand( items :  Array ) : Object
-		{
-			var index : int = Math.round( Math.random()*items.length)
-			if ( index == items.length ) 
-				index -= 1
-					
-			return items[index]; 
-		}
-		
-		private function randSet(  max :  int , min : int , items :  Array, returnProp : String = '' ) :  Array
-		{
-			var ret : Array = []; 
-			for ( var i : int = 0 ; ret.length < max; i++ )
-			{
-				var item : Object = rand( items ) 
-				if ( returnProp != '' ) 
-					item = item[returnProp] 
-				if ( ret.indexOf( item ) != -1 ) 
-					continue; 
-				ret.push( item ) 
-			}
-			/*if ( min != 0 ) 
-			{*/
-				var endIndex : int = Math.max( min, Math.round( Math.random()*max ) ) 
-				ret = ret.slice( 0,	endIndex ) 
-			/*}*/
-			return ret;
-		}
-				
-		
-		
-		
-		private function createSets( ofClass_  : Class, props : Array, values : Array )  :  Array
-		{
-			var set : Array = [] 
-			
-			var propItems :  Array = [] ; 
-			for ( var i : int = 0; i < values.length ; i++ )
-			{
-				propItems[i] = values[i].split(', ')
-			}			
-			var make : int = propItems[0].length;
-			var cf : ClassFactory = new ClassFactory(ofClass_)
-			for (  i  = 0; i < make ; i++ )
-			{
-				var obj : Object = cf.newInstance()
-				for ( var j : int = 0; j < props.length ; j++ )
-				{
-					obj[props[j]] =  propItems[j][i]  
-				}		
-				set.push( obj ) 
-			}
-			
-			return set; 
-		}
-		
-		private function  newDate( str :String )  : Date
-		{
-			var newDate : Date = DateField.stringToDate( str, 'MM/DD/YYYY' ) 
-			return newDate;
-		}
-	
+ 
+	 
 		public function liveData() : void
 		{
 			var ee : EvernoteAPIModel

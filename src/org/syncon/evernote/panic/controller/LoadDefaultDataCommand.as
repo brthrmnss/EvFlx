@@ -159,6 +159,66 @@ package   org.syncon.evernote.panic.controller
 			
 		}
 		
+		
+		 public function CreateBoard(peopleNames : Array, projectNames : Array) :  BoardVO
+		{
+			
+			var arr : Array = []; 
+			var board : BoardVO = new BoardVO()
+			board.name = 'blickem'
+			arr.push( [
+				
+				GraphWidget.importData('Data 1', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
+				GraphWidget.importData('Data 2', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
+				
+				GraphWidget.importData('Data 3', '', 
+					'{http://city-21.com/php/random_number.php}/100',
+					'{http://city-21.com/php/random_string.php?f=8}',
+					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
+				GraphWidget.importData('Date 3', '', 'RATING', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
+			])
+			
+			arr.push( [
+				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
+			])			
+			arr.push( [
+				new WidgetVO( WidgetVO.SPACER )
+			])						
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', 'Alert' , 15000).widgetData,
+			])	
+			arr.push( [
+				new WidgetVO( WidgetVO.SPACER )
+			])		
+			
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Pane 1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Pane 2', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Pane 3', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+			])	
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
+			])					
+			board.layout = arr
+			
+			var people : Array = [] ; 
+			board.people = people
+			for each ( var  name : String in peopleNames ) 
+			{
+				people.push( 	new PersonVO( name, '', '', '', PersonVO.getRandomPic() )  ) 
+			}				
+			var projects : Array = []; 
+			for each ( name in projectNames ) 
+			{
+				projects.push( new ProjectVO( name, '', '', '', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
+			}
+			board.projects = projects
+			
+			return board
+			
+		}
+		
 		private function rand( items :  Array ) : Object
 		{
 			var index : int = Math.round( Math.random()*items.length)
@@ -171,7 +231,8 @@ package   org.syncon.evernote.panic.controller
 		private function randSet(  max :  int , min : int , items :  Array, returnProp : String = '' ) :  Array
 		{
 			var ret : Array = []; 
-			for ( var i : int = 0 ; ret.length < max; i++ )
+			//dont' ask formore than we can provide
+			for ( var i : int = 0 ; ret.length < Math.min(max, items.length) ; i++ )
 			{
 				var item : Object = rand( items ) 
 				if ( returnProp != '' ) 

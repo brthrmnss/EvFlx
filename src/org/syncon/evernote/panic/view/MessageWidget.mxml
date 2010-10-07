@@ -13,6 +13,9 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.elements.TextFlow;
+			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
@@ -29,9 +32,11 @@
 			
 			[Bindable] private var state1Text : String = '';
 			[Bindable] private var state2Text : String = ''; 	
+			
+			[Bindable] private var state1Tf :  TextFlow = TextConverter.importToFlow('a', TextConverter.TEXT_FIELD_HTML_FORMAT);
+			[Bindable] private var state2Tf : TextFlow =TextConverter.importToFlow('a', TextConverter.TEXT_FIELD_HTML_FORMAT);
 			public function set  message ( s : String ) : void
 			{
-				 
 				//this.lblMessage.text = s.toUpperCase() ; 
 				if ( this.currentState == 'State1' ) 
 				{
@@ -45,8 +50,30 @@
 				}
 			}
 			
+			public function set  messageTF ( s :  TextFlow ) : void
+			{
+				if ( this.currentState == 'State1' ) 
+				{
+					this.lblMessage4.textFlow = s; 
+					this.state1Tf = s
+					this.currentState = 'State2'					
+				}
+				else
+				{
+					this.state2Tf = s	
+					this.lblMessage3.textFlow = s; 
+					this.currentState = 'State1'
+						
+					
+				}
+			}
+						
+			
 			protected function onInit():void
 			{
+				this.currentState = 'State1'
+				this.currentState = 'State2'
+				//this.currentState = 'State1'
 				this.creationComplete = true
 			}				
  
@@ -116,13 +143,26 @@
 		<s:State name="State1"/>
 		<s:State name="State2"/>
 	</s:states>
-	
+	<!--
 	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0">
 		<s:Label  id="lblMessage" visible="false"
 				  text.State1="{state1Text}" text.State2="{this.state2Text}"
 				  text="25 DAS UNTIL IPAD LAUNCH"   />
 	</s:VGroup>
-	<s:RichText  maxDisplayedLines="1" id="lblMessage2"  horizontalCenter="0" verticalCenter="0" />
+	-->
+	<s:VGroup  id="ticker" horizontalCenter="0" verticalCenter="0" >
+	<!--<s:RichText  maxDisplayedLines="1" id="lblMessage2" 
+				 textFlow.State1="{state1Tf}" textFlow.State2="{this.state2Tf}"
+				 horizontalCenter="0" verticalCenter="0" />
+		-->
+		<s:RichText  maxDisplayedLines="1" id="lblMessage3" 
+					 includeIn="State1"
+					 horizontalCenter="0" verticalCenter="0" />
+		<s:RichText  maxDisplayedLines="1" id="lblMessage4" 
+					 excludeFrom="State1" 
+					 horizontalCenter="0" verticalCenter="0" />
+		
+</s:VGroup>
 	<view:EditBorder id="editBorder" edit="{this}" />
 	
 </s:Group>

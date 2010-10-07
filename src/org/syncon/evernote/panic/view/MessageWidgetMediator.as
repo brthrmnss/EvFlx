@@ -81,7 +81,14 @@ package  org.syncon.evernote.panic.view
 				useSettings = e.data; 
 			if ( useSettings.data == null ) 
 				return; 
-			this.model.source( useSettings.source, this, 'message', null  )
+			var test : Array 
+			test = [//'Yo dowg', 'abc123', 
+				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Thided <a>link</a> for tes link.<img source="http://avatar.cnn.com/people/MsLearning/avatar/48.png"/></TextFlow>',
+				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">This . Added <a>link</a> for testing. .<img source="http://avatar.cnn.com/people/MsLearning/avatar/48.png"/></TextFlow>',
+				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img  width="100" height="100" source="gif/A01 copy.gif"/></TextFlow>',
+				]
+				//'light', 'druid', '25 days', '24 days', 'loveless']
+			this.model.source( useSettings.source, this, 'message', null , test )
 			this.setupGetter()
 		}
 		/**
@@ -98,8 +105,9 @@ package  org.syncon.evernote.panic.view
 				return; 
 			}
 			oldMessage = m 
-			this.ui.message = m; 
-			this.ui.lblMessage2.textFlow = x as TextFlow
+			//this.ui.message = m; 
+			this.ui.messageTF =x as TextFlow;
+			//this.ui.lblMessage2.textFlow = x as TextFlow
 		}
 		
 		private var timer :  Timer ; 

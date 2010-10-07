@@ -12,6 +12,12 @@ package   org.syncon.evernote.panic.controller
 		[Inject] public var event:   LoadDataSourceCommandTriggerEvent;
 		override public function execute():void
 		{
+			//if test used, send test
+			if ( event.test != null ) 
+			{
+				this.release( this.model.random( event.test ).toString() ) 
+				return; 
+			}
 			 if ( this.model.sourced( event.src )  ) 
 			 {
 				 var ee : LoadDataSource = new LoadDataSource()

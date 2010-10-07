@@ -11,6 +11,7 @@ package   org.syncon.evernote.panic.controller
 		public var data : Object; 
 		public var boardName : String = ''; 
 		public var goIntoAdmin : Boolean = false; 
+		public var createBoardIfNotFound : Boolean = false; 
 		public function ImportBoardCommandTriggerEvent(type:String,  
 													   data_ : Object = null, board_name : String = '', goIntoAdmin_ : Boolean = false )  
 		{	

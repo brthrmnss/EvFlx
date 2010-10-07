@@ -91,8 +91,14 @@ package   org.syncon.evernote.panic.controller
 		{
 			if ( e.notes.length == 0 ) 
 			{
-				this.alert( 'could not find that board' )
+				if ( event.createBoardIfNotFound) 
+				{
 					this.createNote()
+				}
+				else
+				{
+					this.alert( 'could not find that board' )
+				}
 				return;
 			}
 			
@@ -178,7 +184,7 @@ package   org.syncon.evernote.panic.controller
 			
 		}
 		
-		public function noteTitle( ) :   String
+		private function noteTitle( ) :   String
 		{
 			return this.model.createBoardTitle(   event.boardName )
 		}

@@ -9,13 +9,16 @@ package   org.syncon.evernote.panic.controller
 		public var host : Object; 
 		public var property : String; 
 		public var fxSet : Function; 
-		public function LoadDataSourceCommandTriggerEvent(type:String, src : String, host : Object, property : String, fxSet : Function = null )  
+		public var test : Array = []; 
+		public function LoadDataSourceCommandTriggerEvent(type:String, src : String, 
+														  host : Object, property : String, fxSet : Function = null,
+														test : Array = null)  
 		{	
 			this.src = src
 			this.host = host
 			this.property = property
 			this.fxSet = fxSet
-				
+			this.test = test; 
 			super(type, true);
 		}
 		
