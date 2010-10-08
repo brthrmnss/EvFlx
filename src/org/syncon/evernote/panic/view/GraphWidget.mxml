@@ -51,13 +51,21 @@
 			public var expenses:ArrayCollection = new ArrayCollection([
 				{Month:"Jan", Expenses:1500},
 			]);
-			
+			[Bindable] public var expenses2:ArrayCollection = new ArrayCollection([
+				{Expense:"Taxes", Amount:2000},
+				{Expense:"Rent", Amount:1000},
+				{Expense:"Bills", Amount:100},
+				{Expense:"Car", Amount:450},
+				{Expense:"Gas", Amount:100},
+				{Expense:"Food", Amount:200} ] )
+
 			protected function onInit():void
 			{
 				 this.creationComplete = true
 			//	this.importConfig( this._widgetData );
 				 group1_resizeHandler(null)
 				 this.chart.alpha = 0; 
+				 //this.currentState = 'pieChart'
 			}				
 				
 			
@@ -68,8 +76,13 @@
 				this.height = 300
 				this.chart.height = this.height - 100
 				this.chart.width = w*2
+				//if ( this.myChart3 != null ) 
+				//{
+						
+				//}
 			}
-			
+			[Bindable] private var pieHeight : Number = 100;
+			[Bindable] private var pieWidth : Number = 100;			
 			protected function group1_resizeHandler(event:ResizeEvent):void
 			{
 				if ( this.percentWidth != 0 &&  isNaN( this.percentWidth ) == false ) 
@@ -83,6 +96,9 @@
 					this.chart.height = this.height - 100
 					 this.chart.width = w*1.3				  
 					this.hrLine.width = w*1.5
+						
+					pieHeight = w*1.5
+					pieWidth = w*1.5		
 				}
 			}			
 			
@@ -253,7 +269,11 @@
 							  />
 	</fx:Declarations>
 	
-
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="pieChart"/> 
+	</s:states>
+	
 	<s:RichText width="100%" height="100%" id="txtBg" 
 				fontLookup="embeddedCFF" fontSize="13" renderingMode="cff"
 				paddingBottom="0" paddingLeft="0"  fontFamily="ACaslonProRegularEmbedded"
@@ -267,7 +287,7 @@
 	 
 	<s:Label text="..." fontSize="36" id="lblTop" />
 		
-		<s:VGroup  id="holderForGraphAndhrLine" gap="-3"    horizontalAlign="center" >
+		<s:VGroup excludeFrom="pieChart"  id="holderForGraphAndhrLine" gap="-3"    horizontalAlign="center" >
 			
 		
 	<mx:BarChart height="80"    id="chart"
@@ -315,6 +335,24 @@
 		</s:Line>
 			
 		</s:VGroup>		
+		
+		
+		<s:VGroup  includeIn="pieChart" id="holderForPieChartAndhrLine" gap="-3"    horizontalAlign="center" >
+			<mx:PieChart id="myChart3" 
+					  width="{pieWidth}" height="{pieHeight}"
+						 dataProvider="{expenses2}" 
+						 showDataTips="true"
+						 >
+				<mx:series>
+					<mx:PieSeries 
+						field="Amount" 
+						nameField="Expense" 
+						labelPosition="callout"
+						/>
+				</mx:series>
+			</mx:PieChart>
+		</s:VGroup>		
+		
 <!--	<mx:LineChart height="80%"  width="100%" 
 				  dataProvider="{expenses}"  >
 			<mx:backgroundElements>

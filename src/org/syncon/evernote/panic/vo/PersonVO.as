@@ -1,7 +1,20 @@
 package org.syncon.evernote.panic.vo
 {
-	public class PersonVO  
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
+	[Event(name="personUpdated", type="flash.events.Event")] 		
+	public class PersonVO extends  EventDispatcher
 	{
+		static public var  PERSON_UPDATED : String = 'personUpdated';
+		
+		public function personUpdated() : void
+		{
+			this.dispatchEvent( new Event( PERSON_UPDATED ) )
+		}	
+		
+		public var id : String = ''; 
+		
 		public var name :  String = ''
 		public var desc :  String = ''
 		public var email :  String = ''; 		
@@ -27,6 +40,7 @@ package org.syncon.evernote.panic.vo
 
 		//	this.img = 	'GIF'+'/'+items[index]
 			this.src = src;  
+			this.id = (new Date()).getTime().toString()+'_'+(Math.random()*100000).toString()
 			super();
 		}
 		
@@ -69,6 +83,11 @@ package org.syncon.evernote.panic.vo
 			}			
 		}			
 		
+		public function compare( p : PersonVO )  : Boolean
+		{
+			var different : Boolean = false; 
+			return different; 
+		}
 		
  			public function update() : void
 			{

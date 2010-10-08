@@ -64,6 +64,10 @@ package org.syncon.evernote.panic.vo
 			this.layout = ipmortedLayout
 		}		
 		
- 
+		public function compare( p :  BoardVO )  : Boolean
+		{
+			var different : Boolean = false; 
+			return different; 
+		}
 	}
 }

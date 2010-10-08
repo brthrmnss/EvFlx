@@ -33,6 +33,17 @@ package   org.syncon.evernote.panic.controller
 			{
 				this.findNote( event.data as Note ) ; ///()	
 			} 
+			if ( event.type == ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS ) 
+			{
+				if ( event.data != null ) 
+				{
+					this.model.board.compare( event.data as BoardVO ) 
+				}
+				else
+				{
+					importFromServer()
+				}
+			}
 		}
 		
 		public function importFromString () : void
@@ -62,10 +73,18 @@ package   org.syncon.evernote.panic.controller
 			
 			
 			b.importX( json.board ); 
-			this.model.board = b; 
-			this.model.refreshBoard(); 
-			if ( event.goIntoAdmin ) 
-				this.model.adminMode = true; 
+			if ( event.compareBoards == false )
+			{
+				this.model.board = b; 
+				this.model.refreshBoard(); 
+				if ( event.goIntoAdmin ) 
+					this.model.adminMode = true; 
+			}
+			else
+			{
+				this.model.board.compare( b ) ; 
+				//something ...
+			}
 		}
 		
 		public function importFromServer() : void
@@ -171,8 +190,8 @@ package   org.syncon.evernote.panic.controller
 			split  = str.split('}')
 			str = split.slice(0,split.length-1).join('}')		+'}'		
 			this.dispatch( 
-			new ImportBoardCommandTriggerEvent( 
-				ImportBoardCommandTriggerEvent.IMPORT_BOARD,str, null, event.goIntoAdmin  ) 
+			new ImportBoardCommandTriggerEvent(
+				ImportBoardCommandTriggerEvent.IMPORT_BOARD,str, null, event.goIntoAdmin, event.compareBoards   ) 
 			)
 				
 			

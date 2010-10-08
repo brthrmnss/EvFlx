@@ -1,9 +1,22 @@
 package org.syncon.evernote.panic.vo
 {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
-	public class ProjectVO  
+	[Event(name="projectUpdated", type="flash.events.Event")] 		
+	
+	public class ProjectVO  extends  EventDispatcher
 	{
+		static public var  PROJECT_UPDATED : String = 'projectUpdated';
+		
+		public function projectUpdated() : void
+		{
+			this.dispatchEvent( new Event( PROJECT_UPDATED ) )
+		}		
+		
+		public var id : String = ''; 
+		
 		public var name :  String = ''
 		public var desc : String = ''; 
 		public var col2 : String = ''; 
@@ -27,6 +40,7 @@ package org.syncon.evernote.panic.vo
 			this.ppl = PersonVO.importPeople( kids ) 	
 			this.people_names = people_names
 			this.img = img; 
+			this.id = (new Date()).getTime().toString()+'_'+(Math.random()*100000).toString()
 			super();
 		}
 		
@@ -35,15 +49,15 @@ package org.syncon.evernote.panic.vo
 			var pplDict :  Dictionary = new Dictionary(true)
 			for each ( var p : PersonVO in allPeople ) 
 			{
-				pplDict[p.name]=p
+				pplDict[p.id]=p
 			}
 			this.ppl = []; 
-			for each ( var name : String in this.people_names ) 
+			for each ( var id : String in this.people_names ) 
 			{
-				if ( pplDict[name] != null ) 
-					this.ppl.push( pplDict[name] )
+				if ( pplDict[id] != null ) 
+					this.ppl.push( pplDict[id] )
 				else
-					trace( ' did not find ' + name ) 
+					trace( ' did not find ' + id ) 
 			}
 		}
 		
@@ -77,7 +91,12 @@ package org.syncon.evernote.panic.vo
 			*/
 		}	
 	 
- 
+		public function compare( p :  ProjectVO )  : Boolean
+		{
+			var different : Boolean = false; 
+			return different; 
+		}
+		
 		public function update()  : void
 		{
 			//dispatch some event

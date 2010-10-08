@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 creationComplete="onInit()"
+		 creationComplete="onInit()"  rollOut="group1_rollOutHandler(event)"
 		 color="0xFFFFFF" fontSize="34"
 		 >
 	
@@ -14,6 +14,7 @@
 		<![CDATA[
 			import mx.collections.ArrayList;
 			
+			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
 			
@@ -45,6 +46,13 @@
 				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) */ 
 			}				
 			
+
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
+					HoverPersonEvent.HIDE_PERSON_HOVER, null, this ) ) 
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -55,6 +63,10 @@
 			<s:layout>
 				<s:HorizontalLayout  paddingLeft="10" gap="10"/>
 			</s:layout>
+			
+			<s:scroller>
+				<s:Scroller alpha="0.6" />
+			</s:scroller>
 		</s:List>
 	<!--</s:VGroup>-->
 </s:Group>

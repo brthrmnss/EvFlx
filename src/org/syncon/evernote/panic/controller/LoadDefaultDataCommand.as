@@ -98,17 +98,17 @@ package   org.syncon.evernote.panic.controller
 				])
 			arr[arr.length-1][0].test.background = [ 
 				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img  width="256" height="256" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
+				'<img  width="64" height="64" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
 				'</TextFlow>',
 			]		
 			arr.push( [
-				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
+				ProjectListWidget.importData('Project Lister', '', 355, 3000).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])			
 				
-			/*	
+			/*	 */
 			
 			arr.push( [
 				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
@@ -130,7 +130,7 @@ package   org.syncon.evernote.panic.controller
 				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
 				]
 		
-				*/
+			/*	*/
 			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
@@ -162,38 +162,45 @@ package   org.syncon.evernote.panic.controller
 				
 			var people : Array = [] ; 
 			board.people = people
-			people.push( 	new PersonVO( 'A b', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'A c', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'A d', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'd Y', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'John Stewart', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Patrick O. Song', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Hazel E. Bender', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Beth O. Woodard', '', '', '', PersonVO.getRandomPic() )  ) 
 				
-			people.push( 	new PersonVO( 'bA b', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'bA c', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'bA d', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'bd Y', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Louis O. Rosenthal', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Shirley E. Merritt', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Glenda O. Morgan', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Leon E. Pearson', '', '', '', PersonVO.getRandomPic() )  ) 
 				
-			people.push( 	new PersonVO( 'cA b', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'cA c', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'cA d', '', '', '', PersonVO.getRandomPic() )  ) 
-			people.push( 	new PersonVO( 'cd Y', '', '', '', PersonVO.getRandomPic() )  ) 				
+			people.push( 	new PersonVO( 'Joann T. Stout', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Brandon A. James', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Faye P. Sparks', '', '', '', PersonVO.getRandomPic() )  ) 
+			people.push( 	new PersonVO( 'Christina O. Bowden', '', '', '', PersonVO.getRandomPic() )  ) 				
 			
 			var projects : Array = []; 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'gif/A01 copy.gif"', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'name' ) ) ) 				
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 8,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'gif/A01 copy.gif"', this.randSet( 12,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 				
 			board.projects = projects
 				
 			this.model.board = board; 
 			this.model.refreshBoard()
 			
-			//this.model.adminMode = true; 
+			this.model.adminMode = true; 
+			
+			var fields : Array = [
+				{name:'Key1', value:89, color:'#654568', tooltip:'Key1 thing'},
+				{name:'Key2', value:3, color:'#ff000', tooltip:'Key1 thing'},
+				{name:'Key3', value:50, color:'#654568', tooltip:'Key1 thing'}
+			]
+			{pie:fields}
 			
 		}
 		

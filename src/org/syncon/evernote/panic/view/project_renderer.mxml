@@ -2,12 +2,13 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-		  fontSize="24" height="42" width="100%"
+		  fontSize="24" height="42" width="100%" creationComplete="itemrenderer1_creationCompleteHandler(event)"
 				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
@@ -15,7 +16,18 @@
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				menu = value as ProjectVO
+				if ( menu != null ) 
+					this.menu.removeEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer )
+				this.menu = value as ProjectVO
+				this.menu.addEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer, false, 0, true ) 		
+				
+				this.modifyRenderer() 
+			}
+			
+			private function modifyRenderer(e:Event=null) : void
+			{
+				if ( this.creationComplete == false  ) 
+					return; 
 				this.img.source =  menu.img
 				txtLbl.text = menu.name.toString().toUpperCase(); 
 				this.txtCol2.text = this.menu.col2.toString().toUpperCase()
@@ -35,6 +47,13 @@
 				this.memberLIst.list1.dataProvider = new ArrayList( this.menu.ppl ) 
 			} 
  
+			public var creationComplete : Boolean = false; 
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.creationComplete = true; 
+				this.modifyRenderer()
+			}
+
 		]]> 
 	</fx:Script> 	
 	
@@ -58,18 +77,20 @@
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 				  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" >
 		</s:SkinnableContainer>
-		<utils:Avatar id="img"   emptySetting="" horizontalCenter="0" verticalCenter="0" />
+		<utils:Avatar id="img"   emptySetting="" 
+					  horizontalCenter="0" verticalCenter="0" />
 		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>		
 	</s:Group>
 
-	<s:Group width="28%" height="42">
+	<s:Group width="160" height="42">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtLbl" verticalCenter="0"
 				   color.hovered="0x696969"  x="5"
+				    width="100%"
 				   useHandCursor="true"  buttonMode="true"
 				   color="0xFFFFFF"  />		
 		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
@@ -78,7 +99,7 @@
 	</s:Group>
 
 	
-	<s:Group  width="22%" height="42">
+	<s:Group  width="120"  height="42">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 				skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
@@ -93,7 +114,7 @@
 	</s:Group>
 
 	
-	<s:Group   height="42" >
+	<s:Group   height="42"  width="155">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 					skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
@@ -108,14 +129,14 @@
 	</s:Group>
 
 	
-	<s:Group   height="42" width="40%" >
+	<s:Group   height="42" width="235" >
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:SkinnableContainer right="0" top="0" left="0" bottom="0" alpha="1"
 							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>		
-		 <view:ProjectMembersList id="memberLIst"  verticalCenter="0"/>
+		 <view:ProjectMembersList id="memberLIst"  verticalCenter="0"  width="235"/>
 			
 	</s:Group>
 	

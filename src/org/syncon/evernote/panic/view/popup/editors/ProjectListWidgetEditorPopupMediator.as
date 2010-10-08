@@ -37,7 +37,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		{
 			var d : WidgetVO = ProjectListWidget.importData( this.data.name, 
 				this.data.description, 
-				Number(this.ui.txtMessage.text),  this.data.refreshTime ).widgetData;
+				Number(this.ui.txtMessage.text),  this.ui.timer.time ).widgetData;
 			return d ; 	
 		}
 		

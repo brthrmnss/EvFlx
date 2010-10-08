@@ -1,14 +1,18 @@
 package  org.syncon.evernote.panic.view
 {
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
@@ -56,6 +60,36 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data == null ) 
 				return; 
 			this.ui.list1.height = useSettings.height 
+			var testBoard : BoardVO = this.makeUpTestBoard()	
+			this.dispatch( new  ImportBoardCommandTriggerEvent(
+				ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS, testBoard )
+				)
+				
+			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
+			this.setupGetter()
+		}
+		private var timer :    Timer ;//= new Timer()
+		override public function onRemove() : void
+		{
+			super.onRemove()
+			this.timer.stop()
+			this.timer.removeEventListener(TimerEvent.TIMER, this.onUpdateMeTimer )
+		}
+		public function setupGetter()  : void
+		{
+			if ( this.timer == null ) 
+			{
+				this.timer = new Timer( this.widgetData.refreshTime, 0 ) 
+				
+				this.timer.addEventListener(TimerEvent.TIMER, this.onUpdateMeTimer, false, 0, true )
+				this.timer.start()
+			}
+		}
+		
+		public function onUpdateMeTimer(e:Event) : void
+		{
+			if ( this.widgetData.editing == false )  
+				onAutomateWidget( null ) 
 		}
 		
 		public function onEditModeChanged(e:PanicModelEvent): void
@@ -91,5 +125,13 @@ package  org.syncon.evernote.panic.view
 		{
 			this.ui.list1.dataProvider = new ArrayList( this.model.board.projects )
 		}
+		
+		
+		private function makeUpTestBoard() :  BoardVO
+		{
+			var b : BoardVO = this.model.board; 
+			return b; 
+		}
+		
 	}
 }

@@ -81,14 +81,14 @@
 			<mx:FormItem label="Height" >
 				<s:TextInput id="txtMessage" />
 			</mx:FormItem>
-			
+			<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
 			<mx:FormItem>
 				<s:HGroup>
 					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
 					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 				</s:HGroup>
 			</mx:FormItem>
-			<editors:WidgetUpdateSettingsControlBox id="timer" />
+			
 			
 		</mx:Form>
 		
