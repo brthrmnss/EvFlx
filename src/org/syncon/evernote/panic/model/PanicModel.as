@@ -77,7 +77,7 @@ package org.syncon.evernote.panic.model
 		}
 		public function get  adminMode ( ) : Boolean  { return this._adminMode   }		
 				
-		private var _surpressTweens : Boolean = false
+		private var _surpressTweens : Boolean = true
 		public function set surpressTweens ( p : Boolean )  : void
 		{
 			this._surpressTweens = p; 

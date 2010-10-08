@@ -22,6 +22,7 @@ package  org.syncon.evernote.panic.view
 		{
 			var tlf : TextFlow =  TextConverter.importToFlow(txt, TextConverter.TEXT_LAYOUT_FORMAT)
 			replaceFonts( tlf, color, fontSize ) 
+			
 			return tlf
 		}		
 		

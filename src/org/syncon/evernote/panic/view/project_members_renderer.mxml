@@ -2,13 +2,14 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-		  fontSize="20" height="40"
+		  fontSize="20" height="40" rollOut="itemrenderer1_rollOutHandler(event)"
 				autoDrawBackground="false">
 	
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
 			
+			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var menu :   ProjectVO = new ProjectVO()
@@ -20,6 +21,13 @@
 				this.list.dataProvider = arr
 			} 
  
+
+			protected function itemrenderer1_rollOutHandler(event:MouseEvent):void
+			{
+				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
+					HoverPersonEvent.HIDE_PERSON_HOVER, null, this ) ) 
+			}
+
 		]]> 
 	</fx:Script> 	
 	

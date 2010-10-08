@@ -102,7 +102,12 @@
 		
 		<mx:FormItem label="Color" >
 			<mx:ColorPicker id="colorPicker" />
-		</mx:FormItem>			
+		</mx:FormItem>		
+		
+		<mx:FormItem label="Background" >
+			<s:TextInput id="txtBackground" />
+		</mx:FormItem>	
+		
 		<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
 		<mx:FormItem>
 			<s:HGroup>

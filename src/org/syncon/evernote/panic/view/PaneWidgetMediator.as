@@ -79,6 +79,9 @@ package  org.syncon.evernote.panic.view
 			//this.ui.text_ = 
 			//this.updateText(  useSettings.source )  
 			this.model.source( useSettings.source, this, 'updateText', null , useSettings.test.source )
+			this.model.source( useSettings.background, this, 'updateBgText', null , useSettings.test.background )
+				
+			
 			this.ui.height = widgetData.height
 			if ( useSettings.data.hasOwnProperty( 'color1' ) )
 				this.ui.color1.color = useSettings.data.color1; 
@@ -149,6 +152,19 @@ package  org.syncon.evernote.panic.view
 			return JSON.encode( obj )  
 		}
 		*/
+		private var oldBgTextString : String = ''; 
+		public function set updateBgText(a : String ) : void
+		{
+			 if ( a == this.oldBgTextString   ) 
+				return  
+				oldBgTextString = a; 	
+			var ee : HtmlConvertor = new HtmlConvertor()
+			var textFlow : TextFlow= ee.convert2( a, 0xFFFFFF, 15 ) 
+			this.ui.txtBg.textFlow = textFlow
+			return  ; 
+		}
+		
+		
 		public var oldTextString: String = ''; 
 		/**
 		 * convert html to text flow
@@ -157,7 +173,8 @@ package  org.syncon.evernote.panic.view
 		 * */
 		public function set updateText(a : String ) : void
 		{
-			if ( a != this.oldTextString && supressTweens ) 
+			this.ui.creationComplete; 
+			if ( a == this.oldTextString && supressTweens ) 
 				return  
 				oldTextString = a; 	
 			this.ui.animateHover(this.ui)

@@ -18,14 +18,14 @@
 			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
-			[Bindable] public var menu :   PersonVO = new PersonVO()
+			[Bindable] public var person :   PersonVO = new PersonVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				menu = value as PersonVO
-				this.img.source = menu.src; 
-				//this.img.toolTip = menu.name;
-				//this.img2.source = menu.src; 
+				person = value as PersonVO
+				this.img.source = person.src; 
+				//this.img.toolTip = person.name;
+				//this.img2.source = person.src; 
 				if ( this.parentDocument.parentDocument != null &&  
 					this.parentDocument.parentDocument.hasOwnProperty('deleteMode' )  
 					 )  
@@ -44,21 +44,21 @@
 
 			protected function btnDelete_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent( 'deletePerson', this.menu ) ) 
+				this.dispatchEvent( new CustomEvent( 'deletePerson', this.person ) ) 
 			}
 
 
 			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
 			{
 				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
-					HoverPersonEvent.SHOW_PERSON_HOVER, this.menu, this ) ) 
+					HoverPersonEvent.SHOW_PERSON_HOVER, this.person, this ) ) 
 			}
 
 
 			protected function itemrenderer1_rollOutHandler(event:MouseEvent):void
 			{
 				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
-					HoverPersonEvent.HIDE_PERSON_HOVER, this.menu, this ) ) 
+					HoverPersonEvent.HIDE_PERSON_HOVER, this.person, this ) ) 
 			}
 
 		]]> 

@@ -8,12 +8,12 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.popups.controller.HidePopupEvent;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class EditSwitchMediator extends Mediator  
+	public class UserControlsMediator extends Mediator  
 	{
-		[Inject] public var ui:   AdminControls;
+		[Inject] public var ui:   UserControls;
 		[Inject] public var model : PanicModel;
 			
-		public function EditSwitchMediator()
+		public function UserControlsMediator()
 		{
 		} 
 		
@@ -44,9 +44,9 @@ package  org.syncon.evernote.panic.view
 		private function onAdminModeChanged(e:PanicModelEvent): void
 		{
 			if ( this.model.adminMode ) 
-			this.ui.show()
-			else
 			this.ui.hide()
+			else
+			this.ui.show()
 		}		
 		private function onClickedSaveHandler(e:CustomEvent): void
 		{

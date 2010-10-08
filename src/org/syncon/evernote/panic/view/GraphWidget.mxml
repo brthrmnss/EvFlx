@@ -81,8 +81,8 @@
 					///this.width = w; 
 					this.height = 300
 					this.chart.height = this.height - 100
-					/*this.chart.width = w*1.5				 */	
-					
+					 this.chart.width = w*1.3				  
+					this.hrLine.width = w*1.5
 				}
 			}			
 			
@@ -169,6 +169,7 @@
 			}		
 			static public function importData( name : String, desc:String, labelTop : String, 
 			labelBottom : String, value :  Object, max : Object= null, fillColor : uint = NaN, 
+			bgSource : String = '', 
 			 refreshTime :  Number=15000)  :  GraphWidget
 			{
 				var o : Object = {}
@@ -186,6 +187,8 @@
 				o.labelTop = labelTop
 				o.labelBottom = labelBottom
 				o.max = max; 
+				
+				vo.background = bgSource; 
 				//a string .. that is scrted to anumber later
 				vo.source = value.toString(); 
 				return g ; 
@@ -251,14 +254,23 @@
 	</fx:Declarations>
 	
 
-
+	<s:RichText width="100%" height="100%" id="txtBg" 
+				fontLookup="embeddedCFF" fontSize="13" renderingMode="cff"
+				paddingBottom="0" paddingLeft="0"  fontFamily="ACaslonProRegularEmbedded"
+				paddingTop="0" paddingRight="0" 
+				/>	
 	
-	<s:VGroup  horizontalAlign="center" clipAndEnableScrolling="false"  width="100%">
+	<s:VGroup  horizontalCenter="0"
+			   horizontalAlign="center" clipAndEnableScrolling="false"  width="100%">
 		
 	
 	 
 	<s:Label text="..." fontSize="36" id="lblTop" />
-	<mx:BarChart height="80"  width="250%"   id="chart"
+		
+		<s:VGroup  id="holderForGraphAndhrLine" gap="-3"    horizontalAlign="center" >
+			
+		
+	<mx:BarChart height="80"    id="chart"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
 		</mx:backgroundElements>
@@ -296,6 +308,13 @@
 		</mx:series>
 
 	</mx:BarChart>
+		<s:Line width="100%"  id="hrLine">
+			<s:stroke>
+				<s:SolidColorStroke color="0x2B2A28" />
+			</s:stroke>
+		</s:Line>
+			
+		</s:VGroup>		
 <!--	<mx:LineChart height="80%"  width="100%" 
 				  dataProvider="{expenses}"  >
 			<mx:backgroundElements>

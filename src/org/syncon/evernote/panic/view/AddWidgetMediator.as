@@ -126,7 +126,7 @@ package  org.syncon.evernote.panic.view
 			if ( addingA == WidgetVO.PANE ) 
 			{
 				row = getRowOrFindParentRow( ui  )				
-				row.addWidget( PaneWidget.importData( 'Global Alert', '', 'Something1', 15000,  '0x4D4844', '0x0E0E0E' )  )
+				row.addWidget( PaneWidget.importData( 'Global Alert', '', 'Something1', '', 15000,  '0x4D4844', '0x0E0E0E' )  )
 			}
 			if ( addingA == WidgetVO.MESSAGE ) 
 			{

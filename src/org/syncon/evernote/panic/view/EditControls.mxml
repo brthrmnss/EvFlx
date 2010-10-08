@@ -19,6 +19,6 @@
  
 	 <view:AddWidget top="100" left="0" />
 	
-	<view:EditSwitch top="0" right="20" />
-
+	<view:AdminControls top="0" right="20" />
+	<view:UserControls top="0" right="20" />
 </s:Group>

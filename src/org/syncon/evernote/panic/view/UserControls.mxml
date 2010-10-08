@@ -5,7 +5,7 @@
 		   rollOut="group1_rollOutHandler(event)"
 		    clipAndEnableScrolling="true"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
-		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
 	<s:states> 
 		<s:State name="edit"/> 
@@ -14,7 +14,7 @@
 	<s:transitions>
 		<s:Transition toState="*" >
 			<s:Parallel>
-				<s:Resize target="{this.btnEdit}"   duration="250" />
+				<!--<s:Resize target="{this.btnEdit}"   duration="250" />-->
 				<s:Resize target="{this}"   duration="250" />
 			</s:Parallel>
 		</s:Transition>
@@ -89,7 +89,7 @@
 			}			
 			
 			
-			public var autoHide : Boolean = false; 
+			public var autoHide : Boolean = true; 
 			protected function chk_changeHandler(event:Event):void
 			{
 				this.dispatchEvent( new CustomEvent( 'changedAutohide' ) )
@@ -103,7 +103,8 @@
 				this.height = NaN
 			//	this.resizeMe.heightTo = NaN 
 			//	this.resizeMe.duration = 1200
-			//	this.resizeMe.play([this])					
+			//	this.resizeMe.play([this])				
+				
 				//'this.currentState = 'hiddenFromView'
 				// TODO Auto-generated method stub
 			}
@@ -114,7 +115,7 @@
 				if ( this.autoHide == false ) 
 					return; 
 				this.prevHeight = this.height; 
-			//	this.height = 1
+			 	this.height = 1
 				this.resizeMe.heightTo = 1; 
 				this.resizeMe.duration = 500
 				//this.resizeMe.play([this])
@@ -155,31 +156,17 @@
 	</s:Rect>
 	
 	<s:VGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
-
-
-	<s:HGroup  >
-		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
-		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
-		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
-		<s:CheckBox label="Auto-Hide"   id="chk" change="chk_changeHandler(event)"/>
-	</s:HGroup>	
-		
-		<s:HGroup id="holderStuff" includeIn="edit">
-			<s:Button label="Settings"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
-		</s:HGroup>		
-		<s:Button label="Invite Users" includeIn="edit" id="btnInvite" click="btnInvite_clickHandler(event)"/>
-		<s:HGroup id="holderStuff2" includeIn="edit">
-			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
-			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
-		</s:HGroup>
-
-		<s:VGroup>
-			
-			<s:Button label="Save" includeIn="edit"  id="btnSave" click="btnSave_clickHandler(event)"/>
-		</s:VGroup>
+	<s:HGroup   verticalAlign="middle">
 		
 	
-
+		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
+		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
+		 <!--
+		<s:Button id="btnRoster" label="Logout"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
+		
+	-->		<s:CheckBox label="Auto-Hide"   selected="true"
+						id="chk" change="chk_changeHandler(event)"/>
+	</s:HGroup> 
 	</s:VGroup>
 
 </s:Group>

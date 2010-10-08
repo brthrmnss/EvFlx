@@ -83,6 +83,8 @@ package  org.syncon.evernote.panic.view
 			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
 			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
 			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
+			this.model.source( useSettings.background, this, 'updateBgText', null , useSettings.test.background )
+				
 			this.ui.chart.toolTip = useSettings.description;
 			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
 			this.setupGetter()
@@ -110,6 +112,17 @@ package  org.syncon.evernote.panic.view
 			if ( this.widgetData.editing == false )  
 			onAutomateWidget( null ) 
 		}
+		
+		private var oldBgTextString : String = ''; 
+		public function set updateBgText(a : String ) : void
+		{
+			if ( a == this.oldBgTextString   ) 
+				return  
+			var ee :  HtmlConvertor = new HtmlConvertor()
+			this.ui.txtBg.textFlow = ee.convert2( a, 0xFFFFFF, 15 ) 
+			return  ; 
+		}		
+		
 		
 		public function onEditClicked(e:CustomEvent) : void
 		{

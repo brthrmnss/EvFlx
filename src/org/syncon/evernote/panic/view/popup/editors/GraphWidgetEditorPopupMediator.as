@@ -38,6 +38,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtValue.text = this.data.source; 
 			this.ui.txtMaximum.text = this.data.data.max
 			this.ui.colorPicker.selectedColor = this.data.data.fillColor; 
+			this.ui.txtBackground.text = this.data.background; 
 		}		
  	
 		/**
@@ -47,7 +48,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 		{
 			var d : WidgetVO = GraphWidget.importData( this.data.name, this.data.description, 
 				this.ui.txtTop.text, this.ui.txtBottom.text, this.ui.txtValue.text,
-				this.ui.txtMaximum.text,  this.ui.colorPicker.selectedColor,  this.ui.timer.time ).widgetData;
+				this.ui.txtMaximum.text,  this.ui.colorPicker.selectedColor,
+				this.ui.txtBackground.text, this.ui.timer.time ).widgetData;
 			return d ; 	
 		}
 		 

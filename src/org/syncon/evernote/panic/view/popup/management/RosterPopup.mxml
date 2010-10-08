@@ -73,7 +73,7 @@
 					this.selector.dp = this.dp; 
 					this.fxSelected = fxSelected; 
 				}
-				
+				this.dispatchEvent( new Event( RosterPopup.OPENED_POPUP ) ) 
 			}
 			 /**
 			 * Export move data from ui to data object

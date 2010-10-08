@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 creationComplete="onInit()"
+		 creationComplete="onInit()"  rollOut="group1_rollOutHandler(event)"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
 		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
@@ -17,6 +17,7 @@
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			import org.syncon.evernote.panic.vo.WidgetVO;
@@ -104,6 +105,13 @@
 			{
 				this.editBorder.hide()
 			}						
+
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				this.parentApplication.context.dispatchEvent( new HoverPersonEvent(
+					HoverPersonEvent.HIDE_PERSON_HOVER, null, this ) ) 
+			}
+
 		]]>
 	</fx:Script>
 	

@@ -87,22 +87,41 @@ package   org.syncon.evernote.panic.controller
 			board.name = 'blickem'
 			arr.push( [
 				 
-				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
-				GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,'', 15000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,'', 15000).widgetData,
 			 
 				GraphWidget.importData('Eccles lister', '', 
 					'{http://city-21.com/php/random_number.php}/100',
 					'Ec3 - {http://city-21.com/php/random_string.php?f=8}',
-					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
+					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
+				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , '', 15000).widgetData
 				])
-			
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img  width="256" height="256" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
+				'</TextFlow>',
+			]		
 			arr.push( [
 				ProjectListWidget.importData('Project Lister', '', 355, 15000).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
-			])						
+			])			
+				
+			/*	
+			
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#EEE9E5"> 25 DAYS </span>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+			]
+								
+				
 			arr.push( [
 				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
 			])	
@@ -110,17 +129,31 @@ package   org.syncon.evernote.panic.controller
 			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
 				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
 				]
+		
+				*/
+			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])		
 			
 			arr.push( [
-				PaneWidget.importData('Global Alert', '', 'Something1', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '3Something1', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
-				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', 3000,  '0', '0x3D3F3C'  ).widgetData,				
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '3Something1', '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', '',  3000,  '0', '0x3D3F3C'  ).widgetData,				
 			])	
 			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img  width="180" height="180" source="bus.png"/>'+
+				'</TextFlow>',
+			]				
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
@@ -160,7 +193,7 @@ package   org.syncon.evernote.panic.controller
 			this.model.board = board; 
 			this.model.refreshBoard()
 			
-			this.model.adminMode = true; 
+			//this.model.adminMode = true; 
 			
 		}
 		
@@ -173,14 +206,14 @@ package   org.syncon.evernote.panic.controller
 			board.name = 'blickem'
 			arr.push( [
 				
-				GraphWidget.importData('Data 1', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,15000).widgetData,
-				GraphWidget.importData('Data 2', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,15000).widgetData,
+				GraphWidget.importData('Data 1', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,'', 15000).widgetData,
+				GraphWidget.importData('Data 2', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,'', 15000).widgetData,
 				
 				GraphWidget.importData('Data 3', '', 
 					'{http://city-21.com/php/random_number.php}/100',
 					'{http://city-21.com/php/random_string.php?f=8}',
-					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, 15000).widgetData,
-				GraphWidget.importData('Date 3', '', 'RATING', 'Eccl4', 12, 100, 0x7652C0 , 15000).widgetData
+					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
+				GraphWidget.importData('Date 3', '', 'RATING', 'Eccl4', 12, 100, 0x7652C0 , '', 15000).widgetData
 			])
 			
 			arr.push( [
@@ -197,9 +230,9 @@ package   org.syncon.evernote.panic.controller
 			])		
 			
 			arr.push( [
-				PaneWidget.importData('Global Alert', '', 'Pane 1', 15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', 'Pane 2', 15000,  '0x3E4B5C', '0x051931'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', 'Pane 3', 15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', 'Pane 1','',   15000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Pane 2','',   15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Pane 3', '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
 			])	
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [

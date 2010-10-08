@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		  rollOver="group1_rollOverHandler(event)"
+		   rollOut="group1_rollOutHandler(event)"
+		    clipAndEnableScrolling="true"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
+		 >
+	<s:states> 
+		<s:State name="edit"/> 
+		<s:State name="noEdit"/> 
+	</s:states> 	
+	<s:transitions>
+		<s:Transition toState="*" >
+			<s:Parallel>
+				<!--<s:Resize target="{this.btnEdit}"   duration="250" />-->
+				<s:Resize target="{this}"   duration="250" />
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<fx:Declarations>
+		<s:Resize id="resizeMe" />
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			public var creationComplete : Boolean = false; 
+			
+			public var editMode : Boolean = false; 
+			
+			protected function onInit():void
+			{
+				/*
+				if ( this.currentState != 'edit' )
+					this.currentState = 'noEdit' 
+				*/
+				this.creationComplete = true
+			}
+
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedEdit', this.editMode ) ) 
+			}
+			protected function btnSave_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedSave', this.editMode ) ) 
+			}		
+			protected function btnBoard_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedBoard', this.editMode ) ) 
+			}		
+			protected function btnInvite_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedInvite', this.editMode ) ) 
+			}					
+			
+			protected function btnProjects_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedProjects', this.editMode ) ) 
+			}
+			protected function btnPeople_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedPeople', this.editMode ) ) 
+			}			
+
+			public function show() : void
+			{
+				//this.currentState = 'edit'
+				this.alpha = 0.95
+			}
+			
+			public function hide()  : void
+			{
+				this.alpha  = 0	
+			}
+
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				this.alpha = 0;
+			}
+
+			protected function btnRoster_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'clickedRoster' ) )
+			}			
+			
+			
+			public var autoHide : Boolean = false; 
+			protected function chk_changeHandler(event:Event):void
+			{
+				this.dispatchEvent( new CustomEvent( 'changedAutohide' ) )
+				this.autoHide = this.chk.selected
+			}
+
+
+			protected function group1_rollOverHandler(event:MouseEvent):void
+			{
+				if ( this.prevHeight != 0 ) 
+				this.height = NaN
+			//	this.resizeMe.heightTo = NaN 
+			//	this.resizeMe.duration = 1200
+			//	this.resizeMe.play([this])				
+				
+				//'this.currentState = 'hiddenFromView'
+				// TODO Auto-generated method stub
+			}
+
+			public var prevHeight : Number = 0; 
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				if ( this.autoHide == false ) 
+					return; 
+				this.prevHeight = this.height; 
+			 	this.height = 1
+				this.resizeMe.heightTo = 1; 
+				this.resizeMe.duration = 500
+				//this.resizeMe.play([this])
+				//this.timer.start()
+				//this.currentState = 'hiddenFromView'
+			}
+
+		]]>
+	</fx:Script>
+ 
+	<s:filters>
+		<s:DropShadowFilter
+			alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="0x000000" 
+			distance="2" hideObject="false" inner="false" knockout="false" quality="2" 
+			strength="1"/>
+	</s:filters>
+	
+<!--	
+	<s:Rect right="0" left="0" top="-1" bottom="0" 
+			topLeftRadiusX="-10" topLeftRadiusY="10"
+			topRightRadiusX="-10" topRightRadiusY="10"
+			 bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
+			 bottomRightRadiusX="10"  bottomRightRadiusY="10"
+			 >
+	-->
+	<s:Rect right="0" left="0" top="-1" bottom="0" 
+			topLeftRadiusX="0" topLeftRadiusY="0"
+			topRightRadiusX="0" topRightRadiusY="0"
+			bottomLeftRadiusX="10" bottomLeftRadiusY="10" 
+			bottomRightRadiusX="10"  bottomRightRadiusY="10"
+			>	
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF" />
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke color="0x666666"  pixelHinting="true"  weight="1"/>
+		</s:stroke>		
+	</s:Rect>
+	
+	<s:VGroup paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
+
+
+	<s:HGroup   verticalAlign="middle">
+		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
+		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
+		 
+		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
+		 
+		<!--
+		<utils:IconButton  includeIn="noEdit" iconSkin=".btnSettings" toolTip="Edit Board"  id="btnEdit"   click="btnEdit_clickHandler(event)"/>
+		<utils:IconButton  includeIn="edit" iconSkin=".btnLeft"  toolTip="Leave Edit Mode"  id="btnLeaveEdit"  click="btnEdit_clickHandler(event)"/>
+		-->
+		<s:CheckBox label="Auto-Hide"   id="chk" change="chk_changeHandler(event)"/>
+	</s:HGroup>	
+		
+		<s:HGroup id="holderStuff" includeIn="edit">
+			<s:Button label="Settings"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
+		</s:HGroup>		
+		<s:Button label="Invite Users" includeIn="edit" id="btnInvite" click="btnInvite_clickHandler(event)"/>
+		<s:HGroup id="holderStuff2" includeIn="edit">
+			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
+			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
+		</s:HGroup>
+
+		<s:VGroup>
+			
+			<s:Button label="Save" includeIn="edit"  id="btnSave" click="btnSave_clickHandler(event)"/>
+		</s:VGroup>
+		
+	
+
+	</s:VGroup>
+
+</s:Group>

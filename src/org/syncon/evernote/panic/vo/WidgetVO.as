@@ -26,7 +26,8 @@ package org.syncon.evernote.panic.vo
 		public var source : String = ''; 
 		public var col3 : String = ''; 
 		public var refreshTime : Number = 15000;//-1;
-			
+		public var background : String = ''; 
+		
 		[Transient] public var editing : Boolean = false;
 			
 	/*	public var name2 : String = ''; 		*/

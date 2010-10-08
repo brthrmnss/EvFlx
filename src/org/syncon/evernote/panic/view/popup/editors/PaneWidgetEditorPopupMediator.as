@@ -32,6 +32,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 				
 			this.ui.timer.dataX =  this.data; 
 			this.ui.txtMessage.text = this.data.source; 
+			this.ui.txtMessageBg.text = this.data.background; 
 			this.ui.colorPicker1.selectedColor = this.data.data.color1; 
 			this.ui.colorPicker2.selectedColor = this.data.data.color2; 
 		}	
@@ -42,7 +43,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function currentConfig()  :   WidgetVO
 		{
 			var d : WidgetVO = PaneWidget.importData( this.data.name, this.data.description, 
-				this.ui.txtMessage.text,   this.ui.timer.time,  
+				this.ui.txtMessage.text, 	this.ui.txtMessageBg.text,  this.ui.timer.time,  
 				this.ui.colorPicker1.selectedColor.toString(), 
 				this.ui.colorPicker2.selectedColor.toString() ).widgetData;
 			return d ; 	
