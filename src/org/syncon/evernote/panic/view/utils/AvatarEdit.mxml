@@ -27,6 +27,8 @@
 				
 			public var creationComplete : Boolean = false; 
 			
+			public var imgMode : Boolean = false; 
+			public var fault :  Boolean = false; 
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -36,6 +38,7 @@
 			{
 				this.defaultImg.visible = false; 
 				this.img.source = s; 
+				this.fault = false; 
 				//this.content= Icons.getFormatPainter( s ) 
 				//this.invalidateDisplayList();
 			}
@@ -48,8 +51,15 @@
 
 			protected function img_ioErrorHandler(event:IOErrorEvent):void
 			{
-				this.defaultImg.visible = true
-				this.img.source = false; 
+				this.fault = true; 
+				if ( this.imgMode ) 
+				{
+					
+				}
+				else
+					this.defaultImg.visible = true				
+				//this.defaultImg.visible = true
+				this.img.visible = false; 
 			}
 
 
@@ -59,8 +69,13 @@
 				//this call mediator while will open the real thing , near me
 			}
 
-			public var changeFx : Function; 
+			public var sources :  Array = []; 
 			
+			public function set emptySetting ( s : String )  : void
+			{
+				this.imgMode = true
+				this.defaultImg.visible = false; 
+			}			
 		]]>
 	</fx:Script>
 	<s:VGroup>
@@ -77,7 +92,7 @@
 							  horizontalCenter="0" verticalCenter="0"
 							  />
 		</s:Group>
-		<s:Button label="Edit" click="button1_clickHandler(event)" />
+		<s:Button label="Edit" useHandCursor="true" buttonMode="true" click="button1_clickHandler(event)" />
 	</s:VGroup>
 
 </s:Group>

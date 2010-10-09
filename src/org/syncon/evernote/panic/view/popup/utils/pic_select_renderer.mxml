@@ -4,7 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				fontSize="12"   
 				 useHandCursor="true"  buttonMode="true"
-				autoDrawBackground="false" 
+				autoDrawBackground="false"  width="50" height="50"
 				xmlns:view="org.syncon.evernote.panic.view.*"
 				xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
@@ -29,7 +29,7 @@
 		<s:State name="disabled"/> 
 	</s:states> 	
  
-	<mx:Image id="pic"  width="50" height="50"/>
+	<mx:Image id="pic"  maxWidth="50" maxHeight="50"/>
 <!-- <utils:Avatar id="pic" />
  -->
 </s:ItemRenderer>

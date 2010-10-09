@@ -12,33 +12,60 @@
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.effects.Effect;
+			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.HoverPersonEvent;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
+			
+			import spark.effects.animation.RepeatBehavior;
 			[Bindable] public var person :   PersonVO = new PersonVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				person = value as PersonVO
+
+				if ( person != null ) 
+					this.person.removeEventListener(PersonVO.PERSON_UPDATED, this.modifyRenderer )
+				this.person = value as PersonVO
+				this.person.addEventListener(PersonVO.PERSON_UPDATED, this.modifyRenderer, false, 0, true ) 		
+					
+				this.modifyRenderer() 
+			}
+			
+			private function modifyRenderer(e:CustomEvent=null) : void
+			{
+				if ( this.creationComplete == false  ) 
+					return; 
+				if ( this.parentDocument == null ) 
+					return; 
 				this.img.source = person.src; 
+				this.picUnavailbe.visible = ( this.person.available == false ) 
 				//this.img.toolTip = person.name;
 				//this.img2.source = person.src; 
 				if ( this.parentDocument.parentDocument != null &&  
 					this.parentDocument.parentDocument.hasOwnProperty('deleteMode' )  
-					 )  
+				)  
 				{
 					//this.owner.parent
 					this.btnDelete.visible = this.parentDocument.parentDocument.deleteMode; 
 				}				
+ 						
+				if ( e	 != null )
+				{
+					var props : Array = e.data as Array
+					this.animateHover( this ) 
+				}
+ 
 			} 
  
-
+			public var creationComplete : Boolean = false; 
 			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
 			{
-				//this.parentDocument.parentDocument.addEventListener( 'rollOut', this.itemrenderer1_rollOutHandler, false, 0, true )
+				this.creationComplete = true; 
+				this.modifyRenderer()				
 			}
 
 
@@ -61,8 +88,43 @@
 					HoverPersonEvent.HIDE_PERSON_HOVER, this.person, this ) ) 
 			}
 
+			
+			
+			
+			private var animatingTargets:Object = new Object();
+			
+			public function animateHover(target:Object):void
+			{
+				if (animatingTargets[target.id] === undefined)
+				{
+					var effect: Effect;                
+					if (true)
+						effect = rotator;
+					else
+						effect = mover;
+					effect.target = target;
+					animatingTargets[target.id] = effect;
+					effect.play();
+				}
+			}
+			private function effectEndHandler(event: EffectEvent):void
+			{
+				delete animatingTargets[event.effectInstance.target.id];
+			}			
+			
 		]]> 
 	</fx:Script> 	
+	
+	<fx:Declarations> 
+		<s:Rotate3D id="rotator" angleYFrom="0" angleYTo="-360"
+					autoCenterTransform="true" duration="500" 
+					effectEnd="effectEndHandler(event)"/>
+		<s:Move3D id="mover" duration="200"
+				  xBy="-30" repeatCount="2"
+				  repeatBehavior="{RepeatBehavior.REVERSE}"
+				  autoCenterTransform="true"  
+				  effectEnd="effectEndHandler(event)"/>
+	</fx:Declarations>
 	
 	<s:states> 
 		<s:State name="normal"/> 
@@ -84,6 +146,7 @@
 	<utils:Avatar id="img" 
 				  useHandCursor="true" buttonMode="true"   alpha.hovered=".6"
 				  />
+	<utils:IconButton id="picUnavailbe" iconSkin=".btnForbiddenSmall" bottom="0" right="0" toolTip="Unavailable" />
 	 <!--
 		<mx:Image id="img" 
 			    useHandCursor="true" buttonMode="true"

@@ -290,7 +290,7 @@
 		<s:VGroup excludeFrom="pieChart"  id="holderForGraphAndhrLine" gap="-3"    horizontalAlign="center" >
 			
 		
-	<mx:BarChart height="80"    id="chart"
+	<mx:BarChart height="80"    id="chart"  seriesFilters="[]"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
 		</mx:backgroundElements>

@@ -3,7 +3,7 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx"
 					  xmlns:comps="org.syncon.comps.*" 
-					  creationComplete="onInit()" 
+					  creationComplete="onInit()" addedToStage="popupbase1_addedToStageHandler(event)"
 					  implements="org.syncon.popups.view.IPopup"
 					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 					  >
@@ -65,9 +65,10 @@
 					
 				this.txtName.text = this.project.name; 
 				this.txtDesc.text = this.project.desc
-				this.txtCol3.text = this.project.col2
-				this.txtCol4.text = this.project.col3
+				this.txtCol3.text = this.project.status
+				this.txtCol4.text = this.project.status2
 				this.txtImage.text = this.project.img; 
+				this.img.source = this.project.img; 
 				this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
 			}
 			
@@ -90,14 +91,14 @@
 			{
 				this.project.name = this.txtName.text 
 				this.project.desc = this.txtDesc.text
-				this.project.col2 = this.txtCol3.text  
-				this.project.col3 = this.txtCol4.text  
+				this.project.status = this.txtCol3.text  
+				this.project.status2 = this.txtCol4.text  
 				this.project.img = this.txtImage.text  
 				this.project.ppl  = this.memberLIst.list1.dataProvider.toArray();
 				
 				 if ( this.completeFx != null ) this.completeFx( this.project )
 					 
-				this.project.update()
+				this.project.projectUpdated(['name', 'img'])
 					this.hide()
 			}
 
@@ -118,11 +119,17 @@
 			{
 				this.img.source = this.txtImage.text ; 
 			}
-			protected function changePic():void
+			protected function changedAvatarHandler(e:CustomEvent):void
 			{
 				this.txtImage.text = this.img.source; 
 			}					
 			
+
+			protected function popupbase1_addedToStageHandler(event:Event):void
+			{
+				trace('added to stage');
+			}
+
 		]]>
 	</fx:Script>
 
@@ -147,7 +154,7 @@
 			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
 		 </mx:FormItem>		
 		 <mx:FormItem>
-			 <utils:AvatarEdit id="img"  changeFx="{this.changePic}" />
+			 <utils:AvatarEdit id="img"  emptySetting="" changedAvatar="{changedAvatarHandler(event)}"     />
 		 </mx:FormItem>		 
 		 <mx:FormItem label="Members:" >
 			 <s:HGroup>
@@ -167,5 +174,5 @@
 
 		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
-						   right="5" top="5" />
+						   right="5" top="10" />
 </popup:PopupBase>

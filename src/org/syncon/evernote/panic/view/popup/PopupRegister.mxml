@@ -144,7 +144,7 @@
 				<s:TextInput id="txtBoardName"     focusOut="txtBoardName_focusOutHandler(event)"
 							 toolTip="This is the name you will use to access this board"
 							 width="200"/>
-				<s:Label text="" id="txtBoardOk"  color="#3DCCD9" width="200" />
+				<s:Label text="" id="txtBoardOk"  color="#ff0000" width="200" />
 			</mx:FormItem>			
 			
 			<mx:FormItem label="Name"   required="true" >

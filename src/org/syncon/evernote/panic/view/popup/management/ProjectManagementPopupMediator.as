@@ -73,6 +73,7 @@ package  org.syncon.evernote.panic.view.popup.management
 		
 		private function projectsChanged( a:ProjectVO=null) : void
 		{
+			return;
 			this.onOpenedPopup( null )
 			this.changed = true; 
 		}	

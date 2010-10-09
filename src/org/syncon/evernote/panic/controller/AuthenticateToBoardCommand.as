@@ -20,6 +20,7 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.basic.vo.PreferencesVO;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.test.context.utils.MD5Helper;
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
@@ -74,12 +75,19 @@ package   org.syncon.evernote.panic.controller
 			if ( this.event.admin == false ) 
 			{
 				if ( this.event.password != '' && this.event.password != null  ) 
-				nf.words += ' board_password:'+this.event.password
+				{
+					//nf.words += ' board_password:'+this.event.password
+					var ee : MD5Helper
+					nf.words += ' '+'"board_password":"'+MD5Helper.toHashSearch(this.event.password) + '*'
+				}
 			}
 			else
 			{
 				if ( this.event.password != '' && this.event.password != null  ) 
-				nf.words += ' board_admin_password:'+this.event.password			
+				{
+					//nf.words += ' board_admin_password:'+this.event.password			
+					nf.words += ' '+'"board_admin_password":"'+MD5Helper.toHashSearch(this.event.password) + '*'
+				}
 			}
 					/*	
 			if ( this.event.mode == METH1 ) 

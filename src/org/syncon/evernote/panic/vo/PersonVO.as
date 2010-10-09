@@ -3,15 +3,16 @@ package org.syncon.evernote.panic.vo
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
+	import org.syncon.evernote.basic.model.CustomEvent;	
 	[Event(name="personUpdated", type="flash.events.Event")] 		
 	public class PersonVO extends  EventDispatcher
 	{
 		static public var  PERSON_UPDATED : String = 'personUpdated';
 		
-		public function personUpdated() : void
+		public function personUpdated(props : Array) : void
 		{
-			this.dispatchEvent( new Event( PERSON_UPDATED ) )
-		}	
+			this.dispatchEvent( new CustomEvent  ( PERSON_UPDATED, props ) )
+		}		
 		
 		public var id : String = ''; 
 		
@@ -86,6 +87,23 @@ package org.syncon.evernote.panic.vo
 		public function compare( p : PersonVO )  : Boolean
 		{
 			var different : Boolean = false; 
+			import mx.utils.ObjectUtil;
+			var props :  Object = mx.utils.ObjectUtil.getClassInfo( this, ['ppl'], {includeReadOnly:false,includeTransient:false}  )
+			var changedProps : Array = []; 
+			for  each ( var qName :   QName in props.properties ) 
+			{
+				var prop : String = qName.localName
+				if ( prop == 'ppl' ) continue; 
+			 
+				if ( this[prop] != p[prop]  )
+				{
+					different = true 
+					this[prop] = p[prop] 
+					changedProps.push( prop )
+				}
+			}			
+			if ( different )
+				this.personUpdated(changedProps) 
 			return different; 
 		}
 		

@@ -94,7 +94,7 @@
 		</s:fill>	
 	</s:Rect>		
 	
- <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+ <s:VGroup    paddingTop="10" paddingBottom="20" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"   label="Projects"  padding="0"  width="100%"/>
 	 
 	 <utils:IconButton  label="Add"  iconSkin=".btnAdd"  toolTip="Add Project"
@@ -110,5 +110,5 @@
  </s:VGroup>
 
 		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
-		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="10" top="10" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="button1_clickHandler(event)" right="5" top="10" />
 </popup:PopupBase>

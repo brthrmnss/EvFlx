@@ -16,6 +16,7 @@ package   org.syncon.evernote.panic.view.popup
 	import org.syncon.evernote.panic.controller.CreateBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
 	import org.syncon.evernote.panic.model.PanicModel;
+	import org.syncon.evernote.panic.test.context.utils.MD5Helper;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.services.EvernoteService;
 	import org.syncon.popups.controller.HidePopupEvent;
@@ -82,7 +83,7 @@ package   org.syncon.evernote.panic.view.popup
 			}
 			else
 			{
-				this.ui.txtBoardOk.text = 'Name is already take, try something else'
+				this.ui.txtBoardOk.text = 'Name is already taken, try something else'
 			}
 		}
 		
@@ -112,8 +113,10 @@ package   org.syncon.evernote.panic.view.popup
 			var ee : LoadDefaultDataCommand = new LoadDefaultDataCommand()
 			board = ee.CreateBoard( [this.ui.txtName.text, 'Person 2', 'Person 3'], ['Project 1', 'Create Board Project'] )
 			board.name = this.ui.txtBoardName.text
-			board.board_admin_password = this.ui.txtPassword.text; 
-			board.board_password = this.ui.txtAccessPassword.text; 
+			board.board_admin_password = MD5Helper.toHash( this.ui.txtPassword.text ) 
+			board.board_password =  MD5Helper.toHash( this.ui.txtAccessPassword.text )
+			if ( this.ui.txtAccessPassword.text == '' || this.ui.txtAccessPassword.text == null ) 
+				board.board_password = ''
 			board.admin_name = this.ui.txtName.text; 
 			//var ee : MD5
 			board.admin_email = this.ui.txtEmail.text

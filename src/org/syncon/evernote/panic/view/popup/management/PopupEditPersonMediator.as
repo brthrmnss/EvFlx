@@ -25,7 +25,8 @@ package  org.syncon.evernote.panic.view.popup.management
 		override public function onRegister():void
 		{
 			this.ui.addEventListener( 'editMembers', this.onEditProject) 
-			this.ui.addEventListener( AvatarEdit.EditAvatar, this.onEditAvatar) 
+			//this.ui.addEventListener( AvatarEdit.EditAvatar, this.onEditAvatar) 
+			this.ui.img.sources = this.model.projectPics; 
 		}
 		
 		private function onEditProject(e:CustomEvent) : void
@@ -34,7 +35,7 @@ package  org.syncon.evernote.panic.view.popup.management
 				'PopupPeople', true )  )  				
 		}			
 		
-		
+	/*	
 		private function onEditAvatar(e:CustomEvent) : void
 		{
 			avatar = e.data as AvatarEdit; 
@@ -50,7 +51,7 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.avatar.source = s; 				
 			this.avatar.dispatchEvent( new CustomEvent( AvatarEdit.ChangedAvatar, s ) ) 
 		}			
-				
+			*/	
 		 /*
 		private function onEditProject(e:CustomEvent) : void
 		{

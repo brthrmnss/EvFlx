@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  
+		  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:view="org.syncon.evernote.editor.view.*" xmlns:tlf="net.asciiworks.tlf.*">
+	
+	
+	<fx:Script> 
+		<![CDATA[ 
+			import mx.events.FlexEvent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.editor.utils.EditorUtils;
+			import org.syncon.evernote.editor.vo.EditorTestCaseVO;
+			import org.syncon.utils.EnMediaHolders;
+			import org.syncon.utils.EntodoHolders;
+			
+			public var case_ : EditorTestCaseVO = new EditorTestCaseVO();
+			private var enTodos : EntodoHolders = new EntodoHolders()
+			private var enMedias : EnMediaHolders = new  EnMediaHolders(); 
+			public function set data(value:EditorTestCaseVO):void { 
+				// Check to see if the data property is null. 
+				if (value== null) 
+					return; 
+				// If the data property is not null,
+				
+				if ( case_ == value ) 
+						return; 
+				
+				case_ = value as EditorTestCaseVO
+				this.onModifyF()
+			}
+			public function onModifyF() : void
+			{
+				if ( this.creationComplete == false ) 
+					return; 
+				// set the Label controls appropriately. 
+				//txtLbl.text = case_.name.toString(); 
+				this.currentState = 'import'
+				if ( this.case_.exporting ) 
+					this.currentState = 'export'
+						
+				this.txtEvernoteXML.text = this.case_.evernoteXML; 
+				this.tlfEditor.textFlow = this.case_.tlf; 
+				this.txtImportedEvernoteXML.htmlText = this.case_.evernoteXML; 
+				this.txtImportedEvernoteXML.text = this.case_.tlf_toString;
+				this.txtExportEvernoteTxt.text = this.case_.exportedBackToEvernoteXML;
+				this.enTodos.loadUp( this.case_.entodos, this.case_.tlf, this.checkBoxHolder ) 
+				this.enMedias.loadUp( this.case_.enmedias, this.case_.tlf, this.checkBoxHolder ) 					
+					var dbg : Array = [(this.case_.evernoteXML.toLowerCase() == this.case_.exportedBackToEvernoteXML.toLowerCase())]
+				var diff : Array = ['', '']; 
+				var missed : Boolean = false; 
+					for ( var i : int = 0; i < this.case_.evernoteXML.length; i++ )
+				{
+					
+					var against : String  = this.case_.exportedBackToEvernoteXML.charAt(i)
+					//var against : String = this.case_.result.charAt(i)
+					var  standard : String  = this.case_.evernoteXML.charAt(i)  
+					if ( this.case_.result != null )
+					{
+						standard =  this.case_.result.charAt(i)
+					}						
+					dbg = [ standard , against  ]
+					if ( missed ||  standard != against  ) 
+					{
+						if ( missed == false ) 
+							var firstMissedChar : int = i 
+						missed = true
+						trace( 'missed')
+						diff[0] += standard 
+						diff[1] +=  against
+					}					
+					
+				}
+					if ( missed ) 
+					{
+						txtMissed.text = 'Problem:' + 'char: ' + firstMissedChar  + ' ' +  diff.join('\r| != |\r')
+						this.txtExportEvernoteTxt.selectRange( firstMissedChar, this.txtExportEvernoteTxt.text.length-1 )
+						this.txtExportEvernoteTxt.setFocus()
+					}
+					else
+						this.txtMissed.text = ''; 
+				this.txtSame.text = 'Same: '+!  missed
+			} 
+			
+			protected function onPreview(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 
+					EditorTestList.EXPORT_NOTE, this.case_ ) )
+			}
+			
+			
+			private var creationComplete : Boolean = false; 
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.creationComplete = true
+				var ee : EditorUtils; 
+				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()
+				this.onModifyF()
+			}
+
+			
+			protected function onRedo( ):void
+			{
+				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()
+				this.case_.process()
+				this.data = this.case_; 
+			}		
+ 				
+			protected function onExportTLF( ):void
+			{
+				var c : EditorTestCaseVO = new EditorTestCaseVO()
+				c.exportTLF( this.tlfEditor.textFlow )
+					
+				this.txtImportedEvernoteXML.text = c.tlf_toString;
+				
+				this.txtExportEvernoteTxt.text = c.exportedBackToEvernoteXML
+				
+			}					
+			
+			protected function changedTlf( ):void
+			{
+			}			
+			
+		]]> 
+	</fx:Script> 
+	<!--
+	<s:transitions>
+	<s:Transition toState="*" >
+	<s:AnimateColor targets="{[this.txtLbl]}"  
+	duration="250" />
+	</s:Transition>
+	</s:transitions>
+	-->
+	<s:layout>
+		<s:HorizontalLayout gap="3" verticalAlign="middle"/>
+	</s:layout>
+	<s:states> 
+		<s:State name="import"/> 
+		<s:State name="export"/> 
+	</s:states> 
+	
+	<mx:Image id="thumb" />
+	<mx:TextArea id="txtEvernoteXML" width="250"  height="250"/>
+	<mx:TextArea id="txtImportedEvernoteXML" width="250"  height="250" />
+	<s:Group>
+		<tlf:TLFTextEditor id="tlfEditor" textFlowChanged="changedTlf()" width="600"   automaticallyExpand="false" height="250" />
+		<s:Group id="checkBoxHolder" />
+	</s:Group>
+	
+	<s:TextArea id="txtExportEvernoteTxt" width="250"  height="250" />
+	
+	<s:VGroup>
+		<s:Label text="Missed" />
+		<s:TextArea id="txtMissed" width="110" height="100" />
+		<s:Label text="Same" id="txtSame" />
+		<s:Button label="Preview"  click="onPreview(event)"/>		
+		<s:Button label="Redo"  click="onRedo()"/>	
+		<s:Button label="ExportTLF"  click="onExportTLF()"/>			
+	</s:VGroup>
+
+	
+	
+</s:Group>

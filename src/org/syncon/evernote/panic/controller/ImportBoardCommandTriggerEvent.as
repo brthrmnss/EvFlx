@@ -17,6 +17,7 @@ package   org.syncon.evernote.panic.controller
 		public var boardName : String = ''; 
 		public var goIntoAdmin : Boolean = false; 
 		public var createBoardIfNotFound : Boolean = false;
+		public var fxComplete : Function = null; 		
 		/**
 		 * If true will not load any imported board into the model, but 
 		 * will compare it to teh existing board 
@@ -24,12 +25,14 @@ package   org.syncon.evernote.panic.controller
 		public var compareBoards : Boolean = false; 
 		public function ImportBoardCommandTriggerEvent(type:String,  
 													   data_ : Object = null, board_name : String = '',
-													   goIntoAdmin_ : Boolean = false, compareBoards_ : Boolean = false )  
+													   goIntoAdmin_ : Boolean = false, compareBoards_ : Boolean = false, 
+													   fxComplete_ : Function = null)  
 		{	
 			this.data = data_
 			this.boardName = board_name  
 			this.goIntoAdmin = goIntoAdmin_;
 			compareBoards = compareBoards_; 
+			fxComplete = fxComplete_
 			if ( type == UPDATE_PEOPLE_AND_PROJECTS) 
 				compareBoards = true; 
 			super(type, true);

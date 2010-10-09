@@ -45,13 +45,13 @@
 				this.popupCode.open( false,true ) 
 			}
  
-			public function open( pics : Array, completeFx : Function, goToUi : UIComponent, currentPic : String = '')  : void
+			public function open( pics : Array, completeFx : Function, goToUi : UIComponent, currentPic : String = '', emptySetting : String = 'default')  : void
 			{
 				this.popupCode.open( false, true ) 
 						
 				this.completeFx = completeFx
 					
-				this.popupCode.moveToComponent( goToUi, 'tr', false  ) 
+				this.popupCode.moveToComponent( goToUi, 'tr', false , false, true, 0, -300 ) 
 				this.list1.dataProvider = new ArrayList(pics)
 				
 					//scroll to item 
@@ -66,6 +66,7 @@
 					//	this.list1.
 				}
 				this.pic.source = currentPic
+				this.pic.emptySetting = emptySetting; 
 			}
 			
 			 /**
@@ -83,19 +84,11 @@
 			}
  
 
-			protected function btnEditMembers_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new CustomEvent( 'editMembers' ) ) 
-				// TODO Auto-generated method stub
-			}
- 	
-
 			protected function btnSelect_clickHandler(event:MouseEvent):void
 			{
 				this.completeFx( this.pic.source ) ; 
 				this.hide()
-			}
-
+			} 
 
 			protected function list1_changeHandler(event:IndexChangeEvent):void
 			{
@@ -120,6 +113,11 @@
 			 <s:HorizontalLayout  paddingLeft="10" paddingBottom="5" gap="10"/>
 		 </s:layout>-->
 	 </s:List>
+	 <s:Line width="100%" >
+		 <s:stroke>
+			 <s:SolidColorStroke color="0x666666" />
+		 </s:stroke>
+	 </s:Line>
 	 <s:HGroup verticalAlign="middle">
 		 <utils:Avatar id="pic" />
 		 <s:Button label="Select"  id="btnSelect" click="btnSelect_clickHandler(event)" />
@@ -129,5 +127,5 @@
 
 		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
-						   right="5" top="5" />
+						   right="5" top="10" />
 </popup:PopupBase>

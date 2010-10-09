@@ -2,26 +2,44 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
-		  fontSize="12"   width="100%"
+		  fontSize="12"   width="100%"  creationComplete="itemrenderer1_creationCompleteHandler(event)"
 				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
-			import org.syncon.evernote.basic.vo.MenuVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			[Bindable] public var project :  ProjectVO = new ProjectVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				project = value as ProjectVO
+
+				if ( project != null ) 
+					this.project.removeEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer )
+				this.project = value as ProjectVO
+				this.project.addEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer, false, 0, true ) 		
+				
+				this.modifyRenderer() 
+			}
+			
+			private function modifyRenderer(e:CustomEvent=null) : void
+			{
+				if ( this.creationComplete == false  ) 
+					return; 
 				this.pic.source = this.project.img; 
 				txtLbl.text = this.project.name.toString().toUpperCase(); 
 				this.txtDesc.text = this.project.desc.toString().toUpperCase()
 			} 
- 
+			
+			public var creationComplete : Boolean = false; 
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.creationComplete = true; 
+				this.modifyRenderer()
+			}
 
 			protected function btnEdit_clickHandler(event:MouseEvent):void
 			{
@@ -48,7 +66,7 @@
 		<s:HorizontalLayout gap="10" horizontalAlign="left" />
 	</s:layout>
 	
-	<utils:Avatar id="pic" />
+	<utils:Avatar id="pic"  emptySetting=""/>
 	
 	<s:Label   id="txtLbl" verticalCenter="0" width="125"
 			   color.hovered="0x696969"  x="5"

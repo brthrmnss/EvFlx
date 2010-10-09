@@ -42,6 +42,11 @@ s|global {
  fontLookup: embeddedCFF; 
 } 
  
+s|Button {
+	useHandCursor: true;
+	buttonMode: true; 
+} 
+
 /*
 mx|mx.controls.Label {
 	fontFamily: ACaslonProRegularEmbedded2;
@@ -170,4 +175,10 @@ mx|Tooltip{
 {
 	content:     Embed( source="icons/16/process.png" );
 }
+
+.btnForbiddenSmall
+{
+	content:     Embed( source="icons/16/forbidden_sign.png" );
+}
+
 

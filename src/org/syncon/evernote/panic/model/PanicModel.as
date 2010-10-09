@@ -161,6 +161,29 @@ package org.syncon.evernote.panic.model
 			}
 			return items[index]; 
 		}
+		public function randSet(  max :  int , min : int , items :  Array, returnProp : String = '' ) :  Array
+		{
+			var ret : Array = []; 
+			//dont' ask formore than we can provide
+			for ( var i : int = 0 ; ret.length < Math.min(max, items.length) ; i++ )
+			{
+				var item : Object = random( items ) 
+				if ( returnProp != '' ) 
+					item = item[returnProp] 
+				if ( ret.indexOf( item ) != -1 ) 
+					continue; 
+				ret.push( item ) 
+			}
+			/*if ( min != 0 ) 
+			{*/
+			var endIndex : int = Math.max( min, Math.round( Math.random()*max ) ) 
+			ret = ret.slice( 0,	endIndex ) 
+			/*}*/
+			return ret;
+		}
+				
+		
+		
 			
 	}
 }

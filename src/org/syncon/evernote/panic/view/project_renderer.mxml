@@ -8,31 +8,43 @@
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.effects.Effect;
+			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
 			
-			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.vo.ProjectVO;
-			[Bindable] public var menu :  ProjectVO = new ProjectVO()
+			
+			import spark.effects.animation.RepeatBehavior;
+			[Bindable] public var project :  ProjectVO = new ProjectVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
 				if (value== null)  return; 
-				if ( menu != null ) 
-					this.menu.removeEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer )
-				this.menu = value as ProjectVO
-				this.menu.addEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer, false, 0, true ) 		
+				if ( project != null ) 
+					this.project.removeEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer )
+				this.project = value as ProjectVO
+				this.project.addEventListener(ProjectVO.PROJECT_UPDATED, this.modifyRenderer, false, 0, true ) 		
 				
 				this.modifyRenderer() 
 			}
 			
-			private function modifyRenderer(e:Event=null) : void
+			private function modifyRenderer(e:CustomEvent=null) : void
 			{
 				if ( this.creationComplete == false  ) 
 					return; 
-				this.img.source =  menu.img
-				txtLbl.text = menu.name.toString().toUpperCase(); 
-				this.txtCol2.text = this.menu.col2.toString().toUpperCase()
-				this.txtCol3.text = this.menu.col3.toString().toUpperCase()		
-					
+				this.img.source =  project.img
+				txtLbl.text = project.name.toString().toUpperCase(); 
+				this.txtCol2.text = this.project.status.toString().toUpperCase()
+				this.txtCol3.text = this.project.status2.toString().toUpperCase()		
+				if ( e	 != null )
+				{var props : Array = e.data as Array
+					if ( props.indexOf( 'name' ) != -1 ) 
+						this.animateHover( this.groupName ) 
+					if ( props.indexOf( 'img' ) != -1 ) 
+						this.animateHover( this.groupImg ) 	
+					if ( props.indexOf( 'people_ids' ) != -1 ) 
+						this.animateHover( this.groupPeople ) 							
+				}
 					var rotation_  : Number = Math.random()*3
 					if ( Math.random() < 0.5 )
 						rotation_ *= -1
@@ -42,9 +54,9 @@
 					if ( Math.random() < 0.5 )
 						rotation_ *= -1				
 				//this.memberLIst.rotation = Math.random()*5
-				//txtLbl.toolTip = menu.toolTip.toString();
-				//lblVariable.text = menu.name2.toString();
-				this.memberLIst.list1.dataProvider = new ArrayList( this.menu.ppl ) 
+				//txtLbl.toolTip = project.toolTip.toString();
+				//lblVariable.text = project.name2.toString();
+				this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
 			} 
  
 			public var creationComplete : Boolean = false; 
@@ -54,9 +66,42 @@
 				this.modifyRenderer()
 			}
 
+			
+			
+			
+			private var animatingTargets:Object = new Object();
+			
+			public function animateHover(target:Object):void
+			{
+				if (animatingTargets[target.id] === undefined)
+				{
+					var effect:  Effect;                
+					if (true)
+						effect = rotator;
+					else
+						effect = mover;
+					effect.target = target;
+					animatingTargets[target.id] = effect;
+					effect.play();
+				}
+			}
+			private function effectEndHandler(event:  EffectEvent):void
+			{
+				delete animatingTargets[event.effectInstance.target.id];
+			}			
+			
 		]]> 
 	</fx:Script> 	
-	
+	<fx:Declarations> 
+		<s:Rotate3D id="rotator" angleXFrom="0" angleXTo="360"
+					autoCenterTransform="true" duration="500"
+					effectEnd="effectEndHandler(event)"/>
+		<s:Move3D id="mover" duration="200"
+				  xBy="-30" repeatCount="2"
+				  repeatBehavior="{RepeatBehavior.REVERSE}"
+				  autoCenterTransform="true"  
+				  effectEnd="effectEndHandler(event)"/>
+	</fx:Declarations>
 	<s:states> 
 		<s:State name="normal"/> 
 		<s:State name="hovered"/> 
@@ -73,7 +118,7 @@
 		<s:HorizontalLayout gap="10" horizontalAlign="left" />
 	</s:layout>
 	
-	<s:Group  height="42" width="42">
+	<s:Group  height="42" width="42" id="groupImg">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 				  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" >
 		</s:SkinnableContainer>
@@ -84,13 +129,13 @@
 		</s:SkinnableContainer>		
 	</s:Group>
 
-	<s:Group width="160" height="42">
+	<s:Group width="160" height="42" id="groupName">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtLbl" verticalCenter="0"
 				   color.hovered="0x696969"  x="5"
-				    width="100%"
+				    width="100%"  maxDisplayedLines="1"
 				   useHandCursor="true"  buttonMode="true"
 				   color="0xFFFFFF"  />		
 		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
@@ -129,7 +174,7 @@
 	</s:Group>
 
 	
-	<s:Group   height="42" width="235" >
+	<s:Group   height="42" width="235"  id="groupPeople">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>

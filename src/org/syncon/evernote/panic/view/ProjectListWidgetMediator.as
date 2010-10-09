@@ -5,14 +5,17 @@ package  org.syncon.evernote.panic.view
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
+	import mx.utils.ObjectUtil;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.BoardVO;
+	import org.syncon.evernote.panic.vo.PersonVO;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
@@ -60,14 +63,84 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data == null ) 
 				return; 
 			this.ui.list1.height = useSettings.height 
-			var testBoard : BoardVO = this.makeUpTestBoard()	
-			this.dispatch( new  ImportBoardCommandTriggerEvent(
-				ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS, testBoard )
-				)
+				import  mx.utils.ObjectUtil
+			var testBoard :  Object =ObjectUtil.copy( this.makeUpTestBoard() ) as BoardVO
+				
+				this.dispatch( new  ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD, this.onExportBoard ) ) 
+			//	var testBoard :  Object =  this.makeUpTestBoard().cl
+			//var x : Object =  ObjectUtil.copy( this.makeUpTestBoard() ) 
+	
 				
 			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
 			this.setupGetter()
 		}
+		
+			private function onExportBoard( x : ExportBoardCommandTriggerEvent )  : void
+			{
+				this.dispatch( new  ImportBoardCommandTriggerEvent(
+					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported  )
+				)
+			}
+				private function onBoardImported( testBoard : BoardVO )  : void
+				{
+					for each (   var project : ProjectVO   in testBoard.projects )
+					{
+						if ( Math.random() > 0.3 )
+						{
+							continue
+						}
+						project.name = ( Math.random()*100000).toString()
+							
+						if ( Math.random() > 0.3 )
+						{
+							project.img =this.model.random( this.model.projectPics ).toString()
+						}
+						if ( Math.random() > 0.3 )
+						{
+							project.img =this.model.random( this.model.projectPics ).toString()
+						}
+						if ( Math.random() > 0.3 )
+						{
+							project.img =this.model.random( this.model.projectPics ).toString()
+						}						
+						/*if ( Math.random() < 0.3 )
+						{
+							project.people_ids = this.model.randSet( 8,0, this.model.board.people, 'id' ) ;//this.model.random( this.model.projectPics )
+						}	*/					
+									
+					}					
+								
+					for each (   var person :  PersonVO   in testBoard.people )
+					{
+						if ( Math.random() > 0.3 )
+						{
+							continue
+						}
+						person.twitter = ( Math.random()*100000).toString()
+						
+						if ( Math.random() > 0.3 )
+						{
+							person.src =this.model.random( this.model.peoplePics ).toString()
+							person.src =this.model.random( this.model.projectPics ).toString()
+						}
+						
+						if ( Math.random() > 0.3 )
+						{
+							person.available = ( Math.random()>0.5) ? true : false 
+						}						
+						
+						/*if ( Math.random() < 0.3 )
+						{
+						project.people_ids = this.model.randSet( 8,0, this.model.board.people, 'id' ) ;//this.model.random( this.model.projectPics )
+						}	*/					
+						
+					}						
+					this.dispatch( new  ImportBoardCommandTriggerEvent(
+						ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS,testBoard  )
+					)
+				}			
+		
+		
 		private var timer :    Timer ;//= new Timer()
 		override public function onRemove() : void
 		{
@@ -105,7 +178,7 @@ package  org.syncon.evernote.panic.view
 			var dbg : Array = this.model.board.projects; 
 			for each ( var p : ProjectVO in this.model.board.projects ) 
 			{
-				if ( p.people_names.length != 0 ) 
+				if ( p.people_ids.length != 0 ) 
 				{
 					 p.findPeople( this.model.board.people ) 
 				}

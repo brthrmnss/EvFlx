@@ -38,6 +38,7 @@ package   org.syncon.evernote.panic.controller
 				if ( event.data != null ) 
 				{
 					this.model.board.compare( event.data as BoardVO ) 
+					//refresh people only ... 
 				}
 				else
 				{
@@ -73,6 +74,11 @@ package   org.syncon.evernote.panic.controller
 			
 			
 			b.importX( json.board ); 
+			if ( event.fxComplete != null ) 
+			{
+				this.event.fxComplete( b  ) ; 
+				return; 
+			}
 			if ( event.compareBoards == false )
 			{
 				this.model.board = b; 

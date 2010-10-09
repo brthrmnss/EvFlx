@@ -99,13 +99,23 @@
 				}
 				else
 					this.defaultImg.visible = true
-				this.img.source = false; 
+				this.img.visible = false; 
 			}
 
 			public function set emptySetting ( s : String )  : void
 			{
-				this.imgMode = true
-				this.defaultImg.visible = false; 
+				
+				if ( s == '' ) 
+				{
+					this.imgMode = true
+					this.defaultImg.visible = false;
+				}
+				else
+				{
+					this.imgMode = false
+					//if ( fault == true ) 
+					//this.defaultImg.visible = true;					
+				}
 			}
 		]]>
 	</fx:Script>
