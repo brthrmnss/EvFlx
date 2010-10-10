@@ -4,6 +4,7 @@ package  org.syncon.evernote.panic.view.popup.management
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
@@ -25,10 +26,17 @@ package  org.syncon.evernote.panic.view.popup.management
 		override public function onRegister():void
 		{
 			this.ui.addEventListener( 'editMembers', this.onEditProject)
+			this.ui.addEventListener(PopupEditProject.SAVE_PROJECT, this.onSaveProject )
 			//this.ui.addEventListener( AvatarEdit.EditAvatar, this.onEditAvatar) 
 			mediatorMap.createMediator(this.ui.img);
 			this.ui.img.sources = this.model.projectPics
 		}
+		
+		private function onSaveProject(e:CustomEvent) : void
+		{
+			this.dispatch( new ExportBoardCommandTriggerEvent(
+				ExportBoardCommandTriggerEvent.SAVE_BOARD, null, null, false  )  )  				
+		}			
 		
 		private function onEditProject(e:CustomEvent) : void
 		{

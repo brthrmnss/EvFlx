@@ -1,5 +1,7 @@
 package org.syncon.evernote.panic.test.cases
 {
+	import com.adobe.serialization.json.JSON;
+	import com.adobe.serialization.json.JSONEncoder;
 	import com.evernote.edam.notestore.NoteCollectionCounts;
 	import com.evernote.edam.notestore.NoteFilter;
 	import com.evernote.edam.notestore.NoteList;
@@ -123,12 +125,21 @@ package org.syncon.evernote.panic.test.cases
 			serviceDispatcher.addEventListener( EvernoteServiceEvent.UPDATE_NOTE, 
 				Async.asyncHandler(TestPanicAuthentication, handleNoteUpdated, 8000, null, 
 					null), false, 0, true);
+			var l : JSONEncoder
+			var ee : JSON
+			var body : Object = {}
+			var o : Object ={}
+			o.obj = body
+			body.board_password = MD5Helper.toHash('12121214')
+			body.board_password2 = MD5Helper.toHash('12121212')
+			
 			var contents : String = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 				"<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml.dtd\">" +
 				"<en-note>Here's the Evernote logo:<br/>" +
-				'{"obj":{"board_password":"'+MD5Helper.toHash('12121214') +'"}}'+
+				JSON.encode( o ) +
 				"</en-note>";
-		
+
+			
 			note.content = contents; 
 			service.updateNote( note ) 
 			
@@ -152,7 +163,7 @@ package org.syncon.evernote.panic.test.cases
 		}
 		
 		
-		[Test(async)]
+		[Test(async, order=1)]
 		public function testCountNotes():void
 		{
 			//this.note = TestPanicAuthentication.note
@@ -163,7 +174,8 @@ package org.syncon.evernote.panic.test.cases
 			var nf : NoteFilter = new NoteFilter()
 				nf.inactive = false 
 			//nf.words = MD5Helper.toHashSearch('12121214')+'*'
-			nf.words =  "\"board_password\":\""+MD5Helper.toHashSearch('12121214')+'*' //+"\""
+			nf.words =  '\\"board_password\\":\\"'+MD5Helper.toHashSearch('12121214')+'*' //+"\""
+			nf.words =  '"\\"board_password\\":\\"'+MD5Helper.toHashSearch('12121214')+'*"' //+"\""
 			trace( 'searching for ' + nf.words )
 			service.findNotes(nf)
 		}
@@ -179,27 +191,39 @@ package org.syncon.evernote.panic.test.cases
 			{
 				trace('1')
 			}
-			/*var notebooks : Dictionary =( event.data as  NoteCollectionCounts).notebookCounts
-			for ( var guid : String in notebooks ) 
-			{
-				this.noteCount =  notebooks[guid]
-				var nb : Notebook = new Notebook()
-				nb.guid =    guid
-				this.notebooks.push( nb ) 
-				//return; 
-				continue
-			}
-			*/
-			for each ( var n : Note in list.notes )
-			{
-				service.expungeNote( n.guid )
-				service.deleteNote( n.guid )
-				//service.refreshAuthentication()
-			}
+ 
 			return;
 		}		
 		
-		 
+		
+		[Test(async, order=3)]
+		public function testCountNotes2():void
+		{
+			serviceDispatcher.addEventListener( EvernoteServiceEvent.FIND_NOTES, 
+				Async.asyncHandler(this, handleNoteFound2, 8000, null, 
+					null), false, 0, true);
+			var nf : NoteFilter = new NoteFilter()
+			nf.inactive = false 
+			//nf.words = MD5Helper.toHashSearch('12121214')+'*'
+			nf.words =  "\\\"board_password2\\\":\\\""+MD5Helper.toHashSearch('12121214')+'*' //+"\""
+			trace( 'searching for ' + nf.words )
+			service.findNotes(nf)
+		}
+		
+		protected function handleNoteFound2( event:EvernoteServiceEvent, o:Object ):void
+		{
+			var list : NoteList = event.data as NoteList
+			if ( list.notes.length == 0 ) 
+			{
+				trace('0')
+			}
+			else
+			{
+				trace('1')
+			}
+			
+			return;
+		}	
 		/*
 		
 		[Test(async, order=3)]

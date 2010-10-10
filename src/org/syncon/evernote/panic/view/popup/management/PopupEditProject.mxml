@@ -27,7 +27,8 @@
 			static public var EDIT_PROJECT : String = 'editProject'; 
 			static public var ADD_PROJECT  : String = 'addProject'; 
 			static public var OPENED_POPUP : String = 'openedPopup'; 
-			
+			static public var SAVE_PROJECT : String = 'saveProject'
+				
 			public var completeFx : Function; 
 			public var project : ProjectVO = new ProjectVO(); 
 			
@@ -100,6 +101,8 @@
 					 
 				this.project.projectUpdated(['name', 'img'])
 					this.hide()
+						
+					this.dispatchEvent( new CustomEvent( SAVE_PROJECT ) ) 
 			}
 
 
@@ -144,12 +147,13 @@
 		 <mx:FormItem label="Description" >
 			 <s:TextInput id="txtDesc" />
 		 </mx:FormItem>
-		 <mx:FormItem label="Column 2:" >
+		 <mx:FormItem label="Status:" >
+			 <s:TextInput id="txtCol3" />
+		 </mx:FormItem>			 
+		 <mx:FormItem label="Status2:" >
 			 <s:TextInput id="txtCol4" />
 		 </mx:FormItem>	
-		 <mx:FormItem label="Column 3:" >
-			 <s:TextInput id="txtCol3" />
-		 </mx:FormItem>		
+	
 		 <mx:FormItem label="Image:" >
 			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
 		 </mx:FormItem>		

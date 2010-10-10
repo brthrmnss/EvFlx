@@ -43,7 +43,8 @@ package   org.syncon.evernote.panic.view.popup
 			if ( this.panicModel.debugMode ) 
 			{
 				this.ui.txtBoardName.text = 'mercy'
-				this.ui.txtEmail.text = 'info@m24designs.com'
+				this.ui.txtEmail.text = 'info@m24designs.com'					
+				this.ui.txtUsername.text = 'info@m24designs.com'
 				this.ui.txtPassword.text = '12121212'
 				this.ui.txtPassword2.text = '12121212'
 				this.ui.txtName.text = 'Ronshi'
@@ -111,12 +112,13 @@ package   org.syncon.evernote.panic.view.popup
 			this.ui.txtStatus.text = "Creating the board..."
 			var board : BoardVO = new BoardVO()
 			var ee : LoadDefaultDataCommand = new LoadDefaultDataCommand()
-			board = ee.CreateBoard( [this.ui.txtName.text, 'Person 2', 'Person 3'], ['Project 1', 'Create Board Project'] )
+			ee.model = this.panicModel; 
+			board = ee.CreateBoard( [this.ui.txtName.text, 'Person 2', 'Person 3'], ['Project 1', 'Status Board'] )
 			board.name = this.ui.txtBoardName.text
 			board.board_admin_password = MD5Helper.toHash( this.ui.txtPassword.text ) 
 			board.board_password =  MD5Helper.toHash( this.ui.txtAccessPassword.text )
-			if ( this.ui.txtAccessPassword.text == '' || this.ui.txtAccessPassword.text == null ) 
-				board.board_password = ''
+		//	if ( this.ui.txtAccessPassword.text == '' || this.ui.txtAccessPassword.text == null ) 
+			//	board.board_password = ''
 			board.admin_name = this.ui.txtName.text; 
 			//var ee : MD5
 			board.admin_email = this.ui.txtEmail.text

@@ -44,6 +44,14 @@ package org.syncon.evernote.panic.vo
 			if ( kids != null ) 
 			this.ppl = PersonVO.importPeople( kids ) 	
 			this.people_ids = people_ids_
+			/*if ( this.ppl != null && people_ids_ ==  null ) 
+			{
+				people_ids = []; 
+				for each ( var p : PersonVO in ppl ) 
+				{
+					this.people_ids.push( p.id ) 
+				}
+			}*/
 			this.img = img; 
 			this.id = (new Date()).getTime().toString()+'_'+(Math.random()*100000).toString()
 			super();

@@ -42,6 +42,7 @@ package   org.syncon.evernote.panic.controller
 				}
 				else
 				{
+					event.boardName = this.model.board.name;
 					importFromServer()
 				}
 			}
@@ -81,7 +82,9 @@ package   org.syncon.evernote.panic.controller
 			}
 			if ( event.compareBoards == false )
 			{
+				this.model.boardLoaded = true; 
 				this.model.board = b; 
+				this.model.currentBoardJSON = json; 
 				this.model.refreshBoard(); 
 				if ( event.goIntoAdmin ) 
 					this.model.adminMode = true; 

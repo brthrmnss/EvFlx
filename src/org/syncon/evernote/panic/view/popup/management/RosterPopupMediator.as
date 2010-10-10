@@ -45,12 +45,12 @@ package  org.syncon.evernote.panic.view.popup.management
 		
 		private function onEditPerson(e:CustomEvent) : void
 		{
-			if ( this.model.adminMode == false ) 
-				return; 
+			/*if ( this.model.adminMode == false ) 
+				return; */
 			if ( this.ui.selectorMode == false ) 
 			{
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PopupEditPerson', [e.data, this.projectsChanged] )  )  				
+				'PopupEditPerson', [e.data, this.projectsChanged, this.model.adminMode ] )  )  				
 			}
 			else
 			{

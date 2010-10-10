@@ -74,12 +74,13 @@ package   org.syncon.evernote.panic.controller
 			}
 			if ( this.event.admin == false ) 
 			{
-				if ( this.event.password != '' && this.event.password != null  ) 
-				{
+				//pass is required for admin mode 
+				/*if ( this.event.password != '' && this.event.password != null  ) 
+				{*/
 					//nf.words += ' board_password:'+this.event.password
 					var ee : MD5Helper
 					nf.words += ' '+'"board_password":"'+MD5Helper.toHashSearch(this.event.password) + '*'
-				}
+				/*}*/
 			}
 			else
 			{
@@ -105,6 +106,7 @@ package   org.syncon.evernote.panic.controller
 			
 			public function foundNotes(e: NoteList ) : void
 			{
+				
 				if ( e.notes.length == 0 ) 
 				{
 				//	this.alert( 'could not find that board' )
@@ -120,7 +122,49 @@ package   org.syncon.evernote.panic.controller
 				this.dispatch( new ImportBoardCommandTriggerEvent( 
 					ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, this.event.admin ))		
 			}
-			
+			/**
+			 * limtation fo edam does not allow it to conviently search for wild cards .... 
+			 * */
+				private function verifyContent(e:Note ) : void
+				{
+					var fault : Boolean = true; 
+					var s : String = e.content
+					//make sure that exact phrase was foun d
+					if ( this.event.username != '' && this.event.username != null  ) 
+					{
+						if ( s.indexOf( '"username":"'+this.event.boardName+'"' ) == -1 ) 
+							fault = true
+						if ( this.event.password != '' && this.event.password != null  ) 
+							 s += '"password":"'+this.event.password+'"'					
+					}
+					if ( this.event.admin == false ) 
+					{
+						s += ' '+'"board_password":"'+MD5Helper.toHashSearch(this.event.password) + '*'
+					}
+					else
+					{
+						if ( this.event.password != '' && this.event.password != null  ) 
+						{
+							s += ' '+'"board_admin_password":"'+MD5Helper.toHashSearch(this.event.password) 
+						}
+					}
+					
+					
+					
+					if ( fault ) 
+					{
+						//	this.alert( 'could not find that board' )
+						if ( this.event.fxFault != null ) this.event.fxFault(null)
+						return;
+					}
+					
+					var note : Note //= e.notes[0] as Note
+					
+					if ( this.event.fxComplete != null ) this.event.fxComplete(note)
+					
+					this.dispatch( new ImportBoardCommandTriggerEvent( 
+						ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, this.event.admin ))						
+				}
 			
 			public function step1_Fault(e:Object):void
 			{

@@ -317,7 +317,7 @@ package   org.syncon.evernote.panic.controller
 			var projects : Array = []; 
 			for each ( name in projectNames ) 
 			{
-				projects.push( new ProjectVO( name, '', '', '', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'name' ) ) ) 
+				projects.push( new ProjectVO( name, '', '', '', [], this.model.random( this.model.projectPics ).toString(), this.randSet( 4,0, people, 'id' ) ) ) 
 			}
 			board.projects = projects
 			

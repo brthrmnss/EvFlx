@@ -61,6 +61,11 @@ package   org.syncon.evernote.panic.view.popup
 		{	
 			if ( this.ui.meth1 ) 
 			{
+				if ( this.ui.chkAdmin.selected && this.ui.txtPassword.text.length < 4 ) 
+				{
+					this.ui.status = 'Password was too short'
+					return; 
+				}
 				this.dispatch( new AuthenticateToBoardCommandTriggerEvent( AuthenticateToBoardCommandTriggerEvent.METH1, 
 				this.ui.txtBoardName.text, null, this.ui.txtPassword.text, this.ui.chkAdmin.selected,  this.onLoginResult_M1, this.onLoginFault_M1 ))			
 			}

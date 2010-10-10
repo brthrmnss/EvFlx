@@ -43,7 +43,11 @@
 					if ( props.indexOf( 'img' ) != -1 ) 
 						this.animateHover( this.groupImg ) 	
 					if ( props.indexOf( 'people_ids' ) != -1 ) 
-						this.animateHover( this.groupPeople ) 							
+						this.animateHover( this.groupPeople ) 			
+					if ( props.indexOf( 'status' ) != -1 ) 
+						this.animateHover( this.groupStatus ) 	
+					if ( props.indexOf( 'status2' ) != -1 ) 
+						this.animateHover( this.groupStatus2 ) 							
 				}
 					var rotation_  : Number = Math.random()*3
 					if ( Math.random() < 0.5 )
@@ -144,7 +148,7 @@
 	</s:Group>
 
 	
-	<s:Group  width="120"  height="42">
+	<s:Group  width="120"  height="42" id="groupStatus">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 				skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
@@ -159,7 +163,7 @@
 	</s:Group>
 
 	
-	<s:Group   height="42"  width="155">
+	<s:Group   height="42"  width="155" id="groupStatus2">
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
 					skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>

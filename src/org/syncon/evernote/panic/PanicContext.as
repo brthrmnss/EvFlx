@@ -64,7 +64,7 @@ package   org.syncon.evernote.panic
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS,  ImportBoardCommand, null, false );			
 			
 			
-			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD,  ExportBoardCommand, null, false );					
+			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD_TO_STIRNG,  ExportBoardCommand, null, false );					
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.SAVE_BOARD,  ExportBoardCommand, null, false );		
 			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );			
 			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );	
@@ -183,10 +183,10 @@ package   org.syncon.evernote.panic
 				}
 			}
 			setTimeout( this.dispatchEvent, 1000, 
-				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] ) 
+				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , false] ) 
 			)
 			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true ] )  )
-			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] )  ) 
+			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] )  ) 
 			/*this.dispatchEvent( new AuthenticateToBoardCommandTriggerEvent( AuthenticateToBoardCommandTriggerEvent.METH1, 
 				'mercy', null, 'mighty' ))*/
 		}				

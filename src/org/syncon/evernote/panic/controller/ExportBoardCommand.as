@@ -82,13 +82,28 @@ package   org.syncon.evernote.panic.controller
 				
 				
 			event.result = result; 
-			//export to json 
-			if ( event.type == ExportBoardCommandTriggerEvent.EXPORT_BOARD )
+			 
+		//if we are saving peopel or proejcts, don't update layout just yet
+			if ( event.useUILayout == false )
+			{
+				//shoot this won't work b/c when you save it again later this will be all null and void .... 
+				//clean this up .... save layout explicity 
+				if ( this.model.currentBoardJSON == null ) 
+					throw 'Nothing was loaded in'
+				var dbg : Array = [output.board.layout,this.model.board.layout,
+							this.model.currentBoardJSON.board, this.model.currentBoardJSON]
+					var eee : Array = dbg.concat([])
+				output.board = 		this.model.currentBoardJSON.board.layout
+			}
+			
+			
+			if ( event.type == ExportBoardCommandTriggerEvent.EXPORT_BOARD_TO_STIRNG )
 			{
 				if ( event.fxComplete != null ) event.fxComplete(event)
 			}
 			if ( event.type == ExportBoardCommandTriggerEvent.SAVE_BOARD )
 			{
+				if ( event.useUILayout ) this.model.currentBoardJSON = output
 				this.model.configNote.content = this.apiModel.wrapContent(result )
 				this.dispatch(  
 					EvernoteAPICommandTriggerEvent.UpdateNote( 

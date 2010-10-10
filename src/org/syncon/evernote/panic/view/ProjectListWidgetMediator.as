@@ -66,8 +66,17 @@ package  org.syncon.evernote.panic.view
 				import  mx.utils.ObjectUtil
 			var testBoard :  Object =ObjectUtil.copy( this.makeUpTestBoard() ) as BoardVO
 				
-				this.dispatch( new  ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD, this.onExportBoard ) ) 
-			//	var testBoard :  Object =  this.makeUpTestBoard().cl
+			if ( this.model.boardLoaded == false ) 
+			{
+				this.dispatch( new  ExportBoardCommandTriggerEvent(
+					ExportBoardCommandTriggerEvent.EXPORT_BOARD_TO_STIRNG, this.onExportBoard ) ) 
+			}
+			else
+			{
+				this.dispatch( new  ImportBoardCommandTriggerEvent(
+					ImportBoardCommandTriggerEvent.UPDATE_PEOPLE_AND_PROJECTS ) ) ;
+			}
+					//	var testBoard :  Object =  this.makeUpTestBoard().cl
 			//var x : Object =  ObjectUtil.copy( this.makeUpTestBoard() ) 
 	
 				
@@ -121,7 +130,7 @@ package  org.syncon.evernote.panic.view
 						if ( Math.random() > 0.3 )
 						{
 							person.src =this.model.random( this.model.peoplePics ).toString()
-							person.src =this.model.random( this.model.projectPics ).toString()
+							//person.src =this.model.random( this.model.projectPics ).toString()
 						}
 						
 						if ( Math.random() > 0.3 )

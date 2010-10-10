@@ -43,6 +43,11 @@ package  org.syncon.evernote.panic.view
 		}
 		private function onAdminModeChanged(e:PanicModelEvent): void
 		{
+			if ( this.model.board.name == '' ) 
+			{
+					this.ui.hide()
+					return 
+			}
 			if ( this.model.adminMode ) 
 			this.ui.hide()
 			else

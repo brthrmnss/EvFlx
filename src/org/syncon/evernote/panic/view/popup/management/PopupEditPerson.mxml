@@ -8,6 +8,12 @@
 					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 					  >
 
+	
+	<popup:states>
+		<s:State name="normal" />
+		<s:State name="view" />
+	</popup:states>	
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
@@ -22,6 +28,8 @@
 			import spark.events.TextOperationEvent;
 			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var SAVE_PERSON : String = 'savePerson'
 			
 			public var completeFx : Function; 
 			public var person : PersonVO = new PersonVO(); 
@@ -44,7 +52,8 @@
 				this.popupCode.open( false,true ) 
 			}
  
-			public function open( person :  PersonVO, completeFx : Function = null )  : void
+			public function open( person :  PersonVO, completeFx : Function = null, 
+				editMode : Boolean = true )  : void
 			{
 				this.popupCode.open( false, true ) 
 				this.person = person
@@ -73,6 +82,16 @@
 				this.txtNickname.text = this.person.nickname; 	
 				this.txtPhone.text = this.person.phone; 		
 				
+				if ( editMode )
+				{
+					this.currentState = 'normal' 
+					img.editable = true
+				}
+				else
+				{
+					this.currentState = 'view' 
+					img.editable = false; 
+				}
 			}
 			
 			 /**
@@ -117,6 +136,8 @@
 					 
 				this.person.update()
 				this.hide()
+					
+				this.dispatchEvent( new CustomEvent( SAVE_PERSON ) ) 
 			}
 
 
@@ -145,41 +166,42 @@
 	<editors:PopupBg />
 	
  <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
+	 <popup:PopupHeader  bold="false" label.view="View"   label="Edit Project"  id="header" padding="0"  width="100%"/>
 	 <s:Label id="alertTxt" />
 	 <mx:Form>
 
 		 <mx:FormItem label="Name" required="true" >
-			 <s:TextInput id="txtName" />
+			 <s:TextInput id="txtName"   editable.view="false"  />
 		 </mx:FormItem>
 		 <mx:FormItem label="Nickname" >
-			 <s:TextInput id="txtNickname"   />
+			 <s:TextInput id="txtNickname"   editable.view="false"    />
 		 </mx:FormItem>		
 		 <mx:FormItem>
 			 <utils:AvatarEdit id="img"   changedAvatar="img_changedAvatarHandler(event)"/>
 		 </mx:FormItem>
-		 <mx:FormItem label="Image" >
+		 <mx:FormItem label="Image"  excludeFrom="view">
 			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
 		 </mx:FormItem>		
+ 
 		 
 		 <mx:FormItem label="Description" >
-			 <s:TextArea  heightInLines="2" id="txtDesc" />
+			 <s:TextArea  heightInLines="2" id="txtDesc"   editable.view="false"  />
 		 </mx:FormItem>
 		 
 		 <mx:FormItem label="Status" >
-			 <s:TextInput id="txtStatus"   />
+			 <s:TextInput id="txtStatus"    editable.view="false"   />
 		 </mx:FormItem>	
 		 <mx:FormItem label="Available" >
-			 <s:CheckBox id="chkAvailable"   />
+			 <s:CheckBox id="chkAvailable"     enabled.view="false"   />
 		 </mx:FormItem>				 
 		 <mx:FormItem label="Email" >
-			 <s:TextInput id="txtEmail"   />
+			 <s:TextInput id="txtEmail"    editable.view="false"   />
 		 </mx:FormItem>		
 		 <mx:FormItem label="Twitter" >
-			 <s:TextInput id="txtTwitter"   />
+			 <s:TextInput id="txtTwitter"   editable.view="false"   />
 		 </mx:FormItem>			
 		 <mx:FormItem label="Phone" >
-			 <s:TextInput id="txtPhone"   />
+			 <s:TextInput id="txtPhone"  editable.view="false"  />
 		 </mx:FormItem>				 
 		<!-- 
 		 <mx:FormItem label="Column 2:" >
@@ -192,7 +214,7 @@
 	
 		 
 	 </mx:Form>
-	 <s:HGroup>
+	 <s:HGroup excludeFrom="view">
 		 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
 		 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
 	 </s:HGroup>

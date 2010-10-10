@@ -49,6 +49,11 @@
 				return this.img.source.toString(); 
 			}			
 
+			public function set  editable ( b : Boolean ) :   void 
+			{
+				this.btnEdit.visible = b; 
+			}	
+			
 			protected function img_ioErrorHandler(event:IOErrorEvent):void
 			{
 				this.fault = true; 
@@ -92,7 +97,7 @@
 							  horizontalCenter="0" verticalCenter="0"
 							  />
 		</s:Group>
-		<s:Button label="Edit" useHandCursor="true" buttonMode="true" click="button1_clickHandler(event)" />
+		<s:Button id="btnEdit" label="Edit" useHandCursor="true" buttonMode="true" click="button1_clickHandler(event)" />
 	</s:VGroup>
 
 </s:Group>

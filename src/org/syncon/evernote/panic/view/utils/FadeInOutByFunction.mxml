@@ -15,7 +15,7 @@
 			private var timerFade :  Timer; // = new Timer()	
 			
 			public var creationComplete : Boolean = false; 
-			private var _duration : Number =  850	
+			private var _duration : Number =  500; //850	
 			private var _maxAlpha: Number = 1; 
 			protected function onInit():void
 			{

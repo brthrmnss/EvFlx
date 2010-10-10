@@ -3,6 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		  left="0" left.right="{NaN}" right.left="{NaN}" right.right="0"
+		   initialize="group1_initializeHandler(event)"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
 	
@@ -15,6 +16,7 @@
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
@@ -48,9 +50,10 @@
 				this.list.dataProvider = this.dp
 					
 				this.btnCancel.visible = false; 
-				this.show()
+				//this.show()
 					
 				this.currentState = 'left' 
+				this.fxFadeIn.duration =400
 			}
 
 			public function show() : void
@@ -85,6 +88,12 @@
 				this.dispatchEvent( new CustomEvent( 'moveWidget' ) ) 
 			}			
 			
+
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				this.visible = false; 
+			}
+
 		]]>
 	</fx:Script>
 	

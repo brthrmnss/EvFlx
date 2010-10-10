@@ -38,6 +38,7 @@
 				if ( this.currentState != 'edit' )
 					this.currentState = 'noEdit' 
 				*/
+				this.hide()
 				this.creationComplete = true
 			}
 
@@ -69,13 +70,16 @@
 
 			public function show() : void
 			{
+				this.visible = true; 
 				//this.currentState = 'edit'
 				this.alpha = 0.95
 			}
 			
+			
 			public function hide()  : void
 			{
 				this.alpha  = 0	
+				this.visible = false; 
 			}
 
 			protected function group1_initializeHandler(event:FlexEvent):void
