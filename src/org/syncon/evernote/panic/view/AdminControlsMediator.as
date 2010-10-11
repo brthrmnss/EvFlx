@@ -8,12 +8,12 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.popups.controller.HidePopupEvent;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class EditSwitchMediator extends Mediator  
+	public class AdminControlsMediator extends Mediator  
 	{
 		[Inject] public var ui:   AdminControls;
 		[Inject] public var model : PanicModel;
 			
-		public function EditSwitchMediator()
+		public function AdminControlsMediator()
 		{
 		} 
 		
@@ -35,7 +35,11 @@ package  org.syncon.evernote.panic.view
 				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 			
 				 ui.addEventListener('clickedBoard', onClickedBoardHandler ) 	
 				 ui.addEventListener('clickedRoster', onClickedRosterHandler ) 	
-				 ui.addEventListener('clickedInvite', onClickedInviteHandler ) 						 
+				 ui.addEventListener('clickedInvite', onClickedInviteHandler ) 			
+					 
+				this.ui.txtInstructions.text="In Edit Mode, you can rearrange and delete widgets (use the icons)," +
+					" or add widgets (use the Add Widget pane.) " +
+					" Additionally you can manage your projects and people list. "
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void

@@ -20,17 +20,13 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.ui.addEventListener( 'openedPopup', this.onOpenPopup) 
 		}
 		
-		private function onEditProject(e:CustomEvent) : void
-		{
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PopupPeople', true )  )  				
-		}		
-		
 		private function onOpenPopup(e:CustomEvent) : void
 		{
-			this.ui.txtInput.text = this.model.baseUrl //+ this.model.boardUrl()		
-			
-			this.ui.txtMsg2.text = 'You have a no password set, so no one else will be able to login'; 
+			this.ui.txtInput.text =   this.model.boardUrl()		
+			if ( this.model.board.board_password == '' || this.model.board.board_password == null ) 
+				this.ui.txtMsg2.text = 'You have a no password set, so anyone will be able to view this board';
+			else
+				this.ui.txtMsg2.text = 'Users will be required to enter the board password before they can view it.';
 			
 		}					
 		

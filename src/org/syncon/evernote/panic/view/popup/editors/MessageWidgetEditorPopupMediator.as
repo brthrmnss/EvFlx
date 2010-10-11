@@ -27,17 +27,20 @@ package  org.syncon.evernote.panic.view.popup.editors
 			super.onImportEditConfig( e ) 
 			
 			this.ui.timer.dataX = this.data ; 
-			this.ui.txtMessage.text = this.data.source; 				
+			this.ui.txtMessage.text = this.data.source; 		
+			this.ui.txtHeight.text = this.data.height.toString();
+			if ( isNaN( this.data.height ) ) 
+				this.ui.txtHeight.text = '' 
 		}		
 		
 		/**
 		 * Read settings for text value
 		 * */
 		override public function currentConfig()  :   WidgetVO
-		{
+		{ 
 			var d : WidgetVO = MessageWidget.importData( this.data.name, 
 				this.data.description, 
-				this.ui.txtMessage.text,  this.data.refreshTime ).widgetData;	
+				this.ui.txtMessage.text, this.ui.timer.time,Number( this.ui.txtHeight.text )   ).widgetData;	
 			return d; 
 		}
 		

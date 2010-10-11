@@ -101,76 +101,104 @@ package   org.syncon.evernote.panic.controller
 				nf , 0, 0, foundNotes, step1_Fault ) ) 		
 		}
 		
-		
-
+			private function step1_Fault(e:Object):void
+			{
+				if ( this.event.fxFault != null ) this.event.fxFault()
+			}					
 			
-			public function foundNotes(e: NoteList ) : void
+			private function foundNotes(e: NoteList ) : void
 			{
 				
 				if ( e.notes.length == 0 ) 
 				{
 				//	this.alert( 'could not find that board' )
-					if ( this.event.fxFault != null ) this.event.fxFault(null)
+					this.fault()
 					return;
 				}
 				
 				var note : Note = e.notes[0] as Note
-			//	this.findNote( note );
+				this.note = e.notes[0] as Note
 				
-				if ( this.event.fxComplete != null ) this.event.fxComplete(note)
-					
-				this.dispatch( new ImportBoardCommandTriggerEvent( 
-					ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, this.event.admin ))		
+				this.checkNoteForPasswordLiteral()
 			}
+			
+ 			public var note : Note
+			
 			/**
 			 * limtation fo edam does not allow it to conviently search for wild cards .... 
 			 * */
-				private function verifyContent(e:Note ) : void
+			
+				private function  checkNoteForPasswordLiteral  ( ) : void
 				{
-					var fault : Boolean = true; 
-					var s : String = e.content
+					this.dispatch( 
+						new ImportBoardCommandTriggerEvent(
+							ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD,this.note,
+							null, false, false, this.noteContents, 
+						this.failedToLoadNoteContents, false ) 
+					)					
+ 
+					
+				}
+			
+				private function failedToLoadNoteContents(e:Object=null):void
+				{
+					this.fault(); //this.alert( e.parameter )
+				}	 
+				
+				private function noteContents( e : ImportBoardCommandTriggerEvent ) : void
+				{
+					var str : String =e.output_BoardString;
+					if ( str == '' ) 
+					{
+						this.alert('board was empty...'); 
+						this.fault();
+					}
+					
+					var s : String = '';
+					var fault : Boolean = false; 
 					//make sure that exact phrase was foun d
 					if ( this.event.username != '' && this.event.username != null  ) 
 					{
-						if ( s.indexOf( '"username":"'+this.event.boardName+'"' ) == -1 ) 
+						s =  '"name":"'+this.event.boardName+'"' 
+						if ( str.indexOf(s) == -1 ) 
 							fault = true
 						if ( this.event.password != '' && this.event.password != null  ) 
-							 s += '"password":"'+this.event.password+'"'					
+						{
+							 s = '"password":"'+this.event.password+'"'		
+							if ( str.indexOf( s ) == -1 )
+								fault  = true
+						}
 					}
 					if ( this.event.admin == false ) 
 					{
-						s += ' '+'"board_password":"'+MD5Helper.toHashSearch(this.event.password) + '*'
+						s = '"board_password":"'+MD5Helper.toHashSearch(this.event.password)  
+						if ( str.indexOf( s ) == -1 )
+							fault  = true							
 					}
 					else
 					{
 						if ( this.event.password != '' && this.event.password != null  ) 
 						{
-							s += ' '+'"board_admin_password":"'+MD5Helper.toHashSearch(this.event.password) 
+							s = '"board_admin_password":"'+MD5Helper.toHashSearch(this.event.password) 
+							if ( str.indexOf( s ) == -1 )
+								fault  = true										
 						}
 					}
-					
-					
+										
 					
 					if ( fault ) 
 					{
-						//	this.alert( 'could not find that board' )
+						 this.alert( 'did not pass vertification' )
 						if ( this.event.fxFault != null ) this.event.fxFault(null)
 						return;
 					}
 					
-					var note : Note //= e.notes[0] as Note
-					
 					if ( this.event.fxComplete != null ) this.event.fxComplete(note)
 					
+						//should probably just use the string here
 					this.dispatch( new ImportBoardCommandTriggerEvent( 
 						ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD, note, null, this.event.admin ))						
 				}
-			
-			public function step1_Fault(e:Object):void
-			{
-				if ( this.event.fxFault != null ) this.event.fxFault()
-			}					
-		
  
 	 
 		public function liveData() : void
@@ -190,6 +218,19 @@ package   org.syncon.evernote.panic.controller
 		{
 			this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 		}
+		
+		
+		
+		public function alert(s : String )  : void
+		{
+			trace( 'Authenticate To Board Command failed: ' + s );  
+		}
+		
+		
+		private function fault() : void
+		{
+			if ( this.event.fxFault != null ) this.event.fxFault(null)
+		}		
 		
 	}
 }

@@ -59,7 +59,9 @@ mx|AxisRenderer,
 mx|Label,
 mx|ToolTip,
 mx|ColumnSeries,
-mx|TextInput {
+mx|TextInput,
+mx|DataTip
+{
 	font-family: ACaslonProRegularEmbedded2;
 }
 /*

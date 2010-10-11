@@ -1,5 +1,6 @@
 package   org.syncon.evernote.panic.controller
 {
+	import com.adobe.serialization.json.JSON;
 	import com.evernote.edam.notestore.NoteFilter;
 	import com.evernote.edam.type.Note;
 	import com.evernote.edam.type.Notebook;
@@ -148,7 +149,7 @@ package   org.syncon.evernote.panic.controller
 			board.name = 'blickem'
 			arr.push( [
 				 
-				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl', 56, 100, 0xFCBF17,'', 15000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
 				GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,'', 15000).widgetData,
 			 
 				GraphWidget.importData('Eccles lister', '', 
@@ -161,7 +162,57 @@ package   org.syncon.evernote.panic.controller
 				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img  width="64" height="64" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
 				'</TextFlow>',
+			]	
+				
+			
+			arr.push( [
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
+			])
+		 				
+			var fields : Array = [
+				{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
+				{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
+				{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
+			]
+			var pie : Object = {pie:fields}				
+				
+			
+			
+			var fields2 : Array = [
+				{name:'Key1', value:89, color:'#FCBF17', tooltip:'Key1 thing'},
+				{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
+				{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
+				{name:'Key2', value:3, color:'#666666', tooltip:'Key1 thing'},				
+				{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
+			]
+			var pie2 : Object = {pie:fields2}				
+								
+				
+			var series : Array = [
+				{name:'Profit',  color:'#654568', tooltip:'Key1 thing'},
+				{name:'Expenses',  color:'#ff0000', tooltip:'Key1 thing'},
+				{name:'Amount',   color:'#654568', tooltip:'Key1 thing'}
+			]
+				Math.random()
+			var data : Array = [
+				{ Month: "Jan", Profit: 2000, Expenses: Math.random()*1500, Amount: 450 },
+				{ Month: "Feb", Profit:Math.random()* 1000, Expenses: Math.random()*200, Amount: 600 },
+				{ Month: "Mar", Profit: 1500, Expenses: Math.random()*1500, Amount: 300 },
+				{ Month: "Apr", Profit: Math.random()* 1800, Expenses: Math.random()*1200, Amount: 900 },
+				{ Month: "May", Profit: 2400, Expenses: Math.random()*575, Amount: 500 }
+			]				
+			var lineChart : Object = {line:{'data':data,'series':series}}						
+				var ee : JSON
+				//55,
+				//JSON.encode( lineChart ),
+			arr[arr.length-1][0].test.source = [ 
+				JSON.encode( lineChart ) , 
+				JSON.encode( pie ),
+				JSON.encode( pie2 )
 			]		
+			arr.push( [
+				new WidgetVO( WidgetVO.SPACER )
+			])		
 			arr.push( [
 				ProjectListWidget.importData('Project Lister', '', 355, 3000).widgetData,
 			])			
@@ -184,7 +235,7 @@ package   org.syncon.evernote.panic.controller
 								
 				
 			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, 400).widgetData,
 			])	
 			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
 			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
@@ -212,7 +263,7 @@ package   org.syncon.evernote.panic.controller
 				'</TextFlow>',]
 			arr[arr.length-1][0].test.background = [ 
 				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img  width="180" height="180" source="bus.png"/>'+
+				'<img  width="180" height="180" source="bus1.png"/>'+
 				'</TextFlow>',
 			]				
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
@@ -256,12 +307,6 @@ package   org.syncon.evernote.panic.controller
 			
 			this.model.adminMode = true; 
 			
-			var fields : Array = [
-				{name:'Key1', value:89, color:'#654568', tooltip:'Key1 thing'},
-				{name:'Key2', value:3, color:'#ff000', tooltip:'Key1 thing'},
-				{name:'Key3', value:50, color:'#654568', tooltip:'Key1 thing'}
-			]
-			{pie:fields}
 			
 		}
 		

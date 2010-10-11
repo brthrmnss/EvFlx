@@ -1,8 +1,15 @@
 package  org.syncon.evernote.panic.view
 {
+	import com.adobe.serialization.json.JSON;
+	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	
+	import mx.charts.series.LineSeries;
+	import mx.collections.ArrayCollection;
+	import mx.graphics.SolidColor;
+	import mx.graphics.SolidColorStroke;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
@@ -42,7 +49,7 @@ package  org.syncon.evernote.panic.view
 				
 			this.setupGetter()
 		}
-
+/*
 		public function getSourcedValue( source : String, host : Object, property : String, 
 										 fx : Function = null )  : void
 		{
@@ -50,7 +57,7 @@ package  org.syncon.evernote.panic.view
 				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
 				source, host ,property, fx )  )					
 		}
-		
+		*/
 		public function onEditModeChanged(e:PanicModelEvent): void
 		{
 		 	if ( this.model.editMode ) 
@@ -78,11 +85,12 @@ package  org.syncon.evernote.panic.view
 			//this.ui.textTop = 'lll'
 			//return;
 			this.ui.fillC = uint( useSettings.data.fillColor ) 
-			this.getSourcedValue( useSettings.data.labelTop, this.ui, 'textTop', null  )
-			this.getSourcedValue( useSettings.data.labelBottom, this.ui, 'textBottom', null  )
-			this.getSourcedValue( useSettings.source, this.ui, 'value', null  ); //this.ui.value; 
-			this.getSourcedValue( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
-			this.getSourcedValue( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
+			this.model.source( useSettings.data.labelTop, this.ui, 'textTop', null )
+			this.model.source( useSettings.data.labelBottom, this.ui, 'textBottom', null  )
+			if ( useSettings.data.test == null ) useSettings.data.test = {};
+			this.model.source( useSettings.source, this, 'value', null   , useSettings.test.source )
+			this.model.source( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
+			this.model.source( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
 			this.model.source( useSettings.background, this, 'updateBgText', null , useSettings.test.background )
 				
 			this.ui.chart.toolTip = useSettings.description;
@@ -113,11 +121,100 @@ package  org.syncon.evernote.panic.view
 			onAutomateWidget( null ) 
 		}
 		
+		public function set value ( s : String )  : void
+		{
+			if ( s.indexOf('{"pie":' ) != -1 )
+			{
+				this.loadPie( s )
+					return; 
+			}
+			if ( s.indexOf('{"line":' ) != -1 )
+			{
+				this.loadLine( s ) 
+					return;
+			}
+			this.ui.currentState = ''; 
+			this.ui.value = s; 
+		}
+		private var oldPieString : String = ''; 
+		public function loadPie( e :  String ) : void
+		{
+	 	
+			if ( e == oldPieString ) 
+			{
+				this.ui.currentState = 'pieChart'; 
+					return; 
+			}
+			this.oldPieString = e; 
+			var s : Object = JSON.decode( e.toString() )
+			var colors : Array = s.pie
+				var fills : Array = []
+				var prod : Array = []; 
+			for each ( var j : Object in colors ) 
+			{
+				var section :  Object = {}
+				section.Expense = j.name
+				section.Amount = j.value; 
+				prod.push( section ) 
+				if ( j.color.toString().charAt(0) == '#' ) 
+					var color:uint = uint("0x" + j.color.toString().substr(1));
+
+					var c :  SolidColor = new SolidColor( color, 1 )  
+					fills.push( c ) 
+
+			}
+			this.ui.myChart3.dataProvider = prod ; 
+			this.ui.pieSeries.setStyle( 'fills', fills )
+			/*this.ui.myChart3.dataProvider = new ArrayCollection([
+				{Expense:"Taxes", Amount:2000},
+				{Expense:"Rent", Amount:1000},
+				{Expense:"Bills", Amount:100},
+				{Expense:"Car", Amount:450},
+				{Expense:"Gas", Amount:100},
+				{Expense:"Food", Amount:200} ] )*/
+			this.ui.currentState = 'pieChart'; 
+		}
+		
+		private var oldLineString : String = ''; 
+		public function loadLine( e :  String ) : void
+		{
+			if ( e == oldLineString ) 
+			{
+				this.ui.currentState = 'lineChart'; 
+				return; 
+			}
+			this.oldLineString = e; 
+		/*	var s : Object = JSON.decode( e.toString() )
+			var colors : Array = s.pie
+			var prod : Array = []; 
+			for each ( var j : Object in s.line.series ) 
+			{
+		 
+				if ( j.color.toString().charAt(0) == '#' ) 
+					var color:uint = uint("0x" + j.color.toString().substr(1));
+				
+				var c :    SolidColorStroke = new SolidColorStroke( color, 1 )  
+					var ee : LineSeries = new LineSeries()
+					ee.yField = j.name; 
+					ee.displayName = j.name
+					ee.setStyle(  'lineStroke' , c ) 
+					ee.setStyle( 'form', 'segment' )
+				prod.push( ee ) 
+			}
+	 
+			
+			this.ui.myChart4.series = prod; 
+			this.ui.myChart4.dataProvider = s.line.data ; */
+			this.ui.currentState = 'lineChart'; 
+		}
+				
+		
 		private var oldBgTextString : String = ''; 
 		public function set updateBgText(a : String ) : void
 		{
 			if ( a == this.oldBgTextString   ) 
-				return  
+				return
+			this.oldBgTextString = a; 
 			var ee :  HtmlConvertor = new HtmlConvertor()
 			this.ui.txtBg.textFlow = ee.convert2( a, 0xFFFFFF, 15 ) 
 			return  ; 

@@ -84,10 +84,13 @@ package   org.syncon.evernote.panic.controller
 			{
 				this.model.boardLoaded = true; 
 				this.model.board = b; 
-				this.model.currentBoardJSON = json; 
+				//this.model.currentBoardJSON = json; 
+				this.model.currentBoardLayoutJson = json.board.layout
 				this.model.refreshBoard(); 
-				if ( event.goIntoAdmin ) 
-					this.model.adminMode = true; 
+				/*if ( event.goIntoAdmin ) 
+					this.model.adminMode = true; */
+				//set manually so all listeners will hear
+				this.model.adminMode  = event.goIntoAdmin
 			}
 			else
 			{
@@ -172,6 +175,7 @@ package   org.syncon.evernote.panic.controller
 		public function step4_Fault(e:Object):void
 		{
 			this.alert( e.parameter )
+			if ( event.fxFault != null ) this.event.fxFault(   ) ; 
 		}	 
 		
 		public function noteContents(s : String ) : void
@@ -198,11 +202,20 @@ package   org.syncon.evernote.panic.controller
 			str = '{'+split.slice(1,split.length).join('{')
 			split  = str.split('}')
 			str = split.slice(0,split.length-1).join('}')		+'}'		
-			this.dispatch( 
-			new ImportBoardCommandTriggerEvent(
-				ImportBoardCommandTriggerEvent.IMPORT_BOARD,str, null, event.goIntoAdmin, event.compareBoards   ) 
-			)
 				
+			if ( event.fxComplete != null ) 
+			{
+				event.output_BoardString = str; 
+				this.event.fxComplete( event  ) ; 
+				//return; 
+			}
+			if ( event.loadIntoModel ) 
+			{
+				this.dispatch( 
+				new ImportBoardCommandTriggerEvent(
+					ImportBoardCommandTriggerEvent.IMPORT_BOARD,str, null, event.goIntoAdmin, event.compareBoards   ) 
+				)
+			}
 			
 		}
 		

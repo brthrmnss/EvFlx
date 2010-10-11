@@ -27,6 +27,8 @@
 			static public var OPENED_POPUP : String = 'openedPopup'; 
 			static public var CLOSED_POPUP : String = 'closedPopup'; 
 			
+			static public var CHANGE_BOARD_PASSWORD : String = 'changeBoardPassword'; 
+			static public var CHANGE_ADMIN_PASSWORD : String = 'changeAdminPassword'; 			
 			override public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -55,7 +57,6 @@
 			protected function btnSave_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( SAVE_BOARD  ) )
-				this.hide()
 			}
 			
 			protected function btnCancel_clickHandler(event:MouseEvent):void
@@ -73,6 +74,24 @@
 				this.dispatchEvent( new CustomEvent( CHECK_NAME  ) )
 			}
 
+
+			protected function chkBoardPassword_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+
+			protected function btnChangePassword_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGE_BOARD_PASSWORD  ) )
+			}
+
+
+			protected function btnChangeAdminPassword_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGE_ADMIN_PASSWORD  ) )
+			}
+
 		]]>
 	</fx:Script>
  
@@ -86,25 +105,45 @@
  <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  bold="false"   label="Edit Board"  padding="0"  width="100%"/>
 	 <mx:Form>
+		 <s:Label id="txtAlert" />
 		 <mx:FormItem label="Name" >
-			 <s:TextInput id="txtName" editable="false" focusOut="txtName_focusOutHandler(event)" />
-			 <s:Label id="txtNameOk" />
-			 <s:Label id="txtUrl" />
+			 <s:TextInput id="txtName" selectable="false" editable="false"
+						  focusOut="txtName_focusOutHandler(event)"   width="200"/>
+		<!--	 <s:Label id="txtNameOk" />
+			 <s:Label id="txtUrl" />-->
 		 </mx:FormItem>
 		 <mx:FormItem label="Description" >
-			 <s:TextInput id="txtDesc" />
+			 <s:TextArea id="txtDesc"  width="200"/>
 		 </mx:FormItem>
-		 <mx:FormItem label="Board Password:" >
-			 <s:TextInput id="txtPassword" />
-			 <s:Label text="If set will override user based permissions" />
+	<!--	 
+		 <mx:FormItem  label="Change Password">
+			 <s:CheckBox id="chkBoardPassword" click="chkBoardPassword_clickHandler(event)" />
+		 </mx:FormItem>
+		 <mx:FormItem label="Board Password" >
+			 <s:TextInput id="txtPassword" displayAsPassword="true"   width="200"/>
+			 <s:Label text="Can be blank" />
 		 </mx:FormItem>	
- 	
-		 <mx:FormItem label="Board Admin Password:" >
-			 <s:TextInput id="txtAdminPassword" />
-			 <s:Label text="If set will override user based permissions" />
+		 <mx:FormItem label="Confirm Board Password" >
+			 <s:TextInput id="txtPassword2" displayAsPassword="true"   width="200"/>
+		 </mx:FormItem>
+		 <mx:FormItem label="Admin Password" >
+			 <s:TextInput id="txtAdminPassword" displayAsPassword="true" />
 		 </mx:FormItem>			 
 		 
-		 			 
+		 <mx:FormItem label="Confirm Admin Pass" >
+			 <s:TextInput id="txtAdminPassword2" displayAsPassword="true" />
+		 </mx:FormItem>			 
+		 		 -->
+		 		<mx:FormItem label="" >
+					<s:Button id="btnChangePassword"
+							   toolTip="Change the password users will be required to enter when they login"
+							  label="Change Board Password" click="btnChangePassword_clickHandler(event)" />
+				</mx:FormItem>
+		 <mx:FormItem label="" >
+			 <s:Button id="btnChangeAdminPassword" 
+					   toolTip="Change the user password"
+					   label="Change Admin Password" click="btnChangeAdminPassword_clickHandler(event)" />
+		 </mx:FormItem>		 
 		 <mx:FormItem>
 			 <s:HGroup>
 				 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />

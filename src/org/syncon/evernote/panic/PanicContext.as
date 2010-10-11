@@ -105,7 +105,7 @@ package   org.syncon.evernote.panic
 			
 			mediatorMap.mapView(  BoardRow,  BoardRowWidgetMediator );	
 			
-			mediatorMap.mapView(  AdminControls,  EditSwitchMediator );	
+			mediatorMap.mapView(  AdminControls,  AdminControlsMediator );	
 			mediatorMap.mapView(  UserControls,  UserControlsMediator );	
 			
 			mediatorMap.mapView(  AddWidget,  AddWidgetMediator );		
@@ -143,9 +143,9 @@ package   org.syncon.evernote.panic
 			//this.dispatchEvent(new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ) )
 			
 			//this.importBoardFromString()
-			//this.importBoardFromObjects()
+			this.importBoardFromObjects()
 			//this.importBoardFromEvernote()
-			this.authenticationMode1()
+			//this.authenticationMode1()
 				
 			//this.openPopup()
 		}
@@ -183,7 +183,7 @@ package   org.syncon.evernote.panic
 				}
 			}
 			setTimeout( this.dispatchEvent, 1000, 
-				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , false] ) 
+				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , true] ) 
 			)
 			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true ] )  )
 			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] )  ) 

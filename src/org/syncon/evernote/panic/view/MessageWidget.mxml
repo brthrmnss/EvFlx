@@ -115,7 +115,7 @@
 			{
 			}		
 			static public function importData( name : String, desc:String,  
-											  source : String='',   refreshTime :  Number=15000)  :   MessageWidget
+											  source : String='',   refreshTime :  Number=15000, height : Number = NaN)  :   MessageWidget
 			{
 				var o : Object = {}
 				var vo : WidgetVO = new WidgetVO(WidgetVO.MESSAGE, o); 	
@@ -126,7 +126,7 @@
 				vo.description = desc
 				vo.source = source; 
 				vo.refreshTime = refreshTime; 
-				
+				vo.height = height; 
 				return g ; 
 			}						
 			

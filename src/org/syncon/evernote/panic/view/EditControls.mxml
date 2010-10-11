@@ -6,12 +6,14 @@
 		 >
 	<fx:Script>
 		<![CDATA[
+			import mx.core.UITextField;
 			import mx.events.FlexEvent;
 			
 			public var creationComplete : Boolean = false; 
 			protected function onInit():void
 			{
 				this.creationComplete = true
+					var ee : UITextField
 			}
 
 		]]>
@@ -20,5 +22,6 @@
 	 <view:AddWidget top="100" left="0" />
 	
 	<view:AdminControls top="0" right="20" />
-	<view:UserControls top="0" right="20" />
+	<view:UserControls top="0" left="20" />
+ 
 </s:Group>

@@ -6,11 +6,7 @@
 		    clipAndEnableScrolling="true"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
 		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
-		 >
-	<s:states> 
-		<s:State name="edit"/> 
-		<s:State name="noEdit"/> 
-	</s:states> 	
+ >
 	<s:transitions>
 		<s:Transition toState="*" >
 			<s:Parallel>
@@ -70,7 +66,7 @@
 
 			public function show() : void
 			{
-				this.visible = true; 
+				//this.visible = true; 
 				//this.currentState = 'edit'
 				this.alpha = 0.95
 			}
@@ -79,7 +75,7 @@
 			public function hide()  : void
 			{
 				this.alpha  = 0	
-				this.visible = false; 
+				//this.visible = false; 
 			}
 
 			protected function group1_initializeHandler(event:FlexEvent):void
@@ -164,11 +160,15 @@
 		
 	
 		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
-		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
+		<s:Button id="btnRoster" label="Company Roster"
+				  
+				   toolTip="View all the people who work here"
+				  click="btnRoster_clickHandler(event)" />
 		 <!--
 		<s:Button id="btnRoster" label="Logout"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
 		
 	-->		<s:CheckBox label="Auto-Hide"   selected="true"
+						toolTip="Will hide this pane when you are not hovered over it"
 						id="chk" change="chk_changeHandler(event)"/>
 	</s:HGroup> 
 	</s:VGroup>

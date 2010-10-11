@@ -81,6 +81,7 @@ package  org.syncon.evernote.panic.view
 				useSettings = e.data; 
 			if ( useSettings.data == null ) 
 				return; 
+			/*
 			var test : Array 
 			test = [//'Yo dowg', 'abc123', 
 				//'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Thided <a>link</a> for tes link.<img source="http://avatar.cnn.com/people/MsLearning/avatar/48.png"/></TextFlow>',
@@ -92,7 +93,9 @@ package  org.syncon.evernote.panic.view
 				//'light', 'druid', '25 days', 
 				//'24 days', 
 				'loveless']
+				*/
 			this.model.source( useSettings.source, this, 'message', null , useSettings.test.source )
+			this.ui.height = useSettings.height;
 			this.setupGetter()
 		}
 		/**

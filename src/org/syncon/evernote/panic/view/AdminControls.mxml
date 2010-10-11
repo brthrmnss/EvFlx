@@ -160,32 +160,62 @@
 
 	<s:HGroup   verticalAlign="middle">
 		<!--<s:Label id="lblMessage"  text="" excludeFrom="edit"/>-->
-		<s:Button id="btnRoster" label="Company Roster"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
+		<s:Button id="btnRoster" label="Company Roster"    toolTip="View all the people who work here"
+				  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
 		 
-		<s:Button label.edit="Leave Edit Mode"  label="Edit" id="btnEdit" click="btnEdit_clickHandler(event)"/>
+		<s:Button label.edit="Leave Edit Mode"  label="Edit"
+				   toolTip="Edit the Board" toolTip.edit="Remove edit controls"
+				  id="btnEdit" click="btnEdit_clickHandler(event)"/>
 		 
 		<!--
 		<utils:IconButton  includeIn="noEdit" iconSkin=".btnSettings" toolTip="Edit Board"  id="btnEdit"   click="btnEdit_clickHandler(event)"/>
 		<utils:IconButton  includeIn="edit" iconSkin=".btnLeft"  toolTip="Leave Edit Mode"  id="btnLeaveEdit"  click="btnEdit_clickHandler(event)"/>
 		-->
-		<s:CheckBox label="Auto-Hide"   id="chk" change="chk_changeHandler(event)"/>
+		<s:CheckBox label="Auto-Hide"  toolTip="Will hide this pane when you are not hovered over it" 
+					id="chk" change="chk_changeHandler(event)"/>
 	</s:HGroup>	
 		
-		<s:HGroup id="holderStuff" includeIn="edit">
-			<s:Button label="Settings"  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
-		</s:HGroup>		
-		<s:Button label="Invite Users" includeIn="edit" id="btnInvite" click="btnInvite_clickHandler(event)"/>
-		<s:HGroup id="holderStuff2" includeIn="edit">
-			<s:Button label="Projects"  id="btnProjects" click="btnProjects_clickHandler(event)"/>
-			<s:Button label="People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
-		</s:HGroup>
+						<s:VGroup  includeIn="edit" width="100%">
 
-		<s:VGroup>
-			
-			<s:Button label="Save" includeIn="edit"  id="btnSave" click="btnSave_clickHandler(event)"/>
-		</s:VGroup>
-		
-	
+								<s:Label    width="180" id="txtInstructions" />
+							<s:HGroup id="holderStuff" includeIn="edit">
+								<s:Button label="Settings"  toolTip="Change global settings for this board"
+										  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
+							</s:HGroup>		
+								<s:Line width="100%" >
+									<s:stroke>
+										<s:SolidColorStroke color="0x666666" />
+									</s:stroke>
+								</s:Line>
+							<s:Button label="Invite Users"  toolTip="View url for board to share with others"
+								   id="btnInvite" click="btnInvite_clickHandler(event)"/>
+								<s:Line width="100%" >
+									<s:stroke>
+										<s:SolidColorStroke color="0x666666" />
+									</s:stroke>
+								</s:Line>
+								<!--<s:Label text="Manage" />-->
+							<s:HGroup id="holderStuff2">
+								<s:Button label="Edit Projects" toolTip="Edit Projects"
+										  id="btnProjects" click="btnProjects_clickHandler(event)"/>
+								<s:Button label="Edit People"  toolTip="Edit People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
+							</s:HGroup>
+					
+							<s:Line width="100%" >
+								<s:stroke>
+									<s:SolidColorStroke color="0x666666" />
+								</s:stroke>
+							</s:Line>							
+							
+							
+							<s:VGroup>
+
+								<s:Button label="Save"
+										   toolTip="Save Any unsaved changes to the layout"
+										  includeIn="edit"  id="btnSave" click="btnSave_clickHandler(event)"/>
+							</s:VGroup>
+							
+						</s:VGroup>
 
 	</s:VGroup>
 

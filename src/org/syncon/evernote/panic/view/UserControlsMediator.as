@@ -26,16 +26,9 @@ package  org.syncon.evernote.panic.view
 				eventMap.mapListener(eventDispatcher, PanicModelEvent.ADMIN_MODE_CHANGED, 
 					this.onAdminModeChanged);	
 				this.onAdminModeChanged(null)
-				
-				 ui.addEventListener('clickedEdit', onClickedEditHandler ) 		
-				 this.onClickedEditHandler(null)
-					 
-				 ui.addEventListener('clickedSave', onClickedSaveHandler ) 		
-				 ui.addEventListener('clickedPeople', onClickedPeopleHandler ) 		
-				 ui.addEventListener('clickedProjects', onClickedProjectsHandler ) 			
-				 ui.addEventListener('clickedBoard', onClickedBoardHandler ) 	
+ 
 				 ui.addEventListener('clickedRoster', onClickedRosterHandler ) 	
-				 ui.addEventListener('clickedInvite', onClickedInviteHandler ) 						 
+ 					 
 		}
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
@@ -43,7 +36,7 @@ package  org.syncon.evernote.panic.view
 		}
 		private function onAdminModeChanged(e:PanicModelEvent): void
 		{
-			if ( this.model.board.name == '' ) 
+			if ( this.model.boardLoaded == false  ) 
 			{
 					this.ui.hide()
 					return 
@@ -53,81 +46,13 @@ package  org.syncon.evernote.panic.view
 			else
 			this.ui.show()
 		}		
-		private function onClickedSaveHandler(e:CustomEvent): void
-		{
-			var ee : ExportBoardCommandTriggerEvent = new ExportBoardCommandTriggerEvent(
-				ExportBoardCommandTriggerEvent.SAVE_BOARD ) 
-			this.dispatch( ee )
-		}
-		private function onClickedPeopleHandler(e:CustomEvent): void
-		{
-			 this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PeopleManagementPopup' )  )  
-		}
-		private function onClickedProjectsHandler(e:CustomEvent): void
-		{
-			 this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'ProjectManagementPopup' )  )   
-		}		
-		private function onClickedBoardHandler(e:CustomEvent): void
-		{
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'BoardManagementPopup' )  )   
-		}				
-		
+ 
+ 
 		private function onClickedRosterHandler(e:CustomEvent): void
 		{
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				'RosterPopup' )  )   
 		}			
-		
-		private function onClickedInviteHandler(e:CustomEvent): void
-		{
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PopupInvite' )  )   
-		}			
-				
-		
-		
-		private function onClickedEditHandler(e:CustomEvent): void
-		{
-			//if nto updating, just adjust words
-			if ( e != null )
-			{
-				this.ui.editMode = ! this.ui.editMode; 
-				this.model.editMode = this.ui.editMode
-			}
-			else
-			{
-				this.ui.editMode =  this.model.editMode; 
-			}
-			if ( this.ui.editMode )
-			{
-				this.ui.currentState = 'edit'
-				//this.ui.btnEdit.label = 'Leave Edit Mode'
-			}
-			else
-			{
-				this.ui.currentState = 'noEdit'
-					//does nto make sense modal bg should be blocking that 
-				this.closeAllEditPopups()
-				//this.ui.btnEdit.label = 'Edit Mode'
-			}
-		}
-		
-		private function closeAllEditPopups() : void
-		{
-			var popupsToClose : Array = [
-				'PeopleManagementPopup', 'ProjectManagementPopup', 
-				'PopupEditPerson', 'PopupEditProject'
-			]; 
-			for each ( var popup : String in popupsToClose ) 
-			{
-				this.dispatch( 
-					new HidePopupEvent( HidePopupEvent.HIDE_POPUP, popup )
-				)
-			}
-		}
 		
 		 
 	}

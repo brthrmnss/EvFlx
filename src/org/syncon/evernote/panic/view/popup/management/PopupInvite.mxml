@@ -73,15 +73,15 @@
 
 	<editors:PopupBg />
 	
- <s:VGroup paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+ <s:VGroup paddingTop="10" paddingBottom="20" paddingRight="10" paddingLeft="10" >
 	 
 
 	 <popup:PopupHeader  bold="false"   label="Invite"  id="header" padding="0"  width="100%"/>
 	 
-	 
-	 <s:Label id="alertTxt" />
+	 <!--
+	 <s:Label id="alertTxt" />-->
 	 <s:Label text="You can invite members of your team to:" />
-	 <s:TextInput editable="false" selectable="true" id="txtInput" />
+	 <s:TextArea editable="false" selectable="true" id="txtInput"  width="240" height="145"/>
 	 <s:Label  id="txtMsg2" maxDisplayedLines="3" width="230" />
  </s:VGroup>  
 

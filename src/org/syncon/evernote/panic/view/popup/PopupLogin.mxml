@@ -150,7 +150,7 @@
 				<s:TextInput id="txtPassword" displayAsPassword="true"   width="200"/>
 			</mx:FormItem>	
 			<mx:FormItem label="  " >
-				<s:CheckBox label="Admin" id="chkAdmin" />
+				<s:CheckBox label="Admin" id="chkAdmin" toolTip="Edit the board configuration, will need to use the admin password" />
 			</mx:FormItem>		
 			<s:Group width="100%" >
 				<s:Line width="100%" >
@@ -161,9 +161,12 @@
 			</s:Group>
 
 			<mx:FormItem label=" " >
+				<!--
 				<s:CheckBox label="Remember me for a week" id="chkRemember" />
+				-->
 				<s:Button  label="Sign in"  click="onLogin(event)" />
-			</mx:FormItem>		
+			</mx:FormItem>	
+			
 			<mx:FormItem >
 				<s:HGroup>
 					<s:Button label="Forgot Password" click="button1_clickHandler(event)" />

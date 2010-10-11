@@ -105,7 +105,7 @@ package  org.syncon.evernote.panic.test.context
 			
 			mediatorMap.mapView(  BoardRow,  BoardRowWidgetMediator );	
 			
-			mediatorMap.mapView(  AdminControls,  EditSwitchMediator );	
+			mediatorMap.mapView(  AdminControls,  AdminControlsMediator );	
 			mediatorMap.mapView(  UserControls,  UserControlsMediator );	
 			
 			mediatorMap.mapView(  AddWidget,  AddWidgetMediator );		

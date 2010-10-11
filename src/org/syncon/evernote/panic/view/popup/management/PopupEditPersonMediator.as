@@ -32,8 +32,7 @@ package  org.syncon.evernote.panic.view.popup.management
 		
 		private function onSavePerson(e:CustomEvent) : void
 		{
-			this.dispatch( new ExportBoardCommandTriggerEvent(
-				ExportBoardCommandTriggerEvent.SAVE_BOARD, null, null, false  )  )  				
+			this.model.saveConfigOnly()			
 		}			
 		
 	/*	

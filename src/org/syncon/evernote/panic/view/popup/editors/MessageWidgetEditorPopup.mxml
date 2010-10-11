@@ -79,17 +79,20 @@
 		<popup:PopupHeader  bold="false"   label="Edit Message"  padding="0"  width="100%"/>
 		
 		<mx:Form>
-			<mx:FormItem label="Message" >
+			<mx:FormItem label="Message Source" >
 				<s:TextInput id="txtMessage" />
 			</mx:FormItem>
-		 
+			<mx:FormItem label="Height" >
+				<s:TextInput id="txtHeight" />
+			</mx:FormItem>			
+			<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
 			<mx:FormItem>
 				<s:HGroup>
-					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
+					<s:Button label="Save" id="btnOk" click="btnOk_clickHandler(event)" />
 					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 				</s:HGroup>
 			</mx:FormItem>
-			<editors:WidgetUpdateSettingsControlBox id="timer" />
+			
 			
 		</mx:Form>
 		

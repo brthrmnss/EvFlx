@@ -1,0 +1,11 @@
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PopupPeople', true )  )  				
+				
+				
+				
+	<popup:states>
+		<s:State name="normal" />
+		<s:State name="board_auth" />
+	</popup:states>
+	
+			static public var REGISTER : String = 'register'	
