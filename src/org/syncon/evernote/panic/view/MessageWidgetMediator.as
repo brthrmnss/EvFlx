@@ -106,7 +106,7 @@ package  org.syncon.evernote.panic.view
 			
 			
 			var ee : HtmlConvertor = new HtmlConvertor()
-			var x : Object = ee.convert2( m, 0xFFFFFF, 34 )
+			var x : Object = ee.convert2( m, this.model.color, 34 )
 			if ( m == oldMessage  && this.supressTweens ) 
 			{
 				return; 

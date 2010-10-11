@@ -180,6 +180,34 @@ package org.syncon.evernote.panic.model
 		{
 			return 	baseUrl + 'board='+this.board.name; 
 		}
+		
+		
+		
+		
+		
+		
+		public var bgSkin : String = ''; 
+		public var backgroundColor : uint; 
+		public var color : uint = 0xFFFFFF;
+		
+		public function refreshSkin()  : void
+		{
+			this.boardHolder.parentApplication.setStyle('backgroundColor', this.backgroundColor ) ; 
+			this.dispatch( new PanicModelEvent( PanicModelEvent.CHANGED_SKIN, [] ) )
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/** Utils **/
+		
 		public function random(items : Array )  : Object
 		{
 			var index : int = Math.round( Math.random()*items.length)

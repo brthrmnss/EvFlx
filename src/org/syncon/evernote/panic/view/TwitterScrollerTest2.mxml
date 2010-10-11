@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()" alpha="0"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"		 
-		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
+		 color="{fontColor}" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -55,6 +55,9 @@
 			public var _widgetData : WidgetVO = new WidgetVO
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
+			
+			[Bindable] public var fontColor : uint = 0xFFFFFF;			
+			[Bindable] public var colorBg : uint = 0;			
 			
 			/**
 			 * Flag indiates whether tags should be removed instantly 
@@ -294,16 +297,16 @@
 	<s:Rect   top="0" right="0" bottom="0" left="0">
 		<s:fill>
 			<s:LinearGradient  rotation="0">
-				<s:GradientEntry  color="0" ratio="0"/>
-				<s:GradientEntry   color="0" ratio="0.2" alpha="0"/>
+				<s:GradientEntry  color="{colorBg}" ratio="0"/>
+				<s:GradientEntry  color="{colorBg}" ratio="0.2" alpha="0"/>
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
 	<s:Rect   top="0" right="0" bottom="0" left="0">
 		<s:fill>
 			<s:LinearGradient  rotation="180">
-				<s:GradientEntry  color="0" ratio="0"/>
-				<s:GradientEntry   color="0" ratio="0.2" alpha="0"/>
+				<s:GradientEntry  color="{colorBg}" ratio="0"/>
+				<s:GradientEntry  color="{colorBg}" ratio="0.2" alpha="0"/>
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>	

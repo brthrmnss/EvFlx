@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"  rollOut="group1_rollOutHandler(event)"
 		 implements="org.syncon.evernote.panic.view.IUIWidget"
-		 color="0xFFFFFF" fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
+		  fontSize="34" xmlns:view="org.syncon.evernote.panic.view.*"
 		 >
 	
 	<fx:Metadata>
@@ -27,6 +27,8 @@
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
 			public function get   widgetData (  )  : WidgetVO { return this._widgetData; }
 			
+			[Bindable] public var bgVisible : Boolean = true; 
+			public var colorText :  uint ; 
 			/**
 			 * Flag indiates whether tags should be removed instantly 
 			 * */
@@ -53,7 +55,7 @@
 				}
 				if ( this.createDefault ) 
 					this.list1.dataProvider = dp; 
-				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' ) 
+				this.list1.scroller.setStyle('horizontalScrollPolicy', 'off' )
 			}				
 			
 			public function importConfig(j :  WidgetVO )  : void
@@ -112,6 +114,10 @@
 					HoverPersonEvent.HIDE_PERSON_HOVER, null, this ) ) 
 			}
 
+			public function updateRenderers()  : void
+			{
+				this.dispatchEvent( new Event( 'updateRenderers' ) ) 
+			}
 		]]>
 	</fx:Script>
 	

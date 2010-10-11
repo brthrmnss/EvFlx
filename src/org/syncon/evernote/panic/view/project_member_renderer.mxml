@@ -3,6 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
 				autoDrawBackground="false"
+				 click="itemrenderer1_clickHandler(event)"
 				 rollOver="itemrenderer1_rollOverHandler(event)"
 				  rollOut="itemrenderer1_rollOutHandler(event)"
 				 creationComplete="itemrenderer1_creationCompleteHandler(event)"
@@ -112,6 +113,12 @@
 				delete animatingTargets[event.effectInstance.target.id];
 			}			
 			
+
+			protected function itemrenderer1_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( 'viewPerson' , this.person) ) 
+			}
+
 		]]> 
 	</fx:Script> 	
 	
@@ -146,7 +153,7 @@
 	<utils:Avatar id="img" 
 				  useHandCursor="true" buttonMode="true"   alpha.hovered=".6"
 				  />
-	<utils:IconButton id="picUnavailbe" iconSkin=".btnForbiddenSmall" bottom="0" right="0" toolTip="Unavailable" />
+	<utils:IconButton id="picUnavailbe" iconSkin=".btnForbiddenSmall" bottom="0" right="0" toolTip="" />
 	 <!--
 		<mx:Image id="img" 
 			    useHandCursor="true" buttonMode="true"

@@ -20,20 +20,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.SaveNoteCommand;
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
-	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommand;
-	import org.syncon.evernote.panic.controller.AuthenticateToBoardCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.BuildBoardCommand;
-	import org.syncon.evernote.panic.controller.CreateBoardCommand;
-	import org.syncon.evernote.panic.controller.CreateBoardCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.ExportBoardCommand;
-	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.HoverPersonCommand;
-	import org.syncon.evernote.panic.controller.HoverPersonEvent;
-	import org.syncon.evernote.panic.controller.ImportBoardCommand;
-	import org.syncon.evernote.panic.controller.ImportBoardCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.LoadDataSourceCommand;
-	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
-	import org.syncon.evernote.panic.controller.LoadDefaultDataCommand;
+	import org.syncon.evernote.panic.controller.*;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.panic.view.utils.AvatarEdit;
@@ -78,6 +65,7 @@ package   org.syncon.evernote.panic
 			commandMap.mapEvent(HoverPersonEvent.SHOW_PERSON_HOVER,  HoverPersonCommand, null, false );	
 			commandMap.mapEvent(HoverPersonEvent.HIDE_PERSON_HOVER,  HoverPersonCommand, null, false );							
 			
+			commandMap.mapEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN,  ChangeSkinCommand, null, false );				
 			/*
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.IMPORT,  EvernoteToTextflowCommand, null, false );
 			commandMap.mapEvent(EvernoteToTextflowCommandTriggerEvent.EXPORT,  EvernoteToTextflowCommand, null, false );
@@ -148,6 +136,7 @@ package   org.syncon.evernote.panic
 			//this.authenticationMode1()
 				
 			//this.openPopup()
+			this.changeBoardColor()
 		}
 		public function importBoardFromEvernote() : void
 		{
@@ -197,6 +186,23 @@ package   org.syncon.evernote.panic
 				'PeopleManagementPopup'    )  ) 
 		}
 				
- 
+		public function changeBoardColor()  : void
+		{
+			/*
+			var wait : Boolean = false;
+			if ( wait ) 
+			{
+				setTimeout( this.onInit, 1500 )
+			}
+			else
+				this.onInit()	
+			*/		
+			setTimeout( this.dispatchEvent, 3000, 	new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
+				0xFFFFFF, 0  ) )	
+			/*this.dispatchEvent( new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
+				0xFFFFFF, 0  )  ) */
+		}
+				
+		
 	}
 }

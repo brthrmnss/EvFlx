@@ -38,9 +38,22 @@ package  org.syncon.evernote.panic.view
 				
 			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
-			this.onAutomateWidget(null)						
+			this.onAutomateWidget(null)			
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				this.onSkinChanged );						
+			this.onSkinChanged(null)						
 		}
 		 
+		
+		
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+			this.ui.fontColor = this.model.color; 
+			this.ui.colorBg = this.model.backgroundColor; 
+		}		
+				
+		
 		public function onAutomateWidget( e : WidgetEvent )  : void
 		{
 			var useSettings : WidgetVO = this.widgetData; 

@@ -212,12 +212,16 @@
 		 </mx:FormItem>		
 		 -->
 	
+		 <mx:FormItem>
+			 <s:HGroup excludeFrom="view">
+				 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
+				 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
+			 </s:HGroup>
+		 </mx:FormItem>
+
 		 
 	 </mx:Form>
-	 <s:HGroup excludeFrom="view">
-		 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
-		 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
-	 </s:HGroup>
+
  </s:VGroup>
 
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 

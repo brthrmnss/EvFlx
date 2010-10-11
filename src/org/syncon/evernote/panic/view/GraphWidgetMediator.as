@@ -21,6 +21,8 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
+	
+	import spark.filters.DropShadowFilter;
  
 	public class GraphWidgetMediator extends Mediator implements IWidgetMediator
 	{
@@ -42,10 +44,14 @@ package  org.syncon.evernote.panic.view
 			this.onImportConfig( null ) 				
 			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
-			this.onAutomateWidget(null)				
+			this.onAutomateWidget(null)	
+				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
 			this.onEditModeChanged(null)
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				this.onSkinChanged );						
+			this.onSkinChanged(null)				
 				
 			this.setupGetter()
 		}
@@ -65,6 +71,12 @@ package  org.syncon.evernote.panic.view
 			else
 				this.ui.hideEdit(); 
 		}
+		
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+			this.ui.fontColor = this.model.color; 
+		}		
+		
 		private function onSignoutClickedHandler(e:CustomEvent): void
 		{
 			/*this.model.logOut();*/
@@ -184,27 +196,39 @@ package  org.syncon.evernote.panic.view
 				return; 
 			}
 			this.oldLineString = e; 
-		/*	var s : Object = JSON.decode( e.toString() )
+			var filters : Array = []; 
+		/*	*/
+			var s : Object = JSON.decode( e.toString() )
 			var colors : Array = s.pie
 			var prod : Array = []; 
 			for each ( var j : Object in s.line.series ) 
 			{
 		 
+				trace( 'color input:  ' +  j.color.toString() );
 				if ( j.color.toString().charAt(0) == '#' ) 
 					var color:uint = uint("0x" + j.color.toString().substr(1));
 				
-				var c :    SolidColorStroke = new SolidColorStroke( color, 1 )  
-					var ee : LineSeries = new LineSeries()
-					ee.yField = j.name; 
-					ee.displayName = j.name
-					ee.setStyle(  'lineStroke' , c ) 
-					ee.setStyle( 'form', 'segment' )
+				var c :    SolidColorStroke = new SolidColorStroke( color, 5 )  
+				var ee : LineSeries = new LineSeries()
+				ee.yField = j.name; 
+				ee.displayName = j.name
+				ee.setStyle(  'lineStroke' , c ) 
+				ee.setStyle( 'form', 'segment' )
+				ee.setStyle( 'form', 'curve' )
 				prod.push( ee ) 
+				var filter : DropShadowFilter = new DropShadowFilter( 2, 135, c.color, 0.3,  2, 3 ); //
+				//filter = new DropShadowFilter( 4, 135, c.color, 0.5,  2, 3 ); //
+				trace( 'color input:  ' +  filter.color );
+				filters.push( filter ) 
+				ee.filters = [filter]
 			}
 	 
-			
+			if ( this.ui.myChart4 == null ) this.ui.currentState = 'lineChart'; 
 			this.ui.myChart4.series = prod; 
-			this.ui.myChart4.dataProvider = s.line.data ; */
+			this.ui.myChart4.dataProvider = s.line.data ;
+			this.ui.myChart4.seriesFilters= [];
+			
+			/**/
 			this.ui.currentState = 'lineChart'; 
 		}
 				
@@ -216,7 +240,7 @@ package  org.syncon.evernote.panic.view
 				return
 			this.oldBgTextString = a; 
 			var ee :  HtmlConvertor = new HtmlConvertor()
-			this.ui.txtBg.textFlow = ee.convert2( a, 0xFFFFFF, 15 ) 
+			this.ui.txtBg.textFlow = ee.convert2( a, this.model.color, 15 ) 
 			return  ; 
 		}		
 		

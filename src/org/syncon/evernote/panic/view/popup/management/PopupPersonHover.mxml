@@ -62,7 +62,8 @@
 				this.person = person
 				this.txtName.text = this.person.name; 
 				//this.txtDesc.text = this.person.desc
-				this.chkAvailable.selected = this.person.available
+				//this.chkAvailable.selected = this.person.available
+				this.txtAvailable.text = (this.person.available ) ? 'Available' : 'Unavailable'
 				this.txtStatus.text  = this.person.status; 
 				this.txtEmail.text = this.person.email;
 				this.txtTwitter.text = this.person.twitter				
@@ -117,11 +118,32 @@
  <s:VGroup gap="0" 
 		    width="170"
 		   paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-			 <s:Label id="txtName" width="150" />
+ 
+	 		<s:Label id="txtName" width="150" />
 			 <s:Label id="txtStatus"   />
-			 <s:CheckBox id="chkAvailable"   />
-			 <s:Label id="txtEmail"   />
+	 		<s:Label id="txtAvailable"   />
+			<!-- <s:CheckBox id="chkAvailable"   />-->
+		<s:HGroup>
+			<utils:IconButton label="edit"  id="btnEmail" 
+							  toolTip="Email this person"
+							  iconSkin=".btnEmail"    /> 			
+			<s:Label id="txtEmail"   />
+			
+		</s:HGroup>
+	 	<s:HGroup>	 
+			<utils:IconButton label="edit"  id="btnTwitter" 
+							  toolTip="Tweet this person"
+							  iconSkin=".btnTwitter"    /> 
 			 <s:Label id="txtTwitter"   />
+		</s:HGroup>
+		 <s:HGroup>	 
+			 <utils:IconButton label="edit"  id="btnCall"  
+							   toolTip="Call this person"
+							   iconSkin=".btnPhone"    /> 	
+			 <s:Label id="txtPhone"   />
+			 
+						 
+		 </s:HGroup>	 
  </s:VGroup>
 <!--
 		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 

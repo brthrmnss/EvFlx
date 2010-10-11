@@ -45,6 +45,8 @@ package  org.syncon.evernote.panic.model
 		
 		public static const SUPRESS_TWEENS_CHANGED : String = 'surpressTweensChanged' ; 
 		
+		public static const CHANGED_SKIN : String = 'changedSkin'; 
+		
 		public var data: Object;
 		
 		public function PanicModelEvent(type:String, _data:Object = null)

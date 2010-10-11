@@ -147,6 +147,7 @@ package   org.syncon.evernote.panic.controller
 			var arr : Array = []; 
 			var board : BoardVO = new BoardVO()
 			board.name = 'blickem'
+			
 			arr.push( [
 				 
 				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
@@ -163,12 +164,11 @@ package   org.syncon.evernote.panic.controller
 				'<img  width="64" height="64" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
 				'</TextFlow>',
 			]	
-				
-			
+		 
 			arr.push( [
 				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
 			])
-		 				
+		 	 
 			var fields : Array = [
 				{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
 				{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
@@ -189,9 +189,9 @@ package   org.syncon.evernote.panic.controller
 								
 				
 			var series : Array = [
-				{name:'Profit',  color:'#654568', tooltip:'Key1 thing'},
-				{name:'Expenses',  color:'#ff0000', tooltip:'Key1 thing'},
-				{name:'Amount',   color:'#654568', tooltip:'Key1 thing'}
+				{name:'Profit',  color:'#FCBF17', tooltip:'Key1 thing'},
+				{name:'Expenses',  color:'#47C816', tooltip:'Key1 thing'},
+				{name:'Amount',   color:'#FF3D19', tooltip:'Key1 thing'}
 			]
 				Math.random()
 			var data : Array = [
@@ -207,9 +207,14 @@ package   org.syncon.evernote.panic.controller
 				//JSON.encode( lineChart ),
 			arr[arr.length-1][0].test.source = [ 
 				JSON.encode( lineChart ) , 
+			 	JSON.encode( pie ),
+			 	JSON.encode( pie2 )
+			]	
+			arr[arr.length-2][0].test.source = [ 
+				JSON.encode( lineChart ) , 
 				JSON.encode( pie ),
 				JSON.encode( pie2 )
-			]		
+			]						
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
 			])		

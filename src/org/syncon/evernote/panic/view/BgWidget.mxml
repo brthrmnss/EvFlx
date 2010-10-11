@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 width="100%" height="100%"
+		 fontSize="12"  color="0"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:utils1="org.syncon.utils.*"
+		 >
+
+	<fx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.view.assets.Icons;
+			
+			public var creationComplete : Boolean = false; 
+			
+			public var editMode : Boolean = false; 
+			
+			static public var CLICKED : String  = 'clicked_'
+			static public var CLICKED_EDIT : String  = 'clickedEdit'				
+			static public var CLICKED_REMOVE : String  = 'clickedRemove'				
+			static public var CLICKED_LEFT : String  = 'clickedLeft'				
+			static public var CLICKED_RIGHT : String  = 'clickedRight'						
+			
+			static public var ADJUST_ARROWS : String  = 'show_'
+				
+			protected function onInit():void
+			{
+				this.creationComplete = true
+				//this.fxFader.duration = 850
+			}
+
+			protected function btnEdit_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_EDIT ));
+			}
+
+			
+			protected function btnRemove_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_REMOVE ) );
+			}			
+			
+			
+			protected function btnLeft_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_LEFT ) );
+			}			
+			
+			protected function btnRight_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(CLICKED_RIGHT) );
+			}			
+			
+			public function show() : void
+			{
+				//return;
+				this.fxFader.show()
+			}
+			
+			public function hide()  : void
+			{
+				this.fxFader.hide()
+				
+			}
+			
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				//this.hide()
+			}
+
+			public var edit : UIComponent ; 
+
+			protected function group2_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( CLICKED  ) ) 
+				event.stopImmediatePropagation()
+			}
+
+
+			protected function fxFadeOut_effectStopHandler(event:EffectEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+			
+			
+		]]>
+	</fx:Script>
+ <utils:FadeInOutByFunction id="fxFader" visible="false" />
+
+	
+	<s:Group buttonMode="true" useHandCursor="true" 
+			 right="0" left="0" top="0" bottom="0" 
+			 click="group2_clickHandler(event)" >
+		<!--right="1" left="1" top="1" bottom="1" -->
+		<s:Rect id="borderEdit" right="0" left="0" top="0" bottom="0"    >
+		<!--	<s:stroke>
+				<s:SolidColorStroke color="0x666666" />
+			</s:stroke>-->
+			<s:fill>
+				<s:SolidColor color="0x232526" alpha="1" />
+			</s:fill>
+		</s:Rect>
+<!-- <s:Path  data="M 0 {this.height} L {this.width} {this.height} L {this.width} {this.height} Z">
+	 <s:fill>
+		 <s:SolidColor color="0x212223" alpha="1" />
+	 </s:fill>	 
+ </s:Path>
+		<s:Path>
+			<
+		</s:Path>-->
+		<!--
+		<s:Path right="0" left="0" top="0" bottom="0"   data="m 0 0 l 0 100 l 100 100 L 100 0 L 0 100">
+			<s:fill>
+				<s:SolidColor color="0x212223" alpha="1" />
+			</s:fill>	 
+		</s:Path>		
+		
+		-->
+		<!--
+		<s:Path right="0" left="0" top="0" bottom="0"   data="m 0 0 l 0 100 l 100 100 L 100 0 L 0 0">
+			<s:fill>
+				<s:SolidColor color="0x212223" alpha="1" />
+			</s:fill>	 
+		</s:Path>	
+		
+		
+		-->
+<!--	http://saturnboy.com/tag/fxg/ search for relative	
+		<s:Path right="0" left="0" top="0" bottom="0"   data="m 0,0 l 100,0 l 0,100 l -100,0 z">
+			<s:fill>
+				<s:SolidColor color="0x212223" alpha="1" />
+			</s:fill>	 
+		</s:Path>	-->
+		<s:Path right="0" left="0" top="0" bottom="0"   data="m 0,100 l 100,0 l 0,-100 z">
+			<s:fill>
+				<s:LinearGradient rotation="0">
+					<s:GradientEntry color="0x212223" alpha="0" ratio="0" />
+					<s:GradientEntry color="0x212223" alpha="1" ratio="1" />
+				</s:LinearGradient>
+			<!--	<s:SolidColor color="0x212223" alpha="1" />-->
+			</s:fill>	 
+		</s:Path>	
+		<!--
+		<s:Line right="0" left="0" height="1">
+			<s:stroke>
+				<s:SolidColorStroke color="#323434" />
+			</s:stroke>
+		</s:Line>
+		<s:Line right="0" left="0" height="1">
+			<s:stroke>
+				<s:SolidColorStroke color="#323434" />
+			</s:stroke>
+		</s:Line>	
+		<s:Line right="0" left="0" height="1" bottom="0">
+			<s:stroke>
+				<s:SolidColorStroke color="#0A0A0A" />
+			</s:stroke>
+		</s:Line>	
+		-->
+		
+	</s:Group>
+	<s:Line top="0" bottom="0" >
+		<s:stroke>
+			<s:SolidColorStroke color="#323434" />
+		</s:stroke>
+	</s:Line>
+	<s:Line right="0" left="0" >
+		<s:stroke>
+			<s:SolidColorStroke color="#323434" />
+		</s:stroke>
+	</s:Line>	
+	<s:Line right="0" left="0"  bottom="0">
+		<s:stroke>
+			<s:SolidColorStroke color="#0A0A0A" />
+		</s:stroke>
+	</s:Line>	
+	<!--
+	<s:Line	 right="0" left="0"  width="100%" height="1" bottom="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="0"   caps="square"/>
+		</s:stroke>
+	</s:Line>	
+	-->
+</s:Group>

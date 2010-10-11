@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx"  
+				xmlns:mx="library://ns.adobe.com/flex/mx"   resize="itemrenderer1_resizeHandler(event)"
 		  fontSize="24" height="42" width="100%" creationComplete="itemrenderer1_creationCompleteHandler(event)"
 				autoDrawBackground="false" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*">
 	
@@ -11,11 +11,16 @@
 			import mx.effects.Effect;
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			
 			import spark.effects.animation.RepeatBehavior;
+			
+			[Bindable] public var colorText :  uint = 0xFFFFFF; 
+			[Bindable] public var bgVisible : Boolean = true;
+			
 			[Bindable] public var project :  ProjectVO = new ProjectVO()
 			override public function set data(value:Object):void { 
 				super.data = value; 
@@ -68,9 +73,16 @@
 			{
 				this.creationComplete = true; 
 				this.modifyRenderer()
+				this.parentDocument.addEventListener( 'updateRenderers', this.updateRendererFromParent, false, 0, true ) 		
+				this.updateRendererFromParent(null)
 			}
 
-			
+			public function updateRendererFromParent(e:Event):void
+			{
+				this.bgVisible = this.parentDocument.parentDocument.bgVisible; 
+				var colorText_ : uint = this.parentDocument.parentDocument.colorText as uint
+				this.colorText = colorText_ 
+			}
 			
 			
 			private var animatingTargets:Object = new Object();
@@ -94,6 +106,16 @@
 				delete animatingTargets[event.effectInstance.target.id];
 			}			
 			
+
+			protected function itemrenderer1_resizeHandler(event:ResizeEvent):void
+			{
+				var width_  : Number = this.width  - 35 - 10*5
+				this.groupName.width = width_ * .25
+				this.memberLIst.width = this.groupPeople.width = width_ * .35		
+				this.groupStatus.width = width_ * .20				
+				this.groupStatus2.width = width_ * .20									
+			}
+
 		]]> 
 	</fx:Script> 	
 	<fx:Declarations> 
@@ -123,66 +145,66 @@
 	</s:layout>
 	
 	<s:Group  height="42" width="42" id="groupImg">
-		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 				  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground" >
 		</s:SkinnableContainer>
 		<utils:Avatar id="img"   emptySetting="" 
 					  horizontalCenter="0" verticalCenter="0" />
-		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"  visible="{this.bgVisible}"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>		
 	</s:Group>
 
 	<s:Group width="160" height="42" id="groupName">
-		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtLbl" verticalCenter="0"
 				   color.hovered="0x696969"  x="5"
 				    width="100%"  maxDisplayedLines="1"
 				   useHandCursor="true"  buttonMode="true"
-				   color="0xFFFFFF"  />		
-		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+				   color="{colorText}"  />		
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"  visible="{this.bgVisible}"
 							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>			
 	</s:Group>
 
 	
 	<s:Group  width="120"  height="42" id="groupStatus">
-		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 				skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtCol2" verticalCenter="0"
 				   color.hovered="0x696969"  
 				   paddingLeft="5" paddingRight="5"
 				   useHandCursor="true"  buttonMode="true"
-				   color="0xFFFFFF"  />		
-		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+				   color="{colorText}"  />		
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"  visible="{this.bgVisible}"
 							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>			
 	</s:Group>
 
 	
 	<s:Group   height="42"  width="155" id="groupStatus2">
-		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 					skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtCol3" verticalCenter="0"
 				   color.hovered="0x696969"  
 				    paddingLeft="5" paddingRight="5"
 				   useHandCursor="true"  buttonMode="true"
-				   color="0xFFFFFF"  />	
-		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"
+				   color="{colorText}"  />	
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"  visible="{this.bgVisible}"
 							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>			
 	</s:Group>
 
 	
 	<s:Group   height="42" width="235"  id="groupPeople">
-		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0"
+		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 							   skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
-		<s:SkinnableContainer right="0" top="0" left="0" bottom="0" alpha="1"
+		<s:SkinnableContainer right="0" top="0" left="0" bottom="0" alpha="1"  visible="{this.bgVisible}"
 							  skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground_Middle" >
 		</s:SkinnableContainer>		
 		 <view:ProjectMembersList id="memberLIst"  verticalCenter="0"  width="235"/>

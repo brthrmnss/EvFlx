@@ -39,6 +39,9 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 			
 			this.onImportConfig( null ) 
 				
+			//from project member renderer
+			this.ui.addEventListener( 'viewPerson', this.onViewPerson)				
+				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
 				this.onEditModeChanged);						
 			this.onEditModeChanged(null)	
@@ -52,9 +55,30 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
 			this.onAutomateWidget(null)		
 			
-				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				this.onSkinChanged );						
+			this.onSkinChanged(null)								
 		}
 		 
+		
+		private function onViewPerson(e:CustomEvent) : void
+		{
+		 	this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+					'PopupEditPerson', [e.data, null, this.model.adminMode ] )  )  				
+		}
+		
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+			if ( this.model.backgroundColor == 0xFFFFFF ) 
+			{
+				this.ui.bgVisible = false; 
+			}
+			else
+				this.ui.bgVisible = true; 
+			this.ui.colorText = this.model.color; 
+			this.ui.updateRenderers()
+		}				
+		
 		public function onAutomateWidget( e : WidgetEvent )  : void
 		{
 			var useSettings : WidgetVO = this.widgetData; 

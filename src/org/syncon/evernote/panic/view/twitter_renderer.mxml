@@ -49,6 +49,6 @@
 	<s:Label   id="txtLbl"
 			 color.hovered="0x696969"  paddingRight="90"
 			   useHandCursor="true"  buttonMode="true"
-			 color="0xFFFFFF"  />
+			   />
 	<s:Label id="lblVariable"  color="0xfefefe"   />
 </s:ItemRenderer>
