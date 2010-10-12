@@ -92,7 +92,14 @@ package  org.syncon.evernote.panic.view
 		}				
 			private function onRemoveComponent () : void
 			{
+				var percentWidth : Number = 100* 1/(this.row.numElements-1)
+				for ( var z : int =0 ; z < this.row.numElements; z++ )
+				{
+					var j : UIComponent  = this.row.getElementAt(z)  as  UIComponent; 
+					j.percentWidth = percentWidth
+				}					
 				this.row.removeElement( this.ui.parent as IVisualElement) 
+						
 			}
 		
 		private function onHighlightRows(e:PanicModelEvent): void

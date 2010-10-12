@@ -175,6 +175,7 @@ package  org.syncon.evernote.panic.view
 					fills.push( c ) 
 
 			}
+			this.ui.currentState = 'pieChart'; 
 			this.ui.myChart3.dataProvider = prod ; 
 			this.ui.pieSeries.setStyle( 'fills', fills )
 			/*this.ui.myChart3.dataProvider = new ArrayCollection([

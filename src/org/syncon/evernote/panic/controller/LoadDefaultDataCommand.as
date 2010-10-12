@@ -159,11 +159,11 @@ package   org.syncon.evernote.panic.controller
 					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
 				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , '', 15000).widgetData
 				])
-			arr[arr.length-1][0].test.background = [ 
+			/*arr[arr.length-1][0].test.background = [ 
 				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img  width="64" height="64" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
 				'</TextFlow>',
-			]	
+			]	*/
 		 
 			arr.push( [
 				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
@@ -219,7 +219,7 @@ package   org.syncon.evernote.panic.controller
 				new WidgetVO( WidgetVO.SPACER )
 			])		
 			arr.push( [
-				ProjectListWidget.importData('Project Lister', '', 355, 3000).widgetData,
+				ProjectListWidget.importData('Project Lister', '', 355, 3000*10).widgetData,
 			])			
 			arr.push( [
 				new WidgetVO( WidgetVO.SPACER )
@@ -274,7 +274,61 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
+			])			
+				
+			arr = []; 
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				MessageWidget.importData('Too Much Twitter', '', 'Is this too Much Twitter?'.toUpperCase() , 5000).widgetData,
+			])	
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Money',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'True Blood',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Coda',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Rip Off',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Copycats',  15000).widgetData,
+			])	
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Theft',  15000).widgetData,
 			])					
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'True Blood',  15000).widgetData,
+			])		
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Coda',  15000).widgetData,
+			])	
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Rip Off',  15000).widgetData,
+			])	
+			arr.push( [				
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Steal',  15000).widgetData,
+			])
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', 'Now Get Back To Work'.toUpperCase() , 5000 ).widgetData,
+			])			
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])		
+			arr.push( [
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '56/100', 'Money In', 56, 100, 0x7652C0,'', 3000).widgetData,
+				GraphWidget.importData('Eccles lister', 'Brickman Stats', '99/100', 'DDC', 99, 100, 0x7652C0,'', 15000).widgetData,
+				GraphWidget.importData('Eccles lister', '', 
+					'{http://city-21.com/php/random_number.php}/100',
+					'CONAN',// - {http://city-21.com/php/random_string.php?f=8}',
+					'{http://city-21.com/php/random_number.php}', 100, 0x7652C0, '', 15000).widgetData,
+				GraphWidget.importData('Eccles lister', '', '12/100', 'YYY', 12, 100, 0x7652C0 , '', 15000).widgetData
+			])
 			board.layout = arr
 				
 			var people : Array = [] ; 

@@ -179,7 +179,7 @@
 			 * to udpate ... pass in temporarly widgetVO
 			 * */
 			public function refresh(temp  : WidgetVO= null) : void
-			{
+			{ 
 				var useSettings : WidgetVO = this.widgetData; 
 				if ( temp != null ) 
 					useSettings = temp; 

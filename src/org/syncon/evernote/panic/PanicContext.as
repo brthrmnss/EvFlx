@@ -197,8 +197,16 @@ package   org.syncon.evernote.panic
 			else
 				this.onInit()	
 			*/		
-			setTimeout( this.dispatchEvent, 3000, 	new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
-				0xFFFFFF, 0  ) )	
+			var ev : Object  = new ChangeSkinCommandTriggerEvent(
+							ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
+							0xFFFFFF, 0  )
+			ev =  new ChangeSkinCommandTriggerEvent(
+				ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
+				0xF9A5A1,  0xFFFFFF )
+				
+			this.dispatchEvent( ev  as Event ) ; 
+			//setTimeout( this.dispatchEvent, 3000, 	ev )	
+			//setTimeout( this.dispatchEvent, 6000, 	ev )	
 			/*this.dispatchEvent( new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
 				0xFFFFFF, 0  )  ) */
 		}

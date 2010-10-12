@@ -60,12 +60,12 @@
 			
 			protected function btnOk_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent( WidgetEvent.UPDATE_WIDGET_CONFIG ) ) 
+				this.dispatchEvent( new WidgetEvent( WidgetEvent.UPDATE_WIDGET_CONFIG ) ) 
 			}
 			
 			protected function btnTest_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
+				this.dispatchEvent( new WidgetEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
 			
 		]]>
