@@ -10,7 +10,20 @@ package org.syncon.evernote.panic.view.utils
 	
 	public class PanicLayouts 
 	{
-		
+		/**
+		 * Performance is awful 
+		 * */
+		static public function oneTwitter( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
+			])	
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			return arr; 
+		}
 		 /**
 		 * Performance is awful 
 		 * */
@@ -81,6 +94,29 @@ package org.syncon.evernote.panic.view.utils
 		{
 			var arr : Array = []
 			arr = []; 
+			
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#EEE9E5"> 25 DAYS </span>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+			]
+			
+			return arr; 
+				
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, 400).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
+				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
+			]
+				
+			
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
@@ -122,6 +158,44 @@ package org.syncon.evernote.panic.view.utils
 			return arr; 
 		}			
 		
+		
+		static public function allWidgets( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			
+			arr.push( [
+				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#EEE9E5"> 25 DAYS </span>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+			]
+			arr.push( [
+				ProjectListWidget.importData('Project Lister', '', 355, 3000*10).widgetData,
+			])		
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img  width="180" height="180" source="bus1.png"/>'+
+				'</TextFlow>',
+			]					
+			
+			return arr; 
+		}				
 		
 				
 	}

@@ -8,19 +8,13 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
-	import org.syncon.popups.controller.ShowPopupEvent;
  
-	public class TwitterScrollerWidgetMediator extends Mediator implements IWidgetMediator
+	public class TwitterScrollerWidgetMediator extends WidgetMediatorBase
 	{
-		[Inject] public var ui: TwitterScrollerTest2;
-		[Inject] public var model : PanicModel;
-		
-		public var supressTweens : Boolean = true; 
-		public var animate : Boolean = true ;
-		
-		private var _widgetData : WidgetVO = new  WidgetVO
-		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
-		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
+		[Inject] public function set ui  ( i :  TwitterScrollerTest2) : void 
+		{	this.widgetUI = i  }
+		public function get ui () : TwitterScrollerTest2
+		{ return this.widgetUI as TwitterScrollerTest2;  }		
 		
 		public function TwitterScrollerWidgetMediator()
 		{
@@ -29,63 +23,22 @@ package  org.syncon.evernote.panic.view
 		
 		override public function onRegister():void
 		{
-			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 			
-			this.onImportConfig( null ) 
-				
-			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
-				this.onEditModeChanged);						
-			this.onEditModeChanged(null)				
-				
-			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
-			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
-			this.onAutomateWidget(null)			
-				
-			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
-				this.onSkinChanged );						
-			this.onSkinChanged(null)						
+			super.onRegister();
+			this.editPopupName = 'TwitterWidgetEditorPopup'; 				
 		}
-		 
 		
-		
-		public function onSkinChanged(e:PanicModelEvent): void
+		override public function onSkinChanged(e:PanicModelEvent): void
 		{
 			this.ui.fontColor = this.model.color; 
 			this.ui.colorBg = this.model.backgroundColor; 
 		}		
 				
 		
-		public function onAutomateWidget( e : WidgetEvent )  : void
+		override public function automateWidget( settings : WidgetVO )  : void
 		{
-			var useSettings : WidgetVO = this.widgetData; 
-			if ( e != null && e.data != null) 
-				useSettings = e.data; 
-			if ( useSettings.data == null ) 
-				return; 
-			//this.ui.loadedHiehgt = useSettings.height 
-			this.ui.searcher.query =  useSettings.source
-			
+			this.ui.searcher.query =  settings.source
 		}
-				
-		
-		public function onEditModeChanged(e:PanicModelEvent): void
-		{
-			if ( this.model.editMode ) 
-				this.ui.showEdit()
-			else
-				this.ui.hideEdit(); 
-		}		
-		
-		public function onImportConfig(e:WidgetEvent): void
-		{
-			this.widgetData = this.ui.widgetData; 
-		}		
-		
-		public function onEditClicked(e: CustomEvent) : void
-		{
-			this.widgetData.ui = this.ui; 
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'TwitterWidgetEditorPopup', [this.widgetData] )  )  
-		}				
+ 	
 		
 	}
 }

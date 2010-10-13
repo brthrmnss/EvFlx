@@ -59,13 +59,13 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.data.editing = false; 
 			if ( this.changed ) return; 
 			//replace with original config ...
-			this.editorObj.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, this.data ) ) 
+			this.data.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, this.data ) ) 
 		}
 		
 		public function onTestWidget(e:CustomEvent) : void
 		{
-			var d : WidgetVO  = this.currentConfig() 
-			this.editorObj.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			var d : WidgetVO = this.currentConfig() 
+			this.data.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 		}		
 				
 		private function get editorObj() : Object

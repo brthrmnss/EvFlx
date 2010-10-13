@@ -13,50 +13,124 @@ package  org.syncon.evernote.panic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommand;
+	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.filters.DropShadowFilter;
  
-	public class GraphWidgetMediator extends WidgetMediatorBase
+	public class GraphWidgetMediator extends Mediator implements IWidgetMediator
 	{
-		[Inject] public function set ui  ( i : GraphWidget) : void 
-		{	this.widgetUI = i  }
-		public function get ui () : GraphWidget
-		{ return this.widgetUI as GraphWidget;  }
+		[Inject] public var ui:GraphWidget;
+		[Inject] public var model : PanicModel;
+		
+		private var _widgetData : WidgetVO = new  WidgetVO
+		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
+		public function get   widgetData (  )  : WidgetVO { return this._widgetData; }	
 				
+		
 		public function GraphWidgetMediator()
 		{
 		} 
 		
 		override public function onRegister():void
 		{
-			super.onRegister();
-			this.editPopupName = 'GraphWidgetEditorPopup';
+			ui.addEventListener( WidgetEvent.IMPORT_CONFIG, onImportConfig ) 	
+			this.onImportConfig( null ) 				
+			ui.addEventListener( EditBorder.CLICKED_EDIT, onEditClicked ) 		
+			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
+			this.onAutomateWidget(null)	
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.EDIT_MODE_CHANGED, 
+				this.onEditModeChanged);						
+			this.onEditModeChanged(null)
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				this.onSkinChanged );						
+			this.onSkinChanged(null)				
+				
+			this.setupGetter()
 		}
- 
+/*
+		public function getSourcedValue( source : String, host : Object, property : String, 
+										 fx : Function = null )  : void
+		{
+			this.dispatch( new LoadDataSourceCommandTriggerEvent (
+				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
+				source, host ,property, fx )  )					
+		}
+		*/
+		public function onEditModeChanged(e:PanicModelEvent): void
+		{
+		 	if ( this.model.editMode ) 
+				this.ui.showEdit()
+			else
+				this.ui.hideEdit(); 
+		}
 		
-		override public function onSkinChanged(e:PanicModelEvent): void
+		public function onSkinChanged(e:PanicModelEvent): void
 		{
 			this.ui.fontColor = this.model.color; 
 		}		
 		
-		override public function automateWidget( settings : WidgetVO )  : void
+		private function onSignoutClickedHandler(e:CustomEvent): void
 		{
-			this.ui.fillC = uint( settings.data.fillColor ) 
-			this.model.source( settings.data.labelTop, this.ui, 'textTop', null )
-			this.model.source( settings.data.labelBottom, this.ui, 'textBottom', null  )
-			//if ( useSettings.data.test == null ) useSettings.data.test = {};
-			this.model.source( settings.source, this, 'value', null   , settings.test.source )
-			this.model.source( settings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
-			this.model.source( settings.data.fillColor, this.ui, 'fillC', null  ); 
-			this.model.source( settings.background, this, 'updateBgText', null , settings.test.background )
+			/*this.model.logOut();*/
+		}
+		 
+		public function onImportConfig(e:WidgetEvent): void
+		{
+			this.widgetData = this.ui.widgetData; 
+		}		
+		
+		public function onAutomateWidget( e : WidgetEvent )  : void
+		{
+			var useSettings : WidgetVO = this.widgetData; 
+			if ( e != null && e.data != null) 
+				useSettings = e.data; 
+			if ( useSettings.data == null ) 
+				return; 
+			//this.ui.textTop = 'lll'
+			//return;
+			this.ui.fillC = uint( useSettings.data.fillColor ) 
+			this.model.source( useSettings.data.labelTop, this.ui, 'textTop', null )
+			this.model.source( useSettings.data.labelBottom, this.ui, 'textBottom', null  )
+			if ( useSettings.data.test == null ) useSettings.data.test = {};
+			this.model.source( useSettings.source, this, 'value', null   , useSettings.test.source )
+			this.model.source( useSettings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
+			this.model.source( useSettings.data.fillColor, this.ui, 'fillC', null  ); 
+			this.model.source( useSettings.background, this, 'updateBgText', null , useSettings.test.background )
 				
-			this.ui.chart.toolTip = settings.description;
-			
+			this.ui.chart.toolTip = useSettings.description;
+			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
+			this.setupGetter()
+		}
+		private var timer : Timer ;//= new Timer()
+		override public function onRemove() : void
+		{
+			super.onRemove()
+			this.timer.stop()
+			this.timer.removeEventListener(TimerEvent.TIMER, this.onUpdateMeTimer )
+		}
+		public function setupGetter()  : void
+		{
+			if ( this.timer == null ) 
+			{
+				this.timer = new Timer( this.widgetData.refreshTime, 0 ) 
+				
+				this.timer.addEventListener(TimerEvent.TIMER, this.onUpdateMeTimer, false, 0, true )
+				this.timer.start()
+			}
+		}
+		
+		public function onUpdateMeTimer(e:Event) : void
+		{
+			if ( this.widgetData.editing == false )  
+			onAutomateWidget( null ) 
 		}
 		
 		public function set value ( s : String )  : void
@@ -170,6 +244,13 @@ package  org.syncon.evernote.panic.view
 			this.ui.txtBg.textFlow = ee.convert2( a, this.model.color, 15 ) 
 			return  ; 
 		}		
- 
+		
+		
+		public function onEditClicked(e:CustomEvent) : void
+		{
+			this.widgetData.ui = this.ui; 
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'GraphWidgetEditorPopup', [this.widgetData] )  )  
+		}
 	}
 }

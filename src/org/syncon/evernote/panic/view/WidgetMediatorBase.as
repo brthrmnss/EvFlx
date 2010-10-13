@@ -61,7 +61,16 @@ package  org.syncon.evernote.panic.view
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.SUPRESS_TWEENS_CHANGED, 
 				this.onSurpressTweensChanged);				
 			this.onSurpressTweensChanged(null)				
+				
+			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				this.onSkinChanged );						
+			this.onSkinChanged(null)				
+								
 		}
+		
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+		}				
 		
 		private function onSurpressTweensChanged(e:PanicModelEvent) : void
 		{
@@ -70,6 +79,7 @@ package  org.syncon.evernote.panic.view
 		
 		/**
 		 * Called by timer, loadfx, or edit popup
+		 * This is a dumb function, it doesn't know why it's updating, it just does 
 		 * */
 		public function onAutomateWidget( e : WidgetEvent )  : void
 		{
@@ -78,8 +88,8 @@ package  org.syncon.evernote.panic.view
 				useSettings = e.data; 
 			if ( useSettings.data == null ) 
 				return; 
-			 
 			this.widgetUI.height = useSettings.height
+			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
 			this.setupGetter()
 			this.automateWidget( useSettings ) 
 		}
@@ -134,7 +144,7 @@ package  org.syncon.evernote.panic.view
 		public function onEditClicked(e: CustomEvent) : void
 		{
 			//make sure gets cancled by edit mediator
-			this.widgetData.editing = false; 
+			this.widgetData.editing = true; 
 			this.widgetData.ui = this.widgetUI; 
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				this.editPopupName, [this.widgetData] )  )  

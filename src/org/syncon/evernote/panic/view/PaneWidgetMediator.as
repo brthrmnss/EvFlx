@@ -24,10 +24,8 @@ package  org.syncon.evernote.panic.view
 		public function get ui () : PaneWidget
 		{ return this.widgetUI as PaneWidget;  }
 		
-		
 		public function PaneWidgetMediator()
 		{
-			
 		} 
 		
 		override public function onRegister():void

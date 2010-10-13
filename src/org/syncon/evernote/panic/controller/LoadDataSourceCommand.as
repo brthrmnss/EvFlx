@@ -12,6 +12,16 @@ package   org.syncon.evernote.panic.controller
 		[Inject] public var event:   LoadDataSourceCommandTriggerEvent;
 		override public function execute():void
 		{
+			/**
+			 * either 
+			 * cleartext
+			 * json
+			 * html in it
+			 * array of cleartext/json
+			 * 
+			 * confusion
+			 * if is sourced, pull in data and check for json array, json object text
+			 * */
 			//if test used, send test
 			if ( event.test != null ) 
 			{

@@ -277,9 +277,13 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
 			])			
-			
+			/*
 			arr = PanicLayouts.tooMuchTwitter();
 			arr = PanicLayouts.panesX(); 
+			arr = PanicLayouts.allWidgets(); 			
+			*/
+			arr = PanicLayouts.oneTwitter(); 	
+			arr = PanicLayouts.tooMuchTwitter();
 			board.layout = arr
 				
 			var people : Array = [] ; 
