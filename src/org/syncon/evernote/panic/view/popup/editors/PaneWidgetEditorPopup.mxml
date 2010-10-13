@@ -83,10 +83,12 @@
 		
 		<mx:Form>
 			<mx:FormItem label="Text" >
-				<s:TextInput id="txtMessage" />
+				<s:TextInput id="txtMessage" width="200" 
+							 toolTip="Text source for the top layer" />
 			</mx:FormItem>
 			<mx:FormItem label="Bg" >
-				<s:TextInput id="txtMessageBg" />
+				<s:TextInput id="txtMessageBg" width="200" 
+							 toolTip="Text source for the bottom layer" />
 			</mx:FormItem>			
 			
 			<mx:FormItem label="Color 1" >
@@ -94,14 +96,15 @@
 			</mx:FormItem>	
 			<mx:FormItem label="Color 2" >
 				<mx:ColorPicker id="colorPicker2" />
-			</mx:FormItem>				
+			</mx:FormItem>		
+			<editors:WidgetUpdateSettingsControlBox id="timer" />
 			<mx:FormItem>
 				<s:HGroup>
 					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
 					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 				</s:HGroup>
 			</mx:FormItem>
-			<editors:WidgetUpdateSettingsControlBox id="timer" />
+		
 			
 		</mx:Form>
 		

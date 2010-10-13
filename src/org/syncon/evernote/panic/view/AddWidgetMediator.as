@@ -88,6 +88,13 @@ package  org.syncon.evernote.panic.view
 				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
 				this.addingA = WidgetVO.TWITTER_SCROLLER; 
 			}			
+			if ( e.data == WidgetVO.ROW ) 
+			{
+				this.ui.message = 'Select the row to place the new row after'
+				this.ui.btnCancel.visible = true; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
+				this.addingA = WidgetVO.ROW; 
+			}					
 		}
 		
 		public function onCancelHandler(e:CustomEvent)  : void
@@ -147,7 +154,14 @@ package  org.syncon.evernote.panic.view
 			{
 				row = getRowOrFindParentRow( ui  )				
 				row.addWidget( SpacerWidget.importData( 'spacer', '', 30  ) )
-			}		 
+			}	
+			if ( addingA == WidgetVO.ROW ) 
+			{
+				row = getRowOrFindParentRow( ui  )		
+				var rowC :  BoardRow = new BoardRow()
+				rowC.percentWidth = 100; 
+				row.addWidget( rowC)  
+			}				
 			this.ui.message = ''
 			this.ui.list.selectedIndex = -1
 		}		
@@ -158,11 +172,17 @@ package  org.syncon.evernote.panic.view
 			if ( ui is BoardRow ) 
 			{
 				row = (ui as BoardRow)
-				var x :  Group = row.parent as Group; //.getElementIndex( row )
-				var index : int = x.getElementIndex( row ) 
-				row = new BoardRow()
-				row.percentWidth = 100; 
-				x.addElementAt( row, index+1 ) ; //
+			 
+					//var x :  Group = row.parent as Group; //.getElementIndex( row )
+					var index : int = this.model.boardHolder.getElementIndex( row ) 
+					row = new BoardRow()
+					row.percentWidth = 100; 
+					this.model.boardHolder.addElementAt( row, index+1 ) ; //
+				/*else if ( row.content.numChildren <= 1 )
+				{
+					//return the row 
+					row;
+				}*/
 			}
 			else
 				row = ui.parentDocument as BoardRow

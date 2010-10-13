@@ -136,7 +136,7 @@ package   org.syncon.evernote.panic
 			//this.authenticationMode1()
 				
 			//this.openPopup()
-			this.changeBoardColor()
+			//this.changeBoardColor()
 		}
 		public function importBoardFromEvernote() : void
 		{
@@ -207,8 +207,8 @@ package   org.syncon.evernote.panic
 			this.dispatchEvent( ev  as Event ) ; 
 			//setTimeout( this.dispatchEvent, 3000, 	ev )	
 			//setTimeout( this.dispatchEvent, 6000, 	ev )	
-			/*this.dispatchEvent( new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
-				0xFFFFFF, 0  )  ) */
+			 this.dispatchEvent( new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
+				0xFFFFFF, 0  )  )  
 		}
 				
 		

@@ -47,9 +47,20 @@ package  org.syncon.evernote.panic.view
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, 
 				 this.onHighlighCertainItems);	
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
-				 this.onHighlighCertainItems_Selected);				 
+				 this.onHighlighCertainItems_Selected);		
+			 
+			 eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				 this.onSkinChanged );						
+			 this.onSkinChanged(null)					 
 		}
 		 
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+			//change bg color And that text color for that message
+			this.ui.bgColor.color = this.model.backgroundColor; 
+			this.ui.txtInstructions.setStyle( 'color', this.model.color ); 
+		}				
+		
 		private function onHighlighCertainItems(e:PanicModelEvent): void
 		{
 			var highlightTypes :  Array =  e.data as  Array
@@ -59,6 +70,7 @@ package  org.syncon.evernote.panic.view
 				return
 			}
 			this.highligtSelectionMode = true
+			this.ui.highlightBordersOnRollover = true; 
 			this.ui.show()
 			this.ui.txtInstructions.visible = true 	
 			this.onShowHandler(null)	
@@ -72,6 +84,7 @@ package  org.syncon.evernote.panic.view
 		}			
 			private function leaveSelectionMode()  : void
 			{
+				this.ui.highlightBordersOnRollover = false; 
 				this.ui.txtInstructions.visible = false 
 				this.highligtSelectionMode = false
 				this.ui.hide()

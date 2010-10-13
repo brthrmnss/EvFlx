@@ -12,6 +12,7 @@
 			import mx.core.UIComponent;
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
+			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.view.assets.Icons;
 			
@@ -31,6 +32,7 @@
 			{
 				this.creationComplete = true
 				//this.fxFader.duration = 850
+				this.setupRollover();
 			}
 
 			protected function btnEdit_clickHandler(event:MouseEvent):void
@@ -89,23 +91,46 @@
 
 			
 			
+			public function setupRollover() : void
+			{
+				this.fxFader_BorderHighlight.hide()
+				this.addEventListener(MouseEvent.ROLL_OVER, this.group1_rollOverHandler,  false, 0, true ) 
+				this.addEventListener(MouseEvent.ROLL_OUT, this.group1_rollOutHandler,  false, 0, true ) 
+			}
+			
+			public var highlightBordersOnRollover : Boolean = false; 
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				this.fxFader_BorderHighlight.hide()
+			}
+
+
+			protected function group1_rollOverHandler(event:MouseEvent):void
+			{
+				if ( this.highlightBordersOnRollover )
+				this.fxFader_BorderHighlight.show()
+			}
+
 		]]>
 	</fx:Script>
  <utils:FadeInOutByFunction id="fxFader" visible="false" />
- 
+	
+	<utils:FadeInOutByFunction id="fxFader_BorderHighlight" adjust="{this.borderHighlight}" visible="false" />
+	
 	
 	<s:Group buttonMode="true" useHandCursor="true" 
 			 right="1" left="1" top="1" bottom="1" 
 			 click="group2_clickHandler(event)" >
 		<!--right="1" left="1" top="1" bottom="1" -->
-		<s:Rect id="borderEdit" right="0" left="0" top="0" bottom="0"    >
+		<s:Rect id="borderEdit"  right="1" left="1" top="1" bottom="1"     >
 			<s:stroke>
 				<s:SolidColorStroke color="0x83F52C" />
 			</s:stroke>
 			<s:fill>
-				<s:SolidColor color="0" alpha="0.6" />
+				<s:SolidColor  id="bgColor" color="0" alpha="0.6" />
 			</s:fill>
 		</s:Rect>
+		
 		<s:Rect id="borderEdit2" right="2" left="2" top="2"  height="40"   >
  
 			<s:fill>
@@ -116,6 +141,20 @@
 				 color="0xFFFFFF"
 				 verticalCenter="0" horizontalCenter="0" fontSize="18"/>
 	</s:Group>
+	
+	
+	<s:Group buttonMode="true" useHandCursor="true" 
+			 right="1" left="1" top="1" bottom="1" id="borderHighlight" 
+			 alpha="0"
+			  >
+		<s:Rect   right="1" left="1" top="1" bottom="1"   >
+			<s:stroke>
+				<s:SolidColorStroke color="0xFF0000" weight="2" />
+			</s:stroke>
+		</s:Rect>
+	 
+	</s:Group>
+	
 	<!--   content="{Icons.get('')}" -->
 	<s:Group 	left="10" width="100%">
 

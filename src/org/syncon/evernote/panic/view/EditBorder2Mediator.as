@@ -44,8 +44,18 @@ package  org.syncon.evernote.panic.view
 			 /**
 			 * Show edit is controled by boardrowwidgemediator thi sis confusing 
 			 * */
+			 
+			 eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
+				 this.onSkinChanged );						
+			 this.onSkinChanged(null)					 
 		}
 		 
+		public function onSkinChanged(e:PanicModelEvent): void
+		{
+			//change bg color And that text color for that message
+			this.ui.bgColor.color = this.model.backgroundColor; 
+			this.ui.txtInstructions.setStyle( 'color', this.model.color ); 
+		}				
 		
 		private function onHighlighCertainItems(e:PanicModelEvent): void
 		{
@@ -53,13 +63,13 @@ package  org.syncon.evernote.panic.view
 				
 			if ( this.model.editMode )
 				this.ui.show()						
-				
+	 
 			if ( highlightTypes.indexOf( WidgetVO.ROW ) == -1 ) 
 			{
 				this.ui.hide()
 				return; 
 			}
-					
+			 
 					
 			//if a type is on a row ... don't highlight that row 
 			//go through all elements on row, and see if you can match that type
@@ -80,13 +90,32 @@ package  org.syncon.evernote.panic.view
 					rowExport.push( new WidgetVO( WidgetVO.SPACER ).export()  ) 
 				}*/
 			}
-			this.ui.txtInstructions.visible = true 
-			this.highligtSelectionMode = true
-			this.ui.clickableShade.visible = true; 
-			this.onShowHandler(null)
+			this.goToHighlightMode()
 		}
 		
+		public function goToHighlightMode() : void
+		{
+			this.ui.show()
+			this.ui.txtInstructions.visible = true 
+			this.highligtSelectionMode = true
+			this.ui.highlightBordersOnRollover = true; 
+			this.ui.clickableShade.visible = true; 
+			this.onShowHandler(null)	
 			
+			this.ui.holderForEditing.visible = false; 
+			//hide up and down arrows 
+		}
+			
+		public function leaveHighlightMode() : void
+		{
+			this.ui.txtInstructions.visible = false 		
+			this.highligtSelectionMode = false
+			this.ui.highlightBordersOnRollover = false; 
+			this.ui.clickableShade.visible = false;		
+			
+			this.ui.holderForEditing.visible = false; 
+		}		
+		
 		public function onShowHandler( e :  CustomEvent)  : void
 		{	
 			var parent : BoardRow = this.ui.parentDocument as  BoardRow
@@ -113,9 +142,7 @@ package  org.syncon.evernote.panic.view
 		{
 			if ( this.model.editMode )
 				this.ui.show()
-			this.ui.txtInstructions.visible = false 		
-			this.highligtSelectionMode = false
-			this.ui.clickableShade.visible = false;					
+			this.leaveHighlightMode()		
 		}			
 
 		private function onClickedHandler(e:CustomEvent): void

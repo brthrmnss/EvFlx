@@ -27,10 +27,8 @@
 			protected function onInit():void
 			{
 				this.creationComplete = true
+				this.setupRollover(); 
 				this.hide()
-				this.setupRollover();
-				//put the bottom control in front 
-				this.edit.addElement( this.foregroupdElements )
 			}
 
 			
@@ -57,7 +55,6 @@
 			{
 				//return;
 				this.fxFadeIn.show()
-				this.fxFadeIn_Editor.show();
 				//this.visible = true
 				this.dispatchEvent( new CustomEvent( SHOW ) ) 
 			}
@@ -65,7 +62,6 @@
 			public function hide()  : void
 			{
 				this.fxFadeIn.hide()
-				this.fxFadeIn_Editor.hide();	
 				//this.visible = false 
 			}
 
@@ -76,7 +72,7 @@
 				this.txtInstructions.visible = false; 
 			}
 
-			public var edit :  Group ; 
+			public var edit : UIComponent ; 
 
 			protected function group2_clickHandler(event:MouseEvent):void
 			{
@@ -86,116 +82,81 @@
 
 			public function setupRollover() : void
 			{
-				//this.fxFader_BorderHighlight.hide()
 				this.addEventListener(MouseEvent.ROLL_OVER, this.group1_rollOverHandler,  false, 0, true ) 
 				this.addEventListener(MouseEvent.ROLL_OUT, this.group1_rollOutHandler,  false, 0, true ) 
-				this.parent.addEventListener(MouseEvent.ROLL_OVER, this.group1_rollOverHandler,  false, 0, true ) 
-				this.parent.addEventListener(MouseEvent.ROLL_OUT, this.group1_rollOutHandler,  false, 0, true ) 					
 			}
 			
-			public function set highlightBordersOnRollover( b : Boolean )  : void
-			{
-				if ( b )
-					trace( 'a')
-				this._highlightBordersOnRollover = b
-			}
-			public function get highlightBordersOnRollover() : Boolean 
-			{
-				return this._highlightBordersOnRollover
-			}
-			
-			public var _highlightBordersOnRollover : Boolean = false; 
+			public var highlightBordersOnRollover : Boolean = false; 
 			protected function group1_rollOutHandler(event:MouseEvent):void
 			{
-				
-				var x : Object = this.fxFader_BorderHighlight._target
-				this.fxFader_BorderHighlight.hide() 
+				this.fxFader_BorderHighlight.hide()
 			}
 			
 			
 			protected function group1_rollOverHandler(event:MouseEvent):void
 			{
-				if ( this.highlightBordersOnRollover )
-				this.fxFader_BorderHighlight.show() 
-			}		
+				this.fxFader_BorderHighlight.show()
+			}			
 			
-
-			protected function group3_clickHandler(event:MouseEvent):void
-			{
-				trace('group3_clickHandler')
-			}
-
-
-			protected function holderForEditing_clickHandler(event:MouseEvent):void
-			{
-				trace('holderForEditing_clickHandler')
-			}
-
 		]]>
 	</fx:Script>
  	
 	<utils:FadeInOutByFunction id="fxFadeIn"  visible="false"/>
-	 
-	<utils:FadeInOutByFunction id="fxFadeIn_Editor"  adjust="{this.foregroupdElements}" visible="false"/>
-	<utils:FadeInOutByFunction id="fxFader_BorderHighlight" 
-							    width="0" height="0"
-							   adjust="{this.borderHighlight}" visible="false" />
- 
-	<s:Group right="0" left="0" top="0" bottom="0" id="bgItems" >
-		<s:Group buttonMode="true" useHandCursor="true" 
-				 id="borderHighlight" 
-				 right="-5" left="-5" top="-5" bottom="-5"
-				 alpha="0"
-				 >
-			<s:Rect   right="1" left="1" top="1" bottom="1"   >
-				<s:stroke>
-					<s:SolidColorStroke color="0xFF0000" weight="2" />
-				</s:stroke>
-			</s:Rect>
-			
-		</s:Group>
-		 
+	<utils:FadeInOutByFunction id="fxFader_BorderHighlight" adjust="{this.borderHighlight}" visible="false" />
+	
+	<s:Group buttonMode="true" useHandCursor="true" 
+			  id="borderHighlight"  height="0" width="0"
+			 alpha="0"
+			 >
+		<s:Rect   right="1" left="1" top="1" bottom="1"   >
+			<s:stroke>
+				<s:SolidColorStroke color="0xFF0000" weight="2" />
+			</s:stroke>
+		</s:Rect>
 		
-		<!--right="-2" left="-2" top="-2" bottom="-2"   -->
-		
-		<s:Group buttonMode="false" useHandCursor="true" 
-				 right="0" left="0" top="0" bottom="0" id="borderEdit" 
-				  click="group3_clickHandler(event)">
-			<s:Rect right="0" left="0" top="0" bottom="0"    >
-				<s:stroke>
-					<s:SolidColorStroke color="0x3B5E2B"  weight="1" />
-				</s:stroke>
-			</s:Rect>
-			<!--
-			<s:Rect id="borderEdit2" right="0" left="0" bottom="0"  height="40"   >
-				<s:fill>
-					<s:SolidColor color="0xFFFFFF" alpha="0.8" />
-				</s:fill>
-			</s:Rect>	
-			-->
-		</s:Group>
 	</s:Group>
-	<!-- occulding Compoennts -->
-	<s:Group id="foregroupdElements"  right="0" left="0" top="0" bottom="0" >
+	
+	
+	
 	<s:Group id="clickableShade"  buttonMode="true" 
-			 toolTip="Add Component below this row"
+			  toolTip="Add Component below this row"
 			 useHandCursor="true" width="100%" height="100%"  click="group2_clickHandler(event)">
-		<s:Rect right="1" left="1" top="1" bottom="1"   
-				>
+		<s:Rect right="0" left="0" top="0" bottom="0"   
+			>
 			<s:fill>
-				<s:SolidColor  id="bgColor" color="0" alpha="0.7" />
+				<s:SolidColor  id="centerFill" color="0" alpha="0.7" />
 			</s:fill> 
-			
-			
+	 
+						
 		</s:Rect>
 		<s:Label text="ADD AFTER THIS ROW" 
-				 color="0xFFFFFF" id="txtInstructions"
+				  color="0xFFFFFF" id="txtInstructions"
 				 verticalCenter="0" horizontalCenter="0" fontSize="18"/>
 	</s:Group>
+		
+	<!--right="-2" left="-2" top="-2" bottom="-2"   -->
 	
+	<s:Group buttonMode="true" useHandCursor="true" width="100%" height="100%"  >
+		<s:Rect id="borderEdit" right="0" left="0" top="0" bottom="0"    >
+			<!--
+			<s:stroke>
+				<s:SolidColorStroke color="0x3B5E2B" />
+			</s:stroke>
+			-->
+			<s:stroke>
+				<s:SolidColorStroke color="0x3B5E2B"  weight="1" />
+			</s:stroke>
+		</s:Rect>
+		<!--
+		<s:Rect id="borderEdit2" right="0" left="0" bottom="0"  height="40"   >
+			<s:fill>
+				<s:SolidColor color="0xFFFFFF" alpha="0.8" />
+			</s:fill>
+		</s:Rect>	
+		-->
+	</s:Group>
 	
-	
-	<s:Group  right="10" bottom="10"  id="holderForEditing"  click="holderForEditing_clickHandler(event)">
+	<s:Group  right="10" bottom="10"  id="holderForEditing" >
 		
 		<s:Rect id="borderEdit2" right="0" left="0" bottom="0"  top="0" 
 				 	 >
@@ -217,6 +178,8 @@
 			<utils:IconButton  iconSkin=".iconTrash"  id="btnRemove"  toolTip="Remove Row"
 							   click="btnRemove_clickHandler(event)"/>
 		</s:HGroup>
+		
+		
 		<s:filters>
 			<s:DropShadowFilter
 				alpha="0.5" angle="45.0" blurX="4.0" blurY="4.0" color="0x000000" 
@@ -225,7 +188,6 @@
 		</s:filters>
 	</s:Group>
 	
-	
-	</s:Group>
+
 	
 </s:Group>

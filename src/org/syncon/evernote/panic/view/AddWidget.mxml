@@ -33,15 +33,15 @@
 				this.creationComplete = true
 				var options : Array = [];
 				var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 
-											'Message', 'Spacer', 'Window Pane']//, 'Row' ] 
+											'Message', 'Spacer', 'Window Pane', 'Row' ] 
 				var options3 : Array = ['btnAddGraph', 'btnAddProjectList', 'btnAddTwitter', 
-											'btnAddAlert', 'btnAddSpacer', 'btnAddPane']//, 'btnAddSpacer' ] 
+											'btnAddAlert', 'btnAddSpacer', 'btnAddPane', 'btnAddRow' ] 
 				var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
-														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE]//, WidgetVO.ROW ] 		
+														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 		
 				var options4 : Array = ['A graph widget displays either line, bar, or pie charts',
 					'The project list displays all active projects for this organization', 
 					'The twitter widget displays twitter messages based on search terms', 
-					'The alert can show a message', 'Add more space between 2 rows',
+					'The alert can show a message', 'Add more space between 2 rows', 'Add another row',
 					'A text']					
 				for  ( var i : int = 0 ; i < options1.length; i++)
 				{

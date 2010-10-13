@@ -173,6 +173,12 @@ mx|Tooltip{
 {
 	content:     Embed( source="icons/16/comment.png" );
 }
+.btnAddRow
+{
+	content:     Embed( source="icons/16/minus.png" );
+}
+
+
 .btnSettings
 {
 	content:     Embed( source="icons/16/process.png" );

@@ -25,6 +25,7 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.view.PaneWidget;
 	import org.syncon.evernote.panic.view.ProjectListWidget;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
+	import org.syncon.evernote.panic.view.utils.PanicLayouts;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.PersonVO;
 	import org.syncon.evernote.panic.vo.ProjectVO;
@@ -141,6 +142,7 @@ package   org.syncon.evernote.panic.controller
 				this.model.editMode = true; 
 			}
 		
+	 	
 		public function createStartData() : void
 		{
 			
@@ -275,60 +277,9 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
 			])			
-				
-			arr = []; 
-			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
-			arr.push( [
-				MessageWidget.importData('Too Much Twitter', '', 'Is this too Much Twitter?'.toUpperCase() , 5000).widgetData,
-			])	
-			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Money',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'True Blood',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Coda',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Rip Off',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Copycats',  15000).widgetData,
-			])	
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Theft',  15000).widgetData,
-			])					
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'True Blood',  15000).widgetData,
-			])		
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Coda',  15000).widgetData,
-			])	
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Rip Off',  15000).widgetData,
-			])	
-			arr.push( [				
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Steal',  15000).widgetData,
-			])
-			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
-			arr.push( [
-				MessageWidget.importData('Global Alert', '', 'Now Get Back To Work'.toUpperCase() , 5000 ).widgetData,
-			])			
-			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])		
-			arr.push( [
-				GraphWidget.importData('Eccles lister', 'Initial Stats', '56/100', 'Money In', 56, 100, 0x7652C0,'', 3000).widgetData,
-				GraphWidget.importData('Eccles lister', 'Brickman Stats', '99/100', 'DDC', 99, 100, 0x7652C0,'', 15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', 
-					'{http://city-21.com/php/random_number.php}/100',
-					'CONAN',// - {http://city-21.com/php/random_string.php?f=8}',
-					'{http://city-21.com/php/random_number.php}', 100, 0x7652C0, '', 15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '12/100', 'YYY', 12, 100, 0x7652C0 , '', 15000).widgetData
-			])
+			
+			arr = PanicLayouts.tooMuchTwitter();
+			arr = PanicLayouts.panesX(); 
 			board.layout = arr
 				
 			var people : Array = [] ; 

@@ -56,6 +56,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		
 		public function onClose(e:Event) : void
 		{
+			this.data.editing = false; 
 			if ( this.changed ) return; 
 			//replace with original config ...
 			this.editorObj.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, this.data ) ) 

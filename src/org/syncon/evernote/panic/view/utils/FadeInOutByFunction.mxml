@@ -11,6 +11,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.core.UIComponent;
 			 
 			private var timerFade :  Timer; // = new Timer()	
 			
@@ -19,7 +20,7 @@
 			private var _maxAlpha: Number = 1; 
 			protected function onInit():void
 			{
-				this.fxFadeIn.targets = this.fxFadeOut.targets = [this.parentDocument]
+				this.updateTargets()
 				//var dd : Object =[ this.parent, this.parentDocument]
 				this.creationComplete = true
 				this.timerFade = new Timer(_duration, 1 ) 
@@ -27,6 +28,22 @@
 				this.timerFade.addEventListener(TimerEvent.TIMER, this.onDone ) 					
 			}
 		
+			public function set adjust ( u :   UIComponent )  : void
+			{
+				this._target = u; 
+				if ( this.creationComplete ) 
+					this.updateTargets()
+			}
+			
+			public var _target : Object
+			
+			public function updateTargets() : void
+			{
+				if ( this._target == null ) 
+					this._target = this.parentDocument				
+				this.fxFadeIn.targets = this.fxFadeOut.targets = [this._target]				
+			}
+			
 			public function set duration ( s : Number )  : void
 			{
 				this.fxFadeIn.duration = s
@@ -49,11 +66,11 @@
 			{
 				this.fxFadeOut.stop(); 
 				this.timerFade.stop()
-				if ( this.parent.visible && this.parent.alpha >= this._maxAlpha ) 
+				if ( this._target.visible && this._target.alpha >= this._maxAlpha ) 
 					return;
 				
 				this.fxFadeIn.play()
-				this.parent.visible = true
+				this._target.visible = true
 				
 			}
 			
@@ -61,9 +78,18 @@
 			{
 				if ( this.creationComplete == false ) 
 				{
-					this.parent.visible = false 
+					//sloppy
+					if ( this._target == null ) 
+						this._target = this.parent
+					this._target.visible = false 
+					this._target.alpha = 0; 
 					return; 
 				}
+				/* if ( this._target.visible == false ) 
+				{
+					this._target.alpha = 0; 
+					return; 
+				} */
 				this.fxFadeIn.stop()			
 				this.fxFadeOut.play(); 
 				
@@ -74,7 +100,7 @@
 			
 			public function onDone(e:Event):void
 			{
-				this.parent.visible = false; 
+				this._target.visible = false; 
 			}			
 			
 		]]>
