@@ -36,8 +36,9 @@ package  org.syncon.evernote.panic.view
 		
 		override public function automateWidget( settings : WidgetVO )  : void
 		{
-			this.model.source( settings.source, this, 'updateText', null , settings.test.source )
-			this.model.source( settings.background, this, 'updateBgText', null , settings.test.background )
+			
+			this.source( settings.source, this, 'updateText', null , settings.test.source )
+			this.source( settings.background, this, 'updateBgText', null , settings.test.background )
 			
 			this.ui.height = widgetData.height
 			if ( settings.data.hasOwnProperty( 'color1' ) )

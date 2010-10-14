@@ -70,7 +70,7 @@ package  org.syncon.evernote.panic.view
 				return; 
 			}
 			 
-					
+			/*		
 			//if a type is on a row ... don't highlight that row 
 			//go through all elements on row, and see if you can match that type
 			var parent : BoardRow = this.ui.parentDocument as  BoardRow
@@ -85,11 +85,11 @@ package  org.syncon.evernote.panic.view
 						return
 					}
 				}
-				/*else if ( j is Spacer )  
-				{
-					rowExport.push( new WidgetVO( WidgetVO.SPACER ).export()  ) 
-				}*/
 			}
+			*/
+			
+			//if we are adding a row say after, 
+			//if we are adding anything else, say, 'to this row'
 			this.goToHighlightMode()
 		}
 		
@@ -113,7 +113,7 @@ package  org.syncon.evernote.panic.view
 			this.ui.highlightBordersOnRollover = false; 
 			this.ui.clickableShade.visible = false;		
 			
-			this.ui.holderForEditing.visible = false; 
+			this.ui.holderForEditing.visible = true; 
 		}		
 		
 		public function onShowHandler( e :  CustomEvent)  : void
@@ -199,12 +199,16 @@ package  org.syncon.evernote.panic.view
 		{
 			//confirm popup
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'popup_confirm', ['Are you sure you want to remove this component? '+
+				'popup_confirm', ['Are you sure you want to remove this row? '+
 					'This change cannot be undone.', this.onRemoveComponent ] )  )
 		}				
 		private function onRemoveComponent () : void
 		{
 			this.model.boardHolder.removeElement( this.ui.parent as IVisualElement) 
+			if ( this.model.boardHolder.numChildren == 0 ) 
+			{
+				this.model.addRow()
+			}
 		}		
 		
 		

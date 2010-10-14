@@ -41,8 +41,9 @@
 				var options4 : Array = ['A graph widget displays either line, bar, or pie charts',
 					'The project list displays all active projects for this organization', 
 					'The twitter widget displays twitter messages based on search terms', 
-					'The alert can show a message', 'Add more space between 2 rows', 'Add another row',
-					'A text']					
+					'The alert can show a message', 'Add empty space', 
+					'Add Text with a background and foreground',
+					'Add another row']					
 				for  ( var i : int = 0 ; i < options1.length; i++)
 				{
 					var obj : Object = new Object()

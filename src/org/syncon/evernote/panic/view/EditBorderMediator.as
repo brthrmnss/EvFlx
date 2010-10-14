@@ -7,6 +7,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.components.Group;
@@ -187,6 +188,9 @@ package  org.syncon.evernote.panic.view
 			//try to set name and desc
 			this.ui.lblName.text = this.ui.parentDocument.widgetData.name
 			this.ui.lblDesc.text = this.ui.parentDocument.widgetData.description
+				this.ui.iconType.iconSkin = WidgetVO.GetXForType( this.ui.parentDocument.widgetData.type, 'icon' ) 
+				this.ui.iconType.toolTip = 'Type: ' +WidgetVO.GetXForType( this.ui.parentDocument.widgetData.type, 'name' ) 
+					
 			var dd : Array = [parent.parent.getChildIndex( parent ) ]
 			if (   parent.parent.getChildIndex( parent ) == 0  ) 
 			{

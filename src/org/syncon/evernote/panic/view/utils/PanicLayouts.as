@@ -1,6 +1,8 @@
 package org.syncon.evernote.panic.view.utils
 {
  
+	import com.adobe.serialization.json.JSON;
+	
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
@@ -19,7 +21,7 @@ package org.syncon.evernote.panic.view.utils
 			arr = []; 
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
+				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board Status',  15000).widgetData,
 			])	
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			return arr; 
@@ -158,6 +160,85 @@ package org.syncon.evernote.panic.view.utils
 			return arr; 
 		}			
 		
+		static public function testArraySourcing( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			
+			var arrc : Array = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#EEE9E5"> 25 DAYS </span>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+				'ok', 'ok???'
+			]
+			var ee : JSON
+			var sourcedArray : String = JSON.encode( arrc ) 
+			arr.push( [
+				MessageWidget.importData('Global Alert', '',  sourcedArray , 5000).widgetData,
+			])	
+			/*arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#EEE9E5"> 25 DAYS </span>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+			]*/
+				
+			arr.push( [
+				MessageWidget.importData('Global Alert', '',  sourcedArray , 5000).widgetData,
+			])	
+				 arr[arr.length-1][0].test.source =  arrc
+				
+			return arr
+			arr.push( [
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, 400).widgetData,
+			])	
+			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
+			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
+				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
+			]
+			
+			
+			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '3Something1', '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', '',  3000,  '0', '0x3D3F3C'  ).widgetData,				
+			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img  width="180" height="180" source="bus1.png"/>'+
+				'</TextFlow>',
+			]	
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '3Something1', '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', '',  3000,  '0', '0x3D3F3C'  ).widgetData,				
+			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img  width="180" height="180" source="bus1.png"/>'+
+				'</TextFlow>',
+			]					
+			return arr; 
+		}
 		
 		static public function allWidgets( ) :  Array
 		{

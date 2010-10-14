@@ -7,6 +7,7 @@ package  org.syncon.evernote.panic.view
 	import flash.events.TimerEvent;
 	import flash.text.engine.FontLookup;
 	import flash.text.engine.RenderingMode;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
 	import flashx.textLayout.conversion.TextConverter;
@@ -22,6 +23,7 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.evernote.panic.vo.SetIncrementorVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
@@ -105,8 +107,11 @@ package  org.syncon.evernote.panic.view
 		override public function onRemove() : void
 		{
 			super.onRemove()
+			if ( this.timer != null )
+			{
 			this.timer.stop()
 			this.timer.removeEventListener(TimerEvent.TIMER, this.onUpdateMeTimer )
+			}
 		}
 		public function setupGetter()  : void
 		{
@@ -149,6 +154,27 @@ package  org.syncon.evernote.panic.view
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				this.editPopupName, [this.widgetData] )  )  
 		}			
+		
+		public var incrementors :  Dictionary = new Dictionary(true);
+		/**
+		 * Makes up source incrementors as we go along
+		 * */
+		public function source( source : String, host : Object, property : String, 
+								fx : Function = null, test:Array=null, 
+								index: SetIncrementorVO=null )  : void
+		{
+			//do nto allow sourcing 
+			var incremantor : SetIncrementorVO = 
+					this.incrementors[property] as SetIncrementorVO
+			if ( incremantor == null  )
+			{
+				incremantor = new SetIncrementorVO()
+				incremantor.name = property
+				this.incrementors[property] = incremantor
+			}
+			this.model.source( source, host, property, fx , incremantor, test )	
+		}		
+		
 		
 	}
 }

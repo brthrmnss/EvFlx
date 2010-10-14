@@ -122,7 +122,22 @@
 				//this.timer.start()
 				//this.currentState = 'hiddenFromView'
 			}
-
+			public var leftSide : Boolean = false; 
+			protected function btnMove_clickHandler(event:MouseEvent):void
+			{
+				this.leftSide = ! this.leftSide
+				if ( this.leftSide ) 
+				{
+					this.setStyle( 'left', 20 ) 
+					this.setStyle('right', NaN )
+				}
+				else
+				{
+					this.setStyle( 'left', NaN ) 
+					this.setStyle('right', 20 )					
+				}
+			}			
+			
 		]]>
 	</fx:Script>
  
@@ -173,6 +188,9 @@
 		-->
 		<s:CheckBox label="Auto-Hide"  toolTip="Will hide this pane when you are not hovered over it" 
 					id="chk" change="chk_changeHandler(event)"/>
+		<utils:IconButton iconSkin=".btnRefresh" id="btnMove"  toolTip="Move to other side (if it's in the way)"
+						  right="5" top="5"
+						  click="btnMove_clickHandler(event)"/>
 	</s:HGroup>	
 		
 						<s:VGroup  includeIn="edit" width="100%">
@@ -181,6 +199,7 @@
 							<s:HGroup id="holderStuff" includeIn="edit">
 								<s:Button label="Settings"  toolTip="Change global settings for this board"
 										  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
+
 							</s:HGroup>		
 								<s:Line width="100%" >
 									<s:stroke>

@@ -29,7 +29,9 @@ package org.syncon.evernote.panic.model
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
+	import org.syncon.evernote.panic.view.BoardRow;
 	import org.syncon.evernote.panic.vo.BoardVO;
+	import org.syncon.evernote.panic.vo.SetIncrementorVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.components.Group;
@@ -160,11 +162,12 @@ package org.syncon.evernote.panic.model
 		}
 		
 		public function source( source : String, host : Object, property : String, 
-										 fx : Function = null, test:Array=null )  : void
+										 fx : Function = null, 
+										 index: SetIncrementorVO=null, test:Array=null )  : void
 		{
 			this.dispatch( new LoadDataSourceCommandTriggerEvent (
 				LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,
-				source, host ,property, fx, test )  )					
+				source, host ,property, index, fx, test )  )					
 		}
 				
 		/**
@@ -198,8 +201,18 @@ package org.syncon.evernote.panic.model
 		
 		
 		
-		
-		
+		/**
+		 * should be commands
+		 * */
+		/**
+		 * called when last row removed
+		*/
+		public function addRow()  : void
+		{
+			var row  : BoardRow = new BoardRow()
+			row.percentWidth = 100; 
+			this.boardHolder.addElement( row )
+		}
 		
 		
 		

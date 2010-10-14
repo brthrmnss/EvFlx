@@ -143,7 +143,12 @@ package  org.syncon.evernote.panic
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
 				BoardManagementPopup, 'BoardManagementPopup',  true ) );
 			mediatorMap.mapView( BoardManagementPopup , 
-				BoardManagementPopupMediator, null, false, false );							
+				BoardManagementPopupMediator, null, false, false );				
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				SpacerWidgetEditorPopup, 'SpacerWidgetEditorPopup',  true ) );
+			mediatorMap.mapView( SpacerWidgetEditorPopup , 
+				SpacerWidgetEditorPopupMediator, null, false, false );				
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, PopupEditProject, 'PopupEditProject',  true ) );
 			mediatorMap.mapView( PopupEditProject , PopupEditProjectMediator, null, false, false );	

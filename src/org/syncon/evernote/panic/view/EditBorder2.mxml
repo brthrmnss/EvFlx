@@ -31,6 +31,8 @@
 				this.setupRollover();
 				//put the bottom control in front 
 				this.edit.addElement( this.foregroupdElements )
+					
+				this.fxFader_BorderHighlight.hide()
 			}
 
 			
@@ -178,7 +180,7 @@
 	<!-- occulding Compoennts -->
 	<s:Group id="foregroupdElements"  right="0" left="0" top="0" bottom="0" >
 	<s:Group id="clickableShade"  buttonMode="true" 
-			 toolTip="Add Component below this row"
+			 toolTip="Add Component here"
 			 useHandCursor="true" width="100%" height="100%"  click="group2_clickHandler(event)">
 		<s:Rect right="1" left="1" top="1" bottom="1"   
 				>
@@ -188,7 +190,7 @@
 			
 			
 		</s:Rect>
-		<s:Label text="ADD AFTER THIS ROW" 
+		<s:Label text="ADD HERE" 
 				 color="0xFFFFFF" id="txtInstructions"
 				 verticalCenter="0" horizontalCenter="0" fontSize="18"/>
 	</s:Group>

@@ -1,8 +1,5 @@
 package  org.syncon.evernote.panic.view
 {
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flashx.textLayout.elements.TextFlow;
 	
 	import org.syncon.evernote.basic.model.CustomEvent;
@@ -30,7 +27,8 @@ package  org.syncon.evernote.panic.view
  
 		override public function automateWidget(  settings : WidgetVO )  : void
 		{
-			this.model.source( settings.source, this, 'message', null , settings.test.source )
+			this.source( settings.source, this, 'message',  null , settings.test.source );
+			//this.model.source( settings.source, this, 'message', null , settings.test.source )
 		}
 		
 		/**

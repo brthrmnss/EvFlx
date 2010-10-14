@@ -11,6 +11,7 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
 	import org.syncon.evernote.panic.view.ProjectListWidget;
+	import org.syncon.evernote.panic.view.SpacerWidget;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
 	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.PersonVO;
@@ -78,8 +79,10 @@ package   org.syncon.evernote.panic.controller
 					}	
 					if ( j.type == WidgetVO.SPACER ) 
 					{
-						var  spacer :   Spacer = new Spacer()
+						var  spacer :    SpacerWidget = new SpacerWidget()
 						spacer.height = 15
+						spacer.percentWidth = percentWidth
+						spacer.importConfig( j ); 
 						hgroup.addElement( spacer ) 
 					}						
 					if ( j.type == WidgetVO.TWITTER_SCROLLER ) 

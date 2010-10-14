@@ -283,7 +283,8 @@ package   org.syncon.evernote.panic.controller
 			arr = PanicLayouts.allWidgets(); 			
 			*/
 			arr = PanicLayouts.oneTwitter(); 	
-			arr = PanicLayouts.tooMuchTwitter();
+			//arr = PanicLayouts.tooMuchTwitter();
+			arr = PanicLayouts.testArraySourcing(); 	
 			board.layout = arr
 				
 			var people : Array = [] ; 

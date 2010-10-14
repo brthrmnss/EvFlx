@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Spacer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
 		 creationComplete="onInit()"
@@ -62,6 +62,8 @@
 					
 				vo.name = name; 
 				vo.description = desc
+					
+				vo.height = height; 
 				/* vo.source = source; 
 				vo.refreshTime = refreshTime; 
 				 */
@@ -85,13 +87,7 @@
 		]]>
 	</fx:Script>
  
-	<!--<s:VGroup horizontalCenter="0" verticalCenter="0">
-		<s:Label  id="lblMessage" text="25 DAYS UNTIL IPAD LAUNCH"   />
-	</s:VGroup>
-	-->
-	<fx:Declarations>
 		<view:EditBorder id="editBorder" edit="{this}" />
-	</fx:Declarations>
 	
 	
-</mx:Spacer>
+</s:Group>

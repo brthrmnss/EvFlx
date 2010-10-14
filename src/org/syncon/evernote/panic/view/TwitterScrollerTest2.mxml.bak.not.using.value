@@ -194,7 +194,7 @@
 					this.list1.layout.horizontalScrollPosition, 
 					this.list1.scroller.horizontalScrollBar.maximum].join(' '))
 				 this.list1.layout.horizontalScrollPosition = 0;   
-				//this.list1.scroller.horizontalScrollBar.value
+				this.list1.scroller.horizontalScrollBar.value
 				this.pth.valueFrom = 0 
 				this.pth.valueTo = this.list1.scroller.horizontalScrollBar.maximum*.7; //+this.width;
 				this.anim.duration = this.list1.dataProvider.length*timePerTweet;

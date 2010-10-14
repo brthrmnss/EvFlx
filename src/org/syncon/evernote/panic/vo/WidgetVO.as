@@ -17,6 +17,33 @@ package org.syncon.evernote.panic.vo
 		static public var ROW : String = 'row'					
 		static public var TWITTER_SCROLLER : String = 'twitterScroller'				
 		
+			
+		/**
+		 * returns icon for type
+		 * */
+		static public function GetXForType( s : String, type : String ) : String
+		{
+			var options1 : Array = ['Graph', 'Project List', 'Twitter Messages', 
+				'Message', 'Spacer', 'Window Pane', 'Row' ] 
+			var options3 : Array = ['btnAddGraph', 'btnAddProjectList', 'btnAddTwitter', 
+				'btnAddAlert', 'btnAddSpacer', 'btnAddPane', 'btnAddRow' ] 
+			var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
+				WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 		
+			var options4 : Array = ['A graph widget displays either line, bar, or pie charts',
+				'The project list displays all active projects for this organization', 
+				'The twitter widget displays twitter messages based on search terms', 
+				'The alert can show a message', 'Add more space between 2 rows', 'Add another row',
+				'A text']				
+			var index : int = options2.indexOf(  s ) 
+			if (  type == 'icon' )
+				return '.'+options3[index]
+			if (  type == 'name' )
+				return options1[index]					
+			if (  type == 'help' )
+				return options4[index]							
+			return ''
+		}
+			
 		public var data : Object = null; 
 		public var test : Object = {}; 
 		public var fx :  Function;

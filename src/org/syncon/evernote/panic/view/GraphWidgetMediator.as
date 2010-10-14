@@ -47,13 +47,13 @@ package  org.syncon.evernote.panic.view
 		override public function automateWidget( settings : WidgetVO )  : void
 		{
 			this.ui.fillC = uint( settings.data.fillColor ) 
-			this.model.source( settings.data.labelTop, this.ui, 'textTop', null )
-			this.model.source( settings.data.labelBottom, this.ui, 'textBottom', null  )
+			this.source( settings.data.labelTop, this.ui, 'textTop', null )
+			this.source( settings.data.labelBottom, this.ui, 'textBottom', null  )
 			//if ( useSettings.data.test == null ) useSettings.data.test = {};
-			this.model.source( settings.source, this, 'value', null   , settings.test.source )
-			this.model.source( settings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
-			this.model.source( settings.data.fillColor, this.ui, 'fillC', null  ); 
-			this.model.source( settings.background, this, 'updateBgText', null , settings.test.background )
+			this.source( settings.source, this, 'value', null   , settings.test.source )
+			this.source( settings.data.max, this.ui, 'maximum', null  ); //this.ui.maximum;
+			this.source( settings.data.fillColor, this.ui, 'fillC', null  ); 
+			this.source( settings.background, this, 'updateBgText', null , settings.test.background )
 				
 			this.ui.chart.toolTip = settings.description;
 			

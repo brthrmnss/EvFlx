@@ -179,6 +179,11 @@
 			-->
 		</s:HGroup>
 		
+	
+		<utils:IconButton label="edit"  id="iconType"   
+						    alpha="0.6"
+						  content="{Icons.getFormatPainter( '.iconSettings' )}"    />		
+		
 		
 		<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
 				  content="{Icons.getFormatPainter( '.iconSettings' )}"    />

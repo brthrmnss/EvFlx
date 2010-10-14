@@ -18,6 +18,11 @@ package  org.syncon.evernote.panic.view
 		private var addingA : String = ''; 
 		private var left : Boolean = true
 			
+		/**
+		 * Add to rows, index it later
+		 * */
+		private var rowMode : Boolean = true; 
+			
 		public function AddWidgetMediator()
 		{
 		} 
@@ -46,53 +51,72 @@ package  org.syncon.evernote.panic.view
 		
 		private function onClickedHandler(e:CustomEvent): void
 		{
+			var all : Array = [WidgetVO.GRAPH, WidgetVO.MESSAGE, WidgetVO.PANE, WidgetVO.PROJECT_LIST,
+				WidgetVO.SPACER, WidgetVO.TWITTER_SCROLLER, WidgetVO.ROW]
+			if (rowMode )
+			{
+				all = [WidgetVO.ROW]
+			}
 			if ( e.data == WidgetVO.GRAPH ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.GRAPH, WidgetVO.ROW] )  )
+				var types : Array = [WidgetVO.GRAPH, WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.GRAPH; 
 			}
 			if ( e.data == WidgetVO.MESSAGE ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
+				types  = [WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.MESSAGE; 
 			}				
 			if ( e.data == WidgetVO.PANE ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.PANE, WidgetVO.ROW] )  )
+				types = [WidgetVO.PANE, WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
 				this.addingA = WidgetVO.PANE; 
 			}		
 			if ( e.data == WidgetVO.PROJECT_LIST ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [ WidgetVO.ROW] )  )
+				types = [WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.PROJECT_LIST; 
 			}				
 			if ( e.data == WidgetVO.SPACER ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [WidgetVO.ROW] )  )
+				types = [WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.SPACER; 
 			}
 			if ( e.data == WidgetVO.TWITTER_SCROLLER ) 
 			{
 				this.ui.message = 'Select the element to go after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
+				types = [WidgetVO.ROW]
+				types = all; 
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.TWITTER_SCROLLER; 
 			}			
 			if ( e.data == WidgetVO.ROW ) 
 			{
 				this.ui.message = 'Select the row to place the new row after'
 				this.ui.btnCancel.visible = true; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, [  WidgetVO.ROW] )  )
+				types = [WidgetVO.ROW]
+				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
 				this.addingA = WidgetVO.ROW; 
 			}					
 		}
@@ -122,7 +146,7 @@ package  org.syncon.evernote.panic.view
 		
 		private function onElementSelected(e:PanicModelEvent): void
 		{
-			
+			this.ui.btnCancel.visible = false; 
 			var ui : Object = e.data; 
 			var row : BoardRow; 
 			if ( addingA == WidgetVO.GRAPH ) 
@@ -158,12 +182,14 @@ package  org.syncon.evernote.panic.view
 			if ( addingA == WidgetVO.ROW ) 
 			{
 				row = getRowOrFindParentRow( ui  )		
-				var rowC :  BoardRow = new BoardRow()
+					//no don't add a rwo to a row 
+				/*var rowC :  BoardRow = new BoardRow()
 				rowC.percentWidth = 100; 
-				row.addWidget( rowC)  
+				row.addWidget( rowC)  */
 			}				
 			this.ui.message = ''
 			this.ui.list.selectedIndex = -1
+			this.addingA = ''; 
 		}		
 	
 		public function getRowOrFindParentRow ( ui :  Object )  : BoardRow
@@ -172,7 +198,13 @@ package  org.syncon.evernote.panic.view
 			if ( ui is BoardRow ) 
 			{
 				row = (ui as BoardRow)
-			 
+			 	if ( rowMode )
+				{
+					if ( this.addingA != WidgetVO.ROW )
+					{
+						return row;
+					}
+				}
 					//var x :  Group = row.parent as Group; //.getElementIndex( row )
 					var index : int = this.model.boardHolder.getElementIndex( row ) 
 					row = new BoardRow()

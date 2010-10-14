@@ -22,21 +22,49 @@ package   org.syncon.evernote.panic.controller
 			 * confusion
 			 * if is sourced, pull in data and check for json array, json object text
 			 * */
+			
+			/**
+			 * 
+			 * 5,sean, going home on a plane
+			 * ['f', 'sean', 'going home on a plane'] ( beggining and end '['
+			 * 
+			 * 
+			 * */
+			
+			
+			var source : String = event.src; 
+			if ( source.charAt(0) == '[' && source.charAt( source.length-1) == ']' )
+			{
+				var json : Object =JSON.decode( source )
+				var sources : Array = json as Array
+				source =  this.model.random( sources ).toString()
+				if ( event.index != null ) 
+				{
+					source = event.index.increment( sources ).toString() 
+				}
+			}
+			
+			
 			//if test used, send test
 			if ( event.test != null ) 
 			{
-				this.release( this.model.random( event.test ).toString() ) 
-				return; 
+				var testSources : Array = event.test
+				//this.release( this.model.random( event.test ).toString() ) 
+				source =  this.model.random( testSources ).toString()
+				if ( event.index != null ) 
+				{
+					source = event.index.increment( testSources ).toString() 
+				}					
 			}
-			 if ( this.model.sourced( event.src )  ) 
+			
+			 if ( this.model.sourced( source )  ) 
 			 {
 				 var ee : LoadDataSource = new LoadDataSource()
-					 ee.start( event.src, this.release ); 
+				ee.start( source, this.release ); 
 			 }
-			 else
-			 {
-				 this.release()
-			 }
+			 
+			this.release(source)
+			 
 			 
 		}
 		

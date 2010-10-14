@@ -49,7 +49,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.changed = true; 
 			this.onTestWidget(null)
 			//import it actually sets the data , test is unnecsary
-			this.editorObj.ui.importConfig( this.currentConfig() ) ; 
+			this.data.ui.importConfig( this.currentConfig() ) ; 
 			this.dispatch( new PanicModelEvent( PanicModelEvent.BOARD_CHANGED ) ) 
 			this.editorObj.hide()
 		}			

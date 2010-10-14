@@ -90,6 +90,7 @@ package   org.syncon.evernote.panic
 			mediatorMap.mapView(  PanicBoard,  PanicBoardMediator );	
 			mediatorMap.mapView(  TwitterScrollerTest2,  TwitterScrollerWidgetMediator );	
 			mediatorMap.mapView(  ProjectListWidget,  ProjectListWidgetMediator );	
+			mediatorMap.mapView(  SpacerWidget,  SpacerWidgetMediator );				
 			
 			mediatorMap.mapView(  BoardRow,  BoardRowWidgetMediator );	
 			
