@@ -28,6 +28,9 @@ package org.syncon.evernote.panic.vo
 		public var status2 : String = ''; 
 		public var img : String = ''; 		
 		public var ppl :  Array = []; 
+		
+		public var progress : Number =  NaN; 
+		
 	/*	public var name2 : String = ''; 		*/
 		public var people_ids : Array = []; 
 		public function ProjectVO( name_ : String='', desc : String = '', 

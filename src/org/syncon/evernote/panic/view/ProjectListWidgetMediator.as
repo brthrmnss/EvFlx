@@ -90,6 +90,7 @@ package  org.syncon.evernote.panic.view
 			}
 				private function onBoardImported( testBoard : BoardVO )  : void
 				{
+					return;
 					for each (   var project : ProjectVO   in testBoard.projects )
 					{
 						if ( Math.random() > 0.3 )
@@ -109,7 +110,17 @@ package  org.syncon.evernote.panic.view
 						if ( Math.random() > 0.3 )
 						{
 							project.img =this.model.random( this.model.projectPics ).toString()
-						}						
+						}		
+						
+						/*if ( Math.random() > 0.3 )
+						{*/
+							project.progress = Math.random()*100
+					/*	}		*/						
+							if ( Math.random() > 0.3 )
+							{
+								project.progress = NaN
+							}							
+						
 						/*if ( Math.random() < 0.3 )
 						{
 							project.people_ids = this.model.randSet( 8,0, this.model.board.people, 'id' ) ;//this.model.random( this.model.projectPics )

@@ -15,6 +15,7 @@
 			import org.syncon.evernote.panic.view.GraphWidget;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
+			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var ui : GraphWidget; 
@@ -68,6 +69,12 @@
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
 
+
+			protected function btnTextValue_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_VALUE, 'source' ) ) 
+			}
+
 		]]>
 	</fx:Script>
 
@@ -93,8 +100,10 @@
 		<mx:FormItem label="Bottom Text Source" >
 			<s:TextInput id="txtBottom" />
 		</mx:FormItem>
-		<mx:FormItem label="Value Source" >
+		<mx:FormItem label="Value Source"  direction="horizontal">
 			<s:TextInput id="txtValue" />
+			<utils:IconButton iconSkin=".btnTest" toolTip="Test Source"
+							   id="btnTextValue" click="btnTextValue_clickHandler(event)" />
 		</mx:FormItem>
 		<mx:FormItem label="Maximum Value Source" >
 			<s:TextInput id="txtMaximum" />

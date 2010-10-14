@@ -16,7 +16,7 @@
 				//person = value as PersonVO
 				txtLbl.text = this.data.label; 
 				this.btnCall.iconSkin ='.'+ this.data.icon; 
-				this.txtLbl.toolTip = this.data.toolTip; 
+				this.btnCall.toolTip = this.txtLbl.toolTip = this.data.toolTip; 
 			} 
 /* 
 			protected function btnEdit_clickHandler(event:MouseEvent):void

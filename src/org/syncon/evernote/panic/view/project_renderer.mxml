@@ -38,11 +38,13 @@
 				if ( this.creationComplete == false  ) 
 					return; 
 				this.img.source =  project.img
-				txtLbl.text = project.name.toString().toUpperCase(); 
+				txtName.text = project.name.toString().toUpperCase(); 
 				this.txtCol2.text = this.project.status.toString().toUpperCase()
-				this.txtCol3.text = this.project.status2.toString().toUpperCase()		
+				this.txtCol3.text = this.project.status2.toString().toUpperCase()	
+				this.progressBar.value = this.project.progress
 				if ( e	 != null )
-				{var props : Array = e.data as Array
+				{
+					var props : Array = e.data as Array
 					if ( props.indexOf( 'name' ) != -1 ) 
 						this.animateHover( this.groupName ) 
 					if ( props.indexOf( 'img' ) != -1 ) 
@@ -63,7 +65,7 @@
 					if ( Math.random() < 0.5 )
 						rotation_ *= -1				
 				//this.memberLIst.rotation = Math.random()*5
-				//txtLbl.toolTip = project.toolTip.toString();
+				//txtName.toolTip = project.toolTip.toString();
 				//lblVariable.text = project.name2.toString();
 				this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
 			} 
@@ -136,7 +138,7 @@
 	
 	<s:transitions>
 		<s:Transition toState="*" >
-			<s:AnimateColor targets="{[this.txtLbl, this.txtCol2, this.txtCol3]}"   duration="250" />
+			<s:AnimateColor targets="{[this.txtName, this.txtCol2, this.txtCol3]}"   duration="250" />
 		</s:Transition>
 	</s:transitions>	
 	
@@ -159,7 +161,8 @@
 		<s:SkinnableContainer  right="0" top="0" left="0" bottom="0" visible="{this.bgVisible}"
 			 skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
-		<s:Label   id="txtLbl" verticalCenter="0"
+		<utils:ProgressBar id="progressBar"  alpha="0.5" width="100%" height="100%" />
+		<s:Label   id="txtName" verticalCenter="0"
 				   color.hovered="0x696969"  x="5"
 				    width="100%"  maxDisplayedLines="1"
 				   useHandCursor="true"  buttonMode="true"

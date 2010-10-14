@@ -189,4 +189,9 @@ mx|Tooltip{
 	content:     Embed( source="icons/16/forbidden_sign.png" );
 }
 
+.btnTest
+{
+	content:     Embed( source="icons/16/cut.png" );
+}
+
 

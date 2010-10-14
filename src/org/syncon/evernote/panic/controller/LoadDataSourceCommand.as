@@ -62,8 +62,10 @@ package   org.syncon.evernote.panic.controller
 				 var ee : LoadDataSource = new LoadDataSource()
 				ee.start( source, this.release ); 
 			 }
-			 
-			this.release(source)
+			 else
+			 {
+			 	this.release(source)
+			 }
 			 
 			 
 		}

@@ -137,7 +137,7 @@ package   org.syncon.evernote.panic
 			//this.authenticationMode1()
 				
 			//this.openPopup()
-			//this.changeBoardColor()
+			this.changeBoardColor()
 		}
 		public function importBoardFromEvernote() : void
 		{

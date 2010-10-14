@@ -68,6 +68,9 @@
 				this.txtDesc.text = this.project.desc
 				this.txtCol3.text = this.project.status
 				this.txtCol4.text = this.project.status2
+				this.txtPercengate.text = this.project.progress.toString()
+				if ( isNaN(this.project.progress) )  
+					this.txtPercengate.text= ''					
 				this.txtImage.text = this.project.img; 
 				this.img.source = this.project.img; 
 				this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
@@ -94,6 +97,9 @@
 				this.project.desc = this.txtDesc.text
 				this.project.status = this.txtCol3.text  
 				this.project.status2 = this.txtCol4.text  
+				this.project.progress = Number( this.txtPercengate.text )
+				if ( this.txtPercengate.text == '' ) 
+					this.project.progress = NaN
 				this.project.img = this.txtImage.text  
 				this.project.ppl  = this.memberLIst.list1.dataProvider.toArray();
 				
@@ -142,20 +148,25 @@
 	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
 	 <mx:Form>
 		 <mx:FormItem label="Name" >
-			 <s:TextInput id="txtName" />
+			 <s:TextInput id="txtName" width="200" />
 		 </mx:FormItem>
 		 <mx:FormItem label="Description" >
-			 <s:TextInput id="txtDesc" />
+			 <s:TextInput id="txtDesc" width="200" />
 		 </mx:FormItem>
 		 <mx:FormItem label="Status:" >
-			 <s:TextInput id="txtCol3" />
+			 <s:TextInput id="txtCol3" width="200" />
 		 </mx:FormItem>			 
 		 <mx:FormItem label="Status2:" >
-			 <s:TextInput id="txtCol4" />
+			 <s:TextInput id="txtCol4" width="200" />
 		 </mx:FormItem>	
-	
+		 <mx:FormItem label="Percengate:" >
+			 <s:TextInput id="txtPercengate" width="200"
+						   toolTip="If set, will draw a progress bar behind the project name"/>
+		 </mx:FormItem>	
 		 <mx:FormItem label="Image:" >
-			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
+			 <s:TextInput id="txtImage" 
+						   toolTip="Change Project Image to something else"
+						  change="txtImage_changeHandler(event)" width="200" />
 		 </mx:FormItem>		
 		 <mx:FormItem>
 			 <utils:AvatarEdit id="img"  emptySetting="" changedAvatar="{changedAvatarHandler(event)}"     />
@@ -163,13 +174,19 @@
 		 <mx:FormItem label="Members:" >
 			 <s:HGroup>
 				 <view:ProjectMembersList id="memberLIst"  width="180"  clipAndEnableScrolling="true" />
-				 <s:Button label="Change" id="btnEditMembers" click="btnEditMembers_clickHandler(event)" />
+				 <s:Button label="Change" id="btnEditMembers" 
+						    toolTip="Change the People involved with this project"
+						   click="btnEditMembers_clickHandler(event)" />
 			 </s:HGroup>
 		 </mx:FormItem>				 
 		 <mx:FormItem>
 			 <s:HGroup>
-				 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
-				 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
+				 <s:Button id="btnSave"  label="Save" 
+						    toolTip="Save changes"
+						   click="btnSave_clickHandler(event)" />
+				 <s:Button id="btnCancel" label="Cancel" 
+						   toolTip="Leave without saving changes" 
+						   click="btnCancel_clickHandler(event)" />
 			 </s:HGroup>
 		 </mx:FormItem>
 	 </mx:Form>

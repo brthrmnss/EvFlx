@@ -181,7 +181,7 @@
 		
 	
 		<utils:IconButton label="edit"  id="iconType"   
-						    alpha="0.6"
+						    alpha="0.6" useHandCursor="false" buttonMode="false"
 						  content="{Icons.getFormatPainter( '.iconSettings' )}"    />		
 		
 		

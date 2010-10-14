@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx"
+					  xmlns:comps="org.syncon.comps.*" 
+					  creationComplete="onInit()" 
+					  implements="org.syncon.popups.view.IPopup"
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:management="org.syncon.evernote.panic.view.popup.management.*"					  
+					  >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.GraphWidget;
+			import org.syncon.evernote.panic.vo.PersonVO;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var TEST_AGAIN : String = 'testAgain'
+			static public var OPENED_POPUP : String = 'openedPopup'; 
+			static public var CLOSED_POPUP : String = 'closedPopup'; 
+
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup :  TestDataSourcePopup = new TestDataSourcePopup ()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open(false,true  ) 
+			}
+		
+			public var value : String = ''; 
+			public function open(  value_ : String  ) : void
+			{
+				this.show()
+				this.value = value_
+				this.dispatchEvent( new Event( OPENED_POPUP ) ) 
+			}
+			
+			 /**
+			 * Export move data from ui to data object
+			 * */
+			override public function hide( ) : void
+			{
+				this.dispatchEvent( new CustomEvent( CLOSED_POPUP  ) )
+				
+				this.popupCode.close() 
+			}
+ 
+			protected function btnAdd_TestHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( TEST_AGAIN  ) ) 
+			}
+
+			protected function btnHide_ClickHandler(event:MouseEvent):void
+			{
+				this.hide();  
+			}
+			
+			 
+			
+ 
+		]]>
+	</fx:Script>
+ 
+	<editors:PopupBg />
+ 
+ <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+	 <popup:PopupHeader  id="lblHeader" bold="false"  label="Test  "   padding="0"  width="100%"/>
+	  
+	 <mx:Form>
+		 
+		 <mx:FormItem label="Result">
+			 <s:Label text="The following is the result of the source value" />
+			 <s:TextArea id="txtResult"
+						  toolTip="This is the result of the source value you provided"
+						 height="250" width="250" />
+		 </mx:FormItem>
+		 <mx:FormItem>
+			 <s:Button label="Test Again" id="btnTest" click="btnAdd_TestHandler(event)" />
+		 </mx:FormItem>
+	 </mx:Form>
+	 
+	 
+ </s:VGroup>
+
+		<utils:CloseBtn  label="X" click="btnHide_ClickHandler(event)" right="0" top="0" />
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnHide_ClickHandler(event)" right="5" top="10" />
+</popup:PopupBase>

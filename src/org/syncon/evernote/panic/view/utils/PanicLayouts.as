@@ -170,7 +170,10 @@ package org.syncon.evernote.panic.view.utils
 				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
 				'<span color="#EEE9E5"> 25 DAYS </span>'+
 				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
-				'ok', 'ok???'
+				//'ok', 'ok???', 
+				'<span color="#ff0000"> UNTIL IPAD LAUNCH</span>' +
+				'<img y="20"  paddingTop="10" width="32" height="32" src="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span>'
 			]
 			var ee : JSON
 			var sourcedArray : String = JSON.encode( arrc ) 
@@ -188,7 +191,40 @@ package org.syncon.evernote.panic.view.utils
 			arr.push( [
 				MessageWidget.importData('Global Alert', '',  sourcedArray , 5000).widgetData,
 			])	
-				 arr[arr.length-1][0].test.source =  arrc
+			arr[arr.length-1][0].test.source =  arrc
+			
+			arr = []; 	
+			
+			
+			arrc  = [ 
+				'<TextFlow verticalAlign="top" horizontalAlign="left" fontSize="64" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				''+
+				'<span color="#EEE9E5"  fontSize="64"> SPANISH DESIGNS </span><p />'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH, LTD</span></TextFlow>',
+				//'ok', 'ok???', 
+				/*	'<span color="#ff0000"> UNTIL IPAD LAUNCH</span>' +
+				'<img y="20"  paddingTop="10" width="32" height="32" src="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span>'*/
+			]
+			arr.push( [
+				MessageWidget.importData('Global Alert', '',  JSON.encode( arrc) , 5000, NaN).widgetData,
+			])	
+				
+			arr.push( [
+				ProjectListWidget.importData('Project Lister', '', 355, 3000*10/10).widgetData,
+			])	
+				
+			arr.push( [
+				//GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
+				//GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,'', 15000).widgetData,
+				
+				GraphWidget.importData('Eccles lister', '', 
+					'{http://city-21.com/php/random_number.php}/100',
+					'Ec3 - {http://city-21.com/php/random_string.php?f=8}',
+					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
+				//GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , '', 15000).widgetData
+			])
+				
 				
 			return arr
 			arr.push( [

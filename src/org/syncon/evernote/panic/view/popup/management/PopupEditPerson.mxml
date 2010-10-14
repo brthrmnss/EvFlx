@@ -180,7 +180,9 @@
 			 <utils:AvatarEdit id="img"   changedAvatar="img_changedAvatarHandler(event)"/>
 		 </mx:FormItem>
 		 <mx:FormItem label="Image"  excludeFrom="view">
-			 <s:TextInput id="txtImage"  change="txtImage_changeHandler(event)"/>
+			 <s:TextInput id="txtImage"
+						  toolTip="Change Project Image to something else"
+						  change="txtImage_changeHandler(event)"/>
 		 </mx:FormItem>		
  
 		 
@@ -214,8 +216,12 @@
 	
 		 <mx:FormItem>
 			 <s:HGroup excludeFrom="view">
-				 <s:Button id="btnSave"  label="Save" click="btnSave_clickHandler(event)" />
-				 <s:Button id="btnCancel" label="Cancel" click="btnCancel_clickHandler(event)" />
+				 <s:Button id="btnSave"  label="Save" 
+						   toolTip="Save changes"
+						   click="btnSave_clickHandler(event)" />
+				 <s:Button id="btnCancel" label="Cancel" 
+						   toolTip="Leave without saving changes" 
+						   click="btnCancel_clickHandler(event)" />
 			 </s:HGroup>
 		 </mx:FormItem>
 

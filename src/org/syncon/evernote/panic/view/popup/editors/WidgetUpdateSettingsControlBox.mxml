@@ -30,7 +30,7 @@
 			}
 			public function get time ()  : Number
 			{
-				return Number( this.txtTime.text )
+				return Number( this.txtTime.text )*1000
 			}
 		]]>
 	</fx:Script>

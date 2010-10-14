@@ -10,6 +10,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	public class GraphWidgetEditorPopupMediator extends 
 				WidgetEditorPopupMediatorBase
@@ -26,6 +27,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function onRegister():void
 		{
 			super.onRegister();
+			this.ui.addEventListener( WidgetEvent.TEST_VALUE, this.onTestSource ) 
 		}
 		
 		override public function onImportEditConfig(e:WidgetEvent) : void
@@ -53,6 +55,15 @@ package  org.syncon.evernote.panic.view.popup.editors
 			return d ; 	
 		}
 		 
+		public function onTestSource(e: CustomEvent) : void
+		{
+			if ( e.data == 'source' ) 
+			{
+				this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+					'TestDataSourcePopup',  [this.ui.txtValue.text ] )  )  
+			}
+		}			
+		
 		
 	}
 }

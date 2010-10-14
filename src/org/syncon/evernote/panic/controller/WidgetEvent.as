@@ -10,7 +10,8 @@ package   org.syncon.evernote.panic.controller
 		static public var AUTOMATE_WIDGET : String = 'automateWidget'
 		static public var UPDATE_CONFIG : String = 'updateConfig'
 			
-		
+		static public var TEST_VALUE : String = 'testValue'
+			
 		static public var EDIT_WIDGET : String = 'editWidget'; 
 		static public var UPDATE_WIDGET_CONFIG  : String = 'updateWdigetConfig'; 
 		static public var TEST_WIDGET : String = 'testWidget'; 

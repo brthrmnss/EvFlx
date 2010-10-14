@@ -97,7 +97,9 @@
 							  horizontalCenter="0" verticalCenter="0"
 							  />
 		</s:Group>
-		<s:Button id="btnEdit" label="Edit" useHandCursor="true" buttonMode="true" click="button1_clickHandler(event)" />
+		<s:Button id="btnEdit" label="Edit" useHandCursor="true" 
+				   toolTip="Select from one of the default images."
+				  buttonMode="true" click="button1_clickHandler(event)" />
 	</s:VGroup>
 
 </s:Group>
