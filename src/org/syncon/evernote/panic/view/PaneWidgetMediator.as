@@ -40,7 +40,8 @@ package  org.syncon.evernote.panic.view
 			this.source( settings.source, this, 'updateText', null , settings.test.source )
 			this.source( settings.background, this, 'updateBgText', null , settings.test.background )
 			
-			this.ui.height = widgetData.height
+			this.ui.height = settings.height
+		 
 			if ( settings.data.hasOwnProperty( 'color1' ) )
 				this.ui.color1.color = settings.data.color1; 
 			if ( settings.data.hasOwnProperty( 'color2' ) )
@@ -75,9 +76,25 @@ package  org.syncon.evernote.panic.view
 			this.ui.animateHover(this.ui)
 			var str : String = ''; 
 			str = a
+				
 			var ee : HtmlConvertor = new HtmlConvertor()
 			var textFlow : TextFlow = ee.convert2( a, 0xFFFFFF, 15 ) 
 			this.ui.txt.textFlow = textFlow
+			//return;
+			if ( textFlow.verticalAlign == 'middle' ) 
+			{
+				this.ui.txt.percentHeight = NaN; 
+				this.ui.txtBg.percentHeight = NaN; 				
+				this.ui.txt.setStyle('verticalCenter', 0); 
+				this.ui.txtBg.setStyle('verticalCenter',  0 ); 				
+			}
+			else
+			{
+				this.ui.txt.percentHeight = 100; 
+				this.ui.txtBg.percentHeight = 100; 
+				this.ui.txt.setStyle('verticalCenter', null); 
+				this.ui.txtBg.setStyle('verticalCenter', null ); 			
+			}
 			return  
 		}		
  

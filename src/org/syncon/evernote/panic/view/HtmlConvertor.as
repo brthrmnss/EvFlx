@@ -28,6 +28,8 @@ package  org.syncon.evernote.panic.view
 		
 		public function replaceFonts( textFlow: TextFlow , defaultColor : uint, size : int )  : void
 		{
+			if ( textFlow == null ) 
+				return;
 			var ee : FlowElement
 			textFlow.fontLookup = FontLookup.EMBEDDED_CFF;
 			textFlow.renderingMode = RenderingMode.CFF;
