@@ -37,6 +37,8 @@ package   org.syncon.evernote.panic.controller
 			{
 				var json : Object =JSON.decode( source )
 				var sources : Array = json as Array
+				if ( sources.length == 0)
+					sources = ['']
 				source =  this.model.random( sources ).toString()
 				if ( event.index != null ) 
 				{
@@ -49,6 +51,8 @@ package   org.syncon.evernote.panic.controller
 			if ( event.test != null ) 
 			{
 				var testSources : Array = event.test
+				if ( testSources.length == 0)
+					testSources = ['']					
 				//this.release( this.model.random( event.test ).toString() ) 
 				source =  this.model.random( testSources ).toString()
 				if ( event.index != null ) 

@@ -3,6 +3,8 @@ package org.syncon.evernote.panic.view.utils
  
 	import com.adobe.serialization.json.JSON;
 	
+	import mx.formatters.DateFormatter;
+	
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.MessageWidget;
 	import org.syncon.evernote.panic.view.PaneWidget;
@@ -197,10 +199,12 @@ package org.syncon.evernote.panic.view.utils
 			
 			
 			arrc  = [ 
-				'<TextFlow verticalAlign="top" horizontalAlign="left" fontSize="64" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<TextFlow verticalAlign="top" textAlign="left" ' +
+				' lineHeight="16"  paddingLeft="10"' +
+				'xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				''+
-				'<span color="#EEE9E5"  fontSize="64"> SPANISH DESIGNS </span><p />'+
-				'<span color="#A39F9C"> UNTIL IPAD LAUNCH, LTD</span></TextFlow>',
+				'<span color="#EEE9E5"  fontSize="64">SPANISH DESIGNS </span><p />'+
+				'<span color="#A39F9C">STATUS BOARD, LTD</span></TextFlow>',
 				//'ok', 'ok???', 
 				/*	'<span color="#ff0000"> UNTIL IPAD LAUNCH</span>' +
 				'<img y="20"  paddingTop="10" width="32" height="32" src="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
@@ -276,6 +280,167 @@ package org.syncon.evernote.panic.view.utils
 			return arr; 
 		}
 		
+		static public function percentageMaker( x : int ) :  String
+		{
+			var str : String = ''; 
+			
+			var sets : Array = [] ; 
+			for ( var i : int = 0; i < x; i++ ) 
+			{
+				var set : String = '<TextFlow verticalAlign="middle"  textAlign="center" ' +
+					' fontSize="65"  ' +
+				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
+			
+				var value :  Number = (Math.random()*100)//.toFixed(2)
+				if ( Math.random() < 0.6 ) 
+					value *= -1
+				if ( value > 0 ) 
+					var pic : String =  '<img   height="128"  width="128" source="appicons/up.png"/>'
+				else
+					pic = '<img   height="128"  width="128" source="appicons/down.png"/>'
+				
+				var busStuff : Array = []; 
+				busStuff.push(pic)
+				busStuff.push('<br />')		
+				busStuff.push(value.toFixed(2) + '%')		
+				set += busStuff.join( '' ) + '</TextFlow>'
+				sets.push( set ) 
+			}
+					
+			return JSON.encode( sets )
+		}		
+		
+		
+		
+		static public function makeCalendar( x : int ) :  String
+		{
+			var str : String = ''; 
+			
+			var sets : Array = [] ; 
+			var date : Date = new Date()
+			var df : DateFormatter = new DateFormatter()
+				df.formatString = 'EEEE MM/DD'
+			
+			sets.push('<TextFlow verticalAlign="middle"  textAlign="center" ' +
+					' fontSize="16"  ' +
+				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
+				)
+			
+			sets.push('<div>'+df.format( date )+'</div>' ) 
+			sets.push('<br />')		
+				
+				for ( var y : int = 0; y < 10; y++ ) 
+				{	
+					date.setTime( date.getTime()+
+						(24*60*60*1000)*Math.random() ) 
+					//add milliseconds 
+					//format date
+					df.formatString = 'M/D'
+						//fixed with here
+					sets.push( ''+df.format( date ) +'')
+					 
+					//
+					var options :  Array = [
+					'Ned Out',
+					'Julie Out',
+					'Scrum Mtg',
+					'Status Mtg',
+					'Meet Client',
+					'Marc tele (awa)' 
+					 ]
+					
+					sets.push( ''+randomX(options) +'')
+			}
+			sets.push( '</TextFlow>' )
+			return sets.join( '' ); //JSON.encode( sets )
+		}				
+		
+		static public function superheroPanes( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><img source="http://www.aux.tv/newmusic/wp-content/uploads/2010/03/conan.jpg" /></p></TextFlow>', '',  15000,  '0', '0'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][0].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img   source="http://www.clemslansing.com/images/blog/BatmanNeonSign_952C/image_thumb.png"/>'+
+				'</TextFlow>',
+			]			
+				
+				
+				
+			var busStuff : Array = [] ; 
+			for ( var i : int = 0; i < 5; i++ ) 
+			{
+				var busNumber : String =  '<img   height="32"  width="32" source="'+randomPic()+'"/>' 
+				busStuff.push(busNumber)
+				var busWaitTime : String = '<span> ' 
+				if ( Math.random() < 0.7 )
+				{
+					var mins : Number = int((Math.random()*60)) 
+					busWaitTime += int((Math.random()*5)).toString() + ':'
+					if ( mins < 10 ) busWaitTime += '0' 
+					busWaitTime += int(mins).toString()  
+							
+				}
+				else
+				{
+					busWaitTime += int((Math.random()*60)).toString() + ' Min'
+				}
+				busWaitTime += '</span>'
+				busStuff.push(busWaitTime )
+				
+				busStuff.push('<br />')					
+			}
+			var busString : String = '<TextFlow verticalAlign="middle"  textAlign="left" ' +
+				' fontSize="36" paddingLeft="20"' +
+				'xmlns="http://ns.adobe.com/textLayout/2008" >'+ 
+						busStuff.join( '' ) + '</TextFlow>'  
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', makeCalendar(6),'', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert',  '', 
+					busString, 
+					'<TextFlow verticalAlign="top" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+					'<img source="'+
+					'http://www.tvjab.com/wp-content/uploads/2008/04/theoffice_logo.jpg'+
+					'"/>'+
+					'</TextFlow>',  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+			])	
+	 
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0', '0'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
+			])	
+			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img source="'+
+				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
+				//'bus.png'+
+				'"/>'+
+				'</TextFlow>',]
+			arr[arr.length-1][2].test.background = [ 
+				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img   source="http://www.yorkblog.com/onlyyork/Pizza-Capricciosa.jpg"/>'+
+				'</TextFlow>',
+			]							
+			arr[arr.length-1][2].test.background = []
+			return arr; 
+		}
+		
+		
 		static public function allWidgets( ) :  Array
 		{
 			var arr : Array = []
@@ -314,6 +479,7 @@ package org.syncon.evernote.panic.view.utils
 			return arr; 
 		}				
 		
-				
+		public static var randomPic: Function; 
+		public static var randomX : Function; 
 	}
 }

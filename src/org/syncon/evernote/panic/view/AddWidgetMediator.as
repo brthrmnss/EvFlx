@@ -4,6 +4,7 @@ package  org.syncon.evernote.panic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
@@ -36,8 +37,8 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
 			ui.addEventListener('cancelSelect', onCancelHandler ) 	
 			ui.addEventListener('moveWidget', onMoveWidgetHandler ) 		
-			
-			eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
+
+			eventMap.mapListener(eventDispatcher, BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
 				this.onElementSelected);					
 		}
 		
@@ -63,7 +64,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				var types : Array = [WidgetVO.GRAPH, WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.GRAPH; 
 			}
 			if ( e.data == WidgetVO.MESSAGE ) 
@@ -72,7 +73,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				types  = [WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.MESSAGE; 
 			}				
 			if ( e.data == WidgetVO.PANE ) 
@@ -81,7 +82,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				types = [WidgetVO.PANE, WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
 				this.addingA = WidgetVO.PANE; 
 			}		
 			if ( e.data == WidgetVO.PROJECT_LIST ) 
@@ -90,7 +91,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				types = [WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.PROJECT_LIST; 
 			}				
 			if ( e.data == WidgetVO.SPACER ) 
@@ -99,7 +100,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				types = [WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.SPACER; 
 			}
 			if ( e.data == WidgetVO.TWITTER_SCROLLER ) 
@@ -108,7 +109,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.btnCancel.visible = true; 
 				types = [WidgetVO.ROW]
 				types = all; 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types )  )
 				this.addingA = WidgetVO.TWITTER_SCROLLER; 
 			}			
 			if ( e.data == WidgetVO.ROW ) 
@@ -116,7 +117,7 @@ package  org.syncon.evernote.panic.view
 				this.ui.message = 'Select the row to place the new row after'
 				this.ui.btnCancel.visible = true; 
 				types = [WidgetVO.ROW]
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, types)  )
 				this.addingA = WidgetVO.ROW; 
 			}					
 		}
@@ -127,7 +128,7 @@ package  org.syncon.evernote.panic.view
 			this.ui.list.selectedIndex = -1	
 			this.ui.btnCancel.visible = false; 
 			this.addingA = null 
-			this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED ) ) 
+			this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED ) ) 
 		}
 		
 		private function onMoveWidgetHandler(e:CustomEvent) : void

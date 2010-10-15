@@ -32,26 +32,24 @@ package   org.syncon.evernote.panic.controller
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.evernote.services.EvernoteService;
 	
+	import spark.components.Group;
+	
 	public class LoadDefaultDataCommand extends Command
 	{
 		[Inject] public var model:PanicModel;
-		[Inject] public var event: Event;
-		static public var START : String = 'LoadDefaultDataCommand.START'
-		static public var SETUP : String = 'LoadDefaultDataCommand.SETUP'			
-		static public var LIVE_DATA : String = 'LoadDefaultDataCommand.LIVE_DATA'
-		static public var AUTHENTICATE : String = 'LoadDefaultDataCommand.AUTHENTICATE'			
-		
+		[Inject] public var event:  LoadDefaultDataTriggerEvent;
+
 		override public function execute():void
 		{
-			if ( event.type == START ) 
+			if ( event.type == LoadDefaultDataTriggerEvent.START ) 
 			{
 				this.createStartData()				
 			}
-			if ( event.type == LIVE_DATA ) 
+			if ( event.type == LoadDefaultDataTriggerEvent.LIVE_DATA ) 
 			{
 				this.liveData()
 			}
-			if ( event.type == SETUP ) 
+			if ( event.type == LoadDefaultDataTriggerEvent.SETUP_BOARD ) 
 			{
 				var pics : Array = []; 
 				var items : Array = [
@@ -123,13 +121,14 @@ package   org.syncon.evernote.panic.controller
 				 this.model.projectPics =  pics;
 			 				
 				
-				this.model.boardHolder = FlexGlobals.topLevelApplication.boardGroup;
+				this.model.boardHolder = event.data as  Group; 
+				//FlexGlobals.topLevelApplication.boardGroup;
 				return;
 				this.model.editMode = true; 
 				this.model.adminMode = true; 
 				setTimeout(  this.onGoToEditMode, 1000 ) 
 			}			
-			if ( event.type == AUTHENTICATE ) 
+			if ( event.type == LoadDefaultDataTriggerEvent.AUTHENTICATE ) 
 			{
 				this.authenticate(); 
 			}				
@@ -276,7 +275,9 @@ package   org.syncon.evernote.panic.controller
 			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
 			arr.push( [
 				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
-			])			
+			])		
+			PanicLayouts.randomPic = this.randomPic
+			PanicLayouts.randomX  = this.model.random
 			/*
 			arr = PanicLayouts.tooMuchTwitter();
 			arr = PanicLayouts.panesX(); 
@@ -285,6 +286,9 @@ package   org.syncon.evernote.panic.controller
 			arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
 			arr = PanicLayouts.testArraySourcing(); 	
+			arr = PanicLayouts.superheroPanes()
+			if ( event.preferredLayout != null ) 
+				arr = event.preferredLayout; 
 			board.layout = arr
 				
 			var people : Array = [] ; 
@@ -466,5 +470,9 @@ package   org.syncon.evernote.panic.controller
 			this.dispatch( EvernoteAPICommandTriggerEvent.Authenticate('brthrmnss', '12121212' ) )
 		}
 		
+		private function randomPic()  : Object
+		{
+			return this.model.random(this.model.projectPics)
+		}
 	}
 }

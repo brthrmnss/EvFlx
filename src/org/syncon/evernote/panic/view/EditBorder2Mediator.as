@@ -7,6 +7,7 @@ package  org.syncon.evernote.panic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
@@ -34,10 +35,9 @@ package  org.syncon.evernote.panic.view
 			 ui.addEventListener( EditBorder2.CLICKED_DOWN , onClickedDownHandler ) 	
 			 ui.addEventListener( EditBorder2.CLICKED_REMOVE , onClickedRemoveHandler ) 
 				 				 
-				 
-			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS, 
+			 eventMap.mapListener(eventDispatcher, BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS, 
 				 this.onHighlighCertainItems);		
-			 eventMap.mapListener(eventDispatcher, PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
+			 eventMap.mapListener(eventDispatcher, BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
 				 this.onHighlighCertainItems_Selected);			
 			 
 			 ui.addEventListener( EditBorder2.SHOW , onShowHandler ) 		
@@ -148,7 +148,7 @@ package  org.syncon.evernote.panic.view
 		private function onClickedHandler(e:CustomEvent): void
 		{
 			if ( this.highligtSelectionMode ) 
-				this.dispatch( new PanicModelEvent( PanicModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, this.ui.parentDocument ) ) 
+				this.dispatch( new PanicModelEvent( BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, this.ui.parentDocument ) ) 
 		}
 		
 		

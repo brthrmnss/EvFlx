@@ -30,7 +30,13 @@ package   org.syncon.evernote.panic
  
 	public class PanicContext extends Context
 	{
-		
+		public var preferredLayout : Array ; 
+		public var boardHolder : Object
+		/*
+		public function set boardHolder ( o : Object ) : void
+		{
+			
+		}*/
 		public function PanicContext()
 		{
 			super();
@@ -41,10 +47,11 @@ package   org.syncon.evernote.panic
 			injector.mapSingleton( PanicModel  )	
 			injector.mapSingleton( EvernoteAPIModel  )						
 			// Controller
-			commandMap.mapEvent(LoadDefaultDataCommand.SETUP,  LoadDefaultDataCommand, null, false );				
-			commandMap.mapEvent(LoadDefaultDataCommand.START,  LoadDefaultDataCommand, null, false );
-			commandMap.mapEvent(LoadDefaultDataCommand.LIVE_DATA,  LoadDefaultDataCommand, null, false );
-			commandMap.mapEvent(LoadDefaultDataCommand.AUTHENTICATE,  LoadDefaultDataCommand, null, false );				
+			//commandMap.mapEvent(LoadDefaultDataCommand.SETUP,  LoadDefaultDataCommand, null, false );				
+			commandMap.mapEvent(LoadDefaultDataTriggerEvent.SETUP_BOARD,  LoadDefaultDataCommand, null, false );				
+			commandMap.mapEvent(LoadDefaultDataTriggerEvent.START,  LoadDefaultDataCommand, null, false );
+			commandMap.mapEvent(LoadDefaultDataTriggerEvent.LIVE_DATA,  LoadDefaultDataCommand, null, false );
+			commandMap.mapEvent(LoadDefaultDataTriggerEvent.AUTHENTICATE,  LoadDefaultDataCommand, null, false );				
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_BOARD,  ImportBoardCommand, null, false );
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.LOAD_BOARD,  ImportBoardCommand, null, false );
 			commandMap.mapEvent(ImportBoardCommandTriggerEvent.IMPORT_FROM_GUID_BOARD,  ImportBoardCommand, null, false );			
@@ -123,8 +130,8 @@ package   org.syncon.evernote.panic
 		public var subContext : PanicPopupContext =  new PanicPopupContext()
 		public function onInit()  : void
 		{
-			
-			this.dispatchEvent( new Event( LoadDefaultDataCommand.SETUP ))
+			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.SETUP_BOARD, 
+				this.boardHolder ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			
@@ -137,12 +144,12 @@ package   org.syncon.evernote.panic
 			//this.authenticationMode1()
 				
 			//this.openPopup()
-			this.changeBoardColor()
+			//this.changeBoardColor()
 		}
 		public function importBoardFromEvernote() : void
 		{
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.AUTHENTICATE ))
-			this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
+			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.LIVE_DATA ))
 			//this.subContext.onInit(); 
 		}		
 		public function importBoardFromString() : void
@@ -157,12 +164,13 @@ package   org.syncon.evernote.panic
 		}
 		public function importBoardFromObjects() : void
 		{
-			this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
+			this.dispatchEvent( new LoadDefaultDataTriggerEvent(
+				LoadDefaultDataTriggerEvent.START, null, this.preferredLayout ))
 		}		
 	 
 		public function authenticationMode1() : void
 		{
-			this.dispatchEvent( new Event( LoadDefaultDataCommand.AUTHENTICATE ))
+			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.AUTHENTICATE ))
 			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
 				var boardName : String = 'mercy' 
 			if ( FlexGlobals.topLevelApplication.parameters != null ) 

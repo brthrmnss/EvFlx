@@ -35,11 +35,11 @@ package  org.syncon.evernote.panic.model
 			
 		public static const EDIT_MODE_CHANGED : String = 'editModeChanged' ; 
 		public static const ADMIN_MODE_CHANGED : String = 'adminModeChanged' ; 
-		
+		/*
 		public static const HIGHLIGHT_ROWS : String = 'highlightRows' ; 
 		public static const HIGHLIGHT_CERTAIN_ITEMS : String = 'highlightCertainItems' ; 		
 		public static const HIGHLIGHT_CERTAIN_ITEMS_SELECTED : String = 'highlightItemSelected' ; 
-		
+		*/
 		public static const CHANGED_PEOPLE : String = 'changedPeople' ; 		
 		public static const CHANGED_PROJECTS : String = 'changedProjects' ; 
 		
