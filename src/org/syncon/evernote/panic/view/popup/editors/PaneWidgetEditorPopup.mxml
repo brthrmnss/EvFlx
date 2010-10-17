@@ -96,7 +96,15 @@
 			</mx:FormItem>	
 			<mx:FormItem label="Color 2" >
 				<mx:ColorPicker id="colorPicker2" />
+			</mx:FormItem>
+			<mx:FormItem label="Custom Gradient" >
+				<s:TextInput id="txtCustomGradientBg" width="200" 
+							 toolTip="Define more elaborate gradients" />
 			</mx:FormItem>		
+			<mx:FormItem label="Corner Radius" >
+				<s:NumericStepper id="txtCornerRadius" width="200"  minimum="0" maximum="100"
+							 toolTip="How round to make corners?" />
+			</mx:FormItem>					
 			<editors:WidgetUpdateSettingsControlBox id="timer" />
 			<mx:FormItem>
 				<s:HGroup>

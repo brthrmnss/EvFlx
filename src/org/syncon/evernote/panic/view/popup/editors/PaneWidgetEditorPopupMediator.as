@@ -35,6 +35,11 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtMessageBg.text = this.data.background; 
 			this.ui.colorPicker1.selectedColor = this.data.data.color1; 
 			this.ui.colorPicker2.selectedColor = this.data.data.color2; 
+			
+			this.ui.txtCustomGradientBg.text = this.data.data.customGradient; 	
+			this.ui.txtCornerRadius.value = int(this.data.data.cornerRadius );  
+			
+			
 		}	
 		
 		/**
@@ -45,7 +50,10 @@ package  org.syncon.evernote.panic.view.popup.editors
 			var d : WidgetVO = PaneWidget.importData( this.data.name, this.data.description, 
 				this.ui.txtMessage.text, 	this.ui.txtMessageBg.text,  this.ui.timer.time,  
 				this.ui.colorPicker1.selectedColor.toString(), 
-				this.ui.colorPicker2.selectedColor.toString() ).widgetData;
+				this.ui.colorPicker2.selectedColor.toString(), 
+				NaN, 
+				this.ui.txtCustomGradientBg.text, 
+				this.ui.txtCornerRadius.value).widgetData;
 			return d ; 	
 		}
 		

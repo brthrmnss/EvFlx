@@ -88,9 +88,10 @@ package  org.syncon.evernote.panic.view
 					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported  )
 				)
 			}
-				private function onBoardImported( testBoard : BoardVO )  : void
+				public function onBoardImported( ... args  )  : void
 				{
 					return;
+					var testBoard : BoardVO;
 					for each (   var project : ProjectVO   in testBoard.projects )
 					{
 						if ( Math.random() > 0.3 )

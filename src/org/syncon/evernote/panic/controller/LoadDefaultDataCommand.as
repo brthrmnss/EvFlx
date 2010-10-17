@@ -285,8 +285,8 @@ package   org.syncon.evernote.panic.controller
 			*/
 			arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
-			arr = PanicLayouts.testArraySourcing(); 	
-			//arr = PanicLayouts.superheroPanes()
+			//arr = PanicLayouts.testArraySourcing(); 	
+			arr = PanicLayouts.superheroPanes(board)
 			//test for original sub contexts, they can be set externally 
 			if ( event.preferredLayout != null ) 
 				arr = event.preferredLayout; 

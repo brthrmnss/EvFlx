@@ -211,7 +211,7 @@
 		]]>
 	</fx:Script>
 	<view:EditBorder2 id="editBorder"  edit="{this}"   />
-	<s:HGroup id="content"   height="100%" width="100%" />
+	<s:HGroup id="content"   gap="0" height="100%" width="100%" />
 	<!--
 	right="0" left="0" top="0" bottom="0"
 	-->

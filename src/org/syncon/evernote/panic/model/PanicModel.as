@@ -155,7 +155,8 @@ package org.syncon.evernote.panic.model
 		public function sourced( s : String )  :  Boolean
 		{
 			var sourced :  Boolean = false
-			if ( s.indexOf('{') != -1  ) //that is non espaced?  
+			//can't use just { b'c of json items
+			if ( s.indexOf('{http') != -1  ) //that is non espaced?  
 				sourced = true
 				//if index before example is not escaped ... still no goo
 			return sourced

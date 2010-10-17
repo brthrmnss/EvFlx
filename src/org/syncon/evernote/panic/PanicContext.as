@@ -3,6 +3,7 @@ package   org.syncon.evernote.panic
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.external.ExternalInterface;
 	import flash.utils.Timer;
 	
 	import mx.core.FlexGlobals;
@@ -60,7 +61,8 @@ package   org.syncon.evernote.panic
 			
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD_TO_STIRNG,  ExportBoardCommand, null, false );					
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.SAVE_BOARD,  ExportBoardCommand, null, false );		
-			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );			
+			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );	
+			commandMap.mapEvent(AdjustBoardCommandTriggerEvent.VERTICAL_GAP,  AdjustBoardCommand, null, false );				
 			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );	
 
 			commandMap.mapEvent(CreateBoardCommandTriggerEvent.CREATE_BOARD,  CreateBoardCommand, null, false );	
@@ -173,6 +175,9 @@ package   org.syncon.evernote.panic
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.AUTHENTICATE ))
 			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
 				var boardName : String = 'mercy' 
+					
+				var x : Object = FlexGlobals.topLevelApplication.parameters
+		//if run location is not on my machine
 			if ( FlexGlobals.topLevelApplication.parameters != null ) 
 			{
 				if ( FlexGlobals.topLevelApplication.parameters.hasOwnProperty('board') ) 
@@ -180,6 +185,7 @@ package   org.syncon.evernote.panic
 					boardName = FlexGlobals.topLevelApplication.parameters["board"];
 				}
 			}
+		
 			setTimeout( this.dispatchEvent, 1000, 
 				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , true] ) 
 			)
@@ -219,7 +225,37 @@ package   org.syncon.evernote.panic
 			 this.dispatchEvent( new ChangeSkinCommandTriggerEvent(ChangeSkinCommandTriggerEvent.CHANGE_SKIN, 
 				0xFFFFFF, 0  )  )  
 		}
-				
+			
+		/**
+		 * If in browser verify we are in local directly, 
+		 * if local, try to read file 
+		 * */
+		public function runningLocally()  :  Boolean
+		{
+			if (	ExternalInterface.available == false )
+			{
+		/*		import flash.net.URLLoader;
+				import flash.net.URLLoaderDataFormat;
+				import flash.net.URLRequestHeader;
+				import flash.events.Event;				
+				var loader:URLLoader= new URLLoader()
+				loader.dataFormat = URLLoaderDataFormat.TEXT
+				loader.addEventListener(Event.COMPLETE, completeListener);
+				var request:URLRequest = new URLRequest('config.xml');
+				loader.load(  request );				
+				return false */
+				return false
+			}
+			
+			var fullUrl:String = ExternalInterface.call('eval','document.location.href'); 
+			if ( fullUrl.toLowerCase().indexOf('/work/flex4/Panic/bin-debug/' ) == -1  )
+			{
+				return true ;
+			}
+			return false 
+		}
+		
+		
 		
 	}
 }

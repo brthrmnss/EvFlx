@@ -6,8 +6,10 @@ package  org.syncon.evernote.panic.view.popup.management
 	import org.syncon.evernote.basic.controller.EvernoteAPICommandTriggerEvent;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.events.EvernoteServiceEvent;
+	import org.syncon.evernote.panic.controller.AdjustBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
+	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.test.context.utils.MD5Helper;
@@ -17,6 +19,8 @@ package  org.syncon.evernote.panic.view.popup.management
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
+	
+	import spark.components.VGroup;
 	
 	public class BoardManagementPopupMediator extends Mediator
 	{
@@ -110,6 +114,20 @@ package  org.syncon.evernote.panic.view.popup.management
 			}	
 		*/
 			this.board.desc = this.ui.txtDesc.text 
+			var horizontalGap : Number = Number( this.ui.numHorizontalGap.value ) 
+			if ( this.board.horizontalGap != horizontalGap ) 
+			{
+				this.board.horizontalGap = horizontalGap 
+				this.dispatch( new BoardModelEvent( BoardModelEvent.HORIZONTAL_GAP_CHANGED ) ) 
+			}
+			var verticalGap : Number = Number( this.ui.numVerticalGap.value ) 
+			if ( this.board.verticalGap != verticalGap ) 
+			{
+				this.dispatch( new AdjustBoardCommandTriggerEvent( AdjustBoardCommandTriggerEvent.VERTICAL_GAP,
+							this.model.board, verticalGap) ) 
+			//	this.model.boardHolder.layout.gap = verticalGap
+			}			
+			
 		/*	this.board.board_password = this.ui.txtPassword.text; 		
 			this.board.board_admin_password = this.ui.txtAdminPassword.text; 		*/
 			this.dispatch( new PanicModelEvent(PanicModelEvent.CHANGED_PROJECTS ) ) 
@@ -126,6 +144,9 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.ui.txtName.text = this.board.name; 
 			this.ui.txtName.editable = this.board.name != null 
 			this.ui.txtDesc.text = this.board.desc
+			this.ui.numHorizontalGap.value = this.board.horizontalGap 
+			this.ui.numVerticalGap.value = this.board.verticalGap			
+		 
 			/*
 			this.ui.txtPassword.text ='';// this.board.board_password; 
 			this.ui.txtPassword2.text ='';// this.board.board_password; 			

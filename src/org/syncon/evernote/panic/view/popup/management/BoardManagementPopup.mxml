@@ -28,7 +28,8 @@
 			static public var CLOSED_POPUP : String = 'closedPopup'; 
 			
 			static public var CHANGE_BOARD_PASSWORD : String = 'changeBoardPassword'; 
-			static public var CHANGE_ADMIN_PASSWORD : String = 'changeAdminPassword'; 			
+			static public var CHANGE_ADMIN_PASSWORD : String = 'changeAdminPassword'; 
+			
 			override public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -115,6 +116,14 @@
 		 <mx:FormItem label="Description" >
 			 <s:TextArea id="txtDesc"  width="200"/>
 		 </mx:FormItem>
+		 
+		 <mx:FormItem label="Gap" >
+			 <s:NumericStepper id="numHorizontalGap" maximum="40"  toolTip="The whitespace between components in a row"  width="200"/>
+		 </mx:FormItem>		 
+		 
+		 <mx:FormItem label="Row Gap" >
+			 <s:NumericStepper id="numVerticalGap" maximum="40" toolTip="The whitespace between rows"  width="200"/>
+		 </mx:FormItem>				 
 	<!--	 
 		 <mx:FormItem  label="Change Password">
 			 <s:CheckBox id="chkBoardPassword" click="chkBoardPassword_clickHandler(event)" />

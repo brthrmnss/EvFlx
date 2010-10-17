@@ -12,6 +12,7 @@ package org.syncon.evernote.panic.view.utils
 	import org.syncon.evernote.panic.view.PaneWidget;
 	import org.syncon.evernote.panic.view.ProjectListWidget;
 	import org.syncon.evernote.panic.view.TwitterScrollerTest2;
+	import org.syncon.evernote.panic.vo.BoardVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
 	public class PanicLayouts 
@@ -282,7 +283,7 @@ package org.syncon.evernote.panic.view.utils
 			return arr; 
 		}
 		
-		static public function percentageMaker( x : int ) :  String
+		static public function percentageMaker( x : int, title : String = ''  ) :  String
 		{
 			var str : String = ''; 
 			
@@ -290,7 +291,7 @@ package org.syncon.evernote.panic.view.utils
 			for ( var i : int = 0; i < x; i++ ) 
 			{
 				var set : String = '<TextFlow verticalAlign="middle"  textAlign="center" ' +
-					' fontSize="65"  ' +
+					' fontSize="56"  ' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
 			
 				var value :  Number = (Math.random()*100)//.toFixed(2)
@@ -302,6 +303,8 @@ package org.syncon.evernote.panic.view.utils
 					pic = '<img   height="128"  width="128" source="appicons/down.png"/>'
 				
 				var busStuff : Array = []; 
+				busStuff.push(title)
+				busStuff.push('<br />')	
 				busStuff.push(pic)
 				busStuff.push('<br />')		
 				busStuff.push(value.toFixed(2) + '%')		
@@ -312,6 +315,49 @@ package org.syncon.evernote.panic.view.utils
 			return JSON.encode( sets )
 		}		
 		
+		static public function customGradient( x : int = 10, ...args ) :  String
+		{
+			var str : String = ''; 
+			
+			var sets : Array = [] ; 
+			x = Math.random()*x
+			x = Math.min( x, 2 )
+				var ratio : Number = 0 
+				var alpha : Number =1 ; 
+			for ( var i : int = 0; i < x; i++ ) 
+			{
+				
+				var o : Object = {}
+				alpha= Math.random()*3
+				o.color = uint( 0xFFFFFF*Math.random() )
+				o.ratio = ratio
+				o.alpha = Math.min( 1, alpha )	
+				ratio += 1/(x)
+				 sets.push( o )
+			}
+			if ( o != null  ) 
+				o.ratio = 1
+			
+			if ( args.length != 0 ) 
+			{
+				sets =[]; 
+				for (  i  = 0; i < args.length; i++ ) 
+				{
+					  o  = {}
+					alpha= Math.random()*3
+					o.color =args[i]
+					o.ratio = args[i+(args.length/3)]
+					o.alpha =args[i+(2*args.length/3)]
+					sets.push( o )
+				}
+			}
+	/*		sets = [
+				{"color":"#ffffff", "alpha":1, "ratio":0},
+				{"color":"#d2d2d2", "alpha":1, "ratio":0.5},
+				{"color":"#666666", "alpha":1, "ratio":1},
+			]*/
+			return JSON.encode( {colors:sets} )
+		}			
 		
 		
 		static public function makeCalendar( x : int ) :  String
@@ -323,8 +369,8 @@ package org.syncon.evernote.panic.view.utils
 			var df : DateFormatter = new DateFormatter()
 				df.formatString = 'EEEE MM/DD'
 			
-			sets.push('<TextFlow verticalAlign="middle"  textAlign="center" ' +
-					' fontSize="24"  ' +
+			sets.push('<TextFlow verticalAlign="top"  textAlign="center" ' +
+					' fontSize="24" paddingTop="5"  ' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
 				)
 			
@@ -360,17 +406,19 @@ package org.syncon.evernote.panic.view.utils
 			return sets.join( '' ); //JSON.encode( sets )
 		}				
 		
-		static public function superheroPanes( ) :  Array
+		static public function superheroPanes(b:BoardVO ) :  Array
 		{
+			b.horizontalGap = 20; 
+			b.verticalGap = 20; 
 			var arr : Array = []
 			arr = []; 
 			
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><img source="http://www.aux.tv/newmusic/wp-content/uploads/2010/03/conan.jpg" /></p></TextFlow>', '',  15000,  '0', '0'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',   30000,  '0x4D4844', '0x0E0E0E'   ).widgetData,	
+				PaneWidget.importData('Global Alert', '', getImg('appicons/theoffice_steve.jpg', 500, 512 ) ,  '' ,  15000,  '0', '0'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', percentageMaker(3, 'Sign ups'), '',   30000,  '0x4D4844', '0x0E0E0E'   ).widgetData,	
 			])	
-			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
+			arr[arr.length-1][0].test.source = [' ', '', '  ']
 			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img source="'+
 				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
@@ -378,13 +426,17 @@ package org.syncon.evernote.panic.view.utils
 				'"/>'+
 				'</TextFlow>',]
 			arr[arr.length-1][0].test.background = [ 
-				getImg( 'http://www.clemslansing.com/images/blog/BatmanNeonSign_952C/image_thumb.png', 
+				getImg( 'appicons/bat_logo.png', 
 					320, 302 )
 				 ,
 			]			
-				
-				
-				
+			/*	
+			arr.push( [
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0',NaN, customGradient(), 12   ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0',NaN, customGradient(), 12   ).widgetData,
+				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0',NaN, customGradient(0,0xA73131,0xA73131,0x3E3F3A,0x3E3F3A,0,0.14,0.14,1,1,1,1,1), 0   ).widgetData,
+			])					
+			*/	
 			var busStuff : Array = [] ; 
 			var max : int = 5 
 			for ( var i : int = 0; i < max; i++ ) 
@@ -411,23 +463,24 @@ package org.syncon.evernote.panic.view.utils
 				busStuff.push('<br />')					
 			}
 			var busString : String = '<TextFlow verticalAlign="middle"  textAlign="left" ' +
-				' fontSize="36" paddingLeft="50"' +
+				' fontSize="36" paddingLeft="100"' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >'+ 
 						busStuff.join( '' ) + '</TextFlow>'  
 			arr.push( [
-				PaneWidget.importData('Global Alert', '', makeCalendar(6),'', 3000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,
+				PaneWidget.importData('Global Alert', '', makeCalendar(6),'', 3000,  
+					'0x3D3F3C', '0x3D3F3C', NaN,  customGradient(0,0xA73131,0xA73131,0x3E3F3A,0x3E3F3A,0,0.16,0.16,1,1,1,1,1)   ).widgetData,
 				PaneWidget.importData('Global Alert',  '', 
 					busString, 
 					 
 					//'http://www.tvjab.com/wp-content/uploads/2008/04/theoffice_logo.jpg'+
 					getImg('bus1.png', 512, 512),  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',   30000,  '0x4D4844', '0x0E0E0E'   ).widgetData,	
+				PaneWidget.importData('Global Alert', '', percentageMaker(3, 'Income'), '',   30000,  '0x4D4844', '0x0E0E0E'   ).widgetData,	
 			])	
 	 	//3
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
 				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0', '0'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', percentageMaker(3), '',  30000,  '0x4D4844', '0x0E0E0E'  ).widgetData,	
+				PaneWidget.importData('Global Alert', '', percentageMaker(3, 'Yield'), '',  30000,  '0x4D4844', '0x0E0E0E'  ).widgetData,	
 			])	
 			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
 			arr[arr.length-1][0].test.background = []
@@ -480,7 +533,7 @@ package org.syncon.evernote.panic.view.utils
 		{
 			var str : String = ''; 
 			
-			str ='<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+			str ='<TextFlow verticalAlign="top:" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img   source="'+s+'" '
 				if ( w != -1 ) 
 					str += ' width="'+w+'" '

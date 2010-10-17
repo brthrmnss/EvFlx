@@ -8,6 +8,7 @@ package  org.syncon.evernote.panic.view
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
+	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.vo.WidgetVO;
@@ -40,7 +41,9 @@ package  org.syncon.evernote.panic.view
 				
 			ui.addEventListener( EditBorder2.CLICKED_EDIT, onEditClicked ) 		
 			ui.addEventListener( WidgetEvent.AUTOMATE_WIDGET, onAutomateWidget ) 	
-			this.onAutomateWidget(null)					
+			this.onAutomateWidget(null)			
+			eventMap.mapListener( eventDispatcher, BoardModelEvent.HORIZONTAL_GAP_CHANGED, onHorizontalGapChanged ) 	
+			this.onHorizontalGapChanged(null)						
 		}
 		 
 		
@@ -52,6 +55,16 @@ package  org.syncon.evernote.panic.view
 			if ( useSettings.data == null ) 
 				return; 
 			//this.ui.loadedHiehgt = useSettings.height 
+		}
+				
+		
+		public function onHorizontalGapChanged( e : BoardModelEvent )  : void
+		{
+			//return;//
+			//this.ui.content.setStyle('horizontalGap', this.model.board.horizontalGap ) ; 
+			//var x : Object = this.ui.content.getStyle('gap')
+			this.ui.content.gap =  this.model.board.horizontalGap; ;
+			//this.ui.content.setStyle('gap', this.model.board.horizontalGap ) ; 			
 		}
 				
 		

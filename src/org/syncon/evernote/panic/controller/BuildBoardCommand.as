@@ -42,7 +42,7 @@ package   org.syncon.evernote.panic.controller
 				var rowC :  BoardRow = new BoardRow()
 				rowC.percentWidth = 100; 
 				target.addElement( rowC ) 
-				
+				rowC.content.gap = this.model.board.horizontalGap;
 				var hgroup : HGroup = rowC.content 
 				hgroup.percentWidth = 100; 
 				var percentWidth : Number = 100* 1/row.length
@@ -96,6 +96,9 @@ package   org.syncon.evernote.panic.controller
 					
 				}
 			}
+			
+				this.dispatch( new AdjustBoardCommandTriggerEvent( AdjustBoardCommandTriggerEvent.VERTICAL_GAP,
+					this.model.board, this.model.board.verticalGap) ) 			
 			
 		}
  

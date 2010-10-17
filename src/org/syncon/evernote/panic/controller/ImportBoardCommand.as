@@ -77,8 +77,16 @@ package   org.syncon.evernote.panic.controller
 			b.importX( json.board ); 
 			if ( event.fxComplete != null ) 
 			{
-				this.event.fxComplete( b  ) ; 
-				return; 
+				try {
+				this.event.fxComplete( b  ) ;
+				}
+				catch ( e : Error ) 
+				{
+					trace( " could not call the function again" )
+				}
+				//event.fxComplete.call( this  ) 
+				//this.event.fxComplete.apply( this, [ b]  ) ; 
+				return;  
 			}
 			if ( event.compareBoards == false )
 			{

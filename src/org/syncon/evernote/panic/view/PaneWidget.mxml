@@ -22,6 +22,7 @@
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			
+			import spark.core.MaskType;
 			import spark.effects.animation.RepeatBehavior;
 			
 			static public var TAGS_CHANGED : String = 'tagsChanged'				
@@ -98,7 +99,8 @@
 			static public function importData( name : String, desc:String, 
 											   source : String='',    bgSource : String='', refreshTime :  Number=15000, 
 												color1 : String = '', color2 : String = '', 
-											   height : Number = NaN)  :   PaneWidget
+											   height : Number = NaN, customGradient : String = '', 
+											   cornerRadius : int = 12)  :   PaneWidget
 			{
 				var o : Object = {}
 				var vo : WidgetVO = new WidgetVO(WidgetVO.PANE, o); 	
@@ -113,7 +115,8 @@
 				
 				o.color1 = uint( color1 ) 
 				o.color2 = uint( color2 ) 
-				
+				o.customGradient = customGradient
+				o.cornerRadius = cornerRadius		
 				return g ; 				
 			}						
 				
@@ -167,6 +170,7 @@
 				delete animatingTargets[event.effectInstance.target.id];
 			}			
 			
+			[Bindable] public var cornerRadius : int = 12 
 		]]>
 	</fx:Script>
 	<fx:Declarations> 
@@ -179,7 +183,9 @@
 				  autoCenterTransform="true"
 				  effectEnd="effectEndHandler(event)"/>
 	</fx:Declarations>
-	<s:Rect  radiusX="12" radiusY="12"  top="0" right="0" bottom="0" left="0">
+
+	<s:Rect  radiusX="{this.cornerRadius}" radiusY="{this.cornerRadius}" 
+			 top="0" right="0" bottom="0" left="0">
 		<s:fill>
 			<s:LinearGradient  rotation="90" id="gradientBg">
 				<s:GradientEntry  id="color1" color="0x3E4B5C" ratio="0.2"/>
@@ -187,6 +193,18 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
+	<s:Rect  id="bgCustomGradient" visible="false" radiusX="{this.cornerRadius}" radiusY="{this.cornerRadius}" 
+			 top="0" right="0" bottom="0" left="0">
+		<s:fill>
+			<s:LinearGradient  rotation="90" id="gradientBg2">
+				<s:GradientEntry   color="0x051931" ratio="0"/>
+				<s:GradientEntry  color="0x3E4B5C" ratio="0.2"/>
+				<s:GradientEntry  color="0x051931" ratio="1"/>
+				
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+
 <!--	
 	<s:Rect  radiusX="12" radiusY="12"  top="2" right="2" bottom="2" left="2">
 		<s:stroke>
@@ -200,16 +218,36 @@
 		<s:Label text="Transcode"  />
 	</s:VGroup>-->
 	<s:RichText width="100%"   id="txtBg" 
-			 
+				mask="{this.bgMask}" maskType="{MaskType.ALPHA}"
 				fontLookup="embeddedCFF" fontSize="13" renderingMode="cff"
 				paddingBottom="0" paddingLeft="0"  fontFamily="ACaslonProRegularEmbedded"
 				paddingTop="0" paddingRight="0" 
 				/>	
 	<s:RichText width="100%"  id="txt" 
+				mask="{this.bgMask2}"  maskType="{MaskType.ALPHA}"
 				fontLookup="embeddedCFF" fontSize="13" renderingMode="cff"
-				paddingBottom="10" paddingLeft="10"  fontFamily="ACaslonProRegularEmbedded"
-				paddingTop="10" paddingRight="10" 
+				paddingBottom="0" paddingLeft="0"  fontFamily="ACaslonProRegularEmbedded"
+				paddingTop="0" paddingRight="0" 
+			
 				/>
+	<!--backgroundColor="0xFF0000"-->
+	<s:Group  id="bgMask" top="0" right="0" bottom="0" left="0" >
+		<s:Rect visible="true" radiusX="{this.cornerRadius}" radiusY="{this.cornerRadius}" 
+				top="0" right="0" bottom="0" left="0">
+			<s:fill>
+				<s:SolidColor color="0xFFFFFF" />
+			</s:fill>
+		</s:Rect>	
+	</s:Group>
+	<s:Group  id="bgMask2"  top="0" right="0" bottom="0" left="0"  >
+		<s:Rect visible="true" radiusX="{this.cornerRadius}" radiusY="{this.cornerRadius}" 
+				top="0" right="0" bottom="0" left="0">
+			<s:fill>
+				<s:SolidColor color="0xFFFFFF" />
+			</s:fill>
+		</s:Rect>	
+	</s:Group>
+	
 	
 	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

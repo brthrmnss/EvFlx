@@ -13,6 +13,9 @@ package org.syncon.evernote.panic.vo
 		public var admin_name : String = ''; 
 		public var admin_email :  String = ''; 		
 		
+		public var horizontalGap : Number = 5; // NaN;
+		public var verticalGap : Number = 5; // NaN;
+		
 		public var img : String = ''; 		
 		public var people :  Array = []; 
 		public var projects :  Array = []; 				
