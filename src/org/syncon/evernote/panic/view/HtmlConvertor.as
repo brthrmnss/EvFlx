@@ -39,10 +39,12 @@ package  org.syncon.evernote.panic.view
 			if ( textFlow.color == null ) { textFlow.color = defaultColor}
 			if ( textFlow.fontSize == null ) { textFlow.fontSize = size}		
 			
+			var setWeightto : String = 'bold' 
+			//setWeightto = 'normal'; 
 			for each ( var c : Object in textFlow.mxmlChildren ) 
 			{
 				c.fontFamily =  'ACaslonProRegularEmbedded'
-				c.fontWeight =  'normal'
+				c.fontWeight =  setWeightto
 					
 				//if ( c.color == null ) { c.color = defaultColor}	
 				for each ( var c2 : Object in c.mxmlChildren ) 
@@ -51,7 +53,7 @@ package  org.syncon.evernote.panic.view
 					if ( c2 is FlowElement == false ) 
 						continue; 
 					c2.fontFamily =  'ACaslonProRegularEmbedded'
-					c2.fontWeight =  'normal'	
+					c2.fontWeight =  setWeightto
 					//if ( c2.color == null ) { c2.color = defaultColor}	
 					if ( c2.hasOwnProperty('mxmlChildren' ) == false ) continue; 
 					for each ( var c3 : Object in c2.mxmlChildren ) 
@@ -59,7 +61,7 @@ package  org.syncon.evernote.panic.view
 						if ( c3 is FlowElement == false ) 
 							continue; 							
 						c3.fontFamily =  'ACaslonProRegularEmbedded'
-						c3.fontWeight =  'normal'		
+						c3.fontWeight = setWeightto	
 						//if ( c3.color == null ) { c3.color = defaultColor}	
 					}
 				}

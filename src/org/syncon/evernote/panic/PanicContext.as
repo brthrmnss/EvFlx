@@ -6,6 +6,7 @@ package   org.syncon.evernote.panic
 	import flash.external.ExternalInterface;
 	import flash.utils.Timer;
 	
+	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	
 	import org.robotlegs.core.ICommandMap;
@@ -26,6 +27,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.panic.view.utils.AvatarEdit;
 	import org.syncon.evernote.panic.view.utils.AvatarEditMediator;
+	import org.syncon.evernote.panic.view.utils.QueryString;
 	import org.syncon.evernote.services.*;
 	import org.syncon.popups.controller.ShowPopupEvent;
  
@@ -33,6 +35,10 @@ package   org.syncon.evernote.panic
 	{
 		public var preferredLayout : Array ; 
 		public var boardHolder : Object
+		/**
+		 * falg if set, allows debug commands to take places
+		 * */
+		public var debug : Boolean = true; 
 		/*
 		public function set boardHolder ( o : Object ) : void
 		{
@@ -134,7 +140,13 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.SETUP_BOARD, 
 				this.boardHolder ))
-			//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
+			
+			if ( this.debug == false ) 
+			{
+				this.authenticationMode1()
+				return; 
+			}
+				//this.dispatchEvent( new Event( LoadDefaultDataCommand.START ))
 			//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			
 			 //setTimeout( this.dispatchEvent, 500 , new ExportBoardCommandTriggerEvent( ExportBoardCommandTriggerEvent.EXPORT_BOARD ))
@@ -174,21 +186,33 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.AUTHENTICATE ))
 			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
-				var boardName : String = 'mercy' 
-					
+				var boardName : String = '' 
+				var autoLogin : Boolean = false
 				var x : Object = FlexGlobals.topLevelApplication.parameters
+				var ee : QueryString = new QueryString()
+					 
 		//if run location is not on my machine
-			if ( FlexGlobals.topLevelApplication.parameters != null ) 
+	 
+				 if ( ee.valid ) 
+				 {
+					 boardName =ee.parameters.board
+					 var customBoard : String  = ee.parameters.c; 
+					
+					 autoLogin = ee.parameters.auto_login					 
+				 }
+
+			//Alert.show(' '  +  FlexGlobals.topLevelApplication.parameters)
+			if ( this.debug ) 
 			{
-				if ( FlexGlobals.topLevelApplication.parameters.hasOwnProperty('board') ) 
-				{
-					boardName = FlexGlobals.topLevelApplication.parameters["board"];
-				}
-			}
-		
-			setTimeout( this.dispatchEvent, 1000, 
+				setTimeout( this.dispatchEvent, 1000, 
 				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , true] ) 
 			)
+			}
+			else
+			{
+					setTimeout( this.dispatchEvent, 1000, 
+					new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin',[true, boardName, '', '', false, autoLogin] ) 	)			
+			}
 			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true ] )  )
 			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy', '', 'mighty2', true , false] )  ) 
 			/*this.dispatchEvent( new AuthenticateToBoardCommandTriggerEvent( AuthenticateToBoardCommandTriggerEvent.METH1, 

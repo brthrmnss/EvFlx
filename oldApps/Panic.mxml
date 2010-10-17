@@ -29,7 +29,9 @@
 	</fx:Script>
 
 	<fx:Declarations>
-	 	 <panic:PanicContext id="context" contextView="{this}" /> 
+	 	 <panic:PanicContext id="context"
+							 debug="{true}"
+							 contextView="{this}" boardHolder="{this.boardGroup}" /> 
 		
 	</fx:Declarations>
 

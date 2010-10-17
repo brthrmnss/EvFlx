@@ -2,7 +2,7 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 
-@font-face {
+/*@font-face {
 	src: url("fonts/REZB____.TTF");
 	src: url("fonts/AlteHaasGroteskBold.ttf");	
 	
@@ -35,7 +35,44 @@
 	fontFamily: "ACaslonProRegularEmbedded2";
 	
 	embedAsCFF: false;
+}*/
+ 
+
+@font-face {
+	src: url("fonts/Helvetica.ttf");	
+	fontFamily: "ACaslonProRegularEmbedded";
+	embedAsCFF: true;
 }
+@font-face {
+	src: url("fonts/Helvetica Bold.ttf");	
+	fontWeight: bold; 
+	fontFamily: "ACaslonProRegularEmbedded";
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("fonts/Helvetica Oblique.ttf");	
+	fontStyle: italic; 
+	fontFamily: "ACaslonProRegularEmbedded";
+	embedAsCFF: true;
+}
+@font-face {
+	src: url("fonts/Helvetica.ttf");	
+	fontFamily: "ACaslonProRegularEmbedded2";
+	embedAsCFF: false;
+}
+@font-face {
+	src: url("fonts/Helvetica Bold.ttf");	
+	fontWeight: bold; 
+	fontFamily: "ACaslonProRegularEmbedded2";
+	embedAsCFF: false;
+}
+@font-face {
+	src: url("fonts/Helvetica Oblique.ttf");	
+	fontStyle: italic; 
+	fontFamily: "ACaslonProRegularEmbedded2";
+	embedAsCFF: false;
+}
+
  
 s|global {
 	font-family: ACaslonProRegularEmbedded;
@@ -59,10 +96,9 @@ mx|AxisRenderer,
 mx|Label,
 mx|ToolTip,
 mx|ColumnSeries,
-mx|TextInput,
-mx|DataTip
+mx|TextInput
 {
-	font-family: ACaslonProRegularEmbedded2;
+ 	font-family: ACaslonProRegularEmbedded2; 
 }
 /*
 mx|mx.charts.AxisRenderer,

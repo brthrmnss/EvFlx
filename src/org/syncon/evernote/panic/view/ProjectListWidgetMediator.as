@@ -84,11 +84,16 @@ package  org.syncon.evernote.panic.view
 		
 			private function onExportBoard( x : ExportBoardCommandTriggerEvent )  : void
 			{
-				this.dispatch( new  ImportBoardCommandTriggerEvent(
-					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported  )
-				)
+				/*this.dispatch( new  ImportBoardCommandTriggerEvent(
+					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported___x, null, 
+				false, [this, 'onBoardImported___x'] )
+				)*/
+				this.ui.callLater( this.dispatch,  [new  ImportBoardCommandTriggerEvent(
+					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported___x, null, 
+					false, [this, 'onBoardImported___x'] )] )
+					//mak enew command a nd patch this tur
 			}
-				public function onBoardImported( ... args  )  : void
+				public function onBoardImported___x( o : Object, o2 : Object )  : void
 				{
 					return;
 					var testBoard : BoardVO;

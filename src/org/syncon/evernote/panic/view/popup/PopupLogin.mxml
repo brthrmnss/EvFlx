@@ -70,6 +70,7 @@
 				this.show()
 				this.alpha = 1
 				this.visible = true; 
+				//automateBoardName = 'a ' +a.toString()
 				if ( a ) 
 				{	
 					this.meth1 = true; 
@@ -121,6 +122,16 @@
 			}
 			
 
+
+			protected function chkAdmin_changeHandler(event:Event):void
+			{
+			/* 	if ( this.chkAdmin.selected ) 
+					this.currentState = ''
+				else
+					this.currentState = 'board_auth' */
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
 
@@ -136,7 +147,7 @@
 		</s:stroke>
 	</s:Rect>		
  <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader label="Sign in to Board"  bold="false" padding="0"  width="100%"/>
+	 <popup:PopupHeader label="Sign in to RP Board Pre-Alpha"  bold="true"  padding="0"  width="100%"/>
 	 <s:Label id="txtStatus"  text="Please Login..." />
 	 	<mx:Form>
 			<mx:FormItem label="Board Name" >
@@ -150,7 +161,7 @@
 				<s:TextInput id="txtPassword" displayAsPassword="true"   width="200"/>
 			</mx:FormItem>	
 			<mx:FormItem label="  " >
-				<s:CheckBox label="Admin" id="chkAdmin" toolTip="Edit the board configuration, will need to use the admin password" />
+				<s:CheckBox label="Admin" id="chkAdmin" toolTip="Select to login in as Admin and edit the board configuration" change="chkAdmin_changeHandler(event)" />
 			</mx:FormItem>		
 			<s:Group width="100%" >
 				<s:Line width="100%" >

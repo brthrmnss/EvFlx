@@ -203,7 +203,7 @@ package org.syncon.evernote.panic.view.utils
 			
 			arrc  = [ 
 				'<TextFlow verticalAlign="top" textAlign="left" ' +
-				' lineHeight="16"  paddingLeft="10"' +
+				' lineHeight="16"  paddingLeft="10" paddingBottom="10" ' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				''+
 				'<span color="#EEE9E5"  fontSize="64">SPANISH DESIGNS </span><p />'+
@@ -544,5 +544,21 @@ package org.syncon.evernote.panic.view.utils
 			
 			return str
 		}
+		
+		static public function getText( s :  String, w : int=-1, h : int=-1 )  : String
+		{
+			var str : String = ''; 
+			
+			str ='<TextFlow verticalAlign="top:" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+				'<img   source="'+s+'" '
+			if ( w != -1 ) 
+				str += ' width="'+w+'" '
+			if ( h != -1 ) 
+				str += ' height="'+h+'" '						
+			str += '/>'+
+				'</TextFlow>' 
+			
+			return str
+		}		
 	}
 }

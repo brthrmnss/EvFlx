@@ -95,7 +95,7 @@ package  org.syncon.evernote.panic
 		public function customContext() : void
 		{
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
-				PopupLogin, 'PopupLogin',  true ) );
+				PopupLogin, 'PopupLogin',  true,false, true ) );
 			mediatorMap.mapView( PopupLogin , 
 				PopupLoginMediator, null, false, false );		
 			

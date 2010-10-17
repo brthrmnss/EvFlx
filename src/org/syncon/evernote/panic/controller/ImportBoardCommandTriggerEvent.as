@@ -20,7 +20,7 @@ package   org.syncon.evernote.panic.controller
 		public var fxComplete : Function = null; 	
 		public var fxFault : Function = null; 		
 		public var loadIntoModel : Boolean = true; 
-		
+		public var sendTo : Array  = []; 
 		public var output_BoardJson :  Object; // = '' 
 		public var output_BoardString : String; // = '' 
 		/**
@@ -32,7 +32,7 @@ package   org.syncon.evernote.panic.controller
 													   data_ : Object = null, board_name : String = '',
 													   goIntoAdmin_ : Boolean = false, compareBoards_ : Boolean = false, 
 													   fxComplete_ : Function = null,fxFault_ : Function = null,
-													   loadIntoModel_ : Boolean = true)  
+													   loadIntoModel_ : Boolean = true, sendTo : Array=null)  
 		{	
 			this.data = data_
 			this.boardName = board_name  
@@ -40,6 +40,7 @@ package   org.syncon.evernote.panic.controller
 			compareBoards = compareBoards_; 
 			fxComplete = fxComplete_
 			fxFault = fxFault_				
+			this.sendTo = sendTo
 			if ( type == UPDATE_PEOPLE_AND_PROJECTS) 
 				compareBoards = true; 
 			this.loadIntoModel = loadIntoModel_; 

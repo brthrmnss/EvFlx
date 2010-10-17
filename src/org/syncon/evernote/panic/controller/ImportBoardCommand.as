@@ -82,6 +82,12 @@ package   org.syncon.evernote.panic.controller
 				}
 				catch ( e : Error ) 
 				{
+					if ( this.event.sendTo != null ) 
+					{
+						//var objToCall :  Object = this.event.sendTo[0]
+						//var fx :   Function = objToCall[ this.event.sendTo[1] ]
+						//fx.call(objToCall,  b,b )
+					}
 					trace( " could not call the function again" )
 				}
 				//event.fxComplete.call( this  ) 
