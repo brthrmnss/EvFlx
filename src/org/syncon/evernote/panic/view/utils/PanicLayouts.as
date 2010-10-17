@@ -291,7 +291,7 @@ package org.syncon.evernote.panic.view.utils
 			for ( var i : int = 0; i < x; i++ ) 
 			{
 				var set : String = '<TextFlow verticalAlign="middle"  textAlign="center" ' +
-					' fontSize="56"  ' +
+					' fontSize="56"  paddingTop="-10"  paddingBottom="20" ' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
 			
 				var value :  Number = (Math.random()*100)//.toFixed(2)
@@ -370,7 +370,7 @@ package org.syncon.evernote.panic.view.utils
 				df.formatString = 'EEEE MM/DD'
 			
 			sets.push('<TextFlow verticalAlign="top"  textAlign="center" ' +
-					' fontSize="24" paddingTop="5"  ' +
+					' fontSize="24" paddingTop="10"  ' +
 				'xmlns="http://ns.adobe.com/textLayout/2008" >' 
 				)
 			

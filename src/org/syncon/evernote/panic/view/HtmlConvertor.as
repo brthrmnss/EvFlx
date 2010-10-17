@@ -94,6 +94,7 @@ package  org.syncon.evernote.panic.view
 			//return importHtml( txt )	
 			var xml: String = '<TextFlow fontFamily="ACaslonProRegularEmbedded"'+
 		'fontLookup="embeddedCFF"' + ' textAlign="center" ' + 
+		' paddingTop="3" ' + 
 		' color="'+uint+'" fontSize="'+fontSize+'" renderingMode="cff" '+
 		'whiteSpaceCollapse="preserve" xmlns="http://ns.adobe.com/textLayout/2008">'+
 		'<p   fontFamily="ACaslonProRegularEmbedded"  >'+
