@@ -189,9 +189,9 @@ package org.syncon.evernote.panic.view.utils
 				]	*/
  
 				var fields : Array = [
-					{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
-					{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
-					{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
+					{name:'Coda', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
+					{name:'Transmit', value:3, color:'#47C816', tooltip:'Key1 thing'},
+					{name:'Other', value:50, color:'#7652C0', tooltip:'Key1 thing'}
 				]
 				var pie : Object = {pie:fields}				
 				

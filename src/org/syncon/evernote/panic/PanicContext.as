@@ -2,12 +2,14 @@ package   org.syncon.evernote.panic
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
 	import flash.utils.Timer;
 	
 	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
+	import mx.core.UIComponent;
 	
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
@@ -23,6 +25,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.basic.controller.SaveNoteCommandTriggerEvent;
 	import org.syncon.evernote.basic.model.EvernoteAPIModel;
 	import org.syncon.evernote.panic.controller.*;
+	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.panic.view.utils.AvatarEdit;
@@ -35,7 +38,24 @@ package   org.syncon.evernote.panic
 	public class PanicContext extends Context
 	{
 		public var preferredLayout : Array ; 
-		public var boardHolder : Object
+		private var _boardHolder : Object
+		public function set  boardHolder ( b :  UIComponent ) : void
+		{
+			this._boardHolder = b; 
+			b.addEventListener(MouseEvent.CLICK, this.onClickBoard ) 
+		}
+		/**
+		 * please make mediator ... thanks 
+		 * */
+		private function onClickBoard(e:Event):void
+		{
+			if ( e.target == this._boardHolder ){}
+			//trace('clicked'); 
+			if ( e.target != this._boardHolder ) return; 
+			var ee :  BoardModelEvent
+			this.dispatchEvent( new BoardModelEvent( BoardModelEvent.CLICKED_BOARD ) ) 
+		}
+		
 		/**
 		 * falg if set, allows debug commands to take places
 		 * */
@@ -140,7 +160,7 @@ package   org.syncon.evernote.panic
 		public function onInit()  : void
 		{
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.SETUP_BOARD, 
-				this.boardHolder ))
+				this._boardHolder ))
 			//this.debug = false
 			if ( this.debug == false ) 
 			{

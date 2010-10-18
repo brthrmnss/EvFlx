@@ -191,6 +191,15 @@ package  org.syncon.evernote.panic
 				PopupPersonHover, 'PopupPersonHover',  false ) );			
 			
 			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				WidgetGallery, 'WidgetGallery',  true ) );
+			mediatorMap.mapView( WidgetGallery , WidgetGalleryMediator, null, false, false );				
+			
+						
+			
+			
+			
+			
 			/*
 			//commented out b/c it requiers evernote model 
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_AND_CREATE_POPUP, PopupLogin, 'popup_login', 

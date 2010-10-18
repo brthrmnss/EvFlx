@@ -16,7 +16,7 @@
 	<fx:Declarations>
 		<s:Fade id="faFade" duration="500" alphaFrom="0" alphaTo="1" />
 		<s:Fade id="faFadeOut" duration="500" alphaFrom="1" alphaTo="0" />
-	 	<s:Move id="fxMove" duration="500" />
+	 	<s:Move id="fxMove" duration="1000" />
 	</fx:Declarations>
 	
 	<s:transitions>

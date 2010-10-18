@@ -7,7 +7,9 @@ package  org.syncon.evernote.panic.view
 	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.evernote.panic.vo.GalleryWidgetVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	import spark.components.Group;
 	
@@ -37,9 +39,11 @@ package  org.syncon.evernote.panic.view
 			ui.addEventListener(AddWidget.addItem, onClickedHandler ) 		
 			ui.addEventListener('cancelSelect', onCancelHandler ) 	
 			ui.addEventListener('moveWidget', onMoveWidgetHandler ) 		
-
+			ui.addEventListener(AddWidget.SELECT_GALLERY, onSelectGallery ) 	
 			eventMap.mapListener(eventDispatcher, BoardModelEvent.HIGHLIGHT_CERTAIN_ITEMS_SELECTED, 
-				this.onElementSelected);					
+				this.onElementSelected);		
+			eventMap.mapListener(eventDispatcher, BoardModelEvent.CLICKED_BOARD, 
+				this.onElementSelected_isBoard);				
 		}
 		
 		private function onEditModeChanged(e:PanicModelEvent): void
@@ -144,7 +148,23 @@ package  org.syncon.evernote.panic.view
 			}
 		}
 			
+		private function onSelectGallery(e:CustomEvent) : void
+		{
+			 this.dispatch( new ShowPopupEvent( 
+				 	ShowPopupEvent.SHOW_POPUP, 'WidgetGallery' ,[this.fxOnSelectElement]) )  
+		}
+			private function fxOnSelectElement ( e :  GalleryWidgetVO )  : void
+			{
+				
+			}
 		
+		private function onElementSelected_isBoard(e:BoardModelEvent):void
+		{
+			this.onElementSelected( new PanicModelEvent('', this.model.boardHolder )  ) 
+		}
+		/**
+		 * shoulds this be a panic event? 
+		 * */
 		private function onElementSelected(e:PanicModelEvent): void
 		{
 			this.ui.btnCancel.visible = false; 
@@ -196,6 +216,14 @@ package  org.syncon.evernote.panic.view
 		public function getRowOrFindParentRow ( ui :  Object )  : BoardRow
 		{
 			var row : BoardRow; 
+			//if clicked board, add it as the last element
+			if ( ui == this.model.boardHolder ) 
+			{
+				row = new BoardRow()
+				row.percentWidth = 100; 
+				this.model.boardHolder.addElement( row )
+				return row; 
+			}
 			if ( ui is BoardRow ) 
 			{
 				row = (ui as BoardRow)

@@ -27,7 +27,7 @@
 			public var dp : ArrayCollection = new ArrayCollection()
 			
 			static public var addItem : String = ''
-			
+			static public var SELECT_GALLERY : String = 'selectGallery'
 			protected function onInit():void
 			{
 				this.creationComplete = true
@@ -101,6 +101,12 @@
 				this.visible = false; 
 			}
 
+
+			protected function gallery_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( SELECT_GALLERY) ) 
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -155,11 +161,16 @@
 	
 	<s:VGroup  paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
 		<s:Label text="Add Widget" fontSize="16" />
+		<s:Label text="Select the type of widget you want to add:" width="110"/>
+		<mx:Spacer height="15" />
 		<s:List id="list" change="list_changeHandler(event)" 
 				 itemRenderer="org.syncon.evernote.panic.view.add_widget_renderer"
 				borderVisible="false" labelField="label">
 			 
 		</s:List>
+		<view:add_widget_renderer data="{{label:'Gallery'}}" 
+								  toolTip="Select a pre-defined item our gallery"
+								  id="gallery" click="gallery_clickHandler(event)"/>
 		<s:Label  id="lblMessage" color="0xFF0000"  width="100"/>
 		<s:Button  label="Cancel" id="btnCancel" click="btnCancel_clickHandler(event)" />
 	</s:VGroup>
