@@ -82,6 +82,7 @@ s|global {
 s|Button {
 	useHandCursor: true;
 	buttonMode: true; 
+/*	font-weight: bold;*/
 } 
 
 /*

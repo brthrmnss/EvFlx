@@ -77,6 +77,9 @@ package   org.syncon.evernote.panic.controller
 			b.importX( json.board ); 
 			if ( event.fxComplete != null ) 
 			{
+				//shorter name was all that was needed?
+				this.event.fxComplete( b  ) ;
+				/*				
 				try {
 				this.event.fxComplete( b  ) ;
 				}
@@ -84,12 +87,15 @@ package   org.syncon.evernote.panic.controller
 				{
 					if ( this.event.sendTo != null ) 
 					{
-						//var objToCall :  Object = this.event.sendTo[0]
+						var objToCall :  Object = this.event.sendTo[0]
+						if ( this.event.sendTo[1] == 'onBoardImported___x' ) 
+							objToCall.xY(b)
 						//var fx :   Function = objToCall[ this.event.sendTo[1] ]
 						//fx.call(objToCall,  b,b )
 					}
-					trace( " could not call the function again" )
+					trace( " could not call the function again" ) 
 				}
+				*/
 				//event.fxComplete.call( this  ) 
 				//this.event.fxComplete.apply( this, [ b]  ) ; 
 				return;  

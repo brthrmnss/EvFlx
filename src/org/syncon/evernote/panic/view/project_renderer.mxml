@@ -179,6 +179,7 @@
 		</s:SkinnableContainer>
 		<s:Label   id="txtCol2" verticalCenter="0"
 				   color.hovered="0x696969"  
+				   width="100%"  maxDisplayedLines="1"
 				   paddingLeft="5" paddingRight="5"
 				   useHandCursor="true"  buttonMode="true"
 				   color="{colorText}"  />		
@@ -193,8 +194,9 @@
 					skinClass="org.syncon.evernote.panic.view.skins.StatusBoardProjectBackground">
 		</s:SkinnableContainer>
 		<s:Label   id="txtCol3" verticalCenter="0"
-				   color.hovered="0x696969"  
-				    paddingLeft="5" paddingRight="5"
+				   color.hovered="0x696969" 
+				   width="100%"  maxDisplayedLines="1"
+				    paddingLeft="5" paddingRight="5" 
 				   useHandCursor="true"  buttonMode="true"
 				   color="{colorText}"  />	
 		<s:SkinnableContainer right="0" top="0" left="0" bottom="0"  visible="{this.bgVisible}"

@@ -131,6 +131,7 @@
 				timer.start();
 				 */
 				//this.resetMovement()
+				odd = true; 
 					setTimeout( this.resetMovement, 3000 )
 					setTimeout( this.fxFade.play, 3000 )
 			}
@@ -168,6 +169,9 @@
 				/* this.moveIn.xFrom = this.list1.width; 
 				this.moveIn.xTo = -this.list1.width
 					this.moveIn.play( [this.list1 ]);  */
+				fxFade.stop()
+				fxFade.alphaFrom = 0; 
+				fxFade.play([this])
 			}
 			
 			/**

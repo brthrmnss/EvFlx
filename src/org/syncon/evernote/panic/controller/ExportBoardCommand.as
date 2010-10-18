@@ -104,6 +104,7 @@ package   org.syncon.evernote.panic.controller
 			if ( event.type == ExportBoardCommandTriggerEvent.SAVE_BOARD )
 			{
 				if ( event.useUILayout ) this.model.currentBoardLayoutJson = output.board.layout
+				trace(result)
 				this.model.configNote.content = this.apiModel.wrapContent(result )
 				this.dispatch(  
 					EvernoteAPICommandTriggerEvent.UpdateNote( 

@@ -27,6 +27,7 @@ package   org.syncon.evernote.panic
 	import org.syncon.evernote.panic.view.*;
 	import org.syncon.evernote.panic.view.utils.AvatarEdit;
 	import org.syncon.evernote.panic.view.utils.AvatarEditMediator;
+	import org.syncon.evernote.panic.view.utils.PanicLayouts;
 	import org.syncon.evernote.panic.view.utils.QueryString;
 	import org.syncon.evernote.services.*;
 	import org.syncon.popups.controller.ShowPopupEvent;
@@ -140,7 +141,7 @@ package   org.syncon.evernote.panic
 		{
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.SETUP_BOARD, 
 				this.boardHolder ))
-			
+			//this.debug = false
 			if ( this.debug == false ) 
 			{
 				this.authenticationMode1()
@@ -166,47 +167,72 @@ package   org.syncon.evernote.panic
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.LIVE_DATA ))
 			//this.subContext.onInit(); 
 		}		
-		public function importBoardFromString() : void
+		public function importBoardFromString( str :  String = '' ) : void
 		{
 			var exp : String = '{"layout":[[{"type":"graph","labelBottom":"Eccl","name":"Eccles lister","refreshTime":15000,"fillColor":"0xFCBF17","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl2","name":"Eccles lister","refreshTime":15000,"fillColor":"0x47C816","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl3","name":"Eccles lister","refreshTime":15000,"fillColor":"0xFF3D19","source":"","labelTop":"89/6"},{"type":"graph","labelBottom":"Eccl4","name":"Eccles lister","refreshTime":15000,"fillColor":"0x7652C0","source":"","labelTop":"89/6"}],[{"type":"projectList","labelBottom":"Eccl","name":"Eccles lister","refreshTime":-1,"labelTop":"89/6","source":"","description":""}],[{"type":"spacer"}],[{"type":"message","name":"Global Alert","source":"25 Days until tswitter launch","refreshTime":15000}],[{"type":"spacer"}],[{"type":"pane","color1":5064772,"color2":921102,"name":"Global Alert","source":"Something1","refreshTime":15000},{"type":"pane","color1":4082524,"color2":334129,"name":"Global Alert","source":"2Something1","refreshTime":15000},{"type":"pane","color1":4013884,"color2":4013884,"name":"Global Alert","source":"3Something1","refreshTime":15000}],[{"type":"spacer"}],[{"type":"twitterScroller","refreshTime":15000,"name":"Twitter Pane","source":"Panic Board","description":"..."}]],"name":""}'
 			exp = '{"board":{"name":"mercy","layout":[[{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":16563991,"max":100,"source":"56","labelBottom":"Eccl"},{"type":"graph","labelTop":"89/6","refreshTime":15000,"name":"Eccles lister","fillColor":4704278,"max":100,"source":"99","labelBottom":"Eccl2"},{"type":"graph","labelTop":"{http://city-21.com/php/random_number.php}/100","refreshTime":15000,"name":"Eccles lister","fillColor":16727321,"max":100,"source":"{http://city-21.com/php/random_number.php}","labelBottom":"Ec3 - {http://city-21.com/php/random_string.php?f=8}"},{"type":"graph","labelTop":"12/100","refreshTime":15000,"name":"Eccles lister","fillColor":7754432,"max":100,"source":"12","labelBottom":"Eccl4"}],[{"height":355,"type":"projectList","refreshTime":15000,"name":"Project Lister","source":""}],[{"type":"spacer"}],[{"type":"message","refreshTime":15000,"name":"Global Alert","source":"25 Days until tswitter launch"}],[{"type":"spacer"}],[{"type":"pane","color2":921102,"color1":5064772,"refreshTime":15000,"name":"Global Alert","source":"Something1"},{"type":"pane","color2":334129,"color1":4082524,"refreshTime":15000,"name":"Global Alert","source":"2Something1"},{"type":"pane","color2":4013884,"color1":4013884,"refreshTime":15000,"name":"Global Alert","source":"3Something1"}],[{"type":"spacer"}],[{"refreshTime":15000,"type":"twitterScroller","name":"Twitter Pane","source":"Panic Board","description":"..."}]]},"projects":[{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA c","bA b","A d"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA d","bA c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":[],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["bA b","A d","cd Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","bA d","cA b","d Y"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["A d","cA d","A c"],"desc":"coda is coda","ppl":[]},{"col2":"march","name":"Coda","col3":"error","img":"a.jpg","people_names":["cA c","cA d"],"desc":"coda is coda","ppl":[]}],"people":[{"name":"A b","src":"GIF/D03 copy.gif","desc":"","email":"","twitter":""},{"name":"A c","src":"GIF/E03 copy.gif","desc":"","email":"","twitter":""},{"name":"A d","src":"GIF/E02 copy.gif","desc":"","email":"","twitter":""},{"name":"d Y","src":"GIF/A04 copy.gif","desc":"","email":"","twitter":""},{"name":"bA b","src":"GIF/I02 copy.gif","desc":"","email":"","twitter":""},{"name":"bA c","src":"GIF/FC01 copy.gif","desc":"","email":"","twitter":""},{"name":"bA d","src":"GIF/D01 copy.gif","desc":"","email":"","twitter":""},{"name":"bd Y","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cA b","src":"GIF/A03 copy.gif","desc":"","email":"","twitter":""},{"name":"cA c","src":"GIF/A05 copy.gif","desc":"","email":"","twitter":""},{"name":"cA d","src":"GIF/N02 copy.gif","desc":"","email":"","twitter":""},{"name":"cd Y","src":"GIF/E05 copy.gif","desc":"","email":"","twitter":""}]}'
+			if ( str != '' ) 
+				exp = str 
 			this.dispatchEvent( new ImportBoardCommandTriggerEvent( 
 									ImportBoardCommandTriggerEvent.IMPORT_BOARD, exp, '', true ))				
 							
 				//this.dispatchEvent( new Event( LoadDefaultDataCommand.LIVE_DATA ))
 			//this.subContext.onInit(); 
 		}
-		public function importBoardFromObjects() : void
+		public function importBoardFromObjects( desiredLayout :  Array=null) : void
 		{
+			var layout : Array = desiredLayout
+			if ( this.preferredLayout != null ) 
+				layout = this.preferredLayout; 
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent(
-				LoadDefaultDataTriggerEvent.START, null, this.preferredLayout ))
+				LoadDefaultDataTriggerEvent.START, null, layout ))
 		}		
 	 
 		public function authenticationMode1() : void
 		{
 			this.dispatchEvent( new LoadDefaultDataTriggerEvent( LoadDefaultDataTriggerEvent.AUTHENTICATE ))
-			this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
+			//this.dispatchEvent( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true] )  ) 
 				var boardName : String = '' 
 				var autoLogin : Boolean = false
 				var x : Object = FlexGlobals.topLevelApplication.parameters
 				var ee : QueryString = new QueryString()
-					 
+				var boardFile : String = ''; 	 
 		//if run location is not on my machine
 	 
+				//http://rpboard.s3.amazonaws.com/PanicPublishBuild.html
+				//file:///G:/My%20Documents/work/flex4/Panic/bin-debug/Panic.html?board=miss&board_x=appdata/twitter.json
+				//file:///G:/My%20Documents/work/flex4/Panic/bin-debug/Panic.html?board=miss&auto=testArraySourcing
 				 if ( ee.valid ) 
 				 {
 					 boardName =ee.parameters.board
 					 var customBoard : String  = ee.parameters.c; 
-					
+					boardFile = ee.parameters.board_x
+					var autoMo : String = ee.parameters.auto
 					 autoLogin = ee.parameters.auto_login					 
 				 }
-
+				 if ( boardFile != null && boardFile != '' ) 
+				 {
+					 loadBoardFile(boardFile)
+					 return; 
+				 }
+				 if ( autoMo != null   ) 
+				 {
+					//trace(autoMo);
+					 if ( PanicLayouts[autoMo] != null  ) 
+					 {
+						  //Alert.show('boo');
+						 importBoardFromObjects(PanicLayouts[autoMo]())
+					 	return; 
+					 }
+					// Alert.show('boo');
+				 }				 
+				// Alert.show('boo');
 			//Alert.show(' '  +  FlexGlobals.topLevelApplication.parameters)
 			if ( this.debug ) 
 			{
 				setTimeout( this.dispatchEvent, 1000, 
 				new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,  'PopupLogin', [true, 'mercy1', '', '12121212', true , true] ) 
-			)
+				)
 			}
 			else
 			{
@@ -279,7 +305,22 @@ package   org.syncon.evernote.panic
 			return false 
 		}
 		
+		private function loadBoardFile(file : String ) : void
+		{
+			import flash.net.URLLoader;
+			import flash.net.URLLoaderDataFormat;
+			import flash.net.URLRequest;
+			import flash.events.Event;				
+			var loader:URLLoader= new URLLoader()
+			loader.dataFormat = URLLoaderDataFormat.TEXT
+			loader.addEventListener(Event.COMPLETE, onLoadedBoardFile);
+			var request:URLRequest = new URLRequest( file );
+			loader.load(  request );				
+		}
 		
-		
+			private function onLoadedBoardFile(e:Event) : void
+			{
+				this.importBoardFromString( e.currentTarget.data ) 	
+			}
 	}
 }

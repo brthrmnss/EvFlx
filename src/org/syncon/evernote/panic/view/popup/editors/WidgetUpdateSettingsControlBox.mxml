@@ -10,7 +10,7 @@
 			public var creationComplete : Boolean = false; 
 			
 			private var config : WidgetVO = new WidgetVO(); 
-			
+			[Bindable] public var minTime : Number = 3000
 			public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -26,11 +26,13 @@
 			public function set dataX ( a :  WidgetVO )  : void
 			{
 				this.config = a; 	
-				this.txtTime.text = int( a.refreshTime/1000 ).toString()
+				this.txtTime.value = int( a.refreshTime/1000 )//.toString()
 			}
 			public function get time ()  : Number
 			{
-				return Number( this.txtTime.text )*1000
+				var time_ : Number = Number( this.txtTime.value )*1000
+				time_ = Math.min( time_, this.minTime ) 
+				return time_
 			}
 		]]>
 	</fx:Script>
@@ -46,7 +48,8 @@
 	
 	<s:HGroup  verticalAlign="middle"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 		<s:Label text="Update Time (seconds )" />
-		<s:TextInput id="txtTime" />
+		<s:NumericStepper  id="txtTime" minimum="{this.minTime}" maximum="600" />
+		<!--<s:TextInput id="txtTime" />-->
 		<!--<s:Button label="Refresh" click="button1_clickHandler(event)" />-->
 	</s:HGroup>
 	

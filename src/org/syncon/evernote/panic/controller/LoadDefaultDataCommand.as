@@ -149,144 +149,23 @@ package   org.syncon.evernote.panic.controller
 			var board : BoardVO = new BoardVO()
 			board.name = 'blickem'
 			
-			arr.push( [
-				 
-				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
-				GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Eccl2', 99, 100, 0x47C816,'', 15000).widgetData,
-			 
-				GraphWidget.importData('Eccles lister', '', 
-					'{http://city-21.com/php/random_number.php}/100',
-					'Ec3 - {http://city-21.com/php/random_string.php?f=8}',
-					'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
-				GraphWidget.importData('Eccles lister', '', '12/100', 'Eccl4', 12, 100, 0x7652C0 , '', 15000).widgetData
-				])
-			/*arr[arr.length-1][0].test.background = [ 
-				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img  width="64" height="64" source="http://1.bp.blogspot.com/_TXuSIB9pJ-w/SG1MF_8aAlI/AAAAAAAAAAc/AqZh74YD2cw/s1600-R/tux-fal-64x64-transparent.png"/>'+
-				'</TextFlow>',
-			]	*/
-		 
-			arr.push( [
-				GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Eccl1', 56, 100, 0xFCBF17,'', 3000).widgetData,
-			])
-		 	 
-			var fields : Array = [
-				{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
-				{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
-				{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
-			]
-			var pie : Object = {pie:fields}				
-				
-			
-			
-			var fields2 : Array = [
-				{name:'Key1', value:89, color:'#FCBF17', tooltip:'Key1 thing'},
-				{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
-				{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
-				{name:'Key2', value:3, color:'#666666', tooltip:'Key1 thing'},				
-				{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
-			]
-			var pie2 : Object = {pie:fields2}				
-								
-				
-			var series : Array = [
-				{name:'Profit',  color:'#FCBF17', tooltip:'Key1 thing'},
-				{name:'Expenses',  color:'#47C816', tooltip:'Key1 thing'},
-				{name:'Amount',   color:'#FF3D19', tooltip:'Key1 thing'}
-			]
-				Math.random()
-			var data : Array = [
-				{ Month: "Jan", Profit: 2000, Expenses: Math.random()*1500, Amount: 450 },
-				{ Month: "Feb", Profit:Math.random()* 1000, Expenses: Math.random()*200, Amount: 600 },
-				{ Month: "Mar", Profit: 1500, Expenses: Math.random()*1500, Amount: 300 },
-				{ Month: "Apr", Profit: Math.random()* 1800, Expenses: Math.random()*1200, Amount: 900 },
-				{ Month: "May", Profit: 2400, Expenses: Math.random()*575, Amount: 500 }
-			]				
-			var lineChart : Object = {line:{'data':data,'series':series}}						
-				var ee : JSON
-				//55,
-				//JSON.encode( lineChart ),
-			arr[arr.length-1][0].test.source = [ 
-				JSON.encode( lineChart ) , 
-			 	JSON.encode( pie ),
-			 	JSON.encode( pie2 )
-			]	
-			arr[arr.length-2][0].test.source = [ 
-				JSON.encode( lineChart ) , 
-				JSON.encode( pie ),
-				JSON.encode( pie2 )
-			]						
-			arr.push( [
-				new WidgetVO( WidgetVO.SPACER )
-			])		
-			arr.push( [
-				ProjectListWidget.importData('Project Lister', '', 355, 3000*10).widgetData,
-			])			
-			arr.push( [
-				new WidgetVO( WidgetVO.SPACER )
-			])			
-				
-			/*	 */
-			
-			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
-			])	
-			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
-			arr[arr.length-1][0].test.source = [ 
-				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
-				'<span color="#EEE9E5"> 25 DAYS </span>'+
-				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
-			]
-								
-				
-			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, 400).widgetData,
-			])	
-			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
-			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">ThiAdded <a>link</a> fo.<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',
-				'<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Have you seen this person? <a>link</a><img width="300" height="300" source="gif/A02 copy.gif"/><p/>If so, call security x2929</TextFlow>',
-				]
 		
-			/*	*/
-			
-			arr.push( [
-				new WidgetVO( WidgetVO.SPACER )
-			])		
-			
-			arr.push( [
-				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>', '',  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
-				PaneWidget.importData('Global Alert', '', '3Something1', '',  15000,  '0x3D3F3C', '0x3D3F3C'  ).widgetData,	
-				PaneWidget.importData('Global Alert', '', '<b>•Custom Flex and ColdFusion Web Application Development</b><br/><b>• Custom AIR Desktop Application Development</b><br/><b>•Business Systems Analysis and Implementation</b>', '',  3000,  '0', '0x3D3F3C'  ).widgetData,				
-			])	
-			arr[arr.length-1][0].test.source = ['mtg @ 5', 'Be there or be square', 'drinks provided']
-			arr[arr.length-1][0].test.background = ['<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img source="'+
-				'http://icons.mysitemyway.com/wp-content/gallery/magic-marker-icons-transport-travel/116455-magic-marker-icon-transport-travel-transportation-van1.png'+
-				//'bus.png'+
-				'"/>'+
-				'</TextFlow>',]
-			arr[arr.length-1][0].test.background = [ 
-				'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
-				'<img  width="180" height="180" source="bus1.png"/>'+
-				'</TextFlow>',
-			]				
-			arr.push( [ new WidgetVO( WidgetVO.SPACER ) ])	
-			arr.push( [
-				TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  15000).widgetData,
-			])		
 			PanicLayouts.randomPic = this.randomPic
 			PanicLayouts.randomX  = this.model.random
+			
+			arr = PanicLayouts.original()
+		//	board.horizontalGap = 10; 
+			//arr = PanicLayouts.panicExtension()
 			/*
 			arr = PanicLayouts.tooMuchTwitter();
 			arr = PanicLayouts.panesX(); 
 			arr = PanicLayouts.allWidgets(); 			
 			*/
+				
 			//arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
 			//arr = PanicLayouts.testArraySourcing(); 	
-			arr = PanicLayouts.superheroPanes(board)
+			//arr = PanicLayouts.superheroPanes(board)
 			//test for original sub contexts, they can be set externally 
 			if ( event.preferredLayout != null ) 
 				arr = event.preferredLayout; 
@@ -310,16 +189,16 @@ package   org.syncon.evernote.panic.controller
 			people.push( 	new PersonVO( 'Christina O. Bowden', '', '', '', PersonVO.getRandomPic() )  ) 				
 			
 			var projects : Array = []; 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 8,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'gif/A01 copy.gif"', this.randSet( 12,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
-			projects.push( new ProjectVO('Coda', 'coda is coda', 'march', 'error', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 				
+			projects.push( new ProjectVO('Transmit', 'coda is coda', '', '', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Unision', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 8,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Coda', 'coda is coda', '', '', [], 'http://www.veryicon.com/icon/32/Application/Office%20Round/Microsoft%20Project.png', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Twitter', 'coda is coda', '', '', [], 'gif/A01 copy.gif"', this.randSet( 12,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Reddit', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Ipad', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Dell', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Tekken', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('Smurf', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 
+			projects.push( new ProjectVO('J++', 'coda is coda', '', '', [], 'a.jpg', this.randSet( 4,0, people, 'id' ) ) ) 				
 			board.projects = projects
 				
 			this.model.board = board; 

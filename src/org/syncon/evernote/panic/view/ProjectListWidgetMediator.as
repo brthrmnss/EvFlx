@@ -41,7 +41,7 @@ package  org.syncon.evernote.panic.view
 				this.onRefresh );	
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PROJECTS, 
 				this.onRefresh );	
-			
+			eventMap.mapListener( eventDispatcher, 	ImportBoardCommandTriggerEvent.OUT, onBoardImported___x )
 		}
 		 
 		
@@ -82,28 +82,35 @@ package  org.syncon.evernote.panic.view
 			//var x : Object =  ObjectUtil.copy( this.makeUpTestBoard() ) 
 		}
 		
+		public function xY(s:Object) : void
+		{
+			trace();
+			this.onBoardImported___x( s )
+		}
+		
 			private function onExportBoard( x : ExportBoardCommandTriggerEvent )  : void
 			{
 				/*this.dispatch( new  ImportBoardCommandTriggerEvent(
 					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported___x, null, 
 				false, [this, 'onBoardImported___x'] )
 				)*/
+				
 				this.ui.callLater( this.dispatch,  [new  ImportBoardCommandTriggerEvent(
-					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, onBoardImported___x, null, 
+					ImportBoardCommandTriggerEvent.IMPORT_BOARD, x.result, '', false, false, xY, null, 
 					false, [this, 'onBoardImported___x'] )] )
 					//mak enew command a nd patch this tur
 			}
-				public function onBoardImported___x( o : Object, o2 : Object )  : void
+				public function onBoardImported___x( o : Object, o2 : Object =null )  : void
 				{
-					return;
-					var testBoard : BoardVO;
+				//	return;
+					var testBoard : BoardVO = o as BoardVO;
 					for each (   var project : ProjectVO   in testBoard.projects )
 					{
 						if ( Math.random() > 0.3 )
 						{
 							continue
 						}
-						project.name = ( Math.random()*100000).toString()
+						//project.name = ( Math.random()*100000).toString()
 							
 						if ( Math.random() > 0.3 )
 						{
@@ -117,6 +124,14 @@ package  org.syncon.evernote.panic.view
 						{
 							project.img =this.model.random( this.model.projectPics ).toString()
 						}		
+						if ( Math.random() > 0.3 )
+						{
+							project.status =this.model.random( ['testing', 'debug', 'planning', 'analysis','', '', '',  'awaiting approval', 'approved', 'cancelled', 'delayed'] ).toString()
+						}		
+						if ( Math.random() > 0.3 )
+						{
+							project.status2 =this.model.random( ['mtg @'+int(Math.random()*12).toString(), 'need funding', 'where\s bill?','', '', '',  '...', 'focus group'  ] ).toString()
+						}								
 						
 						/*if ( Math.random() > 0.3 )
 						{*/

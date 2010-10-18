@@ -16,7 +16,8 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
 			
-			import org.syncon.evernote.basic.vo.MenuVO;			
+			import org.syncon.evernote.basic.vo.MenuVO;
+			import org.syncon.evernote.panic.view.utils.TwitterString;			
 			
 			[Bindable]
 			public var publicTimeline:ArrayCollection;			
@@ -46,6 +47,9 @@
 					var m :   MenuVO = new MenuVO()
 						m.name = a.from_user;
 						m.name = a.text
+							//var ee : TwitterString = new TwitterString()
+							m.name =	TwitterString.instance.parseTweet( m.name )
+						//m.name = ee.parseTweet( m.name )
 						m.data = a.profile_image_url
 						m.data
 					arr2.push( m ) 

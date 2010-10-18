@@ -12,6 +12,7 @@ package   org.syncon.evernote.panic.controller
 		static public var IMPORT_FROM_GUID_BOARD : String = 'IMPORT_FROM_GUID_BOARD'		
 			
 		static public var UPDATE_PEOPLE_AND_PROJECTS : String = 'updatePeopleAndProjects'
+		static public var OUT : String = 'outX'
 			
 		public var data : Object; 
 		public var boardName : String = ''; 
