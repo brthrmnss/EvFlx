@@ -16,7 +16,7 @@
 	<fx:Declarations>
 		<s:Fade id="faFade" duration="500" alphaFrom="0" alphaTo="1" />
 		<s:Fade id="faFadeOut" duration="500" alphaFrom="1" alphaTo="0" />
-	 
+	 	<s:Move id="fxMove" duration="500" />
 	</fx:Declarations>
 	
 	<s:transitions>
@@ -130,6 +130,7 @@
 			
 			public function set textTop( s : String )  : void
 			{
+				if ( this.lblTop != null )
 				this.lblTop.text = s.toUpperCase()
 			}			
 			
@@ -155,6 +156,11 @@
 					this.expenses.getItemAt(0).Expenses = s
 						
 				this.chart.dataProvider = this.expenses; 
+				
+				var pushDown : Number = this.chart.height*Number(s)/100
+				//lblTop.y =  (this.measuredHeight - 36- 35) -	(  pushDown)
+				this.fxMove.yTo =  (this.measuredHeight - 36- 35) -	(  pushDown)
+				this.fxMove.play([this.lblTop]) 
 			}
 			
 			public function set maximum ( s : Object )  : void
@@ -327,13 +333,13 @@
 		
 	
 	 
-	<s:Label text="..." fontSize="36" id="lblTop" />
+	<mx:Spacer height="36" />
 		
 		<s:VGroup includeIn="normal"  id="holderForGraphAndhrLine" gap="-3"    horizontalAlign="center" >
 			
 		
 	<mx:BarChart height="80"    id="chart"  seriesFilters="[]"
-				 alpha.normal="1" alpha="0"   
+				 alpha.normal="1" alpha="0"    alpha.pieChart="0" alpha.lineChart="0"
 				  dataProvider="{expenses}"  >
 		<mx:backgroundElements>
 		</mx:backgroundElements>
@@ -508,6 +514,8 @@
 	<s:Label  id="lblBottom" text="Transcode"  maxDisplayedLines="1"   />
 	</s:VGroup>
 	
-	
+	<s:Label text="..." fontSize="36" id="lblTop" 
+			 includeIn="normal"
+			 horizontalCenter="0" />
 	<view:EditBorder id="editBorder" edit="{this}" />
 </s:Group>

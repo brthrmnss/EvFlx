@@ -179,7 +179,7 @@ package org.syncon.evernote.panic.view.utils
 						'{http://city-21.com/php/random_number.php}/100',
 						'Unison',
 						'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
-					GraphWidget.importData('Eccles lister', '', '12/100', 'candybar', 20, 100, 0x7652C0 , '', 15000).widgetData,
+					GraphWidget.importData('Eccles lister', '', '20/100', 'candybar', 20, 100, 0x7652C0 , '', 15000).widgetData,
 					GraphWidget.importData('Eccles lister', '', '12/100', 'general', 12, 100, 0x117CFA , '', 15000).widgetData
 				])
 				/*arr[arr.length-1][0].test.background = [ 
@@ -198,11 +198,11 @@ package org.syncon.evernote.panic.view.utils
 				
 				
 				var fields2 : Array = [
-					{name:'Key1', value:89, color:'#FCBF17', tooltip:'Key1 thing'},
-					{name:'Key2', value:3, color:'#47C816', tooltip:'Key1 thing'},
-					{name:'Key1', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
-					{name:'Key2', value:3, color:'#666666', tooltip:'Key1 thing'},				
-					{name:'Key3', value:50, color:'#7652C0', tooltip:'Key1 thing'}
+					{name:'New', value:89, color:'#FCBF17', tooltip:'Key1 thing'},
+					{name:'Upgrades', value:3, color:'#47C816', tooltip:'Key1 thing'},
+					{name:'Downgrades', value:89, color:'#FF3D19', tooltip:'Key1 thing'},
+					{name:'Conversions', value:3, color:'#666666', tooltip:'Key1 thing'},				
+					{name:'Abandon', value:50, color:'#7652C0', tooltip:'Key1 thing'}
 				]
 				var pie2 : Object = {pie:fields2}				
 				
@@ -244,7 +244,12 @@ package org.syncon.evernote.panic.view.utils
 				/*	 */
 				
 				arr.push( [
-					MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000).widgetData,
+					MessageWidget.importData('Global Alert', '',  
+						'<TextFlow verticalAlign="middle" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+						'<img y="20"  paddingTop="10" width="32" height="32" source="http://www.iconarchive.com/icons/icontexto/webdev/32/webdev-alert-icon.png"/>'+
+						'<span color="#EEE9E5"> 25 DAYS </span>'+
+						'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span></TextFlow>',
+						 5000).widgetData,
 				])	
   
 				arr.push( [
@@ -253,7 +258,9 @@ package org.syncon.evernote.panic.view.utils
 				
 				arr.push( [
 					PaneWidget.importData('Global Alert', '', percentageMaker(3, ''),'', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
-					PaneWidget.importData('Global Alert', '', '<TextFlow  xmlns="http://ns.adobe.com/textLayout/2008"><p ><span>Ein kritischer Blick in die Nachbarschaft:</span></p></TextFlow>',getImg('bus1.png', 512, 512),  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
+					PaneWidget.importData('Global Alert', '', 
+						makeBus(),
+						getImg('bus1.png', 512, 512),  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
 					PaneWidget.importData('Global Alert', '', makeCalendar(6),'', 3000,  
 						'0x3D3F3C', '0x3D3F3C', NaN,  customGradient(0,0xA73131,0xA73131,0x3E3F3A,0x3E3F3A,0,0.16,0.16,1,1,1,1,1)   ).widgetData,
 					
@@ -597,8 +604,40 @@ package org.syncon.evernote.panic.view.utils
 			]*/
 			return JSON.encode( {colors:sets} )
 		}			
-		
-		
+		static public function makeBus( x : int=0 ) :  String
+		{
+		var busStuff : Array = [] ; 
+		var max : int = 5 
+		for ( var i : int = 0; i < max; i++ ) 
+		{
+			var busNumber : String =  '<img   height="32"  width="32" source="'+randomPic()+'"/>' 
+			busStuff.push(busNumber)
+			var busWaitTime : String = '<span> ' 
+			if ( Math.random() < 0.7 )
+			{
+				var mins : Number = int((Math.random()*60)) 
+				busWaitTime += int((Math.random()*5)).toString() + ':'
+				if ( mins < 10 ) busWaitTime += '0' 
+				busWaitTime += int(mins).toString()  
+				
+			}
+			else
+			{
+				busWaitTime += int((Math.random()*60)).toString() + ' Min'
+			}
+			busWaitTime += '</span>'
+			busStuff.push(busWaitTime )
+			
+			if ( i < max-1 ) 
+				busStuff.push('<br />')					
+		}
+		var busString : String = '<TextFlow verticalAlign="middle"  textAlign="left" ' +
+			' fontSize="36" paddingLeft="100" ' +
+			'xmlns="http://ns.adobe.com/textLayout/2008" >'+ 
+			busStuff.join( '' ) + '</TextFlow>' 
+			
+		return busString; 
+	}
 		static public function makeCalendar( x : int ) :  String
 		{
 			var str : String = ''; 
@@ -676,35 +715,8 @@ package org.syncon.evernote.panic.view.utils
 				PaneWidget.importData('Global Alert', '', 'Something1','', 3000,  '0', '0',NaN, customGradient(0,0xA73131,0xA73131,0x3E3F3A,0x3E3F3A,0,0.14,0.14,1,1,1,1,1), 0   ).widgetData,
 			])					
 			*/	
-			var busStuff : Array = [] ; 
-			var max : int = 5 
-			for ( var i : int = 0; i < max; i++ ) 
-			{
-				var busNumber : String =  '<img   height="32"  width="32" source="'+randomPic()+'"/>' 
-				busStuff.push(busNumber)
-				var busWaitTime : String = '<span> ' 
-				if ( Math.random() < 0.7 )
-				{
-					var mins : Number = int((Math.random()*60)) 
-					busWaitTime += int((Math.random()*5)).toString() + ':'
-					if ( mins < 10 ) busWaitTime += '0' 
-					busWaitTime += int(mins).toString()  
-							
-				}
-				else
-				{
-					busWaitTime += int((Math.random()*60)).toString() + ' Min'
-				}
-				busWaitTime += '</span>'
-				busStuff.push(busWaitTime )
-				
-					if ( i < max-1 ) 
-				busStuff.push('<br />')					
-			}
-			var busString : String = '<TextFlow verticalAlign="middle"  textAlign="left" ' +
-				' fontSize="36" paddingLeft="100" ' +
-				'xmlns="http://ns.adobe.com/textLayout/2008" >'+ 
-						busStuff.join( '' ) + '</TextFlow>'  
+			
+				var busString : String = makeBus(); 
 			arr.push( [
 				PaneWidget.importData('Global Alert', '', makeCalendar(6),'', 3000,  
 					'0x3D3F3C', '0x3D3F3C', NaN,  customGradient(0,0xA73131,0xA73131,0x3E3F3A,0x3E3F3A,0,0.16,0.16,1,1,1,1,1)   ).widgetData,
