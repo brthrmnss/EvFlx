@@ -192,8 +192,8 @@ package  org.syncon.evernote.panic
 			
 			
 			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
-				WidgetGallery, 'WidgetGallery',  true ) );
-			mediatorMap.mapView( WidgetGallery , WidgetGalleryMediator, null, false, false );				
+				WidgetGalleryPopup, 'WidgetGallery',  true ) );
+			mediatorMap.mapView( WidgetGalleryPopup , WidgetGalleryMediator, null, false, false );				
 			
 						
 			

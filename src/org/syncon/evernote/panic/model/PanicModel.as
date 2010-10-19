@@ -27,6 +27,7 @@ package org.syncon.evernote.panic.model
 	import org.syncon.evernote.model.Notebook2;
 	import org.syncon.evernote.model.Tag2;
 	import org.syncon.evernote.panic.controller.BuildBoardCommand;
+	import org.syncon.evernote.panic.controller.BuildBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.ExportBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.controller.LoadDataSourceCommandTriggerEvent;
 	import org.syncon.evernote.panic.view.BoardRow;
@@ -110,7 +111,7 @@ package org.syncon.evernote.panic.model
 		public function refreshBoard()  : void
 		{
 			//this.editMode = false; 
-			this.dispatch( new Event(  BuildBoardCommand.BUILD_BOARD  ) ) 
+			this.dispatch( new BuildBoardCommandTriggerEvent(  BuildBoardCommandTriggerEvent.BUILD_BOARD  ) ) 
 			this.dispatch( new PanicModelEvent( PanicModelEvent.REFRESH_BOARD, this._board ) )
 			
 		}

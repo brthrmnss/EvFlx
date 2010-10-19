@@ -216,7 +216,7 @@
 			id="txtTxt" fontSize="12" updateComplete="{this.onChangeText()}" condenseWhite="true"
 	        color="0" fontWeight="bold"  width="450" height="356"   />
 		<s:HGroup id="hbo" horizontalAlign="center" width="100%">
-	        <mx:Button label="OK" styleName="goButton" click="close()" id="btnOk" bottom="0" />
+	        <s:Button label="OK"  click="close()" id="btnOk" bottom="0" />
 		</s:HGroup>
 		
 	</s:VGroup>   		

@@ -161,8 +161,8 @@ package   org.syncon.evernote.panic.controller
 			arr = PanicLayouts.panesX(); 
 			arr = PanicLayouts.allWidgets(); 			
 			*/
-				
-			//arr = PanicLayouts.oneTwitter(); 	
+			arr = PanicLayouts.panesX(); 	
+			arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
 			//arr = PanicLayouts.testArraySourcing(); 	
 			//arr = PanicLayouts.superheroPanes(board)

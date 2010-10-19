@@ -88,7 +88,8 @@ package   org.syncon.evernote.panic
 			
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.EXPORT_BOARD_TO_STIRNG,  ExportBoardCommand, null, false );					
 			commandMap.mapEvent(ExportBoardCommandTriggerEvent.SAVE_BOARD,  ExportBoardCommand, null, false );		
-			commandMap.mapEvent(BuildBoardCommand.BUILD_BOARD,  BuildBoardCommand, null, false );	
+			commandMap.mapEvent(BuildBoardCommandTriggerEvent.ADD_TO_BOARD,  BuildBoardCommand, null, false );	
+			commandMap.mapEvent(BuildBoardCommandTriggerEvent.BUILD_BOARD,  BuildBoardCommand, null, false );	
 			commandMap.mapEvent(AdjustBoardCommandTriggerEvent.VERTICAL_GAP,  AdjustBoardCommand, null, false );				
 			commandMap.mapEvent(LoadDataSourceCommandTriggerEvent.LOAD_SOURCE,  LoadDataSourceCommand, null, false );	
 

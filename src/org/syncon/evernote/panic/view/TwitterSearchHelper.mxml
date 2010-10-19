@@ -47,6 +47,8 @@
 					var m :   MenuVO = new MenuVO()
 						m.name = a.from_user;
 						m.name = a.text
+							m.name = '&lt; '
+						//m.name = makeSpecialChars(m.name ); 
 							//var ee : TwitterString = new TwitterString()
 							m.name =	TwitterString.instance.parseTweet( m.name )
 						//m.name = ee.parseTweet( m.name )
@@ -96,6 +98,17 @@
 			public function get query ()  : String
 			{
 				return this._query; 
+			}
+			
+			private function makeSpecialChars(item:Object):String {
+				return item.toString().replace(/&#\d+;/gi, replaceFunc);
+			}
+			
+			private function replaceFunc():String {
+				var s:String = arguments[0];
+				s = s.substring(2, s.length - 1);
+				s = String.fromCharCode(parseInt(s));
+				return s;
 			}
 		]]>
 	</fx:Script>

@@ -128,7 +128,7 @@ package org.syncon.evernote.panic.view.utils
 			
 			
 			arr.push( [
-				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, 400).widgetData,
+				MessageWidget.importData('Global Alert', '', '25 Days until tswitter launch {http://city-21.com/php/random_number.php}' , 5000, NaN).widgetData,
 			])	
 			arr[arr.length-1][0].test.source = ['s', 'd', 'x']
 			arr[arr.length-1][0].test.source = ['loveless', '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008">Satisfaction<img width="300" height="300" source="gif/A01 copy.gif"/></TextFlow>',

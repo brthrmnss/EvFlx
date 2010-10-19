@@ -97,7 +97,8 @@ mx|AxisRenderer,
 mx|Label,
 mx|ToolTip,
 mx|ColumnSeries,
-mx|TextInput
+mx|TextInput,
+mx|TextArea
 {
  	font-family: ACaslonProRegularEmbedded2; 
 }

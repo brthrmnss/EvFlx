@@ -12,10 +12,11 @@ package   org.syncon.evernote.panic.view.popup.utils
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
+	import org.syncon.popups.controller.default_commands.ShowAlertMessageTriggerEvent;
 	
 	public class WidgetGalleryMediator extends Mediator
 	{
-		[Inject] public var ui:  WidgetGallery;
+		[Inject] public var ui:  WidgetGalleryPopup;
 		[Inject] public var model :  PanicModel;
 		
 		public function WidgetGalleryMediator()
@@ -25,30 +26,28 @@ package   org.syncon.evernote.panic.view.popup.utils
 		
 		override public function onRegister():void
 		{
-			//this.ui.addEventListener( AvatarEdit.EditAvatar, this.onEditAvatar) 
+			 this.ui.addEventListener( WidgetGalleryPopup.SELECT_WIDGET, this.onSelectWidget) 
 		}
- /*
-		private function onEditAvatar(e:CustomEvent) : void
+ 
+		private function onSelectWidget(e:CustomEvent) : void
 		{
-			avatar = e.data as AvatarEdit; 
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PictureChooser', [this.model.peoplePics, this.pickedPicture] )  )  				
+			if ( this.ui.selectedWidget == null ) 
+			{
+				this.dispatch( new ShowAlertMessageTriggerEvent(ShowAlertMessageTriggerEvent.SHOW_ALERT_POPUP, 
+					'Select an Item First'  )  	)
+				return; 
+			}
+			//this.hide()
+			//this.alpha = 0.6
+			//this.bgSquare.visible = true; 
+			//this.txtAdding.visible = true; 
+			this.ui.fxFade.play([this.ui.bgSquare, this.ui.txtAdding])
+			//this.completeFx( this.selectedWidget ) ; 
+			setTimeout( this.ui.hide, 1500 );
+			setTimeout( this.ui.completeFx, 500, ui.selectedWidget );
+			import flash.utils.setTimeout; 		
 		}			
-			
-		private var avatar : AvatarEdit; 
-		
-		private function pickedPicture(s: String) : void
-		{
-			this.avatar.source = s; 				
-		}			
-				*/
-		 /*
-		private function onEditProject(e:CustomEvent) : void
-		{
-			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
-				'PopupEditProject', [e.data] )  )  				
-		}				
- */
+	 
  
 	}
 }

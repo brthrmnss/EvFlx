@@ -14,9 +14,9 @@ package org.syncon.evernote.panic.vo
 		public var name :  String = ''
 		public var src :  String = ''; 
 		public var desc :  String = ''; 		
-		public var data :   Object = null; 				
+		public var data :    Array = null; 				
 		public function GalleryWidgetVO( name_ : String='', desc : String = '', 
-								     src : String = '' , data_ : Object = null  ) 
+								     src : String = '' , data_ : Array = null  ) 
 		{
 			this.name = name_
 			 this.desc = desc

@@ -7,7 +7,9 @@
 					  implements="org.syncon.popups.view.IPopup"
 					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 					  >
-
+	<fx:Declarations>
+		<s:Fade duration="500" alphaFrom="0"  alphaTo="0.8"  id="fxFade"/>
+	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
@@ -16,6 +18,7 @@
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.view.utils.PanicLayouts;
+			import org.syncon.evernote.panic.view.utils.PanicLayoutsPieces;
 			import org.syncon.evernote.panic.vo.GalleryWidgetVO;
 			import org.syncon.evernote.panic.vo.PersonVO;
 			import org.syncon.evernote.panic.vo.ProjectVO;
@@ -29,16 +32,18 @@
 			public var completeFx : Function; 
 			public var selectedWidget :  GalleryWidgetVO = new GalleryWidgetVO(); 
 			
+			static public var SELECT_WIDGET : String = 'selectWidget' 
+			
 			override public function onInit() : void 
 			{
 				this.creationComplete = true; 
 				this.popupCode.center()
 				
-				var ee : PanicLayouts
-				var options : Array = [new GalleryWidgetVO('John', 'bone', 'asdf.jpg', 
+				var ee :  PanicLayoutsPieces
+				var options : Array = [new GalleryWidgetVO('Too much twitter', 'bone', 'appicons/2muchtwitter.png', 
 					PanicLayouts.tooMuchTwitter() ), 
-					new GalleryWidgetVO('John', 'bone', 'asdf.jpg', 
-						PanicLayouts.tooMuchTwitter() )
+					new GalleryWidgetVO('Header', 'bone', 'appicons/header.png', 
+						PanicLayoutsPieces.largeHeader() )
 				] 	
 				this.list1.dataProvider = new ArrayList(options)					
 					
@@ -46,7 +51,7 @@
 			
 			override public  function create(app:Object)  : IPopup
 			{
-				var popup:  WidgetGallery = new WidgetGallery()
+				var popup:  WidgetGalleryPopup = new WidgetGalleryPopup()
 				popup.popupCode = PopupCode.Create( popup, app ) 
 				return popup			
 			} 
@@ -59,12 +64,13 @@
 			public function open(  completeFx : Function)  : void
 			{
 				this.popupCode.open( false, true ) 
-						
+				this.txtAdding.visible = false; 	
+				this.bgSquare.visible = false; 
 				this.completeFx = completeFx
 				this.selectedWidget = null; 
 				//this.popupCode.moveToComponent( goToUi, 'tr', false , false, true, 0, -300 ) 
 			 	this.txtSelectedWidget.text = ''; 
-				 
+				this.btnSelect.enabled = false; 
 			}
 			
 			 /**
@@ -84,14 +90,15 @@
 
 			protected function btnSelect_clickHandler(event:MouseEvent):void
 			{
-				this.completeFx( this.selectedWidget.data ) ; 
-				this.hide()
+				this.dispatchEvent( new CustomEvent( WidgetGalleryPopup.SELECT_WIDGET, this.selectedWidget ) ) 
 			} 
 
 			protected function list1_changeHandler(event:IndexChangeEvent):void
 			{
 				this.selectedWidget = this.list1.dataProvider.getItemAt( event.newIndex ) as GalleryWidgetVO
 				this.txtSelectedWidget.text = this.selectedWidget.name; 
+				this.btnSelect.enabled = true; 
+				//select a button above ...
 			}
 
 		]]>
@@ -99,10 +106,11 @@
 
 	<editors:PopupBg />
 	
- <s:VGroup   paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+ <s:VGroup   width="100%" paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
  
 	 <popup:PopupHeader  bold="false"   label="Widget Galery"  id="header" padding="0"  width="100%"/>
- 	<s:Label text="Pre-defined Widgets and sets" />
+ 
+	 <s:Label text="Pre-defined Widgets and sets" />
 	 <mx:Spacer height="15" />
 	 <s:List id="list1" itemRenderer="org.syncon.evernote.panic.view.popup.utils.widget_gallery_renderer" 
 			 width="100%" height="300"
@@ -124,8 +132,18 @@
 	 </s:HGroup>
 
  </s:VGroup>
+	<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
+	<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
+					   right="5" top="10" />
+	
+	<s:Group id="bgSquare"  alpha="0.6" height="100%" width="100%">
+		<s:Rect top="0" left="0" bottom="0" right="0" >
+			<s:fill>
+				<s:SolidColor color="0xFFFFFF" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Label text="Adding..."   fontWeight="bold" fontSize="24" id="txtAdding" verticalCenter="0" horizontalCenter="0" />
+	
 
-		<utils:CloseBtn  label="X" click="btnClose_clickHandler(event)" right="0" top="0" />
-		<utils:IconButton  label="X"  iconSkin=".closeBtn" click="btnClose_clickHandler(event)" 
-						   right="5" top="10" />
 </popup:PopupBase>

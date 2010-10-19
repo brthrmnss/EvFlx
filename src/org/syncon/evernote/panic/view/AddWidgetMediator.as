@@ -4,6 +4,7 @@ package  org.syncon.evernote.panic.view
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.BuildBoardCommandTriggerEvent;
 	import org.syncon.evernote.panic.model.BoardModelEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
@@ -155,7 +156,12 @@ package  org.syncon.evernote.panic.view
 		}
 			private function fxOnSelectElement ( e :  GalleryWidgetVO )  : void
 			{
-				
+				var row : BoardRow; 
+				row = getRowOrFindParentRow( this.model.boardHolder  )
+				this.dispatch( new BuildBoardCommandTriggerEvent( 
+					BuildBoardCommandTriggerEvent.ADD_TO_BOARD, this.model.boardHolder, 
+					e.data, false ) 
+					)
 			}
 		
 		private function onElementSelected_isBoard(e:BoardModelEvent):void

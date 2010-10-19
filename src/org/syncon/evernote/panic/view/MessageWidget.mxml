@@ -143,6 +143,11 @@
 			public function hideEdit()  : void
 			{
 				this.editBorder.hide()
+			}		
+			
+			override public function set height(n:Number)  : void
+			{
+				super.height = n; 
 			}					
 		]]>
 	</fx:Script>
@@ -152,7 +157,7 @@
 			<s:Parallel>
 				<s:Fade  targets="{[this.lblMessage3, this.lblMessage4]}"  duration="1100"/>
 				<s:Animate target="{this.ticker}"  duration="1100"/>
-				<s:Resize targets="{[this.lblMessage3, this.lblMessage4, this]}"  duration="1100"/>
+				<s:Resize targets="{[this.lblMessage3, this.lblMessage4]}"  duration="1100"/>
 				<s:Resize target="{this.ticker}"  duration="1100"/>
 				<s:AnimateTransitionShader target="{ticker}" duration="1100"
 					shaderByteCode="@Embed(source='org/syncon/evernote/panic/view/utils/HexCells.pbj',

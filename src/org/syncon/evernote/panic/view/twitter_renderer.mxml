@@ -56,13 +56,16 @@
 			  alpha.hovered="0.6"   alpha="0.8" 
 			  useHandCursor="true"  buttonMode="true"
 			  width="20" height="20"  />
-<!--	<s:Label   id="txtLbl"
+	<!--
+	<s:Label   id="txtLbl"
 			 color.hovered="0x696969"  paddingRight="90"
 			   useHandCursor="true"  buttonMode="true"
-			   />-->
+			   />
+	-->
 	<mx:Label id="txtLbl"
 			  color.hovered="0x696969"  paddingRight="90"
 			  useHandCursor="true"  buttonMode="true"
 			  />
+	
 	<s:Label id="lblVariable"  color="0xfefefe"   />
 </s:ItemRenderer>

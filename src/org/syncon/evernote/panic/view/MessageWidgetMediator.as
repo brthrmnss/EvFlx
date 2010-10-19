@@ -28,7 +28,7 @@ package  org.syncon.evernote.panic.view
 		override public function automateWidget(  settings : WidgetVO )  : void
 		{
 			this.source( settings.source, this, 'message',  null , settings.test.source );
-			this.ui.height = settings.height ; 
+			//this.ui.height = settings.height ; */
 			//this.model.source( settings.source, this, 'message', null , settings.test.source )
 		}
 		
