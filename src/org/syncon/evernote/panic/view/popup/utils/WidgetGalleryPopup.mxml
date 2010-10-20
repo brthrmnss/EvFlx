@@ -17,6 +17,7 @@
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.utils.LoadFile;
 			import org.syncon.evernote.panic.view.utils.PanicLayouts;
 			import org.syncon.evernote.panic.view.utils.PanicLayoutsPieces;
 			import org.syncon.evernote.panic.vo.GalleryWidgetVO;
@@ -40,13 +41,30 @@
 				this.popupCode.center()
 				
 				var ee :  PanicLayoutsPieces
-				var options : Array = [new GalleryWidgetVO('Too much twitter', 'bone', 'appicons/2muchtwitter.png', 
-					PanicLayouts.tooMuchTwitter() ), 
-					new GalleryWidgetVO('Header', 'bone', 'appicons/header.png', 
-						PanicLayoutsPieces.largeHeader() )
+				var options : Array = [
+					new GalleryWidgetVO('Header', 
+						'A header with giant text, fill it with the organization\'s name',
+						'appicons/header.png', 
+						PanicLayoutsPieces.largeHeader() ),
+					new GalleryWidgetVO('Graphs', 
+						'A collection of 5 bar graphs',
+						'appicons/5xgraphs.png', 
+						PanicLayoutsPieces.barGraph5Row )		,		
+					new GalleryWidgetVO('3 x 3 Pane',  
+						'A collection of 3 colums of 3 panes',
+						'appicons/3x3pane.png', 
+						PanicLayoutsPieces.pane3x3() ),		
+					new GalleryWidgetVO('3 Random Color Pane', 
+						'A collection of 3 colums of 3 panes with random gradients',
+						'appicons/3 pane.png', 
+						PanicLayoutsPieces.random3ColorPane  )	,	
+					new GalleryWidgetVO('Too much twitter', 
+						'A collection of 10 twitter windows', 
+						'appicons/2muchtwitter.png', 
+						PanicLayoutsPieces.tooMuchTwitter() ), 					
 				] 	
 				this.list1.dataProvider = new ArrayList(options)					
-					
+				
 			}
 			
 			override public  function create(app:Object)  : IPopup
@@ -71,6 +89,8 @@
 				//this.popupCode.moveToComponent( goToUi, 'tr', false , false, true, 0, -300 ) 
 			 	this.txtSelectedWidget.text = ''; 
 				this.btnSelect.enabled = false; 
+				
+				this.list1.selectedIndex = -1; 
 			}
 			
 			 /**
@@ -125,10 +145,10 @@
 			 <s:SolidColorStroke color="0x666666" />
 		 </s:stroke>
 	 </s:Line>
-	 <s:HGroup verticalAlign="middle">
+	 <s:HGroup verticalAlign="middle" width="100%" horizontalAlign="right">
 		<!-- <utils:Avatar id="pic" />-->
 		 <s:Label  id="txtSelectedWidget" />
-		 <s:Button label="Select"  id="btnSelect" click="btnSelect_clickHandler(event)" />
+		 <s:Button label="Add"  id="btnSelect" click="btnSelect_clickHandler(event)" />
 	 </s:HGroup>
 
  </s:VGroup>

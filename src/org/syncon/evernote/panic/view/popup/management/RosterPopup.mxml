@@ -158,10 +158,11 @@
 		</s:fill>	
 	</s:Rect>		
 	-->
- <s:VGroup    paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+ <s:VGroup   
+	  horizontalAlign="right"
+	 paddingTop="10" paddingBottom="20" paddingRight="10" paddingLeft="10" >
 	 <popup:PopupHeader  id="lblHeader" bold="false"  label="Company Roster"   padding="0"  width="100%"/>
 	 <s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
-		 <s:Label  id="txtLength" />
 		 <s:TextInput width="150"   id="txtSearch" change="txtSearch_changeHandler(event)"/>
 		 <!--<s:Button label="Search" id="btnSearch" />-->
 		 <utils:IconButton label="Search"  id="btnSearch" click="txtSearch_changeHandler()"
@@ -176,7 +177,7 @@
 						click="btnAdd_clickHandler(event)" right="10" top="10" />-->
 	 <s:List id="list1" 
 			 itemRenderer="org.syncon.evernote.panic.view.popup.management.person_roster_renderer" 
-			 width="400"   height="405" change="list1_changeHandler(event)"
+			 width="405"   height="415" change="list1_changeHandler(event)"
 			 contentBackgroundAlpha="0"  borderVisible="false">
 		 <s:layout>
 			 <!--<utils:FilteredTileLayout id="filterLayout" filteredItems="{filteredItems}"
@@ -185,6 +186,7 @@
 			 <s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>
 		 </s:layout>
 	 </s:List>
+	 <s:Label  id="txtLength" />
  </s:VGroup>
 
 		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />

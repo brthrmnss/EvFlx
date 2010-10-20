@@ -156,11 +156,16 @@ package  org.syncon.evernote.panic.view
 		}
 			private function fxOnSelectElement ( e :  GalleryWidgetVO )  : void
 			{
+				var prop : Object = e.data; 
+				if ( prop is Function ) 
+					var instructions : Array = prop() as Array
+				else
+					instructions = prop as Array
 				var row : BoardRow; 
 				row = getRowOrFindParentRow( this.model.boardHolder  )
 				this.dispatch( new BuildBoardCommandTriggerEvent( 
 					BuildBoardCommandTriggerEvent.ADD_TO_BOARD, this.model.boardHolder, 
-					e.data, false ) 
+					instructions, false ) 
 					)
 			}
 		

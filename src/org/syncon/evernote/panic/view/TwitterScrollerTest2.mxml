@@ -131,6 +131,9 @@
 				timer.start();
 				 */
 				//this.resetMovement()
+				this.list1.invalidateDisplayList()
+				this.list2.invalidateDisplayList()
+					
 				odd = true; 
 					setTimeout( this.resetMovement, 3000 )
 					setTimeout( this.fxFade.play, 3000 )
@@ -157,6 +160,7 @@
 			{
 				this.list1.invalidateDisplayList()
 				this.list2.invalidateDisplayList()
+					
 				if ( anim.isPlaying )
 			 		this.anim.stop()
 				else

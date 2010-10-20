@@ -154,6 +154,7 @@ package   org.syncon.evernote.panic.controller
 			PanicLayouts.randomX  = this.model.random
 			
 			arr = PanicLayouts.original()
+			board.horizontalGap = 20
 		//	board.horizontalGap = 10; 
 			//arr = PanicLayouts.panicExtension()
 			/*
@@ -161,11 +162,11 @@ package   org.syncon.evernote.panic.controller
 			arr = PanicLayouts.panesX(); 
 			arr = PanicLayouts.allWidgets(); 			
 			*/
-			arr = PanicLayouts.panesX(); 	
-			arr = PanicLayouts.oneTwitter(); 	
+			//arr = PanicLayouts.panesX(); 	
+			//arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
-			//arr = PanicLayouts.testArraySourcing(); 	
-			//arr = PanicLayouts.superheroPanes(board)
+			arr = PanicLayouts.testArraySourcing(); 	
+			arr = PanicLayouts.superheroPanes(board)
 			//test for original sub contexts, they can be set externally 
 			if ( event.preferredLayout != null ) 
 				arr = event.preferredLayout; 

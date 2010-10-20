@@ -29,13 +29,14 @@ package  org.syncon.evernote.panic.view.utils {
 		}
  
 		private function parseHyperlinks1(t:String):String {
-			var urlPattern:RegExp = new RegExp("&lt;", "g")
+		var urlPattern:RegExp = new RegExp("&lt;", "g")
 			var result:String = t.replace(urlPattern, "<");
-	/*		  urlPattern = new RegExp("&gt;", "g")
-				 for each ( var i : int =0; i < patterns.length; i++) in ['&gt;', '&amp;'] )
+			/*	
+				 for each ( var i : int =0; i < patterns.length; i++) i//n ['&gt;', '&amp;'] )
 				 {
-					  result = result.replace(urlPattern, ">");			
-				 }*/
+					 urlPattern.
+					  result = result.replace( new RegExp(find[i], "gi"), replace[i]);			
+				 } */
 			return result;
 		}
 		

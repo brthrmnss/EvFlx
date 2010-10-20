@@ -160,7 +160,12 @@
 					  click="btnMove_clickHandler(event)"/>
 	
 	<s:VGroup  paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10" >
-		<s:Label text="Add Widget" fontSize="16" />
+		<s:Label text="Add Widget"  fontWeight="bold" fontSize="16" />
+		<s:Line width="100%" >
+			<s:stroke>
+				<s:SolidColorStroke color="0x666666" />
+			</s:stroke>
+		</s:Line>
 		<s:Label text="Select the type of widget you want to add:" width="110"/>
 		<mx:Spacer height="15" />
 		<s:List id="list" change="list_changeHandler(event)" 
@@ -168,6 +173,11 @@
 				borderVisible="false" labelField="label">
 			 
 		</s:List>
+		<s:Line width="100%" >
+			<s:stroke>
+				<s:SolidColorStroke color="0x666666" />
+			</s:stroke>
+		</s:Line>
 		<view:add_widget_renderer data="{{label:'Gallery'}}" 
 								  toolTip="Select a pre-defined item our gallery"
 								  id="gallery" click="gallery_clickHandler(event)"/>

@@ -43,6 +43,80 @@ package org.syncon.evernote.panic.view.utils
 					
 			return arr
 		}		
+		
+		
+		
+		
+		static public function tooMuchTwitter( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			
+			for ( var i : int = 0; i < 10; i++ ) 
+			{
+				arr.push( [
+					TwitterScrollerTest2.importData('Twitter Pane', '...', 'Panic Board',  60000).widgetData,
+				])		
+			}
+			
+			return arr
+		}				
+		
+		
+		static public function random3ColorPane( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			
+			for ( var i : int = 0; i < 3; i++ ) 
+			{
+				
+				arr.push( 
+					PaneWidget.importData('Global Alert', '', '','', 3000,  '0', '0',NaN, PanicLayouts.customGradient(), 12   ).widgetData
+				)		
+			}
+			
+			return [arr]
+		}				
+		
+		
+		
+		static public function barGraph5Row( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			var colors : Array = [0xFCBF17,0x47C816,0xFF3D19,0x7652C0,0x117CFA]; 
+			for ( var i : int = 0; i < 5; i++ ) 
+			{
+				var val : int = 100*Math.random()
+				arr.push( 
+					GraphWidget.importData('Graph', 'Desc', val.toString()+'/100', 'Graph', val, 100, colors[i],'', 60*1000).widgetData 
+				)		
+			}
+			
+			return [arr]
+		}			
+		
+		static public function pane3x3( ) :  Array
+		{
+			var arr : Array = []
+			arr = []; 
+			var colors : Array = [0xFCBF17,0x47C816,0xFF3D19,0x7652C0,0x117CFA]; 
+			for ( var i : int = 0; i < 3; i++ ) 
+			{
+				var row : Array = [] 
+				arr.push( row ) 
+				for ( var y: int = 0; y< 3; y++ ) 
+				{
+					row.push( 
+						PaneWidget.importData('', '', '','', 60*1000,  '0x4D4844', '0x0E0E0E'  ).widgetData 
+					)		
+				}
+			}
+			
+			return  arr 
+		}			
+		
 		 
 	}
 }

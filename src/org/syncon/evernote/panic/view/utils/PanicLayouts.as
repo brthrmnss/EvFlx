@@ -172,14 +172,17 @@ package org.syncon.evernote.panic.view.utils
 				var arr : Array = []
 				arr.push( [
 					
-					GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Transmit', 56, 100, 0xFCBF17,'', 3000).widgetData,
+					GraphWidget.importData('Eccles lister', 'Initial Stats', '89/6', 'Transmit', 56, 100, 0xFCBF17,'', 10*1000).widgetData,
 					GraphWidget.importData('Eccles lister', 'Brickman Stats', '89/6', 'Coda', 50, 100, 0x47C816,'', 15000).widgetData,
 					
 					GraphWidget.importData('Eccles lister', '', 
 						'{http://city-21.com/php/random_number.php}/100',
 						'Unison',
-						'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15000).widgetData,
-					GraphWidget.importData('Eccles lister', '', '20/100', 'candybar', 20, 100, 0x7652C0 , '', 15000).widgetData,
+						'{http://city-21.com/php/random_number.php}', 100, 0xFF3D19, '', 15*1000).widgetData,
+					GraphWidget.importData('Eccles lister', '', 
+						'{http://city-21.com/php/random_number.php}/100',
+						'candybar',
+						'{http://city-21.com/php/random_number.php}', 100, 0x7652C0 , '', 17*1000).widgetData,
 					GraphWidget.importData('Eccles lister', '', '12/100', 'general', 12, 100, 0x117CFA , '', 15000).widgetData
 				])
 				/*arr[arr.length-1][0].test.background = [ 
@@ -235,7 +238,7 @@ package org.syncon.evernote.panic.view.utils
 					  SpacerWidget.importData( '', '', 5 ).widgetData 
 				])		*/
 				arr.push( [
-					ProjectListWidget.importData('Project Lister', '', 355, 3000*10).widgetData,
+					ProjectListWidget.importData('Project Lister', '', 355, 33*1000).widgetData,
 				])			
 				arr.push( [
 					new WidgetVO( WidgetVO.SPACER )
@@ -257,7 +260,7 @@ package org.syncon.evernote.panic.view.utils
 				])		
 				
 				arr.push( [
-					PaneWidget.importData('Global Alert', '', percentageMaker(3, ''),'', 3000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
+					PaneWidget.importData('Global Alert', '', percentageMaker(3, ''),'', 20*1000,  '0x4D4844', '0x0E0E0E'  ).widgetData,
 					PaneWidget.importData('Global Alert', '', 
 						makeBus(),
 						getImg('bus1.png', 512, 512),  15000,  '0x3E4B5C', '0x051931'  ).widgetData,
@@ -561,13 +564,13 @@ package org.syncon.evernote.panic.view.utils
 			return JSON.encode( sets )
 		}		
 		
-		static public function customGradient( x : int = 10, ...args ) :  String
+		static public function customGradient( x : int = 6, ...args ) :  String
 		{
 			var str : String = ''; 
 			
 			var sets : Array = [] ; 
 			x = Math.random()*x
-			x = Math.min( x, 2 )
+			x = Math.max( x, 2 )
 				var ratio : Number = 0 
 				var alpha : Number =1 ; 
 			for ( var i : int = 0; i < x; i++ ) 

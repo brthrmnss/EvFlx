@@ -47,7 +47,7 @@
 					var m :   MenuVO = new MenuVO()
 						m.name = a.from_user;
 						m.name = a.text
-							m.name = '&lt; '
+						//	m.name = '&lt; '
 						//m.name = makeSpecialChars(m.name ); 
 							//var ee : TwitterString = new TwitterString()
 							m.name =	TwitterString.instance.parseTweet( m.name )

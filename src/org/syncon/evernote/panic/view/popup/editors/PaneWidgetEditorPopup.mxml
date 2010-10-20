@@ -82,11 +82,11 @@
 		<popup:PopupHeader  bold="false"   label="Edit Pane"  padding="0"  width="100%"/>
 		
 		<mx:Form>
-			<mx:FormItem label="Text" >
+			<mx:FormItem label="Text Source" >
 				<s:TextInput id="txtMessage" width="200" 
 							 toolTip="Text source for the top layer" />
 			</mx:FormItem>
-			<mx:FormItem label="Bg" >
+			<mx:FormItem label="Bg Source" >
 				<s:TextInput id="txtMessageBg" width="200" 
 							 toolTip="Text source for the bottom layer" />
 			</mx:FormItem>			
@@ -99,13 +99,13 @@
 			</mx:FormItem>
 			<mx:FormItem label="Custom Gradient" >
 				<s:TextInput id="txtCustomGradientBg" width="200" 
-							 toolTip="Define more elaborate gradients" />
+							 toolTip="Define more elaborate gradients, overrides the colors used agoave" />
 			</mx:FormItem>		
 			<mx:FormItem label="Corner Radius" >
 				<s:NumericStepper id="txtCornerRadius" width="200"  minimum="0" maximum="100"
 							 toolTip="How round to make corners?" />
 			</mx:FormItem>					
-			<editors:WidgetUpdateSettingsControlBox id="timer" />
+			<editors:WidgetUpdateSettingsControlBox id="timer"  width="100%"/>
 			<mx:FormItem>
 				<s:HGroup>
 					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />

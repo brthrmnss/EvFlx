@@ -1,5 +1,7 @@
 package   org.syncon.evernote.panic.view.popup.utils
 {
+	import flash.events.Event;
+	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -9,6 +11,7 @@ package   org.syncon.evernote.panic.view.popup.utils
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
 	import org.syncon.evernote.panic.view.utils.AvatarEdit;
+	import org.syncon.evernote.panic.view.utils.LoadFile;
 	import org.syncon.evernote.panic.vo.ProjectVO;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
@@ -26,9 +29,29 @@ package   org.syncon.evernote.panic.view.popup.utils
 		
 		override public function onRegister():void
 		{
-			 this.ui.addEventListener( WidgetGalleryPopup.SELECT_WIDGET, this.onSelectWidget) 
+			 this.ui.addEventListener( WidgetGalleryPopup.SELECT_WIDGET, this.onSelectWidget)
+			 var	d :   LoadFile = new LoadFile( 
+				 'gallery.json', 
+				 this.onRecievedFiles, this.onReciedevedFilesFault )
 		}
- 
+ 		/**
+		 * Very convient, but rebuilding will be a pain
+		 * */
+		private function onRecievedFiles(e:Event):void
+		{
+			var o : Object = e.currentTarget.data; 
+			this.ui.list1.dataProvider = new ArrayList( o as Array ) 	
+		}
+/*		private function onRecievedFiles_Json(e: Object):void
+		{
+			this.ui.list1.dataProvider = new ArrayList( e as Array ) 	
+		}
+				*/
+		private function onReciedevedFilesFault(e:Event):void
+		{
+			
+		}
+		
 		private function onSelectWidget(e:CustomEvent) : void
 		{
 			if ( this.ui.selectedWidget == null ) 

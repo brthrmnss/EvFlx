@@ -69,7 +69,10 @@ package  org.syncon.evernote.panic.view
 		public function set customGradient(a : String ) : void
 		{
 			if ( a == '' || a == null )
-				this.ui.bgCustomGradient.visible = false; 
+			{
+				this.ui.bgCustomGradient.visible = false;
+				return; 
+			}
 			if ( a == this.oldCustomGradient   ) 
 				return  
 			oldCustomGradient = a; 	
