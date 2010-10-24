@@ -787,7 +787,7 @@ package org.syncon.evernote.panic.view.utils
 		{
 			var str : String = ''; 
 			
-			str ='<TextFlow verticalAlign="top:" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+			str ='<TextFlow verticalAlign="top" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img   source="'+s+'" '
 				if ( w != -1 ) 
 					str += ' width="'+w+'" '
@@ -803,7 +803,7 @@ package org.syncon.evernote.panic.view.utils
 		{
 			var str : String = ''; 
 			
-			str ='<TextFlow verticalAlign="top:" xmlns="http://ns.adobe.com/textLayout/2008" >'+
+			str ='<TextFlow verticalAlign="top" xmlns="http://ns.adobe.com/textLayout/2008" >'+
 				'<img   source="'+s+'" '
 			if ( w != -1 ) 
 				str += ' width="'+w+'" '

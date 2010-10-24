@@ -29,8 +29,11 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.ui.addEventListener( PeopleManagementPopup.CLOSED_POPUP, this.onClosedPopup) 				
 			this.ui.addEventListener( PeopleManagementPopup.EDIT_PERSON, this.onEditPerson)
 		
+			this.ui.addEventListener( PeopleManagementPopup.DELETE_PERSON, this.onDeletePerson )
+			
+				
 			this.ui.addEventListener( PeopleManagementPopup.PEOPLE_SELECTED, this.onPeopleSelected ) 		
-			this.ui.addEventListener( 'deletePerson', this.onDeletePerson )
+			//this.ui.addEventListener( 'deletePerson', this.onDeletePerson )
 				
 		}
  
@@ -57,8 +60,36 @@ package  org.syncon.evernote.panic.view.popup.management
 					this.ui.dp.addItem( e.data ) ;
 				}
 			}
+		}			
+		
+		private function onDeletePerson(e:CustomEvent) : void
+		{
+			if ( this.ui.selectorMode == false ) 
+			{
+				this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+					'popup_confirm', ['Are you sure you want to delete "' +e.data.name+ '"? '+
+						'This change cannot be undone.', this.onDeletePerson_Confirmed , null,
+						'Delete Person', 'Delete', 'Cancel', [e.data]  ] )  )				
+			}
+			else
+			{
+				 //finisih selection first 
+			}
 		}				
  
+		
+			private function onDeletePerson_Confirmed (p : PersonVO) : void
+			{
+				this.ui.list1.dataProvider.removeItemAt( this.ui.list1.dataProvider.getItemIndex( p ) ) 
+				for each ( var p_ : PersonVO in this.model.board.people ) 
+				{
+					if ( p_ == p ) 
+						trace('found person'); 
+					this.model.board.people.indexOf( p )
+				}
+				this.dispatch( new PanicModelEvent(PanicModelEvent.CHANGED_PEOPLE) ) 
+				this.dispatch( new PanicModelEvent(PanicModelEvent.CHANGED_PROJECTS) ) 
+			}
 		private function onPeopleSelected(e:CustomEvent)  : void
 		{
 			if ( this.changed )
@@ -67,13 +98,6 @@ package  org.syncon.evernote.panic.view.popup.management
 			}
 			this.ui.hide()			
 		}
-			
-		
-		private function onDeletePerson(e:CustomEvent) : void
-		{
-				this.ui.dp.removeItemAt( this.ui.dp.getItemIndex( e.data ) ) 
-		}			
-		
 		
 		private function onOpenedPopup(e:CustomEvent) : void
 		{

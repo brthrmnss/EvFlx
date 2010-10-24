@@ -200,7 +200,8 @@ package  org.syncon.evernote.panic.view
 			//confirm popup
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				'popup_confirm', ['Are you sure you want to remove this row? '+
-					'This change cannot be undone.', this.onRemoveComponent ] )  )
+					'This change cannot be undone.', this.onRemoveComponent, null, 
+					'Delete Row', 'Delete', 'Cancel' ] )  )
 		}				
 		private function onRemoveComponent () : void
 		{

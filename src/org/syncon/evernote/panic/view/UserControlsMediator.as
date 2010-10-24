@@ -33,18 +33,21 @@ package  org.syncon.evernote.panic.view
 		 
 		private function onBoardRefreshed(e:PanicModelEvent): void
 		{
+			this.onAdminModeChanged(null)
 		}
 		private function onAdminModeChanged(e:PanicModelEvent): void
 		{
-			if ( this.model.boardLoaded == false  ) 
+			//why was added, find a better solution 
+			/*if ( this.model.boardLoaded == false  ) 
 			{
 					this.ui.hide()
 					return 
-			}
+			}*/
 			if ( this.model.adminMode ) 
-			this.ui.hide()
+				this.ui.hide()
 			else
-			this.ui.show()
+				this.ui.show()
+				
 		}		
  
  

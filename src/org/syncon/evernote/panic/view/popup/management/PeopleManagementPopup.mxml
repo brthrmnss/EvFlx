@@ -27,6 +27,7 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			static public var EDIT_PERSON : String = 'editPerson'; 
+			static public var DELETE_PERSON : String = 'deletePerson'; 			
 			static public var ADD_PERSON  : String = 'addPerson'; 
 			static public var PEOPLE_SELECTED : String = 'peopleSelected'
 			static public var OPENED_POPUP : String = 'openedPopup'; 
@@ -92,13 +93,13 @@
 			{
 				 this.dispatchEvent( new CustomEvent( PEOPLE_SELECTED ) ) ; 
 			}
-			
+	/* 		
 			protected function list1_changeHandler(event:IndexChangeEvent):void
 			{
 				this.dispatchEvent( new CustomEvent( ADD_PERSON_TO_SELECTION, 
 					this.list1.dataProvider.getItemAt(event.newIndex)  ) )
 			}
-
+ */
 		]]>
 	</fx:Script>
 
@@ -130,7 +131,7 @@
 						click="btnAdd_clickHandler(event)" right="10" top="10" />
 	 <s:List id="list1" 
 			 itemRenderer="org.syncon.evernote.panic.view.popup.management.person_edit_renderer" 
-			 width="400"   height="400" change="list1_changeHandler(event)"
+			 width="400"   height="400" 
 			 contentBackgroundAlpha="0"  borderVisible="false">
 		 <s:layout>
 			 <s:VerticalLayout  paddingLeft="10" paddingBottom="0" paddingRight="10" gap="10"/>

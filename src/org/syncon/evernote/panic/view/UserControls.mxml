@@ -167,7 +167,7 @@
 		 <!--
 		<s:Button id="btnRoster" label="Logout"  click="btnRoster_clickHandler(event)" excludeFrom="edit"/>
 		
-	-->		<s:CheckBox label="Auto-Hide"   selected="true"
+	-->		<s:CheckBox label="Auto-Hide"   selected="false"
 						toolTip="Will hide this pane when you are not hovered over it"
 						id="chk" change="chk_changeHandler(event)"/>
 	</s:HGroup> 

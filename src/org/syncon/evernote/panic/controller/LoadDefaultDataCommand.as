@@ -165,8 +165,8 @@ package   org.syncon.evernote.panic.controller
 			//arr = PanicLayouts.panesX(); 	
 			//arr = PanicLayouts.oneTwitter(); 	
 			//arr = PanicLayouts.tooMuchTwitter();
-			arr = PanicLayouts.testArraySourcing(); 	
-			arr = PanicLayouts.superheroPanes(board)
+			//arr = PanicLayouts.testArraySourcing(); 	
+			//arr = PanicLayouts.superheroPanes(board)
 			//test for original sub contexts, they can be set externally 
 			if ( event.preferredLayout != null ) 
 				arr = event.preferredLayout; 
@@ -203,11 +203,10 @@ package   org.syncon.evernote.panic.controller
 			board.projects = projects
 				
 			this.model.board = board; 
-			this.model.refreshBoard()
-			
+			this.model.boardLoaded = false; 
 			this.model.adminMode = true; 
 			
-			
+			this.model.refreshBoard()
 		}
 		
 		

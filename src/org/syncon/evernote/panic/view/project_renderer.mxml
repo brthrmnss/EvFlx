@@ -8,6 +8,8 @@
 	<fx:Script> 
 		<![CDATA[ 
 			import mx.collections.ArrayList;
+			import mx.controls.Image;
+			import mx.core.FlexLoader;
 			import mx.effects.Effect;
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
@@ -77,8 +79,23 @@
 				this.modifyRenderer()
 				this.parentDocument.addEventListener( 'updateRenderers', this.updateRendererFromParent, false, 0, true ) 		
 				this.updateRendererFromParent(null)
+					this.addEventListener(MouseEvent.CLICK, this.onClick, false, 0, true ) 
 			}
-
+			/***
+			 * Show the edit project popup
+			 * */
+			public function onClick(e:MouseEvent):void
+			{
+				var ee :  Image
+				if ( e.target is mx.core.FlexLoader || e.target is  Image ) 
+					return; 
+				this.dispatchEvent( new CustomEvent( 'editProject' ,  this.project  ) )
+			}
+			
+			
+			/**
+			 * Casecades down skin styles form parent 
+			 * */
 			public function updateRendererFromParent(e:Event):void
 			{
 				this.bgVisible = this.parentDocument.parentDocument.bgVisible; 

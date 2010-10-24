@@ -166,7 +166,7 @@
 	<editors:PopupBg />
 	
  <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader  bold="false" label.view="View"   label="Edit Project"  id="header" padding="0"  width="100%"/>
+	 <popup:PopupHeader  bold="false" label.view="View Person"   label="Edit Project"  id="header" padding="0"  width="100%"/>
 	 <s:Label id="alertTxt" />
 	 <mx:Form>
 

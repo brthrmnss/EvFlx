@@ -8,6 +8,12 @@
 					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 					  >
 
+	
+	<popup:states>
+		<s:State name="normal" />
+		<s:State name="view" />
+	</popup:states>	
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayList;
@@ -50,7 +56,8 @@
 				this.popupCode.open( false,true ) 
 			}
  
-			public function open( proj : ProjectVO, completeFx : Function = null )  : void
+			public function open( proj : ProjectVO, completeFx : Function = null,
+				editMode : Boolean = true )  : void
 			{
 				this.popupCode.open( false, true ) 
 				this.project = proj
@@ -74,6 +81,17 @@
 				this.txtImage.text = this.project.img; 
 				this.img.source = this.project.img; 
 				this.memberLIst.list1.dataProvider = new ArrayList( this.project.ppl ) 
+					
+				if ( editMode )
+				{
+					this.currentState = 'normal' 
+					img.editable = true
+				}
+				else
+				{
+					this.currentState = 'view' 
+					img.editable = false; 
+				}					
 			}
 			
 			 /**
@@ -145,28 +163,28 @@
 	 <editors:PopupBg />
 	
  <s:VGroup  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader  bold="false"   label="Edit Project"  id="header" padding="0"  width="100%"/>
+	 <popup:PopupHeader  bold="false" label.view="View Project"   label="Edit Project"  id="header" padding="0"  width="100%"/>
 	 <mx:Form>
 		 <mx:FormItem label="Name" >
-			 <s:TextInput id="txtName" width="200" />
+			 <s:TextInput id="txtName" width="200"   editable.view="false"  />
 		 </mx:FormItem>
 		 <mx:FormItem label="Description" >
-			 <s:TextInput id="txtDesc" width="200" />
+			 <s:TextArea heightInLines="3" id="txtDesc" width="200"  editable.view="false"  />
 		 </mx:FormItem>
 		 <mx:FormItem label="Status:" >
-			 <s:TextInput id="txtCol3" width="200" />
+			 <s:TextInput id="txtCol3" width="200"  editable.view="false"  />
 		 </mx:FormItem>			 
 		 <mx:FormItem label="Status2:" >
-			 <s:TextInput id="txtCol4" width="200" />
+			 <s:TextInput id="txtCol4" width="200"   editable.view="false"  />
 		 </mx:FormItem>	
 		 <mx:FormItem label="Percengate:" >
 			 <s:TextInput id="txtPercengate" width="200"
-						   toolTip="If set, will draw a progress bar behind the project name"/>
+						   toolTip="If set, will draw a progress bar behind the project name"   editable.view="false"  />
 		 </mx:FormItem>	
 		 <mx:FormItem label="Image:" >
-			 <s:TextInput id="txtImage" 
+			 <s:TextInput id="txtImage"  excludeFrom="view"
 						   toolTip="Change Project Image to something else"
-						  change="txtImage_changeHandler(event)" width="200" />
+						  change="txtImage_changeHandler(event)" width="200"    />
 		 </mx:FormItem>		
 		 <mx:FormItem>
 			 <utils:AvatarEdit id="img"  emptySetting="" changedAvatar="{changedAvatarHandler(event)}"     />
@@ -176,11 +194,11 @@
 				 <view:ProjectMembersList id="memberLIst"  width="180"  clipAndEnableScrolling="true" />
 				 <s:Button label="Change" id="btnEditMembers" 
 						    toolTip="Change the People involved with this project"
-						   click="btnEditMembers_clickHandler(event)" />
+						   click="btnEditMembers_clickHandler(event)"   visible.view="false"  />
 			 </s:HGroup>
 		 </mx:FormItem>				 
 		 <mx:FormItem>
-			 <s:HGroup>
+			 <s:HGroup  excludeFrom="view">
 				 <s:Button id="btnSave"  label="Save" 
 						    toolTip="Save changes"
 						   click="btnSave_clickHandler(event)" />

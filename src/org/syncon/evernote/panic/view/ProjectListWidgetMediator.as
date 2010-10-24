@@ -35,7 +35,8 @@ package  org.syncon.evernote.panic.view
 			super.onRegister();
 			this.editPopupName = 'ProjectListWidgetEditorPopup'; 			
 			
-			this.ui.addEventListener( 'viewPerson', this.onViewPerson)				
+			this.ui.addEventListener( 'viewPerson', this.onViewPerson)		
+			this.ui.addEventListener( ProjectListWidget.EDIT_PROJECT, this.onEditProject)		
 				
 			eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_PEOPLE, 
 				this.onRefresh );	
@@ -50,6 +51,14 @@ package  org.syncon.evernote.panic.view
 		 	this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 					'PopupEditPerson', [e.data, null, this.model.adminMode ] )  )  				
 		}
+		
+		private function onEditProject(e:CustomEvent) : void
+		{
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+				'PopupEditProject', [e.data, null, this.model.adminMode ] )  )  				
+		}		
+		
+		
 		
 		override public function onSkinChanged(e:PanicModelEvent): void
 		{

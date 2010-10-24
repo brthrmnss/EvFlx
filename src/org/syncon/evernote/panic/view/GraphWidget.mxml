@@ -159,7 +159,7 @@
 				
 				var pushDown : Number = this.chart.height*Number(s)/100
 				//lblTop.y =  (this.measuredHeight - 36- 35) -	(  pushDown)
-				this.fxMove.yTo =  (this.measuredHeight - 36- 35) -	(  pushDown)
+				this.fxMove.yTo =  (this.measuredHeight - 36- 35+ 15) -	(  pushDown)
 				this.fxMove.play([this.lblTop]) 
 			}
 			

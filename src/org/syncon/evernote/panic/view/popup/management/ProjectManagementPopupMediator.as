@@ -33,6 +33,8 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.ui.addEventListener( ProjectManagementPopup.OPENED_POPUP, this.onOpenedPopup)
 			this.ui.addEventListener( PeopleManagementPopup.CLOSED_POPUP, this.onClosedPopup) 				
 			this.ui.addEventListener( ProjectManagementPopup.EDIT_PROJECT, this.onEditProject) 
+			this.ui.addEventListener( ProjectManagementPopup.DELETE_PROJECT, this.onDeleteProject) 				
+			
 		}
  
 		private function onAddProject(e:CustomEvent) : void
@@ -47,7 +49,26 @@ package  org.syncon.evernote.panic.view.popup.management
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 				'PopupEditProject', [e.data, this.projectsChanged] )  )  				
 		}				
- 
+		
+		private function onDeleteProject(e:CustomEvent) : void
+		{
+				this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
+					'popup_confirm', ['Are you sure you want to delete "' +e.data.name+ '"? '+
+						'This change cannot be undone.', this.onDeleteProject_Confirmed , null,
+						'Delete Project', 'Delete', 'Cancel', [e.data]  ] )  )				
+		}				
+			private function onDeleteProject_Confirmed (p :  ProjectVO) : void
+			{
+				this.ui.list1.dataProvider.removeItemAt( this.ui.list1.dataProvider.getItemIndex( p ) ) 
+				for each ( var p_ :  ProjectVO in this.model.board.projects ) 
+				{
+					if ( p_ == p ) 
+						trace('found project'); 
+					this.model.board.projects.indexOf( p )
+				}
+				this.dispatch( new PanicModelEvent(PanicModelEvent.CHANGED_PROJECTS) ) 
+			}
+	 
 		private function onOpenedPopup(e:CustomEvent) : void
 		{
 			this.changed = false; 

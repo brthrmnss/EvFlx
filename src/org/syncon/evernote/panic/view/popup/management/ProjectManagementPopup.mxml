@@ -21,6 +21,7 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			static public var EDIT_PROJECT : String = 'editProject'; 
+			static public var DELETE_PROJECT : String = 'deleteProject'; 			
 			static public var ADD_PROJECT  : String = 'addProject'; 
 			static public var OPENED_POPUP : String = 'openedPopup'; 
 			static public var CLOSED_POPUP : String = 'closedPopup'; 

@@ -5,7 +5,8 @@
 		 fontSize="12"  color="0" clipAndEnableScrolling="false"
 		  
 		 xmlns:mx="library://ns.adobe.com/flex/mx"   initialize="group1_initializeHandler(event)"
-		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"
+		 creationComplete="onInit()" xmlns:view="org.syncon.evernote.panic.view.*"
+		 xmlns:utils="org.syncon.evernote.panic.view.utils.*"
 		 >
 	<fx:Script>
 		<![CDATA[

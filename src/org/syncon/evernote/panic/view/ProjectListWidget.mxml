@@ -22,7 +22,9 @@
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.vo.ProjectVO;
 			import org.syncon.evernote.panic.vo.WidgetVO;
-			static public var TAGS_CHANGED : String = 'tagsChanged'				
+			
+			import spark.events.IndexChangeEvent;
+			static public var EDIT_PROJECT : String = 'editProject'				
 			
 			public var _widgetData : WidgetVO = new WidgetVO
 			public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
@@ -119,6 +121,13 @@
 			{
 				this.dispatchEvent( new Event( 'updateRenderers' ) ) 
 			}
+	/* 		
+			change="list1_changeHandler(event)"
+			protected function list1_changeHandler(event:IndexChangeEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( EDIT_PROJECT, 
+					this.list1.dataProvider.getItemAt(event.newIndex)  ) )
+			}	 */		
 		]]>
 	</fx:Script>
 	

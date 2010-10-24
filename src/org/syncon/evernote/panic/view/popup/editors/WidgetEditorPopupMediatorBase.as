@@ -65,6 +65,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 		public function onTestWidget(e:CustomEvent) : void
 		{
 			var d : WidgetVO = this.currentConfig() 
+			if ( this.editorObj.hasOwnProperty('widget') ) 
+				this.editorObj.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 			this.data.ui.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 		}		
 				

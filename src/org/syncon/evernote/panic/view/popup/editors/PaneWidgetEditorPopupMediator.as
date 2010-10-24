@@ -5,6 +5,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
+	import org.syncon.evernote.panic.view.HtmlConvertor;
 	import org.syncon.evernote.panic.view.PaneWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	
@@ -23,6 +24,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function onRegister():void
 		{
 			super.onRegister();
+			mediatorMap.createMediator(this.ui.widget);
+			this.ui.widget.removeElement( this.ui.widget.editBorder );
 		}
 		
 		override public function onImportEditConfig(e:WidgetEvent) : void
@@ -39,7 +42,14 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtCustomGradientBg.text = this.data.data.customGradient; 	
 			this.ui.txtCornerRadius.value = int(this.data.data.cornerRadius );  
 			
-			
+			var d : WidgetVO = this.currentConfig() 
+			this.ui.widget.height = this.data.ui.height; 
+			this.ui.widget.width = this.data.ui.width;
+			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+				
+			var ee : HtmlConvertor = new HtmlConvertor()
+			this.ui.dit.textFlow = ee.convertTLF( this.ui.txtMessage.text, 0xFFFFFF );
+			//this.ui.widget.importConfig( d ); 
 		}	
 		
 		/**

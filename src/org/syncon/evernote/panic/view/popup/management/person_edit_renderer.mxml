@@ -24,6 +24,11 @@
 			{
 				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.EDIT_PERSON, this.person  ) ) 
 			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(PeopleManagementPopup.DELETE_PERSON, this.person  ) ) 
+			}			
 
 		]]> 
 	</fx:Script> 	
@@ -51,12 +56,15 @@
 				   useHandCursor="true"  buttonMode="true"
 				     />		
 	
-	<s:Label   id="txtDesc" verticalCenter="0" width="150"
+	<s:Label   id="txtDesc" verticalCenter="0" width="125"
 			   color.hovered="0x696969"  x="5"
 			   useHandCursor="true"  buttonMode="true"
 			     />		
 	<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)"
 					  toolTip="Edit Person"
 					  iconSkin=".iconSettings"    />
+	<utils:IconButton label="delete"  id="btnDelete" click="btnDelete_clickHandler(event)"
+					  toolTip="Delete Person"
+					  iconSkin=".closeBtn"    />	
 <!--	<s:Button label="Edit" click="btnEdit_clickHandler(event)" />-->
 </s:ItemRenderer>
