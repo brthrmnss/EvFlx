@@ -192,7 +192,7 @@ package org.syncon.evernote.panic.model
 		
 		
 		public var bgSkin : String = ''; 
-		public var backgroundColor : uint; 
+		public var backgroundColor : uint=0; 
 		public var color : uint = 0xFFFFFF;
 		
 		public function refreshSkin()  : void

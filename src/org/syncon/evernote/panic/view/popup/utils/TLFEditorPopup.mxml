@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<popup:PopupBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				 xmlns:s="library://ns.adobe.com/flex/spark" 
+				 xmlns:mx="library://ns.adobe.com/flex/mx"
+				 xmlns:comps="org.syncon.comps.*" 
+				 creationComplete="onInit()" 
+				 implements="org.syncon.popups.view.IPopup"
+				 xmlns:popup="org.syncon.evernote.basic.view.popup.*" 
+				 xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" 
+				 xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*" xmlns:tlf="net.asciiworks.tlf.*"					  
+				 >
+	
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.elements.TextFlow;
+			
+			import mx.core.UIComponent;
+			
+			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.WidgetEvent;
+			import org.syncon.evernote.panic.view.PaneWidget;
+			import org.syncon.evernote.panic.vo.WidgetVO;
+			import org.syncon.popups.view.IPopup;
+			
+			import sss.Shelpers.Shelpers.ui.PopupCode;
+			
+			static public var REJECT_FLOW  : String = 'rejectFlow' 
+			static public var CHANGED_FLOW  : String = 'changedFlow' 				
+			static public var ACCEPT_FLOW  : String = 'acceptFlow' 
+								
+			
+			override public function onInit() : void 
+			{
+				this.creationComplete = true; 
+				this.popupCode.center()
+					
+				this.removeFontChooser()
+			}
+			
+			private function removeFontChooser() : void
+			{
+				this.edit.fontFamily.visible = false; 
+				this.edit.fontFamily.width = 0; 
+			}
+			
+			override public  function create(app:Object)  : IPopup
+			{
+				var popup :  TLFEditorPopup = new TLFEditorPopup()
+				popup.popupCode = PopupCode.Create( popup, app ) 
+				return popup			
+			} 
+			
+			override public function show(  )  : void
+			{
+				this.popupCode.open( false,true ) 
+			}
+			
+			public var initialTLF :  TextFlow;
+			public var fxChangedTLF : Function; 
+			public var fxAcceptTLF : Function			
+			
+			public function open(ui : UIComponent,  tlf : TextFlow ,  fxChangedTLF : Function, 
+																	  fxAcceptTLF : Function )  : void
+			{
+				this.initialTLF = tlf
+				this.fxChangedTLF =  fxChangedTLF
+				this.fxAcceptTLF = fxAcceptTLF	
+					
+				this.popupCode.open( false,  false ) 
+				this.edit.textFlow = tlf; 
+				if ( ui != null ) 
+					this.popupCode.moveToComponent( ui, 'tl', true, false, true, 0  ) 
+				this.dispatchEvent( new   CustomEvent( 'openPopup' ) ) 
+			}
+ 
+			
+			override public function hide( ) : void
+			{
+				this.popupCode.close() 
+			}
+			
+			
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.hide()
+			}
+			
+			
+			protected function btnOk_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent( ACCEPT_FLOW ) ) 
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent( new CustomEvent(  REJECT_FLOW ) ) 
+			}			
+			
+			protected function onTlfChanged(event: Event):void
+			{
+				this.dispatchEvent( new CustomEvent( CHANGED_FLOW, this.edit.textFlowMarkup ) ) 
+			}					
+			
+		]]>
+	</fx:Script>
+	
+ 
+	<editors:PopupBg />
+	
+
+		<!--<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+			<popup:PopupHeader  bold="false"   label="Edit Pane"  padding="0"  width="100%"/>
+			
+	 -->
+		<s:VGroup  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+			<popup:PopupHeader  bold="false"   label="Editor"  padding="0"  width="100%"/>
+			<s:Label id="lblTitle" />
+		<s:Group  width="400" height="200" >
+			<s:Rect top="0" right="0" bottom="0" left="0" >
+				<s:fill>
+					<s:SolidColor id="color"  color="0xFFFFFF"/>
+				</s:fill>
+			</s:Rect>
+			<tlf:TLFTextEditor id="edit"  
+							     textFlowChanged= "this.onTlfChanged(event)"
+							   width="400" height="200" automaticallyExpand="false"    >
+				
+			</tlf:TLFTextEditor>
+		</s:Group>
+			<s:HGroup>
+				<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
+				<s:Button label="Cancel" id="btnTest" click="btnCancel_clickHandler(event)" />
+			</s:HGroup>
+		</s:VGroup>
+		<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+		
+		<utils:IconButton  label="X"  iconSkin=".closeBtn" 
+						   click="button1_clickHandler(event)" right="5" top="10" />
+		
+			
+
+
+</popup:PopupBase>

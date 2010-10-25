@@ -195,7 +195,12 @@ package  org.syncon.evernote.panic
 				WidgetGalleryPopup, 'WidgetGallery',  true ) );
 			mediatorMap.mapView( WidgetGalleryPopup , WidgetGalleryMediator, null, false, false );				
 			
-						
+			
+			this._this.dispatchEvent( new CreatePopupEvent( CreatePopupEvent.REGISTER_POPUP, 
+				TLFEditorPopup, 'TLFEditorPopup',  true ) );
+			mediatorMap.mapView( TLFEditorPopup , TLFEditorPopupMediator, null, false, false );				
+			
+			
 			
 			
 			
