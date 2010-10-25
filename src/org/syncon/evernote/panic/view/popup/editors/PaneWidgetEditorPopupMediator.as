@@ -1,5 +1,7 @@
 package  org.syncon.evernote.panic.view.popup.editors
 {
+	import flashx.textLayout.elements.TextFlow;
+	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
@@ -48,7 +50,10 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 				
 			var ee : HtmlConvertor = new HtmlConvertor()
-			this.ui.dit.textFlow = ee.convertTLF( this.ui.txtMessage.text, 0xFFFFFF );
+				var tf : TextFlow = ee.convertTLF( this.ui.txtMessage.text, 0xFFFFFF );
+				tf.paddingTop = 0;
+				tf.tracking=  15
+			this.ui.dit.textFlow = tf
 			//this.ui.widget.importConfig( d ); 
 		}	
 		
