@@ -232,4 +232,14 @@ mx|Tooltip{
 	content:     Embed( source="icons/16/cut.png" );
 }
 
+.btnTextEditor
+{
+	content:     Embed( source="icons/16/process.png" );
+}
+.btnHelp
+{
+	content:     Embed( source="icons/16/page.png" );
+}
+
+
 

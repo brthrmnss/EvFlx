@@ -10,6 +10,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.panic.view.HtmlConvertor;
 	import org.syncon.evernote.panic.view.PaneWidget;
 	import org.syncon.evernote.panic.vo.WidgetVO;
+	import org.syncon.popups.controller.ShowPopupEvent;
 	
 	public class PaneWidgetEditorPopupMediator extends 
 		WidgetEditorPopupMediatorBase
@@ -28,6 +29,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 			super.onRegister();
 			mediatorMap.createMediator(this.ui.widget);
 			this.ui.widget.removeElement( this.ui.widget.editBorder );
+			
+			this.ui.addEventListener( PaneWidgetEditorPopup.EDIT_TLF, this.onEditTLF ) 
 		}
 		
 		override public function onImportEditConfig(e:WidgetEvent) : void
@@ -49,11 +52,6 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.widget.width = this.data.ui.width;
 			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 				
-			var ee : HtmlConvertor = new HtmlConvertor()
-				var tf : TextFlow = ee.convertTLF( this.ui.txtMessage.text, 0xFFFFFF );
-				tf.paddingTop = 0;
-				tf.tracking=  15
-			this.ui.dit.textFlow = tf
 			//this.ui.widget.importConfig( d ); 
 		}	
 		
@@ -72,6 +70,25 @@ package  org.syncon.evernote.panic.view.popup.editors
 			return d ; 	
 		}
 		
+		private function onEditTLF(e:CustomEvent):void
+		{
+			var ee : HtmlConvertor = new HtmlConvertor()
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
+				'TLFEditorPopup', 
+				[this.ui,   ee.convertTLF( e.data.toString(),  0xFFFFFF ), 
+				fxAccept, fxRoll ] 
+			)  )  			
+		}
+		
+		public function fxAccept(e:Object):void
+		{
+			
+		}
+		
+		public function fxRoll(e:Object):void
+		{
+			
+		}		
 		
 	}
 }

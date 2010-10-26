@@ -12,8 +12,6 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.events.ColorPickerEvent;
-			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.controller.WidgetEvent;
 			import org.syncon.evernote.panic.view.PaneWidget;
@@ -23,7 +21,6 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var ui : PaneWidget; 
-			static public var EDIT_TLF : String = 'editTLF'; 
 			
 			override public function onInit() : void 
 			{
@@ -75,24 +72,6 @@
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
 			
-
-			protected function changed(event: Event):void
-			{
-				// maybe have a difefenret event as we dont' want to run transitions here 
-				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
-				// TODO Auto-generated method stub
-			}
-
-
-			protected function btnHelpTextSource_clickHandler(event:MouseEvent):void
-			{
-				this.dispatchEvent( new CustomEvent(  'helpSources' ) ) 
-			}
-			protected function btnEdit_clickHandler (event:MouseEvent, txt : String):void
-			{
-				this.dispatchEvent( new CustomEvent(  EDIT_TLF, txt ) ) 
-			}			
-
 		]]>
 	</fx:Script>
 	
@@ -111,42 +90,30 @@
 			<popup:PopupHeader  bold="false"   label="Edit Pane"  padding="0"  width="100%"/>
 			
 			<mx:Form>
-				<mx:FormItem label="Text Source"  direction="horizontal">
+				<mx:FormItem label="Text Source" >
 					<s:TextArea   heightInLines="3" id="txtMessage" width="200" 
-								  change="changed(event)"
 								 toolTip="Text source for the top layer" />
-					<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
-									  id="btnTextValue" click="btnEdit_clickHandler(event, this.txtMessage.text)" />
-					<utils:IconButton iconSkin=".btnHelp" toolTip="Help with Source"
-									  id="btnHelpTextSource"  click="btnHelpTextSource_clickHandler(event)" />					
 				</mx:FormItem>
-				<mx:FormItem label="Bg Source"  direction="horizontal">
+				<mx:FormItem label="Bg Source" >
 					<s:TextArea id="txtMessageBg" width="200" 
-								 heightInLines="3"  
-								 change="changed(event)"
+								 heightInLines="3" 
 								 toolTip="Text source for the bottom layer" />
-					<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
-									  id="btnTextValue1" click="btnEdit_clickHandler(event, this.txtMessageBg.text)" />
-					<utils:IconButton iconSkin=".btnHelp" toolTip="Help with Source"
-									  id="btnHelpTextSource2"  click="btnHelpTextSource_clickHandler(event)" />								
 				</mx:FormItem>			
 				
 				<mx:FormItem label="Color 1" >
-					<mx:ColorPicker id="colorPicker1" change="changed(event)"/>
+					<mx:ColorPicker id="colorPicker1" />
 				</mx:FormItem>	
 				<mx:FormItem label="Color 2" >
-					<mx:ColorPicker id="colorPicker2" change="changed(event)"/>
+					<mx:ColorPicker id="colorPicker2" />
 				</mx:FormItem>
 				<mx:FormItem label="Custom Gradient" >
 					<s:TextArea id="txtCustomGradientBg" width="200" 
-								 heightInLines="3"  change="changed(event)"
+								 heightInLines="3" 
 								 toolTip="Define more elaborate gradients, overrides the colors used agoave" />
 				</mx:FormItem>		
 				<mx:FormItem label="Corner Radius" >
 					<s:NumericStepper id="txtCornerRadius" width="200"  minimum="0" maximum="100"
-								 toolTip="How round to make corners?" 
-								 change="changed(event)"
-								 />
+								 toolTip="How round to make corners?" />
 				</mx:FormItem>					
 				<editors:WidgetUpdateSettingsControlBox id="timer"  width="100%"/>
 				<mx:FormItem>
@@ -173,7 +140,12 @@
 
 			<view:PaneWidget id="widget"  />
 		</s:HGroup>
-
+	<!--	<s:TextArea width="100%" height="300" y="{this.groupHolder.height}" />-->
+		<s:Group  width="400" height="200" >
+			<tlf:TLFTextEditor id="dit"   width="400" height="200" automaticallyExpand="false"    >
+				
+			</tlf:TLFTextEditor>
+		</s:Group>
 
 	</s:VGroup>
 </popup:PopupBase>
