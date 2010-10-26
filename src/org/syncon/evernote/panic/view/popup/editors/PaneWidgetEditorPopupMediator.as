@@ -30,7 +30,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 			mediatorMap.createMediator(this.ui.widget);
 			this.ui.widget.removeElement( this.ui.widget.editBorder );
 			
-			this.ui.addEventListener( PaneWidgetEditorPopup.EDIT_TLF, this.onEditTLF ) 
+			this.ui.addEventListener( PaneWidgetEditorPopup.EDIT_FORE, this.onEditTLF ) 
+			this.ui.addEventListener( PaneWidgetEditorPopup.EDIT_BG, this.onEditTLF2 ) 
 		}
 		
 		override public function onImportEditConfig(e:WidgetEvent) : void
@@ -48,7 +49,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtCornerRadius.value = int(this.data.data.cornerRadius );  
 			
 			var d : WidgetVO = this.currentConfig() 
-			this.ui.widget.height = this.data.ui.height; 
+			this.ui.widget.txt.height = this.ui.widget.txtBg.height = this.ui.widget.height = this.data.ui.height; 
 			this.ui.widget.width = this.data.ui.width;
 			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
 				
@@ -76,19 +77,48 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
 				'TLFEditorPopup', 
 				[this.ui,   ee.convertTLF( e.data.toString(),  0xFFFFFF ), 
-				fxAccept, fxRoll ] 
+					fxAdjust, fxAccept , 'Edit the foreground text' ] 
 			)  )  			
 		}
-		
-		public function fxAccept(e:Object):void
+			//this.ui.txtMessageBg.text = this.data.background; 
+			public function fxAdjust(e:String):void
+			{
+				var d : WidgetVO = this.currentConfig() 
+				d.source = e; 
+				d.editing = true; 
+				//this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.IMPORT_CONFIG, null, d ) )
+				this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			}
+			public function fxAccept(e: String):void
+			{
+				 this.data.source = e
+				 this.ui.txtMessage.text = this.data.source; 
+			}					
+ 	
+		private function onEditTLF2(e:CustomEvent):void
 		{
-			
+			var ee : HtmlConvertor = new HtmlConvertor()
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
+				'TLFEditorPopup', 
+				[this.ui,   ee.convertTLF( e.data.toString(),  0xFFFFFF ), 
+					fxAdjust2, fxAccept2 , 'Edit the background text' ] 
+			)  )  			
 		}
-		
-		public function fxRoll(e:Object):void
-		{
-			
-		}		
-		
+			//this.ui.txtMessageBg.text = this.data.background; 
+			public function fxAdjust2(e:String):void
+			{
+				var d : WidgetVO = this.currentConfig() 
+				d.background = e; 
+				this.ui.widget.height = this.data.ui.height; 
+				this.ui.widget.width = this.data.ui.width;
+				d.editing = true; 
+				this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.IMPORT_CONFIG, null, d ) )
+				this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			}
+			public function fxAccept2(e: String):void
+			{
+				this.data.background = e
+				this.ui.txtMessageBg.text = this.data.background; 					
+			}				
 	}
 }

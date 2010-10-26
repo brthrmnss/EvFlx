@@ -35,6 +35,7 @@
 				this.popupCode.center()
 					
 				this.removeFontChooser()
+				//this.edit.scroller.addElement( bgColor ) ; 
 			}
 			
 			private function removeFontChooser() : void
@@ -60,17 +61,19 @@
 			public var fxAcceptTLF : Function			
 			
 			public function open(ui : UIComponent,  tlf : TextFlow ,  fxChangedTLF : Function, 
-																	  fxAcceptTLF : Function )  : void
+																	  fxAcceptTLF : Function , description : String = '' )  : void
 			{
 				this.initialTLF = tlf
 				this.fxChangedTLF =  fxChangedTLF
 				this.fxAcceptTLF = fxAcceptTLF	
-					
+				this.lblTitle.text = description
 				this.popupCode.open( false,  false ) 
-				this.edit.textFlow = tlf; 
+				
 				if ( ui != null ) 
 					this.popupCode.moveToComponent( ui, 'tl', true, false, true, 0  ) 
 				this.dispatchEvent( new   CustomEvent( 'openPopup' ) ) 
+					
+				this.edit.textFlow = tlf; 
 			}
  
 			
@@ -89,7 +92,7 @@
 			
 			protected function btnOk_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent( ACCEPT_FLOW ) ) 
+				this.dispatchEvent( new CustomEvent( ACCEPT_FLOW, this.edit.textFlowMarkup ) ) 
 			}
 			
 			protected function btnCancel_clickHandler(event:MouseEvent):void
@@ -116,15 +119,30 @@
 		<s:VGroup  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 			<popup:PopupHeader  bold="false"   label="Editor"  padding="0"  width="100%"/>
 			<s:Label id="lblTitle" />
-		<s:Group  width="400" height="200" >
-			<s:Rect top="0" right="0" bottom="0" left="0" >
+		<s:Group    >
+			
+			
+				<s:Rect width="100%" height="23" >
+					<s:stroke>
+						<s:SolidColorStroke color="0x404040" />
+					</s:stroke>
+					<s:fill>
+						<s:LinearGradient rotation="90">
+							<s:GradientEntry color="0xf2f2f2" ratio="0.0" />
+							<s:GradientEntry color="0xcdcdcd" ratio="1" />							
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+				
+			
+			<s:Rect top="23" right="0"  id="bgColor" bottom="0" left="0" >
 				<s:fill>
-					<s:SolidColor id="color"  color="0xFFFFFF"/>
+					<s:SolidColor id="color"  alpha="0.7" color="0xFFFFFF"/>
 				</s:fill>
 			</s:Rect>
 			<tlf:TLFTextEditor id="edit"  
 							     textFlowChanged= "this.onTlfChanged(event)"
-							   width="400" height="200" automaticallyExpand="false"    >
+							   width="400" height="400" automaticallyExpand="false"    >
 				
 			</tlf:TLFTextEditor>
 		</s:Group>

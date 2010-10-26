@@ -234,11 +234,11 @@ mx|Tooltip{
 
 .btnTextEditor
 {
-	content:     Embed( source="icons/16/process.png" );
+	content:     Embed( source="icons/16/paint_brush.png" );
 }
 .btnHelp
 {
-	content:     Embed( source="icons/16/page.png" );
+	content:     Embed( source="icons/16/help.png" );
 }
 
 

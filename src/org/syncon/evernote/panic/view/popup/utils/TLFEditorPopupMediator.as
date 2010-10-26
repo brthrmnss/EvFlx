@@ -15,7 +15,7 @@ package  org.syncon.evernote.panic.view.popup.utils
 		
 		[Inject] public var model : PanicModel;		
 		
-		private var initialTLF :  TextFlow;
+		private var initialTLF :   String;
 		private var fxChangedTLF : Function; 
 		private var fxAcceptTLF : Function
 		public function TLFEditorPopupMediator()
@@ -25,9 +25,9 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 override public function onRegister():void
 		{
 			 this.ui.addEventListener( 'openPopup', this.onOpenedPopup ) 
-			 this.ui.addEventListener( TLFEditorPopup.ACCEPT_FLOW, this.onOpenedPopup ) 
-			 this.ui.addEventListener( TLFEditorPopup.REJECT_FLOW, this.onOpenedPopup ) 
-			 this.ui.addEventListener( TLFEditorPopup.CHANGED_FLOW, this.onOpenedPopup ) 
+			 this.ui.addEventListener( TLFEditorPopup.ACCEPT_FLOW, this.onAcceptFlow ) 
+			 this.ui.addEventListener( TLFEditorPopup.REJECT_FLOW, this.onRejectFlow ) 
+			 this.ui.addEventListener( TLFEditorPopup.CHANGED_FLOW, this.onChangedFlow ) 
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
 				 this.onSkinChanged );						
 			 this.onSkinChanged(null)					 
@@ -36,15 +36,16 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 public function onSkinChanged(e:PanicModelEvent): void
 		 {
 			 //change bg color And that text color for that message
-			 this.ui.edit.setStyle('contentBackgroundColor', this.model.backgroundColor ) 
+			// this.ui.edit.setStyle('contentBackgroundColor', this.model.backgroundColor ) 
 			 //this.ui.txtInstructions.setStyle( 'color', this.model.color ); 
-				this.ui.color.color = this.model.backgroundColor 
+			this.ui.color.color = this.model.backgroundColor 
 		 }			
 		 public function onOpenedPopup(e:CustomEvent):void
 		 {
-			 initialTLF = this.ui.initialTLF; 
+			 initialTLF = null;//this.ui.edit.textFlowMarkup
 			 fxChangedTLF = this.ui.fxChangedTLF
 			fxAcceptTLF = this.ui.fxAcceptTLF
+			
 		 }
 		 public function onClosedPopup(e:CustomEvent):void
 		 {
@@ -53,7 +54,9 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 
 		 public function onAcceptFlow(e:CustomEvent):void
 		 {
+			 this.fxChangedTLF( e.data ) 
 			 this.fxAcceptTLF( e.data ) 
+			 this.ui.hide();
 		 }
 		 /**
 		 * Send changes back 
@@ -61,10 +64,13 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 public function onRejectFlow(e:CustomEvent):void
 		 {
 			 this.fxChangedTLF( this.initialTLF ) 
+				this.ui.hide();
 		 }
 		 
 		 public function onChangedFlow(e:CustomEvent):void
 		 {
+			 if ( initialTLF == null ) 
+				 initialTLF =  this.ui.edit.textFlowMarkup 
 			 this.fxChangedTLF( e.data ) 
 		 }
 		 

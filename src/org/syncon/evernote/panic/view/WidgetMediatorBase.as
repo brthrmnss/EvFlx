@@ -37,6 +37,10 @@ package  org.syncon.evernote.panic.view
 		
 		public var supressTweens : Boolean = true; 
 		public var animate : Boolean = true ;
+		/**
+		 * Most recently used widget settings 
+		 * */
+		public var automateSettings : WidgetVO; 
 		
 		private var _widgetData : WidgetVO = new  WidgetVO
 		public function set  widgetData ( w : WidgetVO )  : void { this._widgetData = w }
@@ -93,7 +97,10 @@ package  org.syncon.evernote.panic.view
 			this.widgetUI.height = useSettings.height
 			if ( this.timer != null ) this.timer.delay = useSettings.refreshTime; 
 			this.setupGetter()
+			this.automateSettings = useSettings
 			this.automateWidget( useSettings ) 
+			//hoping this will block during updating process, implmenet directly 
+			//this.supressTweens = useSettings.editing; 
 		}
 		/**
 		 * subclasses can override and set specific parameters

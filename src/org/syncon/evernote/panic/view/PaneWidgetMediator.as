@@ -142,7 +142,8 @@ package  org.syncon.evernote.panic.view
 			if ( a == this.oldTextString && supressTweens ) 
 				return  
 				oldTextString = a; 	
-			this.ui.animateHover(this.ui)
+			if ( this.automateSettings.editing == false ) 
+				this.ui.animateHover(this.ui)
 			var str : String = ''; 
 			str = a
 				
