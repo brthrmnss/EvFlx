@@ -217,8 +217,10 @@
 							   click="btnUp_clickHandler(event)"/>
 			<utils:IconButton  iconSkin=".btnDown"  id="btnDown"  toolTip="Move Down one Row"
 							   click="btnDown_clickHandler(event)"/>
-			<utils:IconButton  iconSkin=".iconTrash"  id="btnRemove"  toolTip="Remove Row"
-							   click="btnRemove_clickHandler(event)"/>
+			<!--<utils:IconButton  iconSkin=".iconTrash"  id="btnRemove"  toolTip="Remove Row"
+							   click="btnRemove_clickHandler(event)"/>-->
+			<utils:IconButton  iconSkin=".closeBtn"  id="closeBtn"  toolTip="Remove Row"
+							   click="btnRemove_clickHandler(event)"/>			
 		</s:HGroup>
 		<s:filters>
 			<s:DropShadowFilter

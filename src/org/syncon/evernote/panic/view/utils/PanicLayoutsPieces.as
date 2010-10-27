@@ -37,7 +37,7 @@ package org.syncon.evernote.panic.view.utils
 				'<span color="#A39F9C"> UNTIL IPAD LAUNCH</span>'*/
 			]
 			arr.push( [
-				MessageWidget.importData('Global Alert', '',  JSON.encode( arrc) , 5000, 300).widgetData,
+				MessageWidget.importData('Global Alert', '',   arrc[0] , 5000, 300).widgetData,
 			])	
 			 
 					

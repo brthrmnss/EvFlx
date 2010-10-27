@@ -39,13 +39,31 @@ package  org.syncon.evernote.panic.view
 		public function set message( m : String ) : void{
 			var ee : HtmlConvertor = new HtmlConvertor()
 			var x : Object = ee.convert2( m, this.model.color, 34 )
+			if ( this.automateSettings.editing  ) 
+			{
+				//this.ui.messageTF =x as TextFlow;
+				//this.ui.messageTF =x as TextFlow;
+				//this.ui.currentState = 'State1' 
+				this.ui.currentState = 'State2' 
+				//this.ui.lblMessage3.textFlow =x as TextFlow;
+				this.ui.lblMessage4.textFlow =x as TextFlow;
+				return;
+			}				
 			if ( m == oldMessage  && this.supressTweens ) 
 			{
 				return; 
 			}
 			oldMessage = m 
 			//this.ui.message = m; 
-			this.ui.messageTF =x as TextFlow;
+			if ( this.automateSettings.editing == false ) 
+				this.ui.messageTF =x as TextFlow;
+			else
+			{
+				this.ui.messageTF =x as TextFlow;
+				this.ui.messageTF =x as TextFlow;
+				//this.ui.lblMessage4.textFlow = x as TextFlow;
+				//this.ui.lblMessage3.textFlow = x as TextFlow;
+			}
 			//this.ui.lblMessage2.textFlow = x as TextFlow
 		}
 		 

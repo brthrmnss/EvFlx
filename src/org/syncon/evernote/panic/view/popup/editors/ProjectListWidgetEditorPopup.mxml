@@ -67,7 +67,12 @@
 			{
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
-			
+			protected function changed(event: Event):void
+			{
+				// maybe have a difefenret event as we dont' want to run transitions here 
+				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
+				// TODO Auto-generated method stub
+			}			
 		]]>
 	</fx:Script>
 	
@@ -75,17 +80,21 @@
 	
 	
 	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-		<popup:PopupHeader  bold="false"   label="Edit Project List"  padding="0"  width="100%"/>
+		<popup:PopupHeader  bold="false"   label="Edit Project List Widget"  padding="0"  width="100%"/>
 		
 		<mx:Form>
 			<mx:FormItem label="Height" >
-				<s:TextInput id="txtMessage" />
+				<s:NumericStepper id="txtHeight" width="200"  minimum="50" maximum="5000"
+								  toolTip="Height of widget in pixels" 
+								  change="changed(event)"
+								  />				
 			</mx:FormItem>
 			<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
 			<mx:FormItem>
-				<s:HGroup>
-					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
-					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
+				<s:HGroup width="100%"  horizontalAlign="right">
+					<s:Button label="Save" id="btnOk" toolTip="Accept Changes" 
+						click="btnOk_clickHandler(event)" />
+				<!--	<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />-->
 				</s:HGroup>
 			</mx:FormItem>
 			

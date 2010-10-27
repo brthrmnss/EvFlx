@@ -75,7 +75,24 @@
 					
 				this.edit.textFlow = tlf; 
 			}
- 
+ 			public var fontSize : int = 0; 
+			public var initialMarkup : String = ''; 
+			public function open6(ui : UIComponent,  tlf :  String ,  fxChangedTLF : Function, 
+										 fxAcceptTLF : Function , description : String = '', fontSize_ : int = 12 )  : void
+			{
+				this.initialMarkup = tlf
+				this.fxChangedTLF =  fxChangedTLF
+				this.fxAcceptTLF = fxAcceptTLF	
+				this.lblTitle.text = description
+				this.fontSize = fontSize_ 
+				this.dispatchEvent( new   CustomEvent( 'openPopup6' ) ) 
+				if ( ui != null ) 
+					this.popupCode.moveToComponent( ui, 'tl', true, false, true, 0  ) 
+				
+				
+				
+			}			
+			
 			
 			override public function hide( ) : void
 			{

@@ -75,7 +75,7 @@
 	
 	
 	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-		<popup:PopupHeader  bold="false"   label="Edit Twitter Scroller"  padding="0"  width="100%"/>
+		<popup:PopupHeader  bold="false"   label="Edit Twitter Messages Widget"  padding="0"  width="100%"/>
 		
 		<mx:Form>
 			<mx:FormItem label="Search Terms" >
@@ -84,8 +84,9 @@
 			</mx:FormItem>
 		 
 			<mx:FormItem>
-				<s:HGroup>
-					<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
+				<s:HGroup width="100%"  horizontalAlign="right">
+					<s:Button label="Save" id="btnOk" toolTip="Accept Changes"
+							  click="btnOk_clickHandler(event)" />
 					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
 				</s:HGroup>
 			</mx:FormItem>

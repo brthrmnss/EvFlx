@@ -38,7 +38,7 @@
 											'btnAddAlert', 'btnAddSpacer', 'btnAddPane', 'btnAddRow' ] 
 				var options2 : Array = [WidgetVO.GRAPH,WidgetVO.PROJECT_LIST, WidgetVO.TWITTER_SCROLLER, 
 														WidgetVO.MESSAGE, WidgetVO.SPACER, WidgetVO.PANE, WidgetVO.ROW ] 		
-				var options4 : Array = ['A graph widget displays either line, bar, or pie charts',
+				var options4 : Array = ['A graph widget displays either line, bar, or pie chart',
 					'The project list displays all active projects for this organization', 
 					'The twitter widget displays twitter messages based on search terms', 
 					'The alert can show a message', 'Add empty space', 
@@ -166,7 +166,7 @@
 				<s:SolidColorStroke color="0x666666" />
 			</s:stroke>
 		</s:Line>
-		<s:Label text="Select the type of widget you want to add:" width="110"/>
+		<s:Label text="Select af widget to add to the board:" width="110"/>
 		<mx:Spacer height="15" />
 		<s:List id="list" change="list_changeHandler(event)" 
 				 itemRenderer="org.syncon.evernote.panic.view.add_widget_renderer"
@@ -179,7 +179,7 @@
 			</s:stroke>
 		</s:Line>
 		<view:add_widget_renderer data="{{label:'Gallery'}}" 
-								  toolTip="Select a pre-defined item our gallery"
+								  toolTip="Select a pre-defined item from the gallery"
 								  id="gallery" click="gallery_clickHandler(event)"/>
 		<s:Label  id="lblMessage" color="0xFF0000"  width="100"/>
 		<s:Button  label="Cancel" id="btnCancel" click="btnCancel_clickHandler(event)" />

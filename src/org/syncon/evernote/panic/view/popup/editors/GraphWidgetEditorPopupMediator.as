@@ -9,6 +9,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
 	import org.syncon.evernote.panic.view.GraphWidget;
+	import org.syncon.evernote.panic.view.HtmlConvertor;
 	import org.syncon.evernote.panic.vo.WidgetVO;
 	import org.syncon.popups.controller.ShowPopupEvent;
 	
@@ -27,7 +28,12 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function onRegister():void
 		{
 			super.onRegister();
+			
+			mediatorMap.createMediator(this.ui.widget);
+			this.ui.widget.removeElement( this.ui.widget.editBorder );
+			
 			this.ui.addEventListener( WidgetEvent.TEST_VALUE, this.onTestSource ) 
+			this.ui.addEventListener( PaneWidgetEditorPopup.EDIT_BG, this.onEditTLF2 ) 
 		}
 		
 		override public function onImportEditConfig(e:WidgetEvent) : void
@@ -41,7 +47,16 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtMaximum.text = this.data.data.max
 			this.ui.colorPicker.selectedColor = this.data.data.fillColor; 
 			this.ui.txtBackground.text = this.data.background; 
+			
+			this.importIntoPreviewWidget()
 		}		
+			private function importIntoPreviewWidget()  : void
+			{
+				var d : WidgetVO = this.currentConfig() 
+				this.ui.widget.height = this.data.ui.height; 
+				this.ui.widget.width = this.data.ui.width;
+				this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			}
  	
 		/**
 		 * Read settings for text value
@@ -62,6 +77,35 @@ package  org.syncon.evernote.panic.view.popup.editors
 				this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP, 
 					'TestDataSourcePopup',  [this.ui.txtValue.text ] )  )  
 			}
+		}			
+		
+		
+		
+		private function onEditTLF2(e:CustomEvent):void
+		{
+			//if ( this.check(e.data ) == false ) 
+			//	return; 
+			
+			var ee :  HtmlConvertor = new HtmlConvertor()
+			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
+				'TLFEditorPopup', 
+				[this.ui,   ee.convertTLF( e.data.toString(),  0xFFFFFF ), 
+					fxAdjust2, fxAccept2 , 'Edit the background layer' ] 
+			)  )  			
+		}
+		//this.ui.txtMessageBg.text = this.data.background; 
+		public function fxAdjust2(e:String):void
+		{
+			var d : WidgetVO = this.currentConfig() 
+			d.background = e; 
+			d.editing = true; 
+			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.IMPORT_CONFIG, null, d ) )
+			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+		}
+		public function fxAccept2(e: String):void
+		{
+			this.data.background = e
+			this.ui.txtBackground.text = this.data.background; 					
 		}			
 		
 		

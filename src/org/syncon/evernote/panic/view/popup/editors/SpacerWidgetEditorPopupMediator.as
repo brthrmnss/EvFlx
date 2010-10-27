@@ -28,9 +28,13 @@ package  org.syncon.evernote.panic.view.popup.editors
 			super.onImportEditConfig( e ) 
 			
 			this.ui.timer.dataX = this.data ; 
-			this.ui.txtHeight.text = this.data.height.toString();
-			if ( isNaN( this.data.height ) ) 
-				this.ui.txtHeight.text = '' 
+			this.ui.txtHeight.value = this.data.height
+			//simple solution: if height is NaN copy componenet's height; 
+			if ( isNaN(this.data.height) ) 
+			{
+				this.ui.txtHeight.value = this.data.ui.height; 
+			}
+			 
 		}		
 		
 		/**
@@ -39,7 +43,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		override public function currentConfig()  :   WidgetVO
 		{ 
 			var d : WidgetVO = SpacerWidget.importData( this.data.name, 
-				this.data.description,  Number( this.ui.txtHeight.text )   ).widgetData;	
+				this.data.description,   ( this.ui.txtHeight.value )   ).widgetData;	
 			return d; 
 		}
 		

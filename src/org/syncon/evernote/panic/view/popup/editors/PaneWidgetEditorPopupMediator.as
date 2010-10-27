@@ -4,6 +4,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.syncon.evernote.basic.model.CustomEvent;
+	import org.syncon.evernote.panic.controller.AlertEvent;
 	import org.syncon.evernote.panic.controller.WidgetEvent;
 	import org.syncon.evernote.panic.model.PanicModel;
 	import org.syncon.evernote.panic.model.PanicModelEvent;
@@ -48,14 +49,17 @@ package  org.syncon.evernote.panic.view.popup.editors
 			this.ui.txtCustomGradientBg.text = this.data.data.customGradient; 	
 			this.ui.txtCornerRadius.value = int(this.data.data.cornerRadius );  
 			
-			var d : WidgetVO = this.currentConfig() 
-			this.ui.widget.txt.height = this.ui.widget.txtBg.height = this.ui.widget.height = this.data.ui.height; 
-			this.ui.widget.width = this.data.ui.width;
-			this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
-				
-			//this.ui.widget.importConfig( d ); 
+			this.onImportIntoPreviewWidget()
 		}	
 		
+			private function onImportIntoPreviewWidget () : void
+			{
+				var d : WidgetVO = this.currentConfig() 
+				this.ui.widget.txt.height = this.ui.widget.txtBg.height = this.ui.widget.height = this.data.ui.height; 
+				this.ui.widget.width = this.data.ui.width;
+				this.ui.widget.dispatchEvent( new WidgetEvent( WidgetEvent.AUTOMATE_WIDGET, null, d ) ) 
+			}
+			
 		/**
 		 * Read settings for text value
 		 * */
@@ -73,6 +77,8 @@ package  org.syncon.evernote.panic.view.popup.editors
 		
 		private function onEditTLF(e:CustomEvent):void
 		{
+			if ( this.check(e.data ) == false ) 
+				return; 
 			var ee : HtmlConvertor = new HtmlConvertor()
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
 				'TLFEditorPopup', 
@@ -95,8 +101,23 @@ package  org.syncon.evernote.panic.view.popup.editors
 				 this.ui.txtMessage.text = this.data.source; 
 			}					
  	
+		private function check(b :  Object ) :   Boolean
+		{
+			var markup : String = b.toString()
+			if ( markup.charAt(0) == '[' && markup.charAt(markup.length-1) == ']' )
+			{
+				this.dispatch( AlertEvent.Alert( 'Cannot edit multiple sources, modify each soure seperately', 'Alert' ) )
+				return  false
+			}
+			return true;
+		}
+			
 		private function onEditTLF2(e:CustomEvent):void
 		{
+
+			if ( this.check(e.data ) == false ) 
+				return; 
+			
 			var ee : HtmlConvertor = new HtmlConvertor()
 			this.dispatch( new ShowPopupEvent(ShowPopupEvent.SHOW_POPUP,
 				'TLFEditorPopup', 

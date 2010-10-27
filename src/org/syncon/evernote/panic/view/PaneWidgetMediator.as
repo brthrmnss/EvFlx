@@ -76,7 +76,14 @@ package  org.syncon.evernote.panic.view
 			if ( a == this.oldCustomGradient   ) 
 				return  
 			oldCustomGradient = a; 	
+			try {
 			var s : Object = JSON.decode( a.toString() )
+			}
+			catch ( e : Error ) 
+			{
+				trace( ' could not parse that gradient: PaneWidgetMediator ' ) 
+				return; 
+			}
 			var colors : Array = s.colors as Array
 			var gradient : LinearGradient = new LinearGradient()
 				gradient.rotation = 90; 

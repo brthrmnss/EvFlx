@@ -9,18 +9,25 @@
 	<fx:Script>
 		<![CDATA[
 			import org.syncon.evernote.basic.model.CustomEvent;
+			import org.syncon.evernote.panic.controller.HelpCommandTriggerEvent;
 			public var creationComplete : Boolean = false; 
 			
 			protected function onInit():void
 			{
 				this.creationComplete = true
 			}
+			
+			public var type : String = ''; 
+			
 			protected function btnHelpTextSource_clickHandler(event:MouseEvent):void
 			{
-				this.dispatchEvent( new CustomEvent(  'helpSources' ) ) 
+				if ( type == '' ) 
+					throw ( 'type not defined' ) 
+				this.parentApplication.context.dispatchEvent( new HelpCommandTriggerEvent( 
+					HelpCommandTriggerEvent.HELP,  this.type) ) 
 			}			
 		]]>
 	</fx:Script>
-	<utils:IconButton iconSkin=".btnHelp" toolTip="Help with Source"
+	<utils:IconButton iconSkin=".btnHelp"  
 					  id="btnHelpTextSource2"  click="btnHelpTextSource_clickHandler(event)" />	
 </s:Group>

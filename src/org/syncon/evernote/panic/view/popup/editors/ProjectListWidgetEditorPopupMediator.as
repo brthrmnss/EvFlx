@@ -27,7 +27,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 			super.onImportEditConfig( e ) 
 			
 			this.ui.timer.dataX = this.data ; 
-			this.ui.txtMessage.text = this.data.height.toString(); 				
+			this.ui.txtHeight.value = this.data.height;//.toString(); 				
 		}		
 		
 		/**
@@ -37,7 +37,7 @@ package  org.syncon.evernote.panic.view.popup.editors
 		{
 			var d : WidgetVO = ProjectListWidget.importData( this.data.name, 
 				this.data.description, 
-				Number(this.ui.txtMessage.text),  this.ui.timer.time ).widgetData;
+				this.ui.txtHeight.value,  this.ui.timer.time ).widgetData;
 			return d ; 	
 		}
 		

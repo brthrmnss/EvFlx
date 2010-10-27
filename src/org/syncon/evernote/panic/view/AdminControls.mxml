@@ -201,13 +201,7 @@
 										  id="btnBoardConfig" click="btnBoard_clickHandler(event)"/>
 
 							</s:HGroup>		
-								<s:Line width="100%" >
-									<s:stroke>
-										<s:SolidColorStroke color="0x666666" />
-									</s:stroke>
-								</s:Line>
-							<s:Button label="Invite Users"  toolTip="View url for board to share with others"
-								   id="btnInvite" click="btnInvite_clickHandler(event)"/>
+
 								<s:Line width="100%" >
 									<s:stroke>
 										<s:SolidColorStroke color="0x666666" />
@@ -219,7 +213,13 @@
 										  id="btnProjects" click="btnProjects_clickHandler(event)"/>
 								<s:Button label="Edit People"  toolTip="Edit People"  id="btnPeople" click="btnPeople_clickHandler(event)"/>
 							</s:HGroup>
-					
+							<s:Line width="100%" >
+								<s:stroke>
+									<s:SolidColorStroke color="0x666666" />
+								</s:stroke>
+							</s:Line>
+							<s:Button label="Invite Users"  toolTip="View url for board to share with others"
+									  id="btnInvite" click="btnInvite_clickHandler(event)"/>
 							<s:Line width="100%" >
 								<s:stroke>
 									<s:SolidColorStroke color="0x666666" />

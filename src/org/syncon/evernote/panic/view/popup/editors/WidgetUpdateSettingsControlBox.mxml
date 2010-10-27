@@ -10,7 +10,7 @@
 			public var creationComplete : Boolean = false; 
 			
 			private var config : WidgetVO = new WidgetVO(); 
-			[Bindable] public var minTime : Number = 3000
+			[Bindable] public var minTime : Number = 5
 			public function onInit() : void 
 			{
 				this.creationComplete = true; 
@@ -48,7 +48,9 @@
 	
 	<s:HGroup  verticalAlign="middle"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
 		<s:Label text="Update Time (seconds )" />
-		<s:NumericStepper  id="txtTime" minimum="{this.minTime}" maximum="600" />
+		<s:NumericStepper 
+			  toolTip="Default update time for this component"
+			id="txtTime" minimum="{this.minTime}" maximum="600" />
 		<!--<s:TextInput id="txtTime" />-->
 		<!--<s:Button label="Refresh" click="button1_clickHandler(event)" />-->
 	</s:HGroup>

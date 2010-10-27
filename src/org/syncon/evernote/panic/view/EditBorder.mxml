@@ -10,9 +10,12 @@
 
 	<fx:Script>
 		<![CDATA[
+			import mx.core.IUIComponent;
 			import mx.core.UIComponent;
+			import mx.events.DragEvent;
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
+			import mx.managers.DragManager;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.panic.view.assets.Icons;
@@ -111,6 +114,21 @@
 				if ( this.highlightBordersOnRollover )
 				this.fxFader_BorderHighlight.show()
 			}
+			
+			
+			private function mouseDownHandler(e:MouseEvent):void {
+				DragManager.doDrag(e.currentTarget as IUIComponent, null, e);
+			}
+			
+			private function dragEnterHandler(e:DragEvent):void {
+				DragManager.acceptDragDrop(e.currentTarget as IUIComponent);
+			}
+			
+			private function dragDropHandler(e:DragEvent):void {
+				e.currentTarget.addElement(e.dragInitiator);
+			}
+			//http://saturnboy.com/2009/08/drag-and-drop-flex-4/
+			//http://www.google.com/search?q=e+Adobe+Flex+3+Dashboard+sample&ie=utf-8&oe=utf-8&aq=t&rls=org.mozilla:en-US:official&client=firefox-a#hl=en&expIds=17259,18167,20782,24472,26095,26562,26637,27059,27147,27163,27182&sugexp=ldymls&xhr=t&q=++Adobe+Flex+3+Dashboard+sample&cp=1&pf=p&sclient=psy&client=firefox-a&hs=jeT&rls=org.mozilla:en-US%3Aofficial&source=hp&aq=f&aqi=&aql=&oq=++Adobe+Flex+3+Dashboard+sample&gs_rfai=&pbx=1&fp=9a951961ff9ba31d
 
 		]]>
 	</fx:Script>
@@ -131,13 +149,15 @@
 				<s:SolidColor  id="bgColor" color="0" alpha="0.6" />
 			</s:fill>
 		</s:Rect>
-		
-		<s:Rect id="borderEdit2" right="2" left="2" top="2"  height="40"   >
- 
-			<s:fill>
-				<s:SolidColor color="0xFFFFFF" alpha="0.8" />
-			</s:fill>
-		</s:Rect>	
+		<s:Group id="borderEdit2"   mouseDown="mouseDownHandler(event)" 
+    			right="2" left="2" top="2"    height="40"   >
+			<s:Rect  right="0" left="0" top="0"  bottom="0"  >
+				<s:fill>
+					<s:SolidColor color="0xFFFFFF" alpha="0.8" />
+				</s:fill>
+			</s:Rect>	
+		</s:Group>			
+			
 		<s:Label text="ADD AFTER THIS"  id="txtInstructions"
 				 color="0xFFFFFF"
 				 verticalCenter="0" horizontalCenter="0" fontSize="18"/>
@@ -160,7 +180,7 @@
 	<s:Group 	left="10" width="100%">
 
 	<s:layout>
-		<utils1:FlowLayout2   gap="2"  paddingLeft="-5"  />
+		<utils1:FlowLayout2   gap="2"  paddingLeft="-5" verticalGap="10"   />
 		<!--<s:HorizontalLayout paddingBottom="10" paddingLeft="10" 
 							paddingTop="10" paddingRight="10" 
 						/>-->
@@ -189,7 +209,7 @@
 		<utils:IconButton label="edit"  id="btnEdit" click="btnEdit_clickHandler(event)" toolTip="Edit Item"
 				  content="{Icons.getFormatPainter( '.iconSettings' )}"    />
 		<utils:IconButton label="X"  id="btnRemove" click="btnRemove_clickHandler(event)" toolTip="Remove Item"
-				  content="{Icons.getFormatPainter( '.iconTrash' )}"   />
+				  content="{Icons.getFormatPainter( '.closeBtn' )}"   />
 		<s:Label id="lblName" />
 		<s:Label id="lblDesc" />
 	</s:Group>

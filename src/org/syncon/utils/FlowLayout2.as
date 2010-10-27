@@ -21,7 +21,8 @@ package org.syncon.utils
 		}
 
 				private var _border:Number = 10;
-				private var _gap:Number = 10;
+				private var _verticalGap:Number = 10;
+				private var _horizontalGap:Number = 10;				
 				private var _xOffset : Number = 0; 
 				private var _paddingLeft : Number = 0; 
 				private var _rightOffset : Number = 0; 
@@ -34,12 +35,28 @@ package org.syncon.utils
 				}
 				
 				public function set gap(val:Number):void {
-					_gap = val;
+					_horizontalGap = _verticalGap = val;
 					var layoutTarget:GroupBase = target;
 					if (layoutTarget) {
 						layoutTarget.invalidateDisplayList();
 					}
 				}
+				
+				public function set verticalGap(val:Number):void {
+					_verticalGap = val;
+					var layoutTarget:GroupBase = target;
+					if (layoutTarget) {
+						layoutTarget.invalidateDisplayList();
+					}
+				}
+				
+				public function set horizontalGap(val:Number):void {
+					_horizontalGap = val;
+					var layoutTarget:GroupBase = target;
+					if (layoutTarget) {
+						layoutTarget.invalidateDisplayList();
+					}
+				}				
 				/*
 				public function set verticalGap(val:Number):void {
 					_gap = val;
@@ -108,7 +125,7 @@ package org.syncon.utils
 							//move to the next line, and add the gap, but not if it's the first element
 							//(this assumes all elements have the same height, but different widths are ok)
 							if (i > 0) {
-								y += elementHeight + _gap;
+								y += elementHeight + _verticalGap;
 								row++
 									rowRightOffset = 0;
 							}
@@ -121,7 +138,7 @@ package org.syncon.utils
 						maxHeight = Math.max(maxHeight, y + elementHeight);
 						
 						//update the current pos, and add the gap
-						x += elementWidth + _gap;
+						x += elementWidth + _horizontalGap;
 					}
 					
 					//set final content size (needed for scrolling)

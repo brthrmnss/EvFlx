@@ -157,7 +157,7 @@
 						
 				this.chart.dataProvider = this.expenses; 
 				
-				var pushDown : Number = this.chart.height*Number(s)/100
+				var pushDown : Number = this.chart.height*Number(s)/this.a2.maximum
 				//lblTop.y =  (this.measuredHeight - 36- 35) -	(  pushDown)
 				this.fxMove.yTo =  (this.measuredHeight - 36- 35+ 15) -	(  pushDown)
 				this.fxMove.play([this.lblTop]) 
@@ -364,7 +364,7 @@
 		</mx:horizontalAxis>
 		<mx:verticalAxis>
 			<mx:LinearAxis  id="a2" 
-							 
+							  maximum="100"
 							   baseAtZero="true"
 							  />
 		</mx:verticalAxis>		

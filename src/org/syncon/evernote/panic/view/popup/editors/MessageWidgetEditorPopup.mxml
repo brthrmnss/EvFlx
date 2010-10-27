@@ -7,7 +7,7 @@
 				 implements="org.syncon.popups.view.IPopup"
 				 xmlns:popup="org.syncon.evernote.basic.view.popup.*" 
 				 xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" 
-				 xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+				 xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 				 >
 	
 	<fx:Script>
@@ -21,6 +21,8 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var ui :  MessageWidget; 
+			
+			static public var EDIT_FORE : String = 'editFore'; 					
 			
 			override public function onInit() : void 
 			{
@@ -69,37 +71,66 @@
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
 			
+			public function changed(event: Event):void
+			{
+				// maybe have a difefenret event as we dont' want to run transitions here 
+				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
+			}
+			
+			protected function btnEdit_clickHandler (event:String, txt : String):void
+			{
+				this.dispatchEvent( new CustomEvent(  event, txt ) ) 
+			}					
+			
+			
 		]]>
 	</fx:Script>
 	
-	<editors:PopupBg />
-	
-	
-	<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-		<popup:PopupHeader  bold="false"   label="Edit Message"  padding="0"  width="100%"/>
+	<s:HGroup>
+		<s:Group>
+			
 		
-		<mx:Form>
-			<mx:FormItem label="Message Source" >
-				<s:TextInput id="txtMessage" />
-			</mx:FormItem>
-			<mx:FormItem label="Height" >
-				<s:TextInput id="txtHeight" />
-			</mx:FormItem>			
-			<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
-			<mx:FormItem>
-				<s:HGroup>
-					<s:Button label="Save" id="btnOk" click="btnOk_clickHandler(event)" />
-					<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
-				</s:HGroup>
-			</mx:FormItem>
+			<editors:PopupBg />
 			
 			
-		</mx:Form>
+			<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+				<popup:PopupHeader  bold="false"   label="Edit Message Widget"  padding="0"  width="100%"/>
+				
+				<mx:Form>
+					<mx:FormItem label="Message Source"  direction="horizontal">
+						<s:TextArea    id="txtMessage"  change="changed(event)"
+									   heightInLines="3" width="200"  />
+						<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
+										  id="btnTextValue1" click="btnEdit_clickHandler(EDIT_FORE, this.txtMessage.text)" />
+						<utils:HelpButton  toolTip="Help with Source"  type="sourcing" />	
+					</mx:FormItem>
+					<mx:FormItem label="Height" >
+						<s:TextInput    id="txtHeight"  change="changed(event)" />
+						<!-- 				<s:NumericStepper   id="txtHeight"  change="changed(event)"
+						minimum="0" maximum="1000" 
+						width="200" /> -->
+					</mx:FormItem>			
+					<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
+					<mx:FormItem>
+						<s:HGroup  width="100%"  horizontalAlign="right">
+							<s:Button label="Save" id="btnOk"  toolTip="Accept Changes" click="btnOk_clickHandler(event)" />
+							<!--<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />-->
+						</s:HGroup>
+					</mx:FormItem>
+					
+					
+				</mx:Form>
+				
+				
+			</s:VGroup>
+			
+			<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+			
+			<utils:IconButton  label="X"  iconSkin=".closeBtn" 
+							   click="button1_clickHandler(event)" right="5" top="10" />
+		</s:Group>
 		
-		
-	</s:VGroup>
-	<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
-	
-	<utils:IconButton  label="X"  iconSkin=".closeBtn" 
-					   click="button1_clickHandler(event)" right="5" top="10" />
+		<view:MessageWidget  top="0" id="widget" />
+	</s:HGroup>			
+
 </popup:PopupBase>

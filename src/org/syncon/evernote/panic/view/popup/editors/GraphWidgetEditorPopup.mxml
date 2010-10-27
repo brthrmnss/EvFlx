@@ -5,7 +5,7 @@
 					  xmlns:comps="org.syncon.comps.*" 
 					  creationComplete="onInit()" 
 					  implements="org.syncon.popups.view.IPopup"
-					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*"					  
+					  xmlns:popup="org.syncon.evernote.basic.view.popup.*" xmlns:editors="org.syncon.evernote.panic.view.popup.editors.*" xmlns:utils="org.syncon.evernote.panic.view.utils.*" xmlns:view="org.syncon.evernote.panic.view.*"					  
 					  >
 
 	<fx:Script>
@@ -19,6 +19,8 @@
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var ui : GraphWidget; 
+			
+			static public var EDIT_BG : String = 'editBg'; 				
 			
 			override public function onInit() : void 
 			{
@@ -69,12 +71,22 @@
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
 			}			
 
-
 			protected function btnTextValue_clickHandler(event:MouseEvent):void
 			{
 				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_VALUE, 'source' ) ) 
 			}
 
+			protected function changed(event: Event):void
+			{
+				// maybe have a difefenret event as we dont' want to run transitions here 
+				this.dispatchEvent( new CustomEvent(  WidgetEvent.TEST_WIDGET ) ) 
+				// TODO Auto-generated method stub
+			}			
+			
+			protected function btnEdit_clickHandler (event:String, txt : String):void
+			{
+				this.dispatchEvent( new CustomEvent(  event, txt ) ) 
+			}					
 		]]>
 	</fx:Script>
 
@@ -86,52 +98,79 @@
 	</s:Rect>	 	
 	
 	-->
-	<editors:PopupBg />
-
 	
- <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-	 <popup:PopupHeader  bold="false"   label="Edit Graph"  padding="0"  width="100%"/>
-	 
-	 
-	<mx:Form>
-		<mx:FormItem label="Top Text Source" >
-			<s:TextInput id="txtTop" />
-		</mx:FormItem>
-		<mx:FormItem label="Bottom Text Source" >
-			<s:TextInput id="txtBottom" />
-		</mx:FormItem>
-		<mx:FormItem label="Value Source"  direction="horizontal">
-			<s:TextInput id="txtValue" />
-			<utils:IconButton iconSkin=".btnTest" toolTip="Test Source"
-							   id="btnTextValue" click="btnTextValue_clickHandler(event)" />
-		</mx:FormItem>
-		<mx:FormItem label="Maximum Value Source" >
-			<s:TextInput id="txtMaximum" />
-		</mx:FormItem>	
+	<s:HGroup>
 		
-		<mx:FormItem label="Color" >
-			<mx:ColorPicker id="colorPicker" />
-		</mx:FormItem>		
+		<s:Group id="popupHolder" >
+			<editors:PopupBg />
+			
+		 <s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
+			 <popup:PopupHeader  bold="false"   label="Edit Graph Widget"  padding="0"  width="100%"/>
+			 
+			 
+			<mx:Form>
+				<mx:FormItem label="Top Text" >
+					<s:TextArea id="txtTop" width="200" 
+								heightInLines="3"  change="changed(event)"  />
+				</mx:FormItem>
+				<mx:FormItem label="Bottom Text" >
+					<s:TextArea id="txtBottom" width="200" 
+								heightInLines="3"   change="changed(event)"  	/>		
+				</mx:FormItem>
+				<mx:FormItem label="Value Source"  direction="horizontal">
+					<s:TextArea id="txtValue" width="200" 
+								heightInLines="3"  change="changed(event)"  />
+					<utils:IconButton iconSkin=".btnTest" toolTip="Test Source Result"
+									   id="btnTextValue" click="btnTextValue_clickHandler(event)" />
+					<utils:HelpButton  toolTip="Help with Graph Source"  type="graph source" />	
+				</mx:FormItem>
+				
+				
+				<mx:FormItem label="Background"    direction="horizontal">
+					<s:TextArea id="txtBackground" width="200" 
+								heightInLines="3" change="changed(event)"  />
+					<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
+									  id="btnTextValue1" click="btnEdit_clickHandler(EDIT_BG, this.txtBackground.text)" />
+					<utils:HelpButton  toolTip="Help with Source"  type="sourcing" />			
+				</mx:FormItem>	
+				
+				
+				<s:Label text="Simple Bar Graph Only:"  
+						 toolTip="the following settings only apply if the 'source' value is a number"/>
+				
+				<mx:FormItem label="Maximum Value Source" >
+					<s:TextInput id="txtMaximum"   toolTip="Maximum value of the graph, useful for multiples" change="changed(event)" />
+				</mx:FormItem>	
+				
+				<mx:FormItem label="Color" >
+					<mx:ColorPicker id="colorPicker"   toolTip="Color of the graph" change="changed(event)" />
+				</mx:FormItem>		
 		
-		<mx:FormItem label="Background" >
-			<s:TextInput id="txtBackground" />
-		</mx:FormItem>	
+				<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
+				<mx:FormItem>
+					<s:HGroup  width="100%"  horizontalAlign="right">
+						<s:Button label="Save" id="btnOk" 
+								  toolTip="Accept Changes" 
+								  click="btnOk_clickHandler(event)" />
+						<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
+					</s:HGroup>
+				</mx:FormItem>
+				
 		
-		<editors:WidgetUpdateSettingsControlBox id="timer" width="100%" />
-		<mx:FormItem>
-			<s:HGroup>
-				<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
-				<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
-			</s:HGroup>
-		</mx:FormItem>
+			</mx:Form>
+				
 		
-
-	</mx:Form>
+		 </s:VGroup>
+			<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+			
+			<utils:IconButton  label="X"  iconSkin=".closeBtn" 
+							   click="button1_clickHandler(event)" right="5" top="10" />
+		</s:Group>
 		
-
- </s:VGroup>
-<utils:CloseBtn  label="X" click="button1_clickHandler(event)" right="0" top="0" />
+		
+		<view:GraphWidget  id="widget"  />
+</s:HGroup>
 	
-	<utils:IconButton  label="X"  iconSkin=".closeBtn" 
-					   click="button1_clickHandler(event)" right="5" top="10" />
+	
+
 </popup:PopupBase>

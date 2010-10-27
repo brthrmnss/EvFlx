@@ -53,7 +53,11 @@ package  org.syncon.evernote.panic.view
 			 
 			 eventMap.mapListener(eventDispatcher, PanicModelEvent.CHANGED_SKIN, 
 				 this.onSkinChanged );						
-			 this.onSkinChanged(null)					 
+			 this.onSkinChanged(null)
+				 
+				
+			 //ui.borderEdit2.addEventListener(d
+				 				 
 		}
 		 
 		public function onSkinChanged(e:PanicModelEvent): void

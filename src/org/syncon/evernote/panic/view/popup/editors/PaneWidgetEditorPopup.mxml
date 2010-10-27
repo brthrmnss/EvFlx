@@ -20,6 +20,8 @@
 			import org.syncon.evernote.panic.vo.WidgetVO;
 			import org.syncon.popups.view.IPopup;
 			
+			import spark.events.TextOperationEvent;
+			
 			import sss.Shelpers.Shelpers.ui.PopupCode;
 			
 			public var ui : PaneWidget; 
@@ -94,6 +96,12 @@
 				this.dispatchEvent( new CustomEvent(  event, txt ) ) 
 			}			
 
+
+			protected function txtCustomGradientBg_changeHandler(event:TextOperationEvent):void
+			{
+				 changed(event)  
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -109,11 +117,12 @@
 	
 		
 		<s:VGroup gap="0"  paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10" >
-			<popup:PopupHeader  bold="false"   label="Edit Pane"  padding="0"  width="100%"/>
+			<popup:PopupHeader  bold="false"   label="Edit Pane Widget"  padding="0"  width="100%"/>
 			
 			<mx:Form>
 				<mx:FormItem label="Text Source"  direction="horizontal">
-					<s:TextArea   heightInLines="3" id="txtMessage" width="200" 
+					<s:TextArea   id="txtMessage" 
+								  heightInLines="3" width="200" 
 								  change="changed(event)"
 								 toolTip="Text source for the top layer" />
 					<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
@@ -127,20 +136,23 @@
 								 toolTip="Text source for the bottom layer" />
 					<utils:IconButton iconSkin=".btnTextEditor" toolTip="Edit Source"
 									  id="btnTextValue1" click="btnEdit_clickHandler(EDIT_BG, this.txtMessageBg.text)" />
-					<utils:HelpButton  toolTip="Help with Source" />
+					<utils:HelpButton  toolTip="Help with Source"  type="sourcing" />
 				</mx:FormItem>			
 				
 				<mx:FormItem label="Color 1" >
-					<mx:ColorPicker id="colorPicker1" change="changed(event)"/>
+					<mx:ColorPicker id="colorPicker1" 
+									 toolTip="1st color of advanced gradient" change="changed(event)"/>
 				</mx:FormItem>	
 				<mx:FormItem label="Color 2" >
-					<mx:ColorPicker id="colorPicker2" change="changed(event)"/>
+					<mx:ColorPicker id="colorPicker2"
+									 toolTip="2nd color of the simple gradient"
+									change="changed(event)"/>
 				</mx:FormItem>
 				<mx:FormItem label="Custom Gradient"  direction="horizontal">
 					<s:TextArea id="txtCustomGradientBg" width="200" 
-								 heightInLines="3"  change="changed(event)"
-								 toolTip="Define more elaborate gradients, overrides the colors used agoave" />
-					<utils:HelpButton  toolTip="Help with Source" />
+								 heightInLines="3"  change="txtCustomGradientBg_changeHandler(event)"
+								 toolTip="Define more elaborate gradients, overrides simple gradient settings (above)" />
+					<utils:HelpButton  toolTip="Help with Source"  type="sourcing" />
 				</mx:FormItem>		
 				<mx:FormItem label="Corner Radius" >
 					<s:NumericStepper id="txtCornerRadius" width="200"  minimum="0" maximum="100"
@@ -150,9 +162,12 @@
 				</mx:FormItem>					
 				<editors:WidgetUpdateSettingsControlBox id="timer"  width="100%"/>
 				<mx:FormItem>
-					<s:HGroup>
-						<s:Button label="Ok" id="btnOk" click="btnOk_clickHandler(event)" />
-						<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" />
+					<s:HGroup width="100%"  horizontalAlign="right">
+						<s:Button label="Save" 
+								    toolTip="Accept Changes"
+								  id="btnOk" click="btnOk_clickHandler(event)" />
+						<!--<s:Button label="Test" id="btnTest" click="btnTest_clickHandler(event)" 
+								   toolTip="View component with settings applied"/>-->
 					</s:HGroup>
 				</mx:FormItem>
 			
