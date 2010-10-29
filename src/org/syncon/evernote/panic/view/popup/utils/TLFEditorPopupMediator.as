@@ -20,6 +20,7 @@ package  org.syncon.evernote.panic.view.popup.utils
 		private var initialTLF :   String;
 		private var fxChangedTLF : Function; 
 		private var fxAcceptTLF : Function
+		private var initalLineHeight:  Object = null ;
 		public function TLFEditorPopupMediator()
 		{
 		} 
@@ -69,6 +70,8 @@ package  org.syncon.evernote.panic.view.popup.utils
 			 
 			 var ee :   HtmlConvertor = new HtmlConvertor()
 			 this.ui.initialTLF =  ee.convertTLF( markup,  0xFFFFFF, this.ui.fontSize )
+			//this.initalLineHeight = this.ui.initialTLF.lineHeight
+			//this.ui.initialTLF.lineHeight = null; 
 			 fxChangedTLF = this.ui.fxChangedTLF
 			 fxAcceptTLF = this.ui.fxAcceptTLF
 			if ( valid )  
@@ -92,6 +95,7 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 
 		 public function onAcceptFlow(e:CustomEvent):void
 		 {
+			// e.data.lineHeight = initalLineHeight; 
 			 this.fxChangedTLF( e.data ) 
 			 this.fxAcceptTLF( e.data ) 
 			 this.ui.hide();
@@ -107,6 +111,7 @@ package  org.syncon.evernote.panic.view.popup.utils
 		 
 		 public function onChangedFlow(e:CustomEvent):void
 		 {
+			// e.data.lineHeight = initalLineHeight; 
 			 if ( initialTLF == null ) 
 				 initialTLF =  this.ui.edit.textFlowMarkup 
 			 this.fxChangedTLF( e.data ) 
