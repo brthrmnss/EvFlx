@@ -6,11 +6,11 @@
 				verticalScrollPolicy="off"
 				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 				creationComplete="onCreationComplete()" 
-				 resize="application1_resizeHandler(event)"
+				resize="application1_resizeHandler(event)"
 				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:evernote="org.syncon.evernote.*" xmlns:view="org.syncon.evernote.basic.view.*" xmlns:basic1="org.syncon.evernote.basic.*"
 				>
 	<mx:Style source="org/syncon/evernote/basic/view/assets/basic_evernote_styles.css" />
-
+	
 	<!-- width="1200" height="600"  -->
 	<mx:Script>
 		<![CDATA[
@@ -24,35 +24,35 @@
 				this.creationComplete = true	 
 				this.application1_resizeHandler(null)
 			}
-
+			
 			protected function application1_resizeHandler(event:ResizeEvent):void
 			{
 				var gap : int = 4; 
 				if ( this.creationComplete  == false )
-						return ; 
+					return ; 
 				var decreaseHeight : Number =  this.header.height+this.searchbar.height+this.footer.height   +4*gap 
 				if ( this.tabbar.height > 0 ) 
 					decreaseHeight += this.tabbar.height + gap
 				this.workspace.height = this.height - decreaseHeight
 				this.container.getStyle('gap')
 			}
-
-
+			
+			
 			protected function tabbar_stateChangedHandler(event:Event):void
 			{
 				//application1_resizeHandler(null)
 			}
-
-
+			
+			
 			protected function tabbar_resizeHandler(event:ResizeEvent):void
 			{
 				application1_resizeHandler(null)
 				// TODO Auto-generated method stub
 			}
-
+			
 		]]>
 	</mx:Script>
-	
+	 
 	<s:VGroup id="container" horizontalCenter="0" width="97%" y="0" gap="4"  >
 		<view:header  id="header"/>
 		<view:tab_bar id="tabbar" resize="tabbar_resizeHandler(event)"
@@ -67,12 +67,12 @@
 		</mx:HDividedBox>
 		<view:footer_bar  id="footer"/>
 	</s:VGroup>
-<!--
+	<!--
 	<s:HGroup>
-		<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/9ff9e5f6-1a91-471a-8672-57ca707c3be7?seq=465" />
-		<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/e2819c18-0ec0-4926-9ca2-c663754bc7a1?seq=435" />
-		<mx:Image source="http://blstb.msn.com/i/6B/C1486E9999B1E2A28375D509B8F1.jpg" />
-		<mx:Image source="images/cancel.jpg" height="50" />
+	<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/9ff9e5f6-1a91-471a-8672-57ca707c3be7?seq=465" />
+	<mx:Image source="http://sandbox.evernote.com/shard/s1/thumb/e2819c18-0ec0-4926-9ca2-c663754bc7a1?seq=435" />
+	<mx:Image source="http://blstb.msn.com/i/6B/C1486E9999B1E2A28375D509B8F1.jpg" />
+	<mx:Image source="images/cancel.jpg" height="50" />
 	</s:HGroup>-->
 	<basic1:EvernoteBasicContext id="context"  contextView="{this}" />
 </mx:Application>
