@@ -68,6 +68,8 @@ package   org.syncon.evernote.editor
 		{
 			this.dispatchEvent( new Event( CreateDefaultDataCommand.START ))
 			this.dispatchEvent( new Event( CreateDefaultDataCommand.LIVE_DATA ))
+				
+			this.dispatchEvent( new Event( 'finished' ) ) 
 		}
 	 
 

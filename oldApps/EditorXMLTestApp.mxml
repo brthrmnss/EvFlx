@@ -5,7 +5,8 @@
 			   creationComplete="onInit()"
 			   width="1200" height="600" xmlns:editor="org.syncon.evernote.editor.*" xmlns:view="org.syncon.evernote.editor.view.*">  
 	<!--
-	<fx:Style source="Main.css"/>  
+	Test for xml tlf editor 
+	loads a list that dp contains many example en-note content so their tlf result can be compared
 	-->
 	<fx:Script>  
 		<![CDATA[  
@@ -21,5 +22,4 @@
 	</fx:Declarations>
 		
 	<view:EditorTestList />
-	
 </s:Application> 

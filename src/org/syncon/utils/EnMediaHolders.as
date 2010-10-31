@@ -30,22 +30,23 @@ package org.syncon.utils
 			public var images : Array = []; 
 			private var inlineElementToCheckBoxDic : Dictionary = new Dictionary(true);
 			private var dictImgToResource : Dictionary = new Dictionary(true); 
-			private var checkBoxToInlineElementDic : Dictionary; 
+			private var dictImageToInlineGraphicElement : Dictionary; 
 			public function loadUp(arr : Array , tf : TextFlow, addTo  :  Object )  : void
 			{
+				this.addTo = addTo
 				//return; 
 				if ( arr.length == 0 ) 
 					return; 
 				this.inlineElements = arr ;
 				this.inlineElementToCheckBoxDic = new Dictionary(true);
-				this.checkBoxToInlineElementDic = new Dictionary(true)
+				this.dictImageToInlineGraphicElement = new Dictionary(true)
 				if ( images.length == 0 ) 
 				{
 					for ( var i : int = 0; i < 10; i++ )
 					{
 						var img :  Image = new  Image()
 						images.push( img ) 
-						img.addEventListener( 'change', this.onChanged ) 
+						//img.addEventListener( 'change', this.onChanged ) 
 				 		addTo.addElement( img ) 
 					//		var ee : FlexGlobals
 					//	FlexGlobals.topLevelApplication.addElement( img ) ;			
@@ -73,20 +74,20 @@ package org.syncon.utils
 					var r : Resource = arr[i].resource
 					inlineElementToCheckBoxDic[inlineGraphicElement_]= img
 					dictImgToResource[img]= r						
-					checkBoxToInlineElementDic[img]= inlineGraphicElement_
+					dictImageToInlineGraphicElement[img]= inlineGraphicElement_
 					//continue
 					var e  : LoadImageCommandTriggerEvent = new LoadImageCommandTriggerEvent( 
 						LoadImageCommandTriggerEvent.LOAD_IMAGE, '', inlineGraphicElement_.id, inlineGraphicElement_, i , r, img ) 
 					LoadImageCommandTriggerEvent.dispatch(  e )  						
 				}
 				this.tf = tf; 
-				this.addTo = addTo
-			 	return;
+/*				this.addTo = addTo
+			 	/*return;
 				tf.addEventListener(UpdateCompleteEvent.UPDATE_COMPLETE,
-					this.onRecomposed )
-				addTo.callLater( this.onRecomposed, [null] ) 
+					this.onRecomposed ) 
+				addTo.callLater( this.onRecomposed, [null] ) */
 			}
-			
+			/*
 			public function onRecomposed( e:Event, wait : Boolean = true):void
 			{
 				return; //
@@ -127,15 +128,34 @@ package org.syncon.utils
 					}					
 				}
 			}
+			
 			public static var CheckedIndicator : String = '|true'
 			private function onChanged(e:Event):void
 			{
-				var id : String = this.checkBoxToInlineElementDic[e.currentTarget].id
+				var id : String = this.dictImageToInlineGraphicElement[e.currentTarget].id
 				var split : Array = id.split('|'); 
-				this.checkBoxToInlineElementDic[e.currentTarget].id =split[0] + '|' + e.currentTarget.selected
+				this.dictImageToInlineGraphicElement[e.currentTarget].id =split[0] + '|' + e.currentTarget.selected
 				//e.currentTarget.id 
 				
 				tf.flowComposer.updateAllControllers(); 
 			}
+			*/
+			/**
+			 * Add Image, does not have existing source 
+			 * two parts
+			 * adding to tlf and saving resource, and finally reloading message when resource has been saved
+			 * don't have to save image instantly. 
+			 * */
+			public function addImage( source : Object )  : void
+			{
+				
+			}
+			
+			public function addNewPair( x : InlineGraphicElement ,  img : Image)  : void
+			{
+				return; 	
+			}
+						
+			
 	}
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:view="org.syncon.evernote.editor.view.*"  >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			import com.evernote.edam.type.Note;
+			import com.evernote.edam.type.Resource;
+			
+			import org.syncon.evernote.editor.vo.EditorTestCaseVO;
+			[Bindable]  public var columnWidth : int = 250;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+			this.parentApplication.context.addEventListener( 'finished', this.onContextSetup )
+			}
+				
+				public function onContextSetup(e :  Event ) : void
+				{
+					
+				var test :  EditorTestCaseVO = new  EditorTestCaseVO();
+				test = new  EditorTestCaseVO()
+				test.importXML('<p><span style="text-decoration: underline;"><em><strong>bold, underline, italic</strong></em></span></p>' )
+				
+				test = new  EditorTestCaseVO('image')
+				
+				var note : Note  = new Note()
+				note.guid = '1a1981bb-e1de-4d42-bf5a-ca2249e120f7'
+				var res :  Array = []; 
+				note.resources = res
+				var resource : Resource = new Resource()
+				resource.guid = 'f6d005e3-4ee3-49aa-a9a0-1225ebd1c70f'; 
+				res.push( resource ) 	
+				test.associatedNote = note
+				test.importXML( 'img<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>'+''+
+					'' )						
+				
+				var tests : Array = []; 
+				tests.push( test ) 	
+				this.editorTestPics.data = test ; 
+			}
+
+		 
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout  paddingTop="10" paddingLeft="10" />
+	</s:layout>
+	<view:EditorTestListItemRendererContent id="editorTestPics" pictureEditsEnabled="true" />
+</s:Group>

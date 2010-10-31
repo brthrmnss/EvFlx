@@ -8,7 +8,15 @@
 	
 	<fx:Script> 
 		<![CDATA[ 
+			import flashx.textLayout.edit.EditManager;
+			import flashx.textLayout.elements.InlineGraphicElement;
+			import flashx.textLayout.elements.TextFlow;
+			
+			import mx.controls.CheckBox;
+			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
+			
+			import net.asciiworks.tlf.supportClasses.ContentDropDownListEvent;
 			
 			import org.syncon.evernote.basic.model.CustomEvent;
 			import org.syncon.evernote.editor.utils.EditorUtils;
@@ -16,7 +24,7 @@
 			import org.syncon.utils.EnMediaHolders;
 			import org.syncon.utils.EntodoHolders;
 			
-			public var case_ : EditorTestCaseVO = new EditorTestCaseVO();
+			public var case_ : EditorTestCaseVO;// = new EditorTestCaseVO();
 			private var enTodos : EntodoHolders = new EntodoHolders()
 			private var enMedias : EnMediaHolders = new  EnMediaHolders(); 
 			public function set data(value:EditorTestCaseVO):void { 
@@ -34,6 +42,8 @@
 			public function onModifyF() : void
 			{
 				if ( this.creationComplete == false ) 
+					return; 
+			if ( case_ == null ) 
 					return; 
 				// set the Label controls appropriately. 
 				//txtLbl.text = case_.name.toString(); 
@@ -82,6 +92,12 @@
 					else
 						this.txtMissed.text = ''; 
 				this.txtSame.text = 'Same: '+!  missed
+					
+					if ( this.pictureEditsEnabled ) 
+					{
+						setTimeout( this.onImg, 3000 ) ;
+						//this.onImg()
+					}
 			} 
 			
 			protected function onPreview(event:MouseEvent):void
@@ -98,9 +114,104 @@
 				var ee : EditorUtils; 
 				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()
 				this.onModifyF()
+				//
+				//var b : Object = (this.tlfEditor.addImg.skin as Object)
+			//		b.url.text = 'http://googleads.g.doubleclick.net/pagead/imgad?id=CNHbvpXhj--g7QEQyAEYvQEyCI845uVkSyww'
+					
+				this.tlfEditor.fxAddImage = this.addImageToFxEditor
+				
 			}
 
+			public var pictureEditsEnabled : Boolean = false; 
 			
+			public var editM : EditManager
+			/**
+			 * Listsens for creation of image 
+			 * */
+			public function addImageToFxEditor ( payload : Object ) : void
+			{
+				//this.tlfEditor.editManager_.insertInlineGraphic(payload.url, payload.width, payload.height);
+		/* 		var img : Image = new Image()
+				img.width =  payload.width
+				img.height = payload.height; 
+				img.source = payload.url; 
+				FlexGlobals.topLevelApplication.
+					var ee : FlexGlobals */
+				
+			  var img : Image = new Image()
+				img.source = payload.url;  
+				img.addEventListener(Event.ADDED, this.onAddImg ) 
+				img.addEventListener(Event.ADDED_TO_STAGE, this.onAddToStage ) 
+				//how doe this work sowell? but the size is kinda off ....
+				//var img :  CheckBox = new CheckBox()
+			/* 	event.loadInto.source = img; 
+				event.loadInto.width = e.width; 
+				event.loadInto.height = e.height; 		 */		
+				FlexGlobals.topLevelApplication.addElement( img ) ;
+				payload.height = 50
+				payload.width = 50;
+				//this.tlfEditor.fx
+				this.tlfEditor.editManager_.insertInlineGraphic(img, payload.width, payload.height);
+				//trace(); 
+				this.tlfEditor.addEventListener('textFlowChanged', tlfChanged ) 
+			}
+			public function tlfChanged( e : Event )  : void
+			{
+				trace();
+			}
+			public var dictLookForImgStriong : Dictionary = new Dictionary(true)
+			public function onAddImg(e: Event)  : void
+			{
+				var d : Array = [e.currentTarget.parent, e.currentTarget.parent.parent ]
+					trace( d.join( ' ' ) )
+				//try to find the image element specified
+				var x :   TextFlow = this.tlfEditor.textFlow
+				var hex : Object = this.findInTfPropEquals( x, 'source' , e.currentTarget.toString() )
+				if ( hex != null ) 
+					this.enMedias.addNewPair( hex as InlineGraphicElement, e.currentTarget as Image ) 
+				var o : Array = [x.getElementByID(''), x.getElementsByStyleName( '')]
+					
+				return; 
+			}
+			
+			public function findInTfPropEquals( flow :  Object , prop : String, equals : Object )  :  Object
+			{
+					//keep track of images so associated not can do thing ....
+					var imgCount : int = 0; 
+					if ( flow.hasOwnProperty('mxmlChildren' ) == false ) 
+						return null; 			
+					for each ( var o : Object in flow.mxmlChildren ) 
+					{
+						//trace( '@'+o.toString() )
+						var result : Object = this.findInTfPropEquals( o, prop, equals  )
+						if ( result != null ) 
+							return result; 
+						if ( o.hasOwnProperty( prop )  == false ) 
+							continue; 
+						//trace( '---'+o[prop] )
+						if ( o[prop] == equals ) 
+							return o; 
+					}
+					return null; 
+				}
+				
+			public function onAddToStage(e: Event)  : void
+			{
+				return; 
+			}			
+			
+			public function onImg ()  : void
+			{
+				var payload : Object = {}; 
+				payload.url = 'http://googleads.g.doubleclick.net/pagead/imgad?id=CNHbvpXhj--g7QEQyAEYvQEyCI845uVkSyww' 
+			/* 	payload.width = imageWidth;
+				payload.height = imageHeight; */
+				
+				var e: ContentDropDownListEvent = new ContentDropDownListEvent(ContentDropDownListEvent.SUBMIT, payload);
+				this.tlfEditor.addImg.dispatchEvent(e);
+			}
+			
+
 			protected function onRedo( ):void
 			{
 				this.tlfEditor.textFlowMarkup = EditorUtils.linkBreakTLF()

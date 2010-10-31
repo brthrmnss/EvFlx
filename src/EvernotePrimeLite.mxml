@@ -7,10 +7,12 @@
 				xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner" 
 				creationComplete="onCreationComplete()" 
 				resize="application1_resizeHandler(event)"
-				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*" xmlns:evernote="org.syncon.evernote.*" xmlns:view="org.syncon.evernote.basic.view.*" xmlns:basic1="org.syncon.evernote.basic.*"
+				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:basic="org.syncon.evernote.view.basic.*"
+				xmlns:evernote="org.syncon.evernote.*" xmlns:view="org.syncon.evernote.basic.view.*" 
+				xmlns:basic1="org.syncon.evernote.basic.*"
 				>
 	<mx:Style source="org/syncon/evernote/basic/view/assets/basic_evernote_styles.css" />
-	
+	<!-- this is a direct clone of EvernoteClones, probaby  -->
 	<!-- width="1200" height="600"  -->
 	<mx:Script>
 		<![CDATA[

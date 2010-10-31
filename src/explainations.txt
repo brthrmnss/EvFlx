@@ -1,0 +1,10 @@
+original build
+evernote clones folder, loading in services
+
+panic build: 
+panic sub folder, evernote clones folder [src], evernote api [src] 
+
+f- that
+
+evernotePrimeLite Build: 
+sym link to src folder from evernoteclones, lib of services
