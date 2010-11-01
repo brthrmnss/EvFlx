@@ -41,7 +41,8 @@
 				tests.push( test ) 	
 				this.editorTestPics.data = test ; 
 			}
-
+git statuts
+			
 		 
 		]]>
 	</fx:Script>
