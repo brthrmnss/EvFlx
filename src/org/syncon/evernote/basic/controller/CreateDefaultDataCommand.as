@@ -57,7 +57,7 @@ package  org.syncon.evernote.basic.controller
 			//setTimeout( this.authenticate, 1000 ) 
 			this.authenticate()
 		}
-		private var timerEnsureTrashCalled :  Timer= new Timer(8000)
+		private var timerEnsureTrashCalled :  Timer= new Timer(8000,1)
 		public function onListTags(e: Object=null):void
 		{
 			this.recievedTags = true;  

@@ -75,7 +75,7 @@ package org.syncon.evernote.basic.model
 			this.timerRefreshToken.addEventListener(TimerEvent.TIMER, this.refreshToken ) 
 		}		
  
-		private var timerRefreshToken : Timer = new Timer(0); 
+		private var timerRefreshToken : Timer = new Timer(1501,1 ); 
 	
 		
 		private var _notes :  ArrayCollection ; public function get notes () : ArrayCollection { return this._notes }

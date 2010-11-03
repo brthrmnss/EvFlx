@@ -1,0 +1,25 @@
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
+			   xmlns:s="library://ns.adobe.com/flex/spark"  
+			   xmlns:mx="library://ns.adobe.com/flex/mx"  
+			   
+			   creationComplete="onInit()"
+			   width="1200" height="600" xmlns:editor="org.syncon.evernote.editor.*" xmlns:view="org.syncon.evernote.editor.view.*">  
+	<!--
+	Test for xml tlf editor 
+	loads a list that dp contains many example en-note content so their tlf result can be compared
+	-->
+	<fx:Script>  
+		<![CDATA[  
+ 				public function onInit() : void
+				{
+					
+				}
+		]]>  
+	</fx:Script>
+ 
+	<fx:Declarations>
+		<editor:EditorTestContext id="context" contextView="{this}" />
+	</fx:Declarations>
+		
+	<view:EditorTestList />
+</s:Application> 

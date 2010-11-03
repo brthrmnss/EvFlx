@@ -1313,6 +1313,7 @@ package  org.syncon.evernote.basic.controller
 		 
 			this.checkOperations( false ) 
 			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
+			this.timerTimeout.stop(); 
 			//event.dereference()
 				
 			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 

@@ -35,7 +35,7 @@ package  org.syncon.evernote.basic.controller
 		[Inject] public var service: EvernoteService;
 		[Inject] public var event:EvernoteAPIHelperCommandTriggerEvent;
 		private var seqId : int = -1
-		private var timerTimeout : Timer = new Timer(3000)
+		//private var timerTimeout : Timer = new Timer(3000)
 		private var debug : Boolean = true
 		private var alert : Boolean = false; 
 		private var notAuthenticatedRetryTimer : Timer;
@@ -183,7 +183,7 @@ package  org.syncon.evernote.basic.controller
 		 * */
 		private function deReference() : void
 		{
-			this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
+			//this.timerTimeout.removeEventListener(TimerEvent.TIMER, this.onTimeout ) 
 			//event.dereference()
 				
 			if ( event.type == EvernoteAPICommandTriggerEvent.AUTHENTICATE ) 
