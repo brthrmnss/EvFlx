@@ -190,7 +190,7 @@ package  org.syncon.evernote.editor.view
 		//	test.importXML( 'img<en-media hash="d" type="image/gif"/>')
 			//test.importXML( 'img')
 				//'<en-media hash="e43ff460e7645dc9748bd936d3389763" type="image/gif"/>' )
-			tests.push( test ) 		
+			//tests.push( test ) 		
 			/*	
 			test = new  EditorTestCaseVO('image-wrong place')
 			var note : Note  = new Note()

@@ -147,7 +147,7 @@
 			/* 	event.loadInto.source = img; 
 				event.loadInto.width = e.width; 
 				event.loadInto.height = e.height; 		 */		
-				FlexGlobals.topLevelApplication.addElement( img ) ;
+				FlexGlobals.topLevelApplication.addElementAt( img ,0) ;
 				payload.height = 50
 				payload.width = 50;
 				//this.tlfEditor.fx
@@ -155,11 +155,31 @@
 				//trace(); 
 				this.tlfEditor.addEventListener('textFlowChanged', tlfChanged ) 
 			}
+			/**
+			 * 
+			 * */
 			public function tlfChanged( e : Event )  : void
 			{
+				this.handleCopyAndPaste()
 				trace();
 			}
+			
+			/**
+			 * if two images have the same source, and this is an image
+			 * , copy the source from the original 
+			 * on and add to the second one, creatin g new image
+			 * */
+			public function handleCopyAndPaste():void
+			{
+				
+			}
+			
+			
 			public var dictLookForImgStriong : Dictionary = new Dictionary(true)
+			/**
+			 * When the image is added to the stage, 
+			 * register this source with the enmedias ... wtf 
+			 * */
 			public function onAddImg(e: Event)  : void
 			{
 				var d : Array = [e.currentTarget.parent, e.currentTarget.parent.parent ]
