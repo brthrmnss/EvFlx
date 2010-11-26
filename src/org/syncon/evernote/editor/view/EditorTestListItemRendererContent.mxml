@@ -11,6 +11,9 @@
 			import flashx.textLayout.edit.EditManager;
 			import flashx.textLayout.elements.InlineGraphicElement;
 			import flashx.textLayout.elements.TextFlow;
+			import flashx.textLayout.events.FlowOperationEvent;
+			import flashx.textLayout.operations.DeleteTextOperation;
+			import flashx.textLayout.tlf_internal;
 			
 			import mx.controls.CheckBox;
 			import mx.core.FlexGlobals;
@@ -119,9 +122,43 @@
 			//		b.url.text = 'http://googleads.g.doubleclick.net/pagead/imgad?id=CNHbvpXhj--g7QEQyAEYvQEyCI845uVkSyww'
 					
 				this.tlfEditor.fxAddImage = this.addImageToFxEditor
-				
+					
+				this.tlfEditor.addEventListener('textFlowChanged', tlfChanged ) 
+				this.tlfEditor.display.textFlow.addEventListener( FlowOperationEvent.FLOW_OPERATION_BEGIN, flowChanging ) 
 			}
 
+			public function flowChanging(e:FlowOperationEvent):void
+			{
+				var eee : DeleteTextOperation; 
+				if (   e.operation is DeleteTextOperation ) 
+				{
+				}
+				else
+				{
+					return
+				}
+				eee = e.operation as DeleteTextOperation; 
+				var x : Object  = this.tlfEditor.display.textFlow.shallowCopy( eee.absoluteStart, eee.absoluteEnd )
+				var xxx :  Object = this.tlfEditor.display.textFlow.getText(eee.absoluteStart, eee.absoluteEnd )
+				//this.editM
+				//this.editM.selectRange()
+				var ee :  Object =this.tlfEditor.display.textFlow.findLeaf( eee.absoluteStart );
+				var leafEnd :  Object =this.tlfEditor.display.textFlow.findLeaf( eee.absoluteEnd );
+				for  ( var i : int = eee.absoluteStart; i < eee.absoluteEnd; i++ )
+				{
+					var element : Object = this.tlfEditor.display.textFlow.findLeaf( i );
+					if ( oldElement == element ) 
+						continue; 
+					if ( element is InlineGraphicElement ) 
+					{
+						trace('match') 
+					}
+					var oldElement : Object =  element; 
+				}
+				//var leafEnd :  Object =this.tlfEditor.display.textFlow.findLeaf( eee );
+				return; 
+			}
+			
 			public var pictureEditsEnabled : Boolean = false; 
 			
 			public var editM : EditManager
@@ -142,6 +179,8 @@
 				img.source = payload.url;  
 				img.addEventListener(Event.ADDED, this.onAddImg ) 
 				img.addEventListener(Event.ADDED_TO_STAGE, this.onAddToStage ) 
+				img.addEventListener(Event.REMOVED_FROM_STAGE, this.onPicHolderRemovedFromStage ) 
+				img.addEventListener(Event.REMOVED, this.onPicHolderRemovedFromStage ) 
 				//how doe this work sowell? but the size is kinda off ....
 				//var img :  CheckBox = new CheckBox()
 			/* 	event.loadInto.source = img; 
@@ -153,7 +192,7 @@
 				//this.tlfEditor.fx
 				this.tlfEditor.editManager_.insertInlineGraphic(img, payload.width, payload.height);
 				//trace(); 
-				this.tlfEditor.addEventListener('textFlowChanged', tlfChanged ) 
+				
 			}
 			/**
 			 * 
@@ -183,16 +222,27 @@
 			public function onAddImg(e: Event)  : void
 			{
 				var d : Array = [e.currentTarget.parent, e.currentTarget.parent.parent ]
-					trace( d.join( ' ' ) )
+				trace( d.join( ' ' ) );
 				//try to find the image element specified
 				var x :   TextFlow = this.tlfEditor.textFlow
 				var hex : Object = this.findInTfPropEquals( x, 'source' , e.currentTarget.toString() )
 				if ( hex != null ) 
 					this.enMedias.addNewPair( hex as InlineGraphicElement, e.currentTarget as Image ) 
 				var o : Array = [x.getElementByID(''), x.getElementsByStyleName( '')]
-					
 				return; 
 			}
+			
+			/**
+			 * when pic delete via texteditor, 
+			 * image will be remoevd from stage
+			 * */
+			public function onPicHolderRemovedFromStage(e: Event)  : void
+			{
+				var d : Array = [e.currentTarget.parent, e.currentTarget.parent.parent ]
+				trace( d.join( ' ' ) )
+				 
+				return; 
+			}			
 			
 			public function findInTfPropEquals( flow :  Object , prop : String, equals : Object )  :  Object
 			{

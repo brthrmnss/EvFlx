@@ -153,6 +153,7 @@ package org.syncon.utils
 			
 			public function addNewPair( x : InlineGraphicElement ,  img : Image)  : void
 			{
+				
 				return; 	
 			}
 						
